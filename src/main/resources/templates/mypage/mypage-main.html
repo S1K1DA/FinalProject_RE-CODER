@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+
+<main>
+    <nav th:replace="fragments/navigation :: navigation"></nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container d-flex justify-content-center">
+            <div class="row d-flex justify-content-center align-items-center mypage-box">
+
+                <div class="mypage-box-container col-12 mb-4 mb-lg-0">
+                    <div class="text-center mb-5 pb-2">
+                        <h3 class="text-white">마이페이지</h3>
+                    </div>
+                    <div class="custom-block d-flex flex-column align-items-start text-left p-4">
+
+                        <div class="custom-block-info w-100">
+                            <p class="mb-2"><span class="label">회원 id :</span> <span id="user-id">id</span></p>
+                            <p class="mb-2"><span class="label">회원 pwd :</span> <span id="user-pwd">pwd</span></p>
+                            <p class="mb-2"><span class="label">회원 닉네임 :</span> <span id="user-nickname">닉네임</span></p>
+                            <p class="mb-2"><span class="label">회원 이름 :</span> <span id="user-name">이름</span></p>
+                            <p class="mb-2"><span class="label">회원 주소 :</span> <span id="user-address">주소</span></p>
+                            <p class="mb-2"><span class="label">회원 전화번호 :</span> <span id="user-phone">전화번호</span></p>
+                            <p class="mb-2"><span class="label">회원 이메일 :</span> <span id="user-email">이메일</span></p>
+                            <p class="mb-2"><span class="label">회원 MBTI :</span> <span id="user-mbti">MBTI</span></p>
+                        </div>
+                        <div class="form-actions d-flex justify-content-center mt-4">
+                            <button type="button" class="btn-submit">수정하기</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+<!-- JAVASCRIPT FILES -->
+<script th:src="@{/js/reference_js/jquery.js}"></script>
+<script th:src="@{/js/reference_js/jquery.min.js}"></script>
+<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/reference_js/custom.js}"></script>
+
+</body>
+</html>
