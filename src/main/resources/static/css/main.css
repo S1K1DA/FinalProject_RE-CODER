@@ -19,15 +19,15 @@ https://templatemo.com/tm-584-pod-talk
     --custom-btn-bg-color: #d9294f;
     --custom-btn-bg-hover-color: #e9899e;
     --custom-logo-pink: #d9294f;
-    --dark-color: #000000;
+    --dark-color: #464646;;
     --p-color: #717275;
     --border-color: #e9899e;
     --link-hover-color: #d9294f;
     --background-color: #fbd2db;
 
     /* --body-font-family: 'Montserrat', sans-serif; */
-    --body-font-family: "Do Hyeon", sans-serif;
-    --title-font-family: "Do Hyeon", sans-serif;
+    --body-font-family: "Noto Sans KR", sans-serif;
+    --title-font-family: "Noto Sans KR", sans-serif;
 
     --h1-font-size: 61px;
     --h2-font-size: 49px;
@@ -52,7 +52,6 @@ https://templatemo.com/tm-584-pod-talk
 body {
     background-color: var(--white-color);
     font-family: var(--body-font-family);
-    letter-spacing: 0.07rem;
 }
 
 
@@ -220,7 +219,7 @@ main {
     color: var(--white-color);
     font-family: var(--title-font-family);
     font-size: var(--p-font-size);
-    /* font-weight: var(--font-weight-semibold); */
+     font-weight: var(--font-weight-semibold) !important;
     line-height: normal;
     transition: all 0.3s;
     padding: 10px 15px;
@@ -528,10 +527,10 @@ main {
     /* background-color: var(--background-color); */
     background-image: url(../image/background-img.svg);
     background-repeat: no-repeat;
-    background-size: 108% 76%;
-    background-position: top;
-    background-size: cover;
+    background-position: bottom;
+    background-size: cover !important;
     padding-top: 200px;
+    padding-bottom: 40px;
 }
 
 .owl-carousel {
@@ -768,6 +767,7 @@ main {
     line-height: 30px;
     margin-top: 5px;
     margin-bottom: 5px;
+    align-items: center;
 }
 
 .custom-block .custom-block-info+div .badge:hover {
