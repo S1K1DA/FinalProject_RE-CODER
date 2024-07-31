@@ -29,6 +29,10 @@
     padding-bottom: 20px;
 }
 
+.mypage-box-container .sidebar-menu .menu-list li a{
+    font-weight: normal;
+}
+
 @media screen and (max-width: 992px) {
     .sidebar-menu {
         display: none;
