@@ -10,13 +10,22 @@
 
     <section class="hero-section d-flex align-items-center">
         <div class="container d-flex justify-content-center">
-            <div class="row d-flex justify-content-center align-items-center mypage-box">
+            <div class="row d-flex justify-content-center align-items-start mypage-box">
 
-                <div class="mypage-box-container col-12 mb-4 mb-lg-0">
-                    <div class="text-center mb-5 pb-2">
-                        <h3 class="text-white">마이페이지</h3>
+                <div class="mypage-box-container d-flex">
+                    <div class="sidebar-menu">
+                        <ul class="menu-list">
+                            <li class="active"><a href="/my-info.html">내 정보</a></li>
+                            <li><a href="/my-likes.html">좋아요 내역</a></li>
+                            <li><a href="/my-reviews.html">내 후기</a></li>
+                            <li><a href="/menu4.html">메뉴4</a></li>
+                        </ul>
                     </div>
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
+
+                        <div class="text-center mb-5 pb-2 w-100">
+                            <h3 class="text-white">마이페이지</h3>
+                        </div>
 
                         <div class="custom-block-info w-100">
                             <p class="mb-2"><span class="label">회원 id :</span> <span id="user-id">id</span></p>
@@ -28,11 +37,10 @@
                             <p class="mb-2"><span class="label">회원 이메일 :</span> <span id="user-email">이메일</span></p>
                             <p class="mb-2"><span class="label">회원 MBTI :</span> <span id="user-mbti">MBTI</span></p>
                         </div>
-                        <div class="form-actions d-flex justify-content-center mt-4">
-                            <button type="button" class="btn-submit">수정하기</button>
+                        <div class="form-actions d-flex justify-content-center mt-4 w-100">
+                            <button type="button" class="btn-submit" onclick="location.href='/mypage/edit'">수정하기</button>
                         </div>
                     </div>
-
                 </div>
 
             </div>
