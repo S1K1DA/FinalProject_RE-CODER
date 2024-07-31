@@ -25,12 +25,30 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
+    min-width:1100px;
     padding-bottom: 20px;
+}
+
+@media screen and (max-width: 992px) {
+    .sidebar-menu {
+        display: none;
+    }
+
+    .mypage-box-container {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .custom-block {
+        width: 100%;
+        margin: 0 auto;
+    }
 }
 
 .sidebar-menu {
     width: 150px;
     height: 100%;
+    min-height: 65vh;
     background-color: rgba(249, 249, 249, 0.3);
     padding: 10px;
     padding-top: 40px;
@@ -87,12 +105,13 @@
     border-radius: 10px;
     padding: 20px;
     width: calc(100% - 340px);
+    min-height: 65vh;
     background-color: rgba(249, 249, 249, 0.3);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .custom-block-edit {
-    position: relative; /* 부모 요소에 position: relative 추가 */
+    position: relative;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 20px;
@@ -106,7 +125,7 @@
 }
 
 .custom-block-info {
-    overflow: hidden; /* 부모 요소에 overflow: hidden 추가 */
+    overflow: hidden;
 }
 
 .custom-block-info p {
@@ -197,11 +216,11 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 300px; /* 원하는 크기로 설정 */
-    height: 400px; /* 원하는 크기로 설정 */
+    width: 300px;
+    height: 400px;
     overflow: hidden;
     background-color: none;
-    margin: 20px; /* 상단 및 우측 여백 */
+    margin: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -232,4 +251,145 @@
     width: 200px;
 }
 
+.pwd-tab {
+    width: 150px;
+    text-align: right;
+    margin-right: 10px;
+}
 
+/* 취미 및 성향 박스 스타일 */
+.hobby-container {
+    display: flex;
+    width: 100%;
+}
+
+.hobby-box-1 {
+    flex: 1;
+    width: 60%;
+    height: 40vh;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: rgba(249, 249, 249, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hobby-box-2 {
+    flex: 1;
+    width: 40%;
+    height: 40vh;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: rgba(249, 249, 249, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.like-dislike-container {
+    display: flex;
+    width: 100%;
+}
+
+.like-box {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+}
+
+.font-size-20 {
+    font-size: 20px;
+}
+
+/* 사진 후기 섹션 */
+.review-section {
+    margin-bottom: 40px;
+}
+
+.photo-review-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.photo-review-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(33% - 20px);
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-review-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.photo-review-content {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* 실시간 리뷰 섹션 */
+.live-review-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.live-review-item {
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-rating {
+    font-size: 1.2rem;
+    color: gold;
+}
+
+/* 페이지네이션 */
+.custom-block-info .pagination {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    border: none;
+}
+
+/* 공통 버튼 스타일 */
+.btn-action {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn-action:hover {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+}
