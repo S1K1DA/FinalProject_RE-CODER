@@ -10,10 +10,14 @@ body {
   background-image: url(../../image/background-img.svg);
   background-position: top;
   background-repeat: no-repeat;
-  background-size: cover;
-
+  background-size: contain;
 }
+
+
+
+
 .wrapper {
+  margin-bottom: 200px;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -22,6 +26,7 @@ body {
   overflow: hidden;
 }
 .container-sign {
+  top: 300px;
   border-radius: 10px;
   box-shadow: -3px -3px 5px #20191936, 3px 3px 5px #babebc;
   position: absolute;
