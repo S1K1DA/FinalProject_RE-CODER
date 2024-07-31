@@ -13,14 +13,14 @@ public class MypageController {
         return "mypage/mypage-main";  // "mypage/mypage-main"는 src/main/resources/templates/mypage/mypage-main.html
     }
 
-    @GetMapping("/edit")
+    @GetMapping("/infoedit")
     public String editpage() {
-        return "mypage/mypage-edit";  // "mypage/mypage-edit"는 src/main/resources/templates/mypage/mypage-edit.html
+        return "mypage/mypage-infoedit";  // "mypage/mypage-infoedit"는 src/main/resources/templates/mypage/mypage-infoedit.html
     }
 
-    @GetMapping("/like")
-    public String likepage() {
-        return "mypage/mypage-like";  // "mypage/mypage-like"는 src/main/resources/templates/mypage/mypage-like.html
+    @GetMapping("/feedlike")
+    public String feedlikepage() {
+        return "mypage/mypage-feedlike";  // "mypage/mypage-feedlike"는 src/main/resources/templates/mypage/mypage-feedlike.html
     }
 
     @GetMapping("/review")
@@ -28,8 +28,28 @@ public class MypageController {
         return "mypage/mypage-review";  // "mypage/mypage-review"는 src/main/resources/templates/mypage/mypage-review.html
     }
 
-    @GetMapping("/etc")
-    public String etcpage() {
-        return "mypage/mypage-etc";  // "mypage/mypage-etc"는 src/main/resources/templates/mypage/mypage-etc.html
+    @GetMapping("/proflike")
+    public String profpage() {
+        return "mypage/mypage-proflike";  // "mypage/mypage-proflike"는 src/main/resources/templates/mypage/mypage-proflike.html
+    }
+
+    @GetMapping("/cash")
+    public String cashpage() {
+        return "mypage/mypage-cash";  // "mypage/mypage-cash"는 src/main/resources/templates/mypage/mypage-cash.html
+    }
+
+    @GetMapping("/match")
+    public String matchpage() {
+        return "mypage/mypage-match";  // "mypage/mypage-match"는 src/main/resources/templates/mypage/mypage-match.html
+    }
+
+    @GetMapping("/delete")
+    public String deletepage() {
+        return "mypage/mypage-delete";  // "mypage/mypage-delete"는 src/main/resources/templates/mypage/mypage-delete.html
+    }
+
+    @GetMapping("/hobby")
+    public String hobbypage() {
+        return "mypage/mypage-hobby";  // "mypage/mypage-hobby"는 src/main/resources/templates/mypage/mypage-hobby.html
     }
 }

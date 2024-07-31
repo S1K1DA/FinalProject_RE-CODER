@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+
+<main>
+    <nav th:replace="fragments/navigation :: navigation"></nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container d-flex justify-content-center align-items-center">
+            <div class="row d-flex justify-content-center align-items-center mypage-box">
+
+                <div class="mypage-box-container col-12 mb-4 mb-lg-0">
+
+                    <form class="custom-block-edit d-flex flex-column align-items-start text-left p-4" method="post" action="/submit">
+                        <div class="text-center mb-5 pb-2">
+                            <h3 class="text-white">마이페이지</h3>
+                        </div>
+                        <div class="custom-block-info w-100">
+                            <div class="profile-picture">
+                                <!-- 추후 해당 회원 프로필 사진 표시 위치 -->
+                                <img th:src="@{/image/review/weding-review2.jpg}" alt="프로필 사진">
+                                <button type="button" class="btn-new-file">새 파일</button>
+                            </div>
+                            <p class="mb-2"><span class="label">회원 id :</span> <input type="text" id="user-id" value="id" disabled></p>
+                            <p class="mb-2"><span class="label">회원 pwd :</span> <input type="password" id="user-pwd" value="pwd"></p>
+                            <p class="mb-2"><span class="label">회원 닉네임 :</span> <input type="text" id="user-nickname" value="닉네임"></p>
+                            <p class="mb-2"><span class="label">회원 이름 :</span> <input type="text" id="user-name" value="이름" disabled></p>
+                            <p class="mb-2"><span class="label">회원 전화번호 :</span> <input type="text" id="user-phone" value="전화번호" readonly> <button type="button" class="btn-action">전화번호 변경</button></p>
+                            <p class="mb-2"><span class="label">회원 주소 :</span> <input type="text" id="user-address" value="주소" readonly> <button type="button" class="btn-action">주소 변경</button></p>
+                            <p class="mb-2"><span class="label">회원 이메일 :</span> <input type="email" id="user-email" value="이메일" readonly> <button type="button" class="btn-action">이메일 변경</button></p>
+                            <p class="mb-2"><span class="label">회원 MBTI :</span> <input type="text" id="user-mbti" value="MBTI" readonly> <button type="button" class="btn-action">MBTI 검사</button></p>
+                        </div>
+                        <div class="form-actions d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn-submit">수정</button>
+                            <button type="button" class="btn-cancel" th:onclick="'location.href=\'' + @{/mypage/main} + '\''">취소</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<!-- JAVASCRIPT FILES -->
+<script th:src="@{/js/reference_js/jquery.js}"></script>
+<script th:src="@{/js/reference_js/jquery.min.js}"></script>
+<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/reference_js/custom.js}"></script>
+
+</body>
+</html>

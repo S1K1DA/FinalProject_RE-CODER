@@ -16,9 +16,13 @@
                     <div class="sidebar-menu">
                         <ul class="menu-list">
                             <li class="active"><a th:href="@{#}">내 정보</a></li>
-                            <li><a th:href="@{/mypage/like}">좋아요 내역</a></li>
+                            <li><a th:href="@{/mypage/hobby}">성향/취미</a></li>
                             <li><a th:href="@{/mypage/review}">내 후기</a></li>
-                            <li><a th:href="@{/mypage/etc}">메뉴4</a></li>
+                            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>
+                            <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>
+                            <li><a th:href="@{/mypage/cash}">결제 내역</a></li>
+                            <li><a th:href="@{/mypage/match}">매칭 내역</a></li>
+                            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>
                         </ul>
                     </div>
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
@@ -27,18 +31,22 @@
                             <h3 class="text-white">마이페이지</h3>
                         </div>
 
-                        <div class="custom-block-info w-100">
+                        <div class="custom-block-info w-100 position-relative">
+                            <div class="profile-picture">
+                                <!--                                추후 해당 회원 프로필 사진 표시 위치-->
+                                <img th:src="@{/image/review/weding-review2.jpg}" alt="프로필 사진">
+                            </div>
                             <p class="mb-2"><span class="label">회원 id :</span> <span id="user-id">id</span></p>
                             <p class="mb-2"><span class="label">회원 pwd :</span> <span id="user-pwd">pwd</span></p>
                             <p class="mb-2"><span class="label">회원 닉네임 :</span> <span id="user-nickname">닉네임</span></p>
                             <p class="mb-2"><span class="label">회원 이름 :</span> <span id="user-name">이름</span></p>
-                            <p class="mb-2"><span class="label">회원 주소 :</span> <span id="user-address">주소</span></p>
                             <p class="mb-2"><span class="label">회원 전화번호 :</span> <span id="user-phone">전화번호</span></p>
+                            <p class="mb-2"><span class="label">회원 주소 :</span> <span id="user-address">주소</span></p>
                             <p class="mb-2"><span class="label">회원 이메일 :</span> <span id="user-email">이메일</span></p>
                             <p class="mb-2"><span class="label">회원 MBTI :</span> <span id="user-mbti">MBTI</span></p>
                         </div>
                         <div class="form-actions d-flex justify-content-center mt-4 w-100">
-                            <button type="button" class="btn-submit" onclick="location.href='/mypage/edit'">수정하기</button>
+                            <button type="button" class="btn-submit" th:onclick="'location.href=\'' + @{/mypage/infoedit} + '\''">수정하기</button>
                         </div>
                     </div>
                 </div>
@@ -56,19 +64,6 @@
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
 <script th:src="@{/js/reference_js/custom.js}"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        document.querySelectorAll('.sidebar-menu a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                if (this.getAttribute('href') === '#') {
-                    event.preventDefault(); // 링크 기본 동작 방지
-                    window.history.pushState(null, '', '#info'); // 주소 변경
-                }
-            });
-        });
-    });
-</script>
 
 </body>
 </html>
