@@ -12,6 +12,9 @@ https://templatemo.com/tm-584-pod-talk
   CUSTOM PROPERTIES ( VARIABLES )
 -----------------------------------------*/
 :root {
+    --base-font-size: 14px; /* 기본 폰트 크기를 줄임 */
+    --scale-factor: 0.85; /* 축소 비율 */
+
     --white-color: #ffffff;
     --primary-color: #e9899e;
     --secondary-color: #d9294f;
@@ -49,7 +52,10 @@ https://templatemo.com/tm-584-pod-talk
     --font-weight-bold: 700;
 }
 
+
 body {
+    /*transform: scale(var(--scale-factor));*/
+    /*transform-origin: top left; !* 원점 기준으로 축소 *!*/
     background-color: var(--white-color);
     font-family: var(--body-font-family);
 }
@@ -173,7 +179,7 @@ strong {
 
 .section-padding {
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 150px;
 }
 
 main {
@@ -810,6 +816,7 @@ main {
     width: 90px !important;
     height: 25px !important;
     font-size: 15px !important;
+    margin-top: 7px;
 }
 
 .custom-block-top .badge {
@@ -1075,19 +1082,29 @@ main {
     background-size: cover;
     background-position: center;
     margin-top: -80px;
-    padding-top: 50px;
     padding-bottom: 50px;
 }
+
+.site-footer > li {
+    list-style-type: none;
+    font-weight: bold;
+}
+
 
 .site-footer>.container {
     position: relative;
     top: 50px;
-    padding-top: 100px;
+    padding-top: 30px !important;
 }
 
 .site-footer-title,
 .site-footer p {
+    font-weight: 450;
     color: var(--white-color);
+}
+
+.site-footer-title{
+    text-align: right;
 }
 
 .site-footer p strong {
@@ -1103,37 +1120,69 @@ main {
     color: var(--secondary-color);
 }
 
-.site-footer-thumb a img {
-    display: block;
-    width: 120px;
-    min-width: 120px;
-    height: auto;
+.site-footer-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .site-footer-links {
-    margin-bottom: 0;
-    padding-left: 0;
-}
-
-.site-footer-link-item {
-    display: inline-block;
-    list-style: none;
-    margin-right: 10px;
-    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    margin: 30px 0;
+    min-width: 400px;
+    list-style-type: none;
 }
 
 .site-footer-link {
     color: var(--white-color);
-    font-size: var(--p-font-size);
     line-height: inherit;
     font-size: 20px;
+    font-weight: bold;
+    padding-left: 20px;
+}
+
+.site-footer-contacts{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 2rem;
+}
+
+.footer-line{
+    color : var(--custom-logo-pink);
+    border-top: 2px solid !important;
+    opacity: 0.15 !important;
+    margin: 3rem 0 !important;
+}
+
+.bottom-content{
+    text-align: center;
+    margin: 40px 0;
+}
+
+.footer-social-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 
 /*---------------------------------------
   SOCIAL ICON
 -----------------------------------------*/
+
+.social-icon-image{
+    width: 25px;
+    height: 25px;
+    top: 1px;
+    position: relative;
+}
+
 .social-icon {
+    display: flex;
+    flex-direction: row;
     margin: 0;
     padding: 0;
 }
@@ -1145,11 +1194,13 @@ main {
 }
 
 .social-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--secondary-color);
     border-radius: var(--border-radius-large);
     color: var(--white-color);
     font-size: var(--p-font-size);
-    display: block;
     margin-right: 10px;
     text-align: center;
     width: 40px;
@@ -1177,7 +1228,8 @@ main {
 
 @media screen and (min-width: 1600px) {
     .site-footer {
-        padding-top: 250px;
+        padding-top: 100px;
+        padding-bottom: 60px;
     }
 }
 

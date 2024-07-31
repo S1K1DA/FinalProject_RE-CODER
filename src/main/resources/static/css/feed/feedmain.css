@@ -38,15 +38,16 @@ label{
 }
 
 .feed-side-bar{
-    width: 20%;
+    width: 16%;
     margin-right: 40px;
     padding: 40px 30px;
+    min-width: 120px !important;
 }
 
 .feed-main-box{
-    width: 80%;
+    width: 84%;
     min-width: 556px;
-    padding: 0 100px;
+    padding: 0 40px;
 }
 
 .hero-section{
@@ -55,23 +56,26 @@ label{
 
 
 .feed-ele{
-    min-height: 500px;
+    min-height: 450px;
+    max-height: 650px;
     width: 100%;
     background-image: linear-gradient(to bottom left, #ffffffab, #fafafaab);
     border-radius: 20px;
-    margin: 70px 0;
+    margin: 45px 0;
     box-shadow: 5px 3px 12px 6px #3c3c3c1a;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 45px 45px 30px 45px;
+    flex-direction: row;
+    padding: 45px;
     justify-content: space-between;
+    overflow: hidden;
+    align-items: stretch;
 }
 
 .feed-out-box{
+    width: 65%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 25px;
+    height: 100%;
 }
 
 .feed-head-box, .feed-content-box{
@@ -104,10 +108,15 @@ label{
 }
 
 .feed-content-box{
+    min-height: 183px;
+    max-height: 525px;
+    overflow: auto;
     margin-top: 20px;
 }
 
 .feed-content{
+    min-height: 183px;
+    max-height: 425px;
     line-height: 2;
 }
 
@@ -141,6 +150,9 @@ label{
 }
 
 .feed-remark{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 24px;
 }
 
@@ -151,14 +163,54 @@ label{
     margin: 0;
 }
 
+.feed-reply-main{
+    overflow: auto;
+    position: relative;
+    top: 0;
+    height: 82%;
+}
+
 .feed-reply-box{
+    width: 35%;
+    overflow: auto;
     display: flex;
     flex-direction: column;
-    width: 100%;
     background-color: #fff;
     border-radius: 20px;
     padding: 22px;
     box-shadow: 2px 2px 8px 0px #3c3c3c08;
+    margin-left: 30px;
+    position: relative;
+    align-items: center;
+}
+
+/* 스크롤 바 */
+.feed-reply-main::-webkit-scrollbar,
+.answer-text::-webkit-scrollbar,
+.feed-content-box::-webkit-scrollbar{
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /* 가로 스크롤바 높이 */
+}
+
+.feed-reply-main::-webkit-scrollbar-track,
+.answer-text::-webkit-scrollbar-track,
+.feed-content-box::-webkit-scrollbar-track{
+    background: #ffffff00; /* 스크롤바 트랙 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+    margin: 20px;
+}
+
+.feed-reply-main::-webkit-scrollbar-thumb,
+.answer-text::-webkit-scrollbar-thumb,
+.feed-content-box::-webkit-scrollbar-thumb{
+    background: #bcb1b8; /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 모서리 둥글게 */
+}
+
+.feed-reply-main::-webkit-scrollbar-thumb:hover,
+.answer-text::-webkit-scrollbar-thumb:hover,
+.feed-content-box::-webkit-scrollbar-thumb:hover{
+    background: #9c8894; /* 호버 시 스크롤바 색상 */
 }
 
 .reply-profile-box{
@@ -169,9 +221,9 @@ label{
 }
 
 .reply-nickname{
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 0;
-    font-width: bold;
+    font-weight: bold;
 }
 
 .reply-indate{
@@ -180,24 +232,79 @@ label{
 }
 
 .reply-content{
-    font-size: 15px;
+    font-size: 14px !important;
 }
 
-.feed-reply-add{
+.answer-reply-box{
+    overflow: hidden;
+    position: absolute;
+    bottom: 3%;
+    border: 1.5px solid #72727229;
+    border-radius: 12px;
+    width: 90%;
+    height: 80px;
+}
+
+.anwser-text-box{
     display: flex;
-    flex-direction: row;
+    height: 100%;
     align-items: center;
-    margin-top: 10px;
+    overflow: hidden;
+    padding: 5px 0;
+}
+
+.answer-text{
+    border: none;
+    height: 100%;
+    width: 75%;
+    resize: none;
+    margin-left: 5px;
+}
+
+.answer-submit{
+    position: absolute;
+    right: 5%;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #dadada;
+    font-size: 15px;
+    height: 48%;
+}
+
+.answer-submit:hover{
+    background-color: #fbd2db;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.feed-icons{
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-.add-circle{
-    font-size: 6px;
-    display: block;
-    color: #b9b2b2c7;
-    /*margin: 4px 0;*/
-    margin: 0 5px;
+.more-icon{
+    padding: 8px 0;
+    margin-right: 0;
+    position: relative;
+    right: -10%;
 }
+
+
+.moer-icon-image{
+    width: 28px;
+    height: 28px;
+    position: relative;
+    right: -20%;
+}
+
+.moer-icon-image:hover{
+    opacity: 0.45;
+}
+
 
 @media (max-width: 992px){
     .feed-side-bar{
@@ -206,5 +313,23 @@ label{
 
     .feed-main-box{
         padding: 0 60px;
+    }
+
+    .feed-reply-box{
+        display: none;
+    }
+
+    .feed-out-box{
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .feed-side-bar{
+        padding: 40px 15px;
+    }
+
+    .reply-indate{
+        display: none;
     }
 }
