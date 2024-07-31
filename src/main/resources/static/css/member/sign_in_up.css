@@ -1,0 +1,286 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
+
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url(../../image/background-img.svg);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.container-sign {
+  border-radius: 10px;
+  box-shadow: -3px -3px 5px #20191936, 3px 3px 5px #babebc;
+  position: absolute;
+  width: 1000px;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.login-form {
+  background: #ebecf0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.register-form {
+  overflow: auto;
+  overflow-y: scroll;
+  background: #ebecf0;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  height: 100%;
+  align-items: center;
+}
+
+form input {
+  background: #eee;
+  padding: 16px;
+  margin: 8px 0;
+  width: 85%;
+  border: 0;
+  outline: none;
+  border-radius: 20px;
+  box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
+}
+
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 85%;
+  margin: 8px 0;
+}
+
+.input-container input {
+  flex: 1;
+  background: #eee;
+  padding: 16px;
+  border: 0;
+  outline: none;
+  border-radius: 20px 0 0 20px;
+  box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
+}
+
+.check-btn {
+  background: #F69D9D;
+  color: white;
+  padding: 16px;
+  border: 0;
+  outline: none;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  width: 96px;
+  height: 55px; /* Adjust height to match input */
+}
+
+.check-btn:hover {
+  color: red;
+}
+
+.birthdate-container {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  width: 85%;
+}
+
+.user-birth-front {
+  flex: 3;
+  background: #eee;
+  padding: 16px;
+  border: 0;
+  outline: none;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
+}
+
+.separator {
+  padding: 16px;
+  background: transparent;
+  border: 0;
+  margin: 0 -1px; /* Adjust the margin to minimize space */
+  font-size: 24px;
+  line-height: 1;
+}
+
+.user-birth-back {
+  flex: 1;
+  background: #eee;
+  padding: 16px;
+  border: 0;
+  outline: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
+}
+
+
+
+.form-btn {
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 15px 45px;
+    margin: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 80ms ease-in;
+    background-color: #F69D9D;
+    box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc
+}
+.form-btn:active {
+  box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
+}
+.overlay-btn {
+  border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 15px 45px;
+    margin: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 80ms ease-in;
+    box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc
+}
+.sign-in-container {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  transition: all 0.5s;
+}
+.sign-up-container {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  opacity: 0;
+  transition: all 0.5s;
+}
+.overlay-left {
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  opacity: 0;
+  background-color: #bed1e7fc;
+  color: #fff;
+  transition: all 0.5s;
+}
+.overlay-right {
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #bed1e7fc;
+  color: #fff;
+  transition: all 0.5s;
+}
+.container-sign.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.container-sign.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 2;
+}
+.container-sign.right-panel-active .overlay-right {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.container-sign.right-panel-active .overlay-left {
+  transform: translateX(-100%);
+  opacity: 1;
+  z-index: 2;
+}
+.social-links {
+  margin: 20px 0;
+}
+form h1 {
+  margin: 0;
+  color: #000;
+  font-size: xxx-large;
+  text-align: center;
+}
+
+p {
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+}
+span {
+  font-size: 12px;
+  color: #000;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.social-links div {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  border-radius: 50%;
+  box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc;
+  cursor: pointer;
+}
+.social-links a {
+  color: #000;
+}
+.social-links div:active {
+  box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
+}
+
+.social-kakao {
+    background-image: url(/image/member/kakao_icon.png); /* KakaoTalk 아이콘 이미지 경로 */
+    background-size: cover; /* 배경 이미지가 아이콘을 덮도록 설정 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    width: 40px; /* 아이콘 너비 */
+    height: 40px; /* 아이콘 높이 */
+    border-radius: 50%; /* 원형 아이콘 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-kakao:hover {
+    filter: brightness(1.2); /* 호버 시 밝기 조정 */
+}
