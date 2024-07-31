@@ -10,46 +10,56 @@ public class MypageController {
 
     @GetMapping("/main")
     public String mainpage() {
-        return "mypage/mypage-main";  // "mypage/mypage-main"는 src/main/resources/templates/mypage/mypage-main.html
+        return "mypage/mypage_main/mypage-main";
     }
 
     @GetMapping("/infoedit")
     public String editpage() {
-        return "mypage/mypage-infoedit";  // "mypage/mypage-infoedit"는 src/main/resources/templates/mypage/mypage-infoedit.html
+        return "mypage/mypage_main/mypage-infoedit";
     }
 
     @GetMapping("/feedlike")
     public String feedlikepage() {
-        return "mypage/mypage-feedlike";  // "mypage/mypage-feedlike"는 src/main/resources/templates/mypage/mypage-feedlike.html
+        return "mypage/mypage_feedlike/mypage-feedlike";
     }
 
     @GetMapping("/review")
     public String reviewpage() {
-        return "mypage/mypage-review";  // "mypage/mypage-review"는 src/main/resources/templates/mypage/mypage-review.html
+        return "mypage/mypage_review/mypage-review";
     }
 
     @GetMapping("/proflike")
     public String profpage() {
-        return "mypage/mypage-proflike";  // "mypage/mypage-proflike"는 src/main/resources/templates/mypage/mypage-proflike.html
+        return "mypage/mypage_proflike/mypage-proflike";
     }
 
     @GetMapping("/cash")
     public String cashpage() {
-        return "mypage/mypage-cash";  // "mypage/mypage-cash"는 src/main/resources/templates/mypage/mypage-cash.html
+        return "mypage/mypage_cash/mypage-cash";
     }
 
     @GetMapping("/match")
     public String matchpage() {
-        return "mypage/mypage-match";  // "mypage/mypage-match"는 src/main/resources/templates/mypage/mypage-match.html
+        return "mypage/mypage_match/mypage-match";
     }
 
     @GetMapping("/delete")
     public String deletepage() {
-        return "mypage/mypage-delete";  // "mypage/mypage-delete"는 src/main/resources/templates/mypage/mypage-delete.html
+        return "mypage/mypage_delete/mypage-delete";
     }
 
     @GetMapping("/hobby")
     public String hobbypage() {
-        return "mypage/mypage-hobby";  // "mypage/mypage-hobby"는 src/main/resources/templates/mypage/mypage-hobby.html
+        return "mypage/mypage_hobby/mypage-hobby";
+    }
+
+    @GetMapping("/sentiedit")
+    public String sentieditpage() {
+        return "mypage/mypage_hobby/mypage-sentiedit";
+    }
+
+    @GetMapping("/hobbyedit")
+    public String hobbyeditpage() {
+        return "mypage/mypage_hobby/mypage-hobbyedit";
     }
 }
