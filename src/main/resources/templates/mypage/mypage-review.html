@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="fragments/head :: head"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
@@ -16,8 +15,8 @@
                     <div class="sidebar-menu">
                         <ul class="menu-list">
                             <li><a th:href="@{/mypage/main}">내 정보</a></li>
-                            <li><a th:href="@{/mypage/hobby}">성향/취미</a></li>
-                            <li class="active"><a th:href="@{#}">내 후기</a></li>
+                            <li class="active"><a th:href="@{#}">성향/취미</a></li>
+                            <li><a th:href="@{/mypage/review}">내 후기</a></li>
                             <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>
                             <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>
                             <li><a th:href="@{/mypage/cash}">결제 내역</a></li>
@@ -26,15 +25,39 @@
                         </ul>
                     </div>
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
-
                         <div class="text-center mb-5 pb-2 w-100">
-                            <h3 class="text-white">내 후기</h3>
+                            <h3 class="text-white">성향 수정</h3>
                         </div>
-
-                        <div class="custom-block-info w-100">
-
-                        </div>
-
+                        <form method="post" action="/mypage/sentiedit/submit">
+                            <h4 class="text-white">선호하는 것</h4>
+                            <div class="checkbox-list d-flex flex-wrap">
+                                <label><input type="checkbox" name="likes" value="실내데이트"> 실내데이트</label>
+                                <label><input type="checkbox" name="likes" value="활발함"> 활발함</label>
+                                <label><input type="checkbox" name="likes" value="밝은 분위기"> 밝은 분위기</label>
+                                <label><input type="checkbox" name="likes" value="자연"> 자연</label>
+                                <label><input type="checkbox" name="likes" value="운동"> 운동</label>
+                                <label><input type="checkbox" name="likes" value="음악"> 음악</label>
+                                <label><input type="checkbox" name="likes" value="영화"> 영화</label>
+                                <label><input type="checkbox" name="likes" value="여행"> 여행</label>
+                                <label><input type="checkbox" name="likes" value="맛집 탐방"> 맛집 탐방</label>
+                            </div>
+                            <h4 class="text-white mt-4">기피하는 것</h4>
+                            <div class="checkbox-list d-flex flex-wrap">
+                                <label><input type="checkbox" name="dislikes" value="혼잡한 장소"> 혼잡한 장소</label>
+                                <label><input type="checkbox" name="dislikes" value="소음"> 소음</label>
+                                <label><input type="checkbox" name="dislikes" value="어두운 분위기"> 어두운 분위기</label>
+                                <label><input type="checkbox" name="dislikes" value="무례함"> 무례함</label>
+                                <label><input type="checkbox" name="dislikes" value="기다림"> 기다림</label>
+                                <label><input type="checkbox" name="dislikes" value="운동 부족"> 운동 부족</label>
+                                <label><input type="checkbox" name="dislikes" value="비싼 식사"> 비싼 식사</label>
+                                <label><input type="checkbox" name="dislikes" value="야근"> 야근</label>
+                                <label><input type="checkbox" name="dislikes" value="지저분한 환경"> 지저분한 환경</label>
+                            </div>
+                            <div class="form-actions d-flex justify-content-center mt-4">
+                                <button type="submit" class="btn-submit">수정</button>
+                                <button type="button" class="btn-cancel" th:onclick="'location.href=\'' + @{/mypage/hobby} + '\''">취소</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -45,13 +68,15 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-
 <!-- JAVASCRIPT FILES -->
 <script th:src="@{/js/reference_js/jquery.js}"></script>
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
 <script th:src="@{/js/reference_js/custom.js}"></script>
+<script th:src="@{/js/mypage/mypage.js}"></script>
+
+
 
 </body>
 </html>

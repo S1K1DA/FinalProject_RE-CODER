@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+
+<main>
+    <nav th:replace="fragments/navigation :: navigation"></nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container d-flex justify-content-center">
+            <div class="row d-flex justify-content-center align-items-start mypage-box">
+
+                <div class="mypage-box-container d-flex">
+                    <div class="sidebar-menu">
+                        <ul class="menu-list">
+                            <li><a th:href="@{/mypage/main}">내 정보</a></li>
+                            <li class="active"><a th:href="@{#}">성향/취미</a></li>
+                            <li><a th:href="@{/mypage/review}">내 후기</a></li>
+                            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>
+                            <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>
+                            <li><a th:href="@{/mypage/cash}">결제 내역</a></li>
+                            <li><a th:href="@{/mypage/match}">매칭 내역</a></li>
+                            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>
+                        </ul>
+                    </div>
+                    <div class="custom-block d-flex flex-column align-items-start text-left p-4">
+
+                        <div class="text-center mb-5 pb-2 w-100">
+                            <h3 class="text-white">성향/취미</h3>
+                        </div>
+
+                        <div class="hobby-container d-flex w-100">
+                            <div class="hobby-box-1 flex-fill p-3">
+                                <h4 class="text-white">성향</h4>
+                                <div class="like-dislike-container d-flex w-100">
+                                    <div class="like-box flex-fill p-3">
+                                        <h6>선호하는 것</h6>
+                                        <ul class="font-size-20">
+                                            <li th:each="like : ${likes}" th:text="${like}">선호하는 항목</li>
+
+                                            <li>실내데이트</li>
+                                            <li>활발함</li>
+                                            <li>밝은 분위기</li>
+                                        </ul>
+                                    </div>
+                                    <div class="like-box flex-fill p-3">
+                                        <h6>기피하는 것</h6>
+                                        <ul class="font-size-20">
+                                            <li th:each="dislike : ${dislikes}" th:text="${dislike}">기피하는 항목</li>
+
+                                            <li>혼잡한 장소</li>
+                                            <li>소음</li>
+                                            <li>어두운 분위기</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button class="btn-action" th:onclick="'location.href=\'' + @{/mypage/sentiedit} + '\''">성향 수정</button>
+                                </div>
+                            </div>
+                            <div class="hobby-box-2 flex-fill p-3">
+                                <h4 class="text-white">취미</h4>
+                                <ul class="font-size-20">
+                                    <li>여행</li>
+                                    <li>뒹굴거리기</li>
+                                    <li>독서</li>
+                                </ul>
+                                <div class="text-center mt-3">
+                                    <button class="btn-action" th:onclick="'location.href=\'' + @{/mypage/hobbyedit} + '\''">취미 수정</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<!-- JAVASCRIPT FILES -->
+<script th:src="@{/js/reference_js/jquery.js}"></script>
+<script th:src="@{/js/reference_js/jquery.min.js}"></script>
+<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/reference_js/custom.js}"></script>
+<script th:src="@{/js/mypage/mypage.js}"></script>
+
+
+</body>
+</html>
