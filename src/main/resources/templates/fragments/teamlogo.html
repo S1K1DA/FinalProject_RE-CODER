@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- SVG 코드 직접 삽입 -->
+<svg th:fragment="teamlogo" width="400" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+    <defs>
+        <!-- 네온사인 색상 그라디언트 -->
+        <linearGradient id="neonGlowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00aaff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0055ff;stop-opacity:1" />
+        </linearGradient>
+        <!-- 강렬한 네온사인 그림자 필터 -->
+        <filter id="neonShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="15" result="blur"/>
+            <feOffset in="blur" dx="0" dy="0" result="offsetBlur"/>
+            <feFlood flood-color="cyan" result="color"/>
+            <feComposite in2="offsetBlur" operator="in" result="colorBlur"/>
+            <feMerge>
+                <feMergeNode in="colorBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <!-- 각진 스타일의 폰트와 네온 효과 -->
+    <text x="50%" y="50%" font-family="'Chakra Petch', sans-serif" font-size="150" font-weight="600" fill="white" text-anchor="middle" alignment-baseline="middle" filter="url(#neonShadow)" letter-spacing="2">
+        RE:CODER
+    </text>
+</svg>
+</html>

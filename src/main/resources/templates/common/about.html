@@ -1,141 +1,132 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-<body>
-<header class="site-header d-flex flex-column justify-content-center align-items-center">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-12 text-center">
-                <h2 class="mb-0">About Pod</h2>
+<body class="about-body">
+<section class="about-section section-padding">
+    <div class="container about-container">
+        <div class="about-title-box">
+            <h4 class="about-title">Team Introduction</h4>
+        </div>
+        <div class="about-logo-box">
+            <div th:replace="fragments/teamlogo::teamlogo"></div>
+            <div><a th:href="@{/}" class="about-back-home">HEARTLINK</a></div>
+        </div>
+        <hr class="about-hr">
+        <div class="row about-member-box">
+            <!-- Team Member 1 -->
+            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                <div class="team-thumb bg-white shadow-lg">
+                    <img th:src="@{/image/team_member/team_member_jaein.jpg}" class="about-image img-fluid" alt="">
+                    <div class="team-info">
+                        <h4 class="mb-2">Jaein</h4>
+                        <div class="member-part">
+                            <span class="about-badge">ERD</span>
+                            <span class="about-badge">UI/UX</span>
+                            <span class="about-badge">Front</span>
+                            <span class="about-badge">Backend</span>
+                        </div>
+                    </div>
+                    <div class="social-share member-social-box">
+                        <ul class="social-icon member-social-icon">
+                            <li class="social-icon-item member-social-item">
+                                <a href="https://github.com/popya-02" class="social-icon-color social-icon-link bi-github"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="https://www.instagram.com/jaen_l22/" class="social-icon-color social-icon-link bi-instagram"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="https://velog.io/@cookie_01/posts" class="social-icon-color social-icon-link bi-chat-dots"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                <div class="team-thumb bg-white shadow-lg">
+                    <img th:src="@{/image/team_member/team_member_eunsik.jpg}" class="about-image img-fluid" alt="">
+                    <div class="team-info">
+                        <h4 class="mb-2">Eunsik</h4>
+                        <div class="member-part">
+                            <span class="about-badge">Reader</span>
+                            <span class="about-badge">UI/UX</span>
+                            <span class="about-badge">Front</span>
+                            <span class="about-badge">Backend</span>
+                        </div>
+                    </div>
+                    <div class="social-share member-social-box">
+                        <ul class="social-icon member-social-icon">
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-github"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-instagram"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-chat-dots"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                <div class="team-thumb bg-white shadow-lg">
+                    <img th:src="@{/image/team_member/team_member_ahtae.jpg}" class="about-image img-fluid" alt="">
+                    <div class="team-info">
+                        <h4 class="mb-2">Ahtae</h4>
+                        <div class="member-part">
+                            <span class="about-badge">UI/UX</span>
+                            <span class="about-badge">Front</span>
+                            <span class="about-badge">Backend</span>
+                        </div>
+                    </div>
+                    <div class="social-share member-social-box">
+                        <ul class="social-icon member-social-icon">
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-github"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-instagram"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-chat-dots"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="col-lg-3 col-md-6 col-12 mb-4">
+                <div class="team-thumb bg-white shadow-lg">
+                    <img th:src="@{/image/team_member/team_member_jongsun.jpg}" class="about-image img-fluid" alt="">
+                    <div class="team-info">
+                        <h4 class="mb-2"> Jongsun</h4>
+                        <div class="member-part">
+                            <span class="about-badge">Persona</span>
+                            <span class="about-badge">Planning</span>
+                        </div>
+                    </div>
+                    <div class="social-share member-social-box">
+                        <ul class="social-icon member-social-icon">
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-github"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-instagram"></a>
+                            </li>
+                            <li class="social-icon-item member-social-item">
+                                <a href="#" class="social-icon-color social-icon-link bi-chat-dots"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</header>
-    <section class="about-section section-padding" id="section_2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-12 mx-auto">
-                    <div class="pb-5 mb-5">
-                        <div class="section-title-wrap mb-4">
-                            <h4 class="section-title">RE:CODER</h4>
-                            <img th:src="@{/image/recoder_logo.png}" class="about-image mt-5 img-fluid" alt="">
-                    </div>
-                </div>
-
-                <div class="col-lg-12 col-12">
-                    <div class="section-title-wrap mb-5">
-                        <h4 class="section-title">Team Member</h4>
-                    </div>
-                </div>
-
-                <!-- Team Member 1 -->
-                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                    <div class="team-thumb bg-white shadow-lg">
-                        <img th:src="@{/image/team_member/team_member_jaein.jpg}" class="about-image img-fluid" alt="">
-                        <div class="team-info">
-                            <h4 class="mb-2">
-                                Jaein
-                                <img src="" class="verified-image img-fluid" alt="">
-                            </h4>
-                            <span class="badge">Modeling</span>
-                            <span class="badge">Fashion</span>
-                        </div>
-                        <div class="social-share">
-                            <ul class="social-icon">
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-twitter"></a>
-                                </li>
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-facebook"></a>
-                                </li>
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-pinterest"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 2 -->
-                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                    <div class="team-thumb bg-white shadow-lg">
-                        <img src="" class="about-image img-fluid" alt="">
-                        <div class="team-info">
-                            <h4 class="mb-2">
-                                William
-                                <img src="" class="verified-image img-fluid" alt="">
-                            </h4>
-                            <span class="badge">Creative</span>
-                            <span class="badge">Design</span>
-                        </div>
-                        <div class="social-share">
-                            <ul class="social-icon">
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-twitter"></a>
-                                </li>
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-facebook"></a>
-                                </li>
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-pinterest"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 3 -->
-                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mb-md-0">
-                    <div class="team-thumb bg-white shadow-lg">
-                        <img src="" class="about-image img-fluid" alt="">
-                        <div class="team-info">
-                            <h4 class="mb-2">
-                                Chan
-                                <img src="" class="verified-image img-fluid" alt="">
-                            </h4>
-                            <span class="badge">Education</span>
-                        </div>
-                        <div class="social-share">
-                            <ul class="social-icon">
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-linkedin"></a>
-                                </li>
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-whatsapp"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 4 -->
-                <div class="col-lg-3 col-md-6 col-12">
-                    <div class="team-thumb bg-white shadow-lg">
-                        <img src="" class="about-image img-fluid" alt="">
-                        <div class="team-info">
-                            <h4 class="mb-2">
-                                Candice
-                                <img src="" class="verified-image img-fluid" alt="">
-                            </h4>
-                            <span class="badge">Storytelling</span>
-                            <span class="badge">Business</span>
-                        </div>
-                        <div class="social-share">
-                            <ul class="social-icon">
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-twitter"></a>
-                                </li>
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-facebook"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
+</section>
 </body>
-<footer th:replace="fragments/footer :: footer"></footer>
 </html>

@@ -12,4 +12,9 @@ public class FeedController {
     public String feed() {
         return "/feed/feedmain";  // "index"는 src/main/resources/templates/index.html
     }
+
+    @GetMapping("/write")
+    public String newFeed(){
+        return "/feed/feedwrite";
+    }
 }

@@ -302,6 +302,107 @@ main {
     width: 100px;
 }
 
+.nav-my-btns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+
+/* dropdown bell */
+.bell-icon {
+    color : #fff;
+    padding: 8px;
+    font-size: 28px;
+}
+
+.bell-icon.active{
+    color: var(--custom-btn-bg-color);;
+}
+
+.dropdown-bell {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-bell-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* 아이콘 크기 조정 */
+    outline: none;
+    margin-right: 10px;
+}
+
+/* 드롭다운 콘텐츠 스타일 */
+.dropdown-content {
+    display: none; /* 초기 상태에서 숨김 */
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    right: 30%;
+    top: 120%
+}
+
+/* 드롭다운 메뉴 아이템 스타일 */
+.alarm-ele {
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #f1f1f1;
+    width: max-content;
+}
+
+.alarm-ele:last-child {
+    border-bottom: none; /* 마지막 아이템에는 밑줄 제거 */
+}
+
+.alarm-ele:hover {
+    background-color: #f1f1f1; /* 호버 시 배경색 변경 */
+}
+
+/* 드롭다운 애니메이션 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.dropdown-content.show {
+    display: block;
+    animation: slideDown 0.3s forwards;
+}
+
+.dropdown-content.hide {
+    display: block;
+    animation: slideUp 0.3s forwards;
+}
+
+/* dropdown bell */
+
+
 .logo-image {
     width: 60px !important;
     height: auto;
@@ -895,25 +996,184 @@ main {
 /*---------------------------------------
   ABOUT & TEAM SECTION
 -----------------------------------------*/
+
+.about-body {
+    background-image: linear-gradient(to bottom, #010b19, #20699e);
+    background-size: cover;
+    color: #fff;
+}
+
+.about-title-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.about-title {
+    color: #fff;
+    text-shadow: 0px 2px 20px #c2defff0;
+    font-size: 70px;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.about-container{
+    padding: 0 !important;
+}
+
+.about-hr{
+    margin: 20px 0 20px;
+}
+
+.about-member-box{
+    padding: 40px;
+    height: 503px;
+}
+
+
+.about-logo-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .about-image {
-    border-radius: var(--border-radius-medium);
+    border-radius: 10px;
     display: block;
+    max-width: 100%;
+    height: auto;
+    position: relative;
+    top: -5%;
+}
+
+.about-back-home{
+    color: #fff;
+    font-size: 34px;
+    font-weight: bold;
+    margin-right: 20px;
+    text-shadow: 4px 4px 5px #1b2333;
+}
+
+.about-back-home:hover{
+    color: #18478b;
+    text-shadow: 0px 0px 14px #fff;
+}
+
+.member-social-box{
+    height: 140px !important;
+    width: 70px !important;
+}
+
+.member-social-icon{
+    display: flex;
+    flex-direction: column !important;
+    padding-right: 5px !important;
+}
+
+.member-social-item{
+    margin-bottom: 2px !important;
+}
+
+.member-part{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 70%;
 }
 
 .team-thumb {
-    border-radius: var(--border-radius-medium);
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 20px;
+    height: 100%;
+}
+
+.team-thumb:hover {
+    transform: translateY(-10px);
 }
 
 .team-info {
-    background-color: var(--white-color);
+    background-color: rgba(255, 255, 255);
     position: absolute;
     bottom: 0;
     right: 0;
     left: 0;
-    padding: 30px;
+    padding: 15px;
+    text-align: center;
+    height: 135px;
 }
+
+.team-info h4 {
+    color: #333;
+    font-size: 24px;
+    margin: 0;
+}
+
+.about-badge {
+    display: inline-block;
+    background-color: #20699e;
+    color: #fff;
+    padding: 5px 10px;
+    margin-top: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.social-icon-color{
+    background-color: #20699e !important;
+}
+
+.social-icon-color:hover{
+    background-color: #759dba !important;
+}
+
+.social-share {
+    margin-top: 10px;
+}
+
+.social-icon {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.social-icon-item {
+    margin: 0 5px;
+}
+
+.social-icon-link {
+    color: #20699e;
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.social-icon-link:hover {
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-padding {
+    padding: 60px 0;
+}
+
 
 
 /*---------------------------------------
@@ -1327,27 +1587,28 @@ main {
     .logo-image{
         width: 70px !important;
     }
-}
 
-@media screen and (max-width: 540px) {
-    .hero-section {
-        background-size: 100% 65%;
-        /* T o o p l a t e . c o m   C u s t o m i z e d */
+
+    @media screen and (max-width: 540px) {
+        .hero-section {
+            background-size: 100% 65%;
+            /* T o o p l a t e . c o m   C u s t o m i z e d */
+        }
+
+        .custom-block .custom-block-top {
+            flex-direction: column;
+        }
+
+        .custom-block .custom-block-top small:last-child {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     }
 
-    .custom-block .custom-block-top {
-        flex-direction: column;
-    }
-
-    .custom-block .custom-block-top small:last-child {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    h1 {
-        font-size: 36px;
+    @media screen and (max-width: 480px) {
+        h1 {
+            f
+        }ont-size: 36px;
     }
 
     h2 {

@@ -23,12 +23,41 @@ label{
     font-size: 18px;
 }
 
+.feed-sec{
+    display: flex !important;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
 .feed-box{
     display: flex !important;
     justify-content: center;
     margin-top: 100px;
-    /*height: 1000px;*/
     margin-bottom: 100px;
+}
+
+.new-feed-box{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.new-feed-btn{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 9px;
+    font-size: 15px;
+    position: relative;
+    top: 25px;
+    color: #4e4f50;
+    background-color: #f2f2f2;
+}
+
+.new-feed-btn:hover{
+    color: #df728a;
+    background-color: #fcfcfc;
+    font-weight: bold;
 }
 
 .feed-main-box, .feed-side-bar{
@@ -231,6 +260,11 @@ label{
     font-size: 14px;
 }
 
+.reply-delete{
+    font-size: 24px;
+    font-weight: bold;
+}
+
 .reply-content{
     font-size: 14px !important;
 }
@@ -245,7 +279,7 @@ label{
     height: 80px;
 }
 
-.anwser-text-box{
+.answer-text-box{
     display: flex;
     height: 100%;
     align-items: center;
@@ -263,12 +297,12 @@ label{
 
 .answer-submit{
     position: absolute;
-    right: 5%;
-    padding: 5px 12px;
+    right: 4%;
+    padding: 5px 9px;
     border: none;
     border-radius: 8px;
-    background-color: #dadada;
-    font-size: 15px;
+    background-color: #e7e5e5;
+    font-size: 14px;
     height: 48%;
 }
 
@@ -293,14 +327,14 @@ textarea:focus {
     right: -10%;
 }
 
-.moer-icon-image{
+.more-icon-image{
     width: 28px;
     height: 28px;
     position: relative;
     right: -20%;
 }
 
-.moer-icon-image:hover{
+.more-icon-image:hover{
     opacity: 0.45;
 }
 
@@ -331,4 +365,79 @@ textarea:focus {
     .reply-indate{
         display: none;
     }
+}
+
+/* 드롭다운 컨테이너 */
+.dropdown-more {
+    position: relative;
+    display: inline-block;
+}
+
+/* 더보기 버튼 아이콘 */
+.more-icon {
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* 드롭다운 콘텐츠 */
+.more-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 8%);
+    z-index: 1;
+    border-radius: 5px;
+    right: 15%;
+}
+
+/* 드롭다운 항목 */
+.more-ele {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+}
+
+.more-ele:last-child {
+    border-bottom: none;
+}
+
+.more-ele:hover {
+    background-color: #f1f1f1;
+}
+
+/* 드롭다운 애니메이션 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.more-dropdown-content.show {
+    display: block;
+    animation: slideDown 0.3s forwards;
+}
+
+.more-dropdown-content.hide {
+    display: block;
+    animation: slideUp 0.3s forwards;
 }
