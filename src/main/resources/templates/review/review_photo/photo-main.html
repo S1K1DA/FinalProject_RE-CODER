@@ -16,11 +16,11 @@
                 </div>
 
                 <div class="w-100 d-flex justify-content-end mb-2">
-                    <button class="btn-action" onclick="location.href='/write-review'">글 쓰러가기</button>
+                    <button class="btn-action" th:onclick="'location.href=\'' + @{/review/photoenroll} + '\''">글 쓰러가기</button>
                 </div>
                 <ul class="ptlist">
                     <li>
-                        <a href="#">
+                        <a th:href="@{/review/photodetail}">
                             <p class="list_thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
                             <div>
                                 <p class="pt_title">결혼후기
