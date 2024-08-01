@@ -89,6 +89,8 @@
     color: var(--primary-color);
 }
 
+
+
 .form-actions {
     width: 100%;
     display: flex;
@@ -212,6 +214,16 @@
 /* 1. 메인 페이지 스타일 */
 .main-page .form-actions .btn-cancel {
     display: none;
+}
+/* 수정 페이지 박스 스타일 */
+.custom-block-edit {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    background-color: rgba(249, 249, 249, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* 2. 프로필 사진 스타일 */
