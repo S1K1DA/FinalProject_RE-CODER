@@ -9,7 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ReviewController {
 
     @GetMapping("/photomain")
-    public String feed() {
-        return "/review/photo-main";
-    }
+    public String photomain() { return "/review/photo-main"; }
+
+    @GetMapping("/photoenroll")
+    public String photoenroll(){ return "/review/photo-enroll"; }
+
+    @GetMapping("/photoedit")
+    public String photoedit(){ return "/review/photo-edit"; }
+
+    @GetMapping("/photodetail")
+    public String photodetail(){ return "/review/photo-detail"; }
 }
