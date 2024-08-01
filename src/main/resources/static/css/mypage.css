@@ -1,4 +1,4 @@
-/* 중앙 정렬 및 섹션 높이 설정 */
+/* base 설정 */
 .hero-section {
     min-height: 70vh;
     display: flex;
@@ -29,10 +29,6 @@
     padding-bottom: 20px;
 }
 
-.mypage-box-container .sidebar-menu .menu-list li a {
-    font-weight: normal;
-}
-
 @media screen and (max-width: 992px) {
     .sidebar-menu {
         display: none;
@@ -49,6 +45,112 @@
     }
 }
 
+/* 공통 스타일 */
+.custom-block {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    width: calc(100% - 340px);
+    min-height: 65vh;
+    background-color: rgba(249, 249, 249, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-block:hover {
+    background: var(--white-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(249, 249, 249, 0.3);
+    border-color: #ddd !important;
+    transform: none !important;
+}
+
+.custom-block h5 {
+    margin-bottom: 20px;
+}
+
+.custom-block-info {
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+.custom-block-info p {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.custom-block-info p .label {
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-action {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.btn-action:hover {
+    background-color: var(--primary-color);
+    border-color: #ccc;
+    color: var(--white-color);
+}
+
+.btn-submit, .btn-cancel {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.btn-submit {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-submit:hover {
+    background-color: var(--custom-btn-bg-hover-color);
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: #fff;
+}
+
+.btn-cancel:hover {
+    background-color: #999;
+}
+
+.text-primary-color{
+    color: var(--primary-color);
+}
+
+.mypage-line{
+    color : var(--custom-logo-pink);
+    border-top: 2px solid !important;
+    opacity: 0.15 !important;
+    margin-top: 2rem 0 !important;
+}
+
+/* 사이드바 메뉴 */
 .sidebar-menu {
     width: 150px;
     height: 100%;
@@ -104,118 +206,14 @@
     color: var(--secondary-color);
 }
 
-.custom-block {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    width: calc(100% - 340px);
-    min-height: 65vh;
-    background-color: rgba(249, 249, 249, 0.3);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.custom-block-edit {
-    position: relative;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    width: 100%;
-    background-color: rgba(249, 249, 249, 0.3);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.custom-block h5 {
-    margin-bottom: 20px;
-}
-
-.custom-block-info {
-    overflow: hidden;
-}
-
-.custom-block-info p {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
-    display: flex;
-    align-items: center;
-}
-
-.custom-block-info p .label {
-    display: inline-block;
-    width: 150px;
-    text-align: right;
-    margin-right: 10px;
-}
-
-.custom-block:hover {
-    background: var(--white-color);
-}
-
-.mypage-box-container .custom-block:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background-color: rgba(249, 249, 249, 0.3);
-    border-color: #ddd !important;
-    transform: none !important;
-}
-
-.form-actions {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.btn-action {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    color: #333;
-    cursor: pointer;
-}
-
-.btn-action:hover {
-    background-color: #e0e0e0;
-    border-color: #ccc;
-}
-
-.btn-submit, .btn-cancel {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 20px;
-}
-
-.btn-submit {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.btn-submit:hover {
-    background-color: var(--custom-btn-bg-hover-color);
-}
-
-.btn-cancel {
-    background-color: #ccc;
-    color: #fff;
-}
-
-.btn-cancel:hover {
-    background-color: #999;
-}
-
 /* 페이지별 스타일 */
-.edit-page .form-actions .btn-cancel {
-    display: inline-block;
-}
 
+/* 1. 메인 페이지 스타일 */
 .main-page .form-actions .btn-cancel {
     display: none;
 }
 
-/* 프로필 사진 스타일 */
+/* 2. 프로필 사진 스타일 */
 .profile-picture {
     position: absolute;
     top: 0;
@@ -261,7 +259,7 @@
     margin-right: 10px;
 }
 
-/* 취미 및 성향 박스 스타일 */
+/* 3. 취미 및 성향 박스 스타일 */
 .hobby-container {
     display: flex;
     width: 100%;
@@ -299,6 +297,7 @@
     justify-content: space-between;
 }
 
+/* 4. 좋아요 목록 스타일 */
 .like-dislike-container {
     display: flex;
     width: 100%;
@@ -310,11 +309,82 @@
     margin: 0;
 }
 
-.font-size-20 {
-    font-size: 20px;
+.liked-feed-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-/* 사진 후기 섹션 */
+.liked-feed-item {
+    position: relative;
+    background-color: rgba(249, 249, 249, 0.6);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    flex-basis: calc(25% - 20px);
+    text-align: center;
+    overflow: hidden;
+}
+
+.feed-heart {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 6px;
+    border: 1.5px solid var(--secondary-color);
+    background-color: #fff;
+    border-radius: 50%;
+    color: var(--primary-color);
+}
+
+.feed-heart.liked {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+.liked-feed-item:hover {
+    background-color: var(--primary-color);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.liked-feed-item:hover .feed-title {
+    color: var(--secondary-color) !important;
+}
+
+.liked-feed-item:hover .feed-author,
+.liked-feed-item:hover .feed-liked-time {
+    color: var(--white-color) !important;
+}
+
+.feed-author, .feed-title {
+    margin: 5px 0;
+    font-size: 14px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: normal;
+}
+
+.feed-title {
+    font-weight: bold;
+    color: var(--primary-color) !important;
+}
+
+.feed-author {
+    margin-bottom: 0px !important;
+}
+
+.feed-liked-time {
+    font-size: 12px !important;
+    color: #888;
+    margin-top: 5px;
+    margin-bottom: 0px !important;
+}
+
+/* 5. 사진 후기 섹션 스타일 */
 .review-section {
     margin-bottom: 40px;
 }
@@ -336,6 +406,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.photo-review-item p {
+    font-size : 1rem !important;
+}
+
 .photo-review-item img {
     width: 100%;
     height: 150px;
@@ -348,7 +422,7 @@
     margin-top: 10px;
 }
 
-/* 실시간 리뷰 섹션 */
+/* 6. 실시간 리뷰 섹션 스타일 */
 .live-review-box {
     display: flex;
     flex-direction: column;
@@ -368,12 +442,22 @@
     align-items: center;
 }
 
+.live-review-item h6 {
+    font-size: 1.4rem !important; /* 원하는 크기로 조절하세요 */
+}
+
+.live-review-item p{
+    font-size:1rem !important;
+    margin-bottom:0px;
+    font-weight:normal;
+}
+
 .review-rating {
     font-size: 1.2rem;
     color: gold;
 }
 
-/* 페이지네이션 */
+/* 7. 페이지네이션 스타일 */
 .custom-block-info .pagination {
     text-align: center;
     display: flex;
@@ -382,36 +466,33 @@
     border: none;
 }
 
-/* 공통 버튼 스타일 */
-.btn-action {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    color: #333;
-    cursor: pointer;
+/* 8. 결제 내역 스타일 */
+.transaction-section h5 {
+    color: var(--white-color);
+    margin-bottom: 15px;
 }
 
-.btn-action:hover {
-    background-color: #e0e0e0;
-    border-color: #ccc;
+.transaction-section .table {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary-color);
 }
 
-.checkbox-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+.transaction-section .table th,
+.transaction-section .table td {
+    color: var(--primary-color);
+    border-color: rgba(255, 255, 255, 0.2);
+    text-align: center;
 }
 
-.checkbox-list label {
-    color: black !important;
-    font-size: 16px;
-    color: #fff;
-    width: calc(25% - 10px); /* 네 개의 항목을 한 줄에 나열 */
-    margin-bottom: 10px;
+.balance-info h4 {
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
-.checkbox-list input[type="checkbox"] {
-    margin-right: 10px;
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
 }
