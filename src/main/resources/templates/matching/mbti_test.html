@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/matching/mbti_test.css}">
+<nav th:replace="fragments/navigation :: navigation"></nav>
+
+<main class="mbti-main">
+    <h1 class="mbti-title">MBTI 검사</h1>
+    <div id="question-container" class="mbti-container">
+        <!-- 질문 1 -->
+        <div class="question" id="question-1">
+            <div class="answer-num">질문 1</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 1)">주인공이 되고 싶어 한다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 1)">무대 뒤에 있는 것이 편하다</button>
+        </div>
+        <!-- 질문 2 -->
+        <div class="question" id="question-2" style="display:none;">
+            <div class="answer-num">질문 2</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 2)">처음 보는 친구들에게 내가 먼저 말을 건네는 편이다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 2)">친한 친구나 아는 사람들이 없는 곳에 가면 혼자 조용히 있는 편이다</button>
+        </div>
+        <!-- 질문 3 -->
+        <div class="question" id="question-3" style="display:none;">
+            <div class="answer-num">질문 3</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 3)">활발하고 적극적인 편이다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 3)">조용하고 침착한 편이다</button>
+        </div>
+        <!-- 질문 4 -->
+        <div class="question" id="question-4" style="display:none;">
+            <div class="answer-num">질문 4</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 4)">많은 친구들과 어울리는 것을 좋아한다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 4)">친한 친구 몇 명과 얘기하는 것을 좋아한다</button>
+        </div>
+        <!-- 질문 5 -->
+        <div class="question" id="question-5" style="display:none;">
+            <div class="answer-num">질문 5</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 5)">내가 보고 듣고 생각하는 것을 바로 표현하는 편이다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 5)">생각한 후에 말하거나 행동한다</button>
+        </div>
+        <!-- 질문 6 -->
+        <div class="question" id="question-6" style="display:none;">
+            <div class="answer-num">질문 6</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 6)">말보다 행동이 앞선다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 6)">혼자서 책을 보거나 컴퓨터 하는 것을 좋아한다</button>
+        </div>
+        <!-- 질문 7 -->
+        <div class="question" id="question-7" style="display:none;">
+            <div class="answer-num">질문 7</div>
+            <button class="btn-answer" onclick="selectAnswer('E', 7)">여럿이 함께 어울려 다니는 것을 좋아한다</button>
+            <button class="btn-answer" onclick="selectAnswer('I', 7)">다른 사람이 말을 걸기 전에 먼저 나서서 얘기하지 않는 편이다</button>
+        </div>
+        <!-- 질문 8 -->
+        <div class="question" id="question-8" style="display:none;">
+            <div class="answer-num">질문 8</div>
+            <button class="btn-answer" onclick="selectAnswer('S', 8)">분명하고 직설적으로 말하는 편이다</button>
+            <button class="btn-answer" onclick="selectAnswer('N', 8)">비유적으로 길게 말하는 편이다</button>
+        </div>
+        <!-- 질문 9 -->
+        <div class="question" id="question-9" style="display:none;">
+            <div class="answer-num">질문 9</div>
+            <button class="btn-answer" onclick="selectAnswer('S', 9)">시험 공부할 때 한 과목씩 또는 교과서 순서대로 차근차근 한다</button>
+            <button class="btn-answer" onclick="selectAnswer('N', 9)">시험 공부할 때 여러 과목을 번갈아 하는 것이 더 재미있다</button>
+        </div>
+        <!-- 질문 10 -->
+        <div class="question" id="question-10" style="display:none;">
+            <div class="answer-num">질문 10</div>
+            <button class="btn-answer" onclick="selectAnswer('S', 10)">역사 소설을 좋아한다</button>
+            <button class="btn-answer" onclick="selectAnswer('N', 10)">판타지 소설을 좋아한다</button>
+        </div>
+        <!-- 질문 11 -->
+        <div class="question" id="question-11" style="display:none;">
+            <div class="answer-num">질문 11</div>
+            <button class="btn-answer" onclick="selectAnswer('S', 11)">꼼꼼하다는 평을 듣는다</button>
+            <button class="btn-answer" onclick="selectAnswer('N', 11)">상상력이 풍부하다는 평을 듣는다</button>
+        </div>
+        <!-- 질문 12 -->
+        <div class="question" id="question-12" style="display:none;">
+            <div class="answer-num">질문 12</div>
+            <button class="btn-answer" onclick="selectAnswer('S', 12)">게임이나 놀이를 할 때 전에 했던 대로 하는 것이 편하다</button>
+            <button class="btn-answer" onclick="selectAnswer('N', 12)">게임이나 놀이를 할 때 새로운 방법을 생각해내서 하는 것이 더 재미있다</button>
+        </div>
+        <!-- 질문 13 -->
+        <div class="question" id="question-13" style="display:none;">
+            <div class="answer-num">질문 13</div>
+            <button class="btn-answer" onclick="selectAnswer('S', 13)">가족, 친구들의 생일을 잘 기억한다</button>
+            <button class="btn-answer" onclick="selectAnswer('N', 13)">가족, 친구들의 생일을 잘 기억하지 못한다</button>
+        </div>
+        <!-- 질문 14 -->
+        <div class="question" id="question-14" style="display:none;">
+            <div class="answer-num">질문 14</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 14)">야단을 맞아도 쉽게 울지 않는다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 14)">야단을 맞으면 쉽게 우는 편이다</button>
+        </div>
+        <!-- 질문 15 -->
+        <div class="question" id="question-15" style="display:none;">
+            <div class="answer-num">질문 15</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 15)">친한 친구들과 게임을 할 때도 이겨야 기분이 좋다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 15)">친한 친구들과 게임을 할 때 이기면 좀 미안하다</button>
+        </div>
+        <!-- 질문 16 -->
+        <div class="question" id="question-16" style="display:none;">
+            <div class="answer-num">질문 16</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 16)">갖고 싶은 걸 사달라고 할 때 그 물건이 왜 필요한지를 설명한다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 16)">갖고 싶은 걸 사달라고 할 때 애교를 부린다</button>
+        </div>
+        <!-- 질문 17 -->
+        <div class="question" id="question-17" style="display:none;">
+            <div class="answer-num">질문 17</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 17)">학교에서든 게임을 할 때든 규칙은 중요한 것이라고 생각한다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 17)">상황에 따라 규칙은 바뀔 수 있는 것이라고 생각한다</button>
+        </div>
+        <!-- 질문 18 -->
+        <div class="question" id="question-18" style="display:none;">
+            <div class="answer-num">질문 18</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 18)">차분하고 침착하며 논리적이다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 18)">인정 많고 상냥하며 기분파이다</button>
+        </div>
+
+        <div class="question" id="question-19" style="display:none;">
+            <div class="answer-num">질문 19</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 19)">내가 불공평하게 대우받는 것을 참기 힘들다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 19)">내가 다른 사람의 기분을 상하게 하면 마음이 불편하다</button>
+        </div>
+        <div class="question" id="question-20" style="display:none;">
+            <div class="answer-num">질문 20</div>
+            <button class="btn-answer" onclick="selectAnswer('T', 20)">좋은 참고서가 있으면 공부가 더 잘된다</button>
+            <button class="btn-answer" onclick="selectAnswer('F', 20)">누군가 칭찬을 해 주면 공부가 더 잘된다</button>
+        </div>
+        <div class="question" id="question-21" style="display:none;">
+            <div class="answer-num">질문 21</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 21)">해야 할 일을 끝내고 나서 논다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 21)">조금 놀고 나서 해도 괜찮다</button>
+        </div>
+        <div class="question" id="question-22" style="display:none;">
+            <div class="answer-num">질문 22</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 22)">내 방이나 책상을 깨끗하게 잘 정리하는 편이다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 22)">방이나 책상 정리는 정말 어렵다</button>
+        </div>
+        <div class="question" id="question-23" style="display:none;">
+            <div class="answer-num">질문 23</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 23)">책임감이 강하다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 23)">호기심이 많다</button>
+        </div>
+        <div class="question" id="question-24" style="display:none;">
+            <div class="answer-num">질문 24</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 24)">공부 계획을 짜 놓고 그 계획을 잘 지키는 편이다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 24)">공부 계획을 짜지 않거나 짜더라도 잘 지키지 않는 편이다</button>
+        </div>
+        <div class="question" id="question-25" style="display:none;">
+            <div class="answer-num">질문 25</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 25)">빨리 결정하고 준비하는 것이 편하다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 25)">한 가지로 결정하기가 힘들 때가 많다</button>
+        </div>
+        <div class="question" id="question-26" style="display:none;">
+            <div class="answer-num">질문 26</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 26)">숙제는 미리미리 한다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 26)">숙제는 미뤄뒀다가 한꺼번에 한다</button>
+        </div>
+        <div class="question" id="question-27" style="display:none;">
+            <div class="answer-num">질문 27</div>
+            <button class="btn-answer" onclick="selectAnswer('J', 27)">특별한 날에는 미리 계획을 세워서 논다</button>
+            <button class="btn-answer" onclick="selectAnswer('P', 27)">뭘 하든 그날 하루를 즐겁게 보내면 된다</button>
+        </div>
+    </div>
+    <div>
+    <button id="reset-button" class="mbti-button" onclick="resetQuestion()">다시 하기</button>
+    <button id="prev-button" class="mbti-button" onclick="prevQuestion()">이전으로</button>
+    </div>
+    <div id="result" class="mbti-result"></div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/matching/mbti_test.js}"></script>
+</body>
+</html>

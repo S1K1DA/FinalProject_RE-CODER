@@ -65,19 +65,19 @@
             <div class="overlay-left">
                 <img th:src="@{/image/heartLinkLogo.png}" class="logo-image img-fluid" alt="Site logo">
                 <h1>환영 합니다.</h1>
-                <p> 로그인을 진행하여 새로운 인연을  만들어가세요! </p>
+                <p class="p-text"> 로그인을 진행하여 새로운 인연을  만들어가세요! </p>
                 <button id="signIn" class="overlay-btn">로그인</button>
             </div>
             <div class="overlay-right">
                 <img th:src="@{/image/heartLinkLogo.png}" class="logo-image img-fluid" alt="Site logo">
                 <h1>어서오세요</h1>
-                <p>계정이 없다면, 계정을 생성해주세요.</p>
+                <p class="p-text">계정이 없다면, 계정을 생성해주세요.</p>
                 <button id="signUp" class="overlay-btn">가입</button>
             </div>
         </div>
     </div>
 </div>
-    <footer th:replace="fragments/footer :: footer"></footer>
     <script th:src="@{/js/member/sign_in_up.js}"></script>
+    <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
