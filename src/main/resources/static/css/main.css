@@ -508,7 +508,7 @@ main {
 
 .navbar .dropdown-item {
     display: inline-block;
-    color: var(--p-bg-color);
+    /*color: var(--p-bg-color);*/
     font-family: var(--title-font-family);
     font-size: var(--menu-font-size);
     font-weight: var(--font-weight-medium);
