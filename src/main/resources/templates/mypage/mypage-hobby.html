@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="fragments/head :: head"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
@@ -16,7 +15,7 @@
                     <div class="sidebar-menu">
                         <ul class="menu-list">
                             <li><a th:href="@{/mypage/main}">내 정보</a></li>
-                            <li class="active"><a th:href="@{#}">성향/취미</a></li>
+                            <li class="active"><a th:href="@{/mypage/hobby}">성향/취미</a></li>
                             <li><a th:href="@{/mypage/review}">내 후기</a></li>
                             <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>
                             <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>
@@ -28,26 +27,51 @@
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
 
                         <div class="text-center mb-5 pb-2 w-100">
-                            <h3 class="text-white">마이페이지</h3>
+                            <h3 class="text-white">취미 수정</h3>
                         </div>
-
-                        <div class="custom-block-info w-100 position-relative">
-                            <div class="profile-picture">
-<!--                                추후 해당 회원 프로필 사진 표시 위치-->
-                                <img th:src="@{/image/review/weding-review2.jpg}" alt="프로필 사진">
+                        <p class="mb-4 fw-normal">
+                            최대 5개씩 선택이 가능합니다.
+                        </p>
+                        <form method="post" action="/mypage/hobbyedit/submit">
+                            <div class="checkbox-list">
+                                <label><input type="checkbox" name="hobbies" value="여행"> 여행</label>
+                                <label><input type="checkbox" name="hobbies" value="영화 감상"> 영화 감상</label>
+                                <label><input type="checkbox" name="hobbies" value="음악 감상"> 음악 감상</label>
+                                <label><input type="checkbox" name="hobbies" value="독서"> 독서</label>
+                                <label><input type="checkbox" name="hobbies" value="요리"> 요리</label>
+                                <label><input type="checkbox" name="hobbies" value="사진 찍기"> 사진 찍기</label>
+                                <label><input type="checkbox" name="hobbies" value="운동"> 운동</label>
+                                <label><input type="checkbox" name="hobbies" value="게임"> 게임</label>
+                                <label><input type="checkbox" name="hobbies" value="드라이브"> 드라이브</label>
+                                <label><input type="checkbox" name="hobbies" value="캠핑"> 캠핑</label>
+                                <label><input type="checkbox" name="hobbies" value="등산"> 등산</label>
+                                <label><input type="checkbox" name="hobbies" value="수영"> 수영</label>
+                                <label><input type="checkbox" name="hobbies" value="요가"> 요가</label>
+                                <label><input type="checkbox" name="hobbies" value="댄스"> 댄스</label>
+                                <label><input type="checkbox" name="hobbies" value="미술"> 미술</label>
+                                <label><input type="checkbox" name="hobbies" value="뒹굴거리기"> 뒹굴거리기</label>
+                                <label><input type="checkbox" name="hobbies" value="음식 탐방"> 음식 탐방</label>
+                                <label><input type="checkbox" name="hobbies" value="스포츠 관람"> 스포츠 관람</label>
+                                <label><input type="checkbox" name="hobbies" value="악기 연주"> 악기 연주</label>
+                                <label><input type="checkbox" name="hobbies" value="패션 스타일링"> 패션 스타일링</label>
+                                <label><input type="checkbox" name="hobbies" value="디지털 아트"> 디지털 아트</label>
+                                <label><input type="checkbox" name="hobbies" value="요트"> 요트</label>
+                                <label><input type="checkbox" name="hobbies" value="서핑"> 서핑</label>
+                                <label><input type="checkbox" name="hobbies" value="보드 게임"> 보드 게임</label>
+                                <label><input type="checkbox" name="hobbies" value="자전거 타기"> 자전거 타기</label>
+                                <label><input type="checkbox" name="hobbies" value="마라톤"> 마라톤</label>
+                                <label><input type="checkbox" name="hobbies" value="여행 기획"> 여행 기획</label>
+                                <label><input type="checkbox" name="hobbies" value="DIY 공예"> DIY 공예</label>
+                                <label><input type="checkbox" name="hobbies" value="천체 관측"> 천체 관측</label>
+                                <label><input type="checkbox" name="hobbies" value="정원 가꾸기"> 정원 가꾸기</label>
+                                <label><input type="checkbox" name="hobbies" value="악기 연주"> 악기 연주</label>
+                                <label><input type="checkbox" name="hobbies" value="인테리어 디자인"> 인테리어 디자인</label>
                             </div>
-                            <p class="mb-2"><span class="label">회원 id :</span> <span id="user-id">id</span></p>
-                            <p class="mb-2"><span class="label">회원 pwd :</span> <span id="user-pwd">pwd</span></p>
-                            <p class="mb-2"><span class="label">회원 닉네임 :</span> <span id="user-nickname">닉네임</span></p>
-                            <p class="mb-2"><span class="label">회원 이름 :</span> <span id="user-name">이름</span></p>
-                            <p class="mb-2"><span class="label">회원 전화번호 :</span> <span id="user-phone">전화번호</span></p>
-                            <p class="mb-2"><span class="label">회원 주소 :</span> <span id="user-address">주소</span></p>
-                            <p class="mb-2"><span class="label">회원 이메일 :</span> <span id="user-email">이메일</span></p>
-                            <p class="mb-2"><span class="label">회원 MBTI :</span> <span id="user-mbti">MBTI</span></p>
-                        </div>
-                        <div class="form-actions d-flex justify-content-center mt-4 w-100">
-                            <button type="button" class="btn-submit" onclick="location.href='/mypage/edit'">수정하기</button>
-                        </div>
+                            <div class="form-actions d-flex justify-content-center mt-4">
+                                <button type="submit" class="btn-submit">수정</button>
+                                <button type="button" class="btn-cancel" th:onclick="'location.href=\'' + @{/mypage/hobby} + '\''">취소</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -63,9 +87,7 @@
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
-<script th:src="@{/js/reference_js/custom.js}"></script>
-
-
+<script th:src="@{/js/mypage/mypage.js}"></script>
 
 </body>
 </html>
