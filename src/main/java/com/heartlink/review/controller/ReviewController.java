@@ -19,4 +19,7 @@ public class ReviewController {
 
     @GetMapping("/photodetail")
     public String photodetail(){ return "/review/review_photo/photo-detail"; }
+
+    @GetMapping("/livemain")
+    public String livemain(){ return "/review/live-main"; }
 }
