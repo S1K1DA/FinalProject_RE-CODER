@@ -35,4 +35,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // 좋아요 하트 아이콘 클릭 처리
+    const heartIcons = document.querySelectorAll('.feed-heart');
+
+    heartIcons.forEach(heart => {
+        heart.addEventListener('click', function(event) {
+            event.stopPropagation();  // 부모 요소의 클릭 이벤트 전파를 막음
+            this.classList.toggle('liked');
+        });
+    });
 });
