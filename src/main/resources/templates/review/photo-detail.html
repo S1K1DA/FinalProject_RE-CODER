@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/review/review.css}">
+
+<main>
+    <nav th:replace="fragments/navigation :: navigation"></nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container d-flex justify-content-center">
+            <div class="row d-flex justify-content-center align-items-start ">
+                <div class="ptreview-detailbox">
+                    <h3 class="text-primary-color">커플후기</h3>
+                    <div class="button-container">
+                        <button class="btn-action color-sec" th:onclick="'location.href=\'' + @{#} + '\''">삭제하기</button>
+                        <button class="btn-action color-pri" th:onclick="'location.href=\'' + @{/review/photoedit} + '\''">수정하기</button>
+                        <button class="btn-action" th:onclick="'location.href=\'' + @{/review/photomain} + '\''">목록으로</button>
+                    </div>
+
+                    <section class="ptreview-info">
+                        <div>
+                            <div class="profile_info_ct">
+                                <span class="sound_only">작성자</span> <strong>
+                                AhtaeKim
+                            </strong>
+                                <span class="sound_only">조회</span><strong><i class="icon_users"></i>672명 읽음</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div id="ptreview-img">
+                            <a class="view_image"
+                               href="#"
+                               th:onclick="'window.open(' + '\'' + @{/image/review/weding-review2.jpg} + '\', \'newwindow\', \'width=800,height=600\'); return false;'">
+                                <img alt="사진" th:src="@{/image/review/weding-review2.jpg}" width="600">
+                            </a>
+
+                        </div>
+
+                        <div class="ptreview_con">커플후기 올립니다!!ㅎㅎ<br><br>
+                            소개팅에서 좋은사람을 만나 행복한 연애 중입니다~ 벌써 만난지 1년이 넘었네요!<br><br>
+                            처음엔 정말 반신반의했는데 괜히 걱정했던 것 같아요!ㅎㅎ<br><br>
+                            좋은사람 만나게 해주셔서 너무 감사드리고, 다른 분들도 꼭 이곳에서 좋은 인연 만나셔서 행복한 연애하시길 바라겠습니다:)<br><br>
+                            다음번에는 결혼식 후기로 돌아올게요!!!
+                        </div>
+                    </section>
+
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<!-- JAVASCRIPT FILES -->
+<script th:src="@{/js/reference_js/jquery.js}"></script>
+<script th:src="@{/js/reference_js/jquery.min.js}"></script>
+<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/reference_js/custom.js}"></script>
+
+</body>
+</html>
