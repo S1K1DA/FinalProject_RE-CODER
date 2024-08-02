@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<link rel="stylesheet" th:href="@{/css/board/notice/notice-write.css}">
+<nav th:replace="fragments/navigation :: navigation"></nav>
+
+<main class="editor-main">
+    <div class="editor-container">
+        <h2>공지사항 글쓰기</h2>
+        <div class="editor-toolbar">
+            <button type="button" class="toolbar-btn" data-command="bold"><i class="fa fa-bold"></i></button>
+            <button type="button" class="toolbar-btn" data-command="italic"><i class="fa fa-italic"></i></button>
+            <button type="button" class="toolbar-btn" data-command="underline"><i class="fa fa-underline"></i></button>
+            <button type="button" class="toolbar-btn" data-command="strikeThrough"><i class="fa fa-strikethrough"></i></button>
+            <button type="button" class="toolbar-btn" data-command="justifyLeft"><i class="fa fa-align-left"></i></button>
+            <button type="button" class="toolbar-btn" data-command="justifyCenter"><i class="fa fa-align-center"></i></button>
+            <button type="button" class="toolbar-btn" data-command="justifyRight"><i class="fa fa-align-right"></i></button>
+            <button type="button" class="toolbar-btn" data-command="justifyFull"><i class="fa fa-align-justify"></i></button>
+            <button type="button" class="toolbar-btn" data-command="insertUnorderedList"><i class="fa fa-list-ul"></i></button>
+            <button type="button" class="toolbar-btn" data-command="insertOrderedList"><i class="fa fa-list-ol"></i></button>
+            <select id="fontSize" class="toolbar-select">
+                <option value="3">10px</option>
+                <option value="4">12px</option>
+                <option value="5">16px</option>
+                <option value="6">20px</option>
+                <option value="7">30px</option>
+            </select>
+        </div>
+        <div id="editor" contenteditable="true" class="editor-content"></div>
+        <button type="button" class="submit-btn">등록</button>
+    </div>
+</main>
+
+<script th:src="@{/js/board/notice/notice-write.js}"></script>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

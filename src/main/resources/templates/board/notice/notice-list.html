@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Sign In / Sign Up</title>-->
+<!--</head>-->
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<link rel="stylesheet" th:href="@{/css/board/notice/notice-list.css}">
+<nav th:replace="fragments/navigation :: navigation"></nav>
+
+<!-- 공지사항 리스트 시작 -->
+<main class="list-main">
+<div class="notice-container">
+    <h2>공지사항</h2>
+    <ul class="notice-list">
+        <li class="notice-item">
+            <a th:href="@{/notices/detail}" class="notice-link">공지사항 제목 1</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-08-01</span>
+        </li>
+        <li class="notice-item">
+            <a th:href="@{/notices/detail}" class="notice-link">공지사항 제목 2</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-25</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 3</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-18</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 4</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-18</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 5</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-18</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 6</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-20</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 7</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-22</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 8</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-22</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 9</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-22</span>
+        </li>
+        <li class="notice-item">
+            <a href="#" class="notice-link">공지사항 제목 10</a>
+            <div>
+                <span class="notice-author">작성자 3</span>
+                <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
+            </div>
+            <span class="notice-date">2024-07-22</span>
+        </li>
+    </ul>
+    <!-- 글쓰기 버튼 추가 -->
+    <div class="write-button-container">
+        <a th:href="@{/notices/new}" class="write-button">글쓰기</a>
+    </div>
+    <!-- 페이지 네비게이션 추가 -->
+    <div class="pagination">
+        <a href="#" class="page-link">&laquo;</a>
+        <a href="#" class="page-link">1</a>
+        <a href="#" class="page-link">2</a>
+        <a href="#" class="page-link">3</a>
+        <a href="#" class="page-link">&raquo;</a>
+    </div>
+</div>
+</main>
+<!-- 공지사항 리스트 끝 -->
+
+<!--<script th:src="@{/js/member/sign_in_up.js}"></script>-->
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

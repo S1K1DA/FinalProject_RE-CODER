@@ -10,6 +10,6 @@ public class MbtiTestController {
 
     @GetMapping("/mbti")
     public String mbtiTest() {
-        return "matching/mbti_test";
+        return "matching/mbti-test";
     }
 }

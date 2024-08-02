@@ -10,6 +10,6 @@ public class MemberController {
 
     @GetMapping("/sign")
     public String signInUp() {
-        return "member/sign_in_up"; // templates/member/sign_in_up.html을 렌더링
+        return "member/sign-in-up"; // templates/member/sign_in_up.html을 렌더링
     }
 }

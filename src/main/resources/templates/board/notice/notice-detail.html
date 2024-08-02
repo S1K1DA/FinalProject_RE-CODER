@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<link rel="stylesheet" th:href="@{/css/board/notice/notice-detail.css}">
+<nav th:replace="fragments/navigation :: navigation"></nav>
+
+<main class="notice-detail-main">
+    <div class="notice-detail-container">
+        <h1>운영정책</h1>
+        <div class="notice-info">
+            <span>작성자 : 은식이</span>
+            <span>2024-08-01</span>
+        </div>
+        <div class="notice-content">
+            공지사항 내용이 여기에 표시됩니다.
+        </div>
+        <div class="notice-actions">
+            <button type="button" class="edit-btn">수정</button>
+            <button type="button" class="delete-btn">삭제</button>
+            <button type="button" class="back-btn" onclick="history.back();">목록으로</button>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/board/notice/notice-detail.js}"></script>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
