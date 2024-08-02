@@ -10,8 +10,8 @@
     <div th:replace="mypage/mypage_nav :: mypagenav"></div>
         <div class="charge-shop-box">
             <div class="charge-my-tabs">
-                <a class="charge-tab-ico">충전 내역</a>
-                <a class="charge-tab-ico">코인 충전</a>
+                <a class="charge-tab-ico" th:href="@{/charge/shop}"> 코인 충전</a>
+                <a class="charge-tab-ico not-choice" th:href="@{/charge/history}">충전 내역</a>
             </div>
             <div class="coin-shop-area">
                 <div class="coin-shop-info">

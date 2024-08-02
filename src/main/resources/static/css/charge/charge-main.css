@@ -174,3 +174,59 @@ ul, li{
     background-color: #bed1e7;
     color: #fff
 }
+
+.not-choice{
+    background-color: #e9b5c1;
+    color: #8b8b8b;
+}
+
+.not-choice:hover{
+    background-color: #e7708c;
+    color: #fff;
+}
+
+.payment-history-area{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 600px;
+    border-radius: 0 5px 5px 5px;
+    background-color: #fff;
+    padding: 30px;
+    justify-content: flex-start;
+}
+
+.payment-history-table{
+    width: 100%;
+    padding: 10px;
+    background-color: #e9b5c1;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.payment-history-thead{
+    border-bottom: 1px solid #3c3c3c;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.payment-history-tbody{
+    font-size: 15px;
+}
+
+.payment-history-tbody tr{
+    border-bottom: 1px solid #3c3c3c36;
+}
+
+.payment-history-tbody tr:last-child{
+    border-bottom: none !important;
+}
+
+.payment-history-table th{
+    padding: 16px 0;
+}
+
+.payment-history-table td{
+    padding: 34px 0;
+}
