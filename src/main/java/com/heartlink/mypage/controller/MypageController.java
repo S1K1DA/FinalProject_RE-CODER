@@ -33,11 +33,6 @@ public class MypageController {
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
-    @GetMapping("/cash")
-    public String cashpage() {
-        return "mypage/mypage_cash/mypage-cash";
-    }
-
     @GetMapping("/match")
     public String matchpage() {
         return "mypage/mypage_match/mypage-match";

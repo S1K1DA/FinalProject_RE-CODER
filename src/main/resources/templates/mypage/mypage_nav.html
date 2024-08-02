@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="mypagenav"  class="sidebar-menu">
+        <ul class="menu-list">
+            <li class="active"><a th:href="@{#}">내 정보</a></li>
+            <li><a th:href="@{/mypage/hobby}">성향/취미</a></li>
+            <li><a th:href="@{/mypage/review}">내 후기</a></li>
+            <li><a th:href="@{/charge/shop}">코인 충전</a></li>
+            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>
+            <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>
+            <li><a th:href="@{/mypage/match}">매칭 내역</a></li>
+            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>
+        </ul>
+    </div>
+</body>
+</html>

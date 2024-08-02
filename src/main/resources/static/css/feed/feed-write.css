@@ -22,17 +22,17 @@ body{
 
 .write-main-box{
     border-radius: 20px;
-    height: 770px;
+    height: 700px;
     background-color: #ffffff9c;
     flex-direction: column;
     padding: 30px;
-    width: 100%;
+    width: 90%;
     box-shadow: 3px 4px 17px 1px #5c59592b;
 }
 
 .toolbar{
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .toolbar > a{
@@ -74,7 +74,7 @@ body{
 
 .editor{
     font-size: 18px;
-    height: 79.5%;
+    height: 77.5%;
     width: 100%;
     background-color: #fff;
     border: 1.5px solid #0000002e;

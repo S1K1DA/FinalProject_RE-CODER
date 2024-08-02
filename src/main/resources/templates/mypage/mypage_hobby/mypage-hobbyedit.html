@@ -1,9 +1,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="fragments/head :: head"></head>
 <body>
-<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
 
 <main>
     <nav th:replace="fragments/navigation :: navigation"></nav>
@@ -17,37 +16,22 @@
 <!--                    <div class="sidebar-menu">-->
 <!--                        <ul class="menu-list">-->
 <!--                            <li><a th:href="@{/mypage/main}">내 정보</a></li>-->
-<!--                            <li><a th:href="@{/mypage/hobby}">성향/취미</a></li>-->
+<!--                            <li class="active"><a th:href="@{#}">성향/취미</a></li>-->
 <!--                            <li><a th:href="@{/mypage/review}">내 후기</a></li>-->
 <!--                            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>-->
 <!--                            <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>-->
 <!--                            <li><a th:href="@{/mypage/cash}">결제 내역</a></li>-->
 <!--                            <li><a th:href="@{/mypage/match}">매칭 내역</a></li>-->
-<!--                            <li class="active"><a th:href="@{#}">회원 탈퇴</a></li>-->
+<!--                            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>-->
 <!--                        </ul>-->
 <!--                    </div>-->
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
 
                         <div class="text-center mb-5 pb-2 w-100">
-                            <h3 class="text-white">회원 탈퇴</h3>
+                            <h3 class="text-white">취미 수정</h3>
                         </div>
 
-                        <div class="custom-block-info w-100">
-                            <p class="mb-4 text-center">
-                                정말로 회원 탈퇴를 원하십니까?
-                            </p>
-                            <p class="mb-4 text-center">
-                                탈퇴를 하시면 모든 정보가 삭제되며 복구할 수 없습니다.
-                            </p>
-                            <form method="post" action="/mypage/delete" class="text-left">
-                                <p class="mb-2"><span class="label">비밀번호 :</span> <input type="password" class="input-short" id="password" name="password" required></p>
-                                <p class="mb-2"><span class="label">비밀번호 확인 :</span> <input type="password" class="input-short" id="password-confirm" name="password-confirm" required></p>
-                                <div class="form-actions d-flex justify-content-center mt-4">
-                                    <button type="submit" class="btn-submit">탈퇴</button>
-                                    <button type="button" class="btn-cancel" th:onclick="'location.href=\'' + @{/mypage/main} + '\''">취소</button>
-                                </div>
-                            </form>
-                        </div>
+
 
                     </div>
                 </div>

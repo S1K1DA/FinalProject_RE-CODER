@@ -1,4 +1,4 @@
-package com.heartlink.feed.cotroller;
+package com.heartlink.feed.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FeedController {
 
     @GetMapping("")
-    public String feed() {
-        return "/feed/feedmain";  // "index"는 src/main/resources/templates/index.html
+    public String moveMain() {
+        return "/feed/feed-main";  // "index"는 src/main/resources/templates/index.html
     }
 
     @GetMapping("/write")
-    public String newFeed(){
-        return "/feed/feedwrite";
+    public String moveNewFeed(){
+        return "/feed/feed-write";
     }
 }

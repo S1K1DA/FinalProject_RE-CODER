@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AboutController {
 
     @GetMapping("")
-    public String about(){
+    public String moveAbout(){
         return "/common/about";
     }
 
