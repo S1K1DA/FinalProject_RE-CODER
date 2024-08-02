@@ -45,4 +45,13 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.toggle('liked');
         });
     });
+
+    const heartIcons2 = document.querySelectorAll('.prof-heart');
+
+        heartIcons2.forEach(heart => {
+            heart.addEventListener('click', function(event) {
+                event.stopPropagation();  // 부모 요소의 클릭 이벤트 전파를 막음
+                this.classList.toggle('liked');
+            });
+        });
 });
