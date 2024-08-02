@@ -10,7 +10,141 @@
     <section class="hero-section d-flex align-items-center">
         <div class="container d-flex justify-content-center">
             <div class="row d-flex justify-content-center align-items-start ">
+                <div class="text-center mb-5 pb-2 w-100">
+                    <h2 class="text-white">실시간 리뷰</h2>
+                    <hr class="review-line">
+                </div>
+                <div class="review-info">
+                    <p>모든 실시간 리뷰는 익명으로 작성됩니다. </p>
+                </div>
+                <form action="#" method="POST">
+                    <div class="review-input-row">
+                        <label for="review-content">리뷰 입력:</label>
+                        <div class="right-side-elements">
+                            <select name="rating">
+                                <option value="1">★☆☆☆☆</option>
+                                <option value="2">★★☆☆☆</option>
+                                <option value="3">★★★☆☆</option>
+                                <option value="4">★★★★☆</option>
+                                <option value="5" selected>★★★★★</option>
+                            </select>
+                            <button type="submit" class="review-button">리뷰 작성</button>
+                        </div>
+                    </div>
+                    <div class="review-textarea">
+                        <textarea id="review-content" name="review_content" rows="3" cols="40"></textarea>
+                    </div>
+                </form>
 
+                <hr class="review-divider">
+
+                <div class="review-section">
+                    <div class="live-review-box">
+                        <div class="live-review-item">
+                            <div class="review-header">
+                                <div class="review-rating">
+                                    ★★★★☆
+                                </div>
+                                <div class="feed-icons">
+                                    <div class="dropdown-more">
+                                        <a class="more-drop-btn more-icon">
+                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
+                                        </a>
+                                        <div class="more-dropdown-content">
+                                            <div class="more-ele">신고하기</div>
+                                            <div class="more-ele">삭제</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>대화가 잘 통하고, 이성에 대한 호감 및 비호감 관련한 성향도 잘 맞는 것 같아서 시간이 금방 지나갔습니다. 얘기도 잘 들어주시고 많이 배려해주시는 모습이, 동갑이지만 오빠같이 느껴지고 편안하고 즐거운 시간이었습니다.</p>
+                        </div>
+                        <div class="live-review-item">
+                            <div class="review-header">
+                                <div class="review-rating">
+                                    ★★★★★
+                                </div>
+                                <div class="feed-icons">
+                                    <div class="dropdown-more">
+                                        <a class="more-drop-btn more-icon">
+                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
+                                        </a>
+                                        <div class="more-dropdown-content">
+                                            <div class="more-ele">신고하기</div>
+                                            <div class="more-ele">삭제</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>잘 웃고 편안하게 즐거운 시간이었어요~</p>
+                        </div>
+                        <div class="live-review-item">
+                            <div class="review-header">
+                                <div class="review-rating">
+                                    ★★★☆☆
+                                </div>
+                                <div class="feed-icons">
+                                    <div class="dropdown-more">
+                                        <a class="more-drop-btn more-icon">
+                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
+                                        </a>
+                                        <div class="more-dropdown-content">
+                                            <div class="more-ele">신고하기</div>
+                                            <div class="more-ele">삭제</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>매너도 좋으시고 상대방에 대해 예의도 지켜주셨습니다</p>
+                        </div>
+                        <div class="live-review-item">
+                            <div class="review-header">
+                                <div class="review-rating">
+                                    ★★★★☆
+                                </div>
+                                <div class="feed-icons">
+                                    <div class="dropdown-more">
+                                        <a class="more-drop-btn more-icon">
+                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
+                                        </a>
+                                        <div class="more-dropdown-content">
+                                            <div class="more-ele">신고하기</div>
+                                            <div class="more-ele">삭제</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>리뷰 내용 요약 4@@@@@@@@@@@@@@@@@@@@@@@@@</p>
+                        </div>
+                        <div class="live-review-item">
+                            <div class="review-header">
+                                <div class="review-rating">
+                                    ★★☆☆☆
+                                </div>
+                                <div class="feed-icons">
+                                    <div class="dropdown-more">
+                                        <a class="more-drop-btn more-icon">
+                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
+                                        </a>
+                                        <div class="more-dropdown-content">
+                                            <div class="more-ele">신고하기</div>
+                                            <div class="more-ele">삭제</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>리뷰 내용 요약 5...@@@@@@@@@@@@@@@@@@@@@@@@@@@</p>
+                        </div>
+                        <!-- 추가 실시간 리뷰를 여기에 추가하세요 -->
+                    </div>
+                    <!-- 페이지네이션 버튼 예시 -->
+                    <div class="pagination">
+                        <button class="btn-action">이전</button>
+                        <button class="btn-action">1</button>
+                        <button class="btn-action">2</button>
+                        <button class="btn-action">다음</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -22,7 +156,7 @@
 <script th:src="@{/js/reference_js/jquery.js}"></script>
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
+<!--<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>-->
 <script th:src="@{/js/reference_js/custom.js}"></script>
 
 </body>
