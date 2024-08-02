@@ -530,10 +530,10 @@ margin-bottom : 3rem;
     color: var(--primary-color);
 }
 
+/* success = 성공(초록색) / danger = 실패(빨간색) */
 .text-success {
     color: #28a745 !important;
 }
-
 .text-danger {
     color: #dc3545 !important;
 }
@@ -614,4 +614,11 @@ margin-bottom : 3rem;
     color: #888;
     margin-top: 0px;
     margin-bottom: 0px !important;
+}
+
+
+
+/* 10. 매칭 내역 페이지 */
+.matching-anounce{
+
 }
