@@ -17,7 +17,10 @@
             공지사항 내용이 여기에 표시됩니다.
         </div>
         <div class="notice-actions">
-            <button type="button" class="edit-btn">수정</button>
+<!--
+    window.location.href='/notices/edit'
+-->
+            <button type="button" class="edit-btn" th:onclick="'window.location.href=\'' + @{/notices/edit} + '\''">수정</button>
             <button type="button" class="delete-btn">삭제</button>
             <button type="button" class="back-btn" onclick="history.back();">목록으로</button>
         </div>

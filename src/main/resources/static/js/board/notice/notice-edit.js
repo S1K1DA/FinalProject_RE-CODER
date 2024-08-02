@@ -13,10 +13,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     document.querySelector('.submit-btn').addEventListener('click', () => {
-        const title = document.getElementById('title').value;
-        const content = document.getElementById('editor').innerHTML;
-        // 등록할 내용을 서버로 전송하는 로직을 여기에 작성합니다.
-        console.log('Title:', title);
-        console.log('Content:', content);
+        const editorContent = document.getElementById('editor').innerHTML;
+        // 수정된 내용을 서버로 전송하는 로직을 여기에 작성합니다.
+        console.log(editorContent);
     });
 });
