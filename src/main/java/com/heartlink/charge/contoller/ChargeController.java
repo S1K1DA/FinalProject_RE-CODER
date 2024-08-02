@@ -10,11 +10,11 @@ public class ChargeController {
 
     @GetMapping("/shop")
     public String moveMain(){
-        return "mypage/mypage_coin_charge/charge_main";
+        return "coin_charge/charge-main";
     }
 
     @GetMapping("/history")
     public String cashpage() {
-        return "mypage/mypage_coin_charge/charge_history";
+        return "coin_charge/charge-history";
     }
 }
