@@ -484,7 +484,7 @@ margin-bottom : 3rem;
 }
 
 .live-review-item h6 {
-    font-size: 1.4rem !important; /* 원하는 크기로 조절하세요 */
+    font-size: 1.4rem !important;
 }
 
 .live-review-item p{
@@ -536,4 +536,82 @@ margin-bottom : 3rem;
 
 .text-danger {
     color: #dc3545 !important;
+}
+
+
+/* 9. 프로필 좋아요 스타일 */
+
+
+
+.liked-prof-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.liked-prof-item {
+    position: relative;
+    background-color: rgba(249, 249, 249, 0.6);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 7px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    flex-basis: calc(25% - 10px);
+    text-align: center;
+    overflow: hidden;
+}
+
+.prof-heart {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 6px;
+    border: 1.5px solid var(--secondary-color);
+    background-color: #fff;
+    border-radius: 50%;
+    color: var(--primary-color);
+}
+
+.prof-heart.liked {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+.liked-prof-item:hover {
+    background-color: var(--primary-color);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.liked-prof-item:hover .prof-author,
+.liked-prof-item:hover .prof-liked-time {
+    color: var(--white-color) !important;
+}
+
+.prof-author, .prof-img {
+    margin: 2px 0;
+    font-size: 12px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight:normal;
+}
+
+.prof-img {
+    width: 100%; /* 원하는 크기 설정 */
+    height: 133px; /* 원하는 크기 설정 */
+    object-fit: cover;
+    margin-bottom: 2px;
+}
+
+.prof-author {
+    margin-bottom: 0px !important;
+}
+
+.prof-liked-time {
+    font-size: 10px !important;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom: 0px !important;
 }
