@@ -404,7 +404,8 @@ main {
 
 
 .logo-image {
-    width: 60px !important;
+    width: 35px !important;
+    margin-right: 10px;
     height: auto;
 }
 
@@ -1358,7 +1359,6 @@ main {
 
 .site-footer-title,
 .site-footer p {
-    font-weight: 450;
     color: var(--white-color);
 }
 

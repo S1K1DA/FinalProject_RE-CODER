@@ -1,0 +1,231 @@
+body{
+    background-image: url(../../image/background-img.svg);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+ul, li{
+    list-style-type: none;
+}
+
+.matching-main-sec,
+.matching-out-box,
+.matching-main-box,
+.matching-info,
+.matching-list-item,
+.matching-request-box,
+.matching-my-tabs{
+    display: flex;
+}
+
+.matching-tab-ico{
+    padding: 13px 20px;
+    background-color: #bed1e791;
+    color: #e43c60;
+    border-radius: 5px 5px 0 0;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    margin-right: 2px;
+}
+
+.matching-tab-ico:last-child-child {
+    margin-right: 0;
+}
+
+
+.not-choice{
+    background-color: #9fa7b05c;
+    color: #e1e1e1;
+}
+
+.not-choice:hover{
+    background-color: #f18ca4;
+    color: #fff;
+}
+
+.matching-main-sec{
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.matching-out-box{
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 60px;
+    position: relative;
+}
+
+.matching-main-box{
+    width: 100%;
+    height: 700px;
+    flex-direction: row;
+    border-radius: 0 15px 15px 15px;
+    background-color: #bed1e791;
+    box-shadow: 5px 6px 9px 0px #79797945;
+    padding: 35px 20px 20px;
+}
+
+.map{
+    border-radius: 0 0 0 15px;
+    width: 60%;
+    height: 100%;
+    z-index: 0;
+}
+
+.matching-list-box{
+    padding-left: 20px;
+    border-radius: 0 15px 15px 0;
+    width: 40%;
+    height: 700px;
+    overflow: hidden;
+    color: #ffF
+}
+
+.matching-list-box > p{
+    font-weight: bold;
+    padding: 6px 10px;
+    margin: 0;
+}
+
+.matching-list-box ul{
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    height: 90%;
+    margin-top: 10px;
+}
+
+.matching-list-box ul::-webkit-scrollbar{
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /* 가로 스크롤바 높이 */
+}
+
+.matching-list-box ul::-webkit-scrollbar-track{
+    background: #ffffff00; /* 스크롤바 트랙 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+    margin: 20px;
+}
+
+.matching-list-box ul::-webkit-scrollbar-thumb{
+    background: #bcb1b8; /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 모서리 둥글게 */
+}
+
+.matching-list-box ul::-webkit-scrollbar-thumb:hover{
+    background: #9c8894; /* 호버 시 스크롤바 색상 */
+}
+
+.matching-list-item{
+    padding: 9px 5px;
+    border-top: 0.5px solid #3c3c3c45 !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff3;
+}
+
+.matching-list-item:last-child {
+    border-bottom: 0.5px solid #3c3c3c45 !important;
+}
+
+.matching-request-box{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.matching-request{
+    font-size: 15px;
+    padding: 5px 7px;
+    background: #fff;
+    border-radius: 7px;
+    margin: 5px;
+    margin-top: 17px;
+}
+
+.matching-request:hover{
+    background-color: #fbd2db;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.map-find{
+    margin: 5px;
+    margin-top: 11px;
+    background: #de4969;
+    color: #fff;
+}
+
+.map-find:hover{
+    font-weight: 400;
+    cursor: pointer;
+    background-color: #fbd2db;
+    color: #de4969;
+}
+
+.matching-photo{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background-color: #fff;
+}
+
+.matching-info{
+    position: relative;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    width: auto;
+    height: 100%;
+}
+
+.matching-info td{
+    padding: 3px;
+}
+
+.matching-info p{
+    font-size: 14px;
+    margin: 0;
+    text-align: right;
+}
+
+.info-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-menu p{
+    font-weight: 500;
+}
+
+.matching-name,
+.matching-age{
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.matching-age{
+    padding-right: 5px;
+}
+
+.matching-job,
+.matching-hobby,
+.matching-type,
+.matching-mbti{
+    font-size: 14px !important;
+}
+
+
+.map-find{
+    z-index: 1;
+    position: absolute;
+    padding: 8px 10px;
+    bottom: 4%;
+    left: 4%;
+    border: 2px solid;
+    border-radius: 10px;
+}

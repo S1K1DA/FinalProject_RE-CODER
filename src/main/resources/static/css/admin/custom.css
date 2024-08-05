@@ -1,4 +1,3 @@
-@import url("../../fonts/admin/phosphor/duotone/style.css");
 
 .custom-alarm-item{
     padding: 10px 24px !important;
@@ -16,7 +15,6 @@
     width: 35px !important;
     margin-right: 10px;
     height: auto;
-    padding-right: 0!important;
 }
 
 .img-fluid {
@@ -33,12 +31,11 @@
     left: -5px;
 }
 
-.sidebar-logo{
+.sideber-logo{
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-
 
 .custom-admin-header{
     padding: 18px 24px !important;
@@ -53,16 +50,13 @@
 }
 
 .detail-admin{
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
     background-color: #fff;
     border-radius: 20px;
     padding: 5px;
     margin-left: 3px;
     box-shadow: 1px 2px 2px 0px #79797924;
-    font-size: 20px;
-    font-weight: bold;
-    z-index: 5;
 }
 
 .detail-title{
@@ -71,319 +65,7 @@
     justify-content: space-between;
 }
 
-.detail-title-box{
-    width: 100% !important;
-}
-
-.unproc-inquiries{
-    background-color: #99e7e5;
-}
-
-.bg-light-info-custon{
-    background-color: #70b2b8 !important;
-}
-
-.sign-custom-body{
-    padding: 40px;
-}
-
-.page-header{
-    border: none !important;
-    padding: 20px 25px !important;
-    justify-content: space-between;
-}
-
-.page-header h5{
-    border: none;
-    font-weight: 650;
-    font-size: 22px;
-}
-
-.custom-navigation{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.custom-admin-board .pagination{
-    margin-bottom: 30px;
-}
-
-.custom-admin-board a{
-    color: #673ab7;
-    font-size: 18px;
-    text-align: center;
-    padding: 8px 16px;
-}
-
-.pc-link{
-    padding: 12px 30px 12px 60px;
-    display: block;
-    color: var(--pc-sidebar-color);
-    position: relative;
-    font-size: 14px;
-    font-weight: 400;
-}
-
-.custom-admin-board .card-body{
-    height: 670px;
-    padding-bottom: 30px;
-}
-
-.admin-management-table,
-.admin-action-table{
-    width: 100%;
-    text-align: center;
-}
-
-.admin-management-table thead,
-.admin-action-table thead{
-    font-size: 16px;
-    color: #868686;
-    border-bottom: 1.5px solid #5c5c5c69;
-}
-
-.admin-management-table th,
-.admin-action-table th{
-    padding: 6px 0 18px;
-}
-
-.admin-management-table tbody tr,
-.admin-action-table tbody tr{
-    border-bottom: 0.5px solid #5c5c5c1a;
-}
-
-.admin-management-table td:first-child,
-.admin-action-table td:first-child{
-    padding: 24px 0 20px;
-}
-
-.admin-management-table td,
-.admin-action-table td{
-    padding: 20px 0;
-}
-
-.report-num,
-.admin-num,
-.user-num,
-.report-user-cnt{
-    width: 8%;
-}
-
-.report-date,
-.report-category,
-.report-response-date,
-.report-reponse-result,
-.report-type{
-    width: 12%;
-}
-
-.punish-ban{
-    font-weight: bold;
-    color: red;
-}
-
-.punish-none{
-    font-weight: bold;
-    color: blue;
-}
-
-.admin-management-table button,
-.action-close,
-.action-complate{
-    border: none;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-weight: 600;
-}
-
-.action-complate:hover,
-.action-close:hover{
-    background-color: #e4dcf1;
-}
-
-.action-close{
-    margin-left: 12px;
-}
-
-.action-bnts{
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 7px;;
-}
-
-.admin-management-table button:hover{
-    background-color: #e4dcf1;
-}
-
-/* 기존 스타일 코드... */
-
-.pc-container {
-    position: relative; /* 부모 요소의 기준점을 설정 */
-    /*width: 100%;*/
-}
-
-.report-overlay {
-    display: none;
-    position: absolute; /* pc-container를 기준으로 위치 설정 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* 배경 어두워짐 */
-    justify-content: center;
-    align-items: center;
-    z-index: 999; /* 팝업을 다른 콘텐츠 위로 올리기 위해 */
-}
-
-.report-popup {
-    width: 450px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-    text-align: center;
-    position: relative; /* 팝업 내의 콘텐츠를 정렬 */
-}
-
-.report-popup h2{
-    margin: 12px;
-}
-
-.report-action-box{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.report-action-box p {
-    width: 100%;
-    text-align: left;
-    font-size: 20px;
-    margin-left: 5px;
-    margin-bottom: 2px;
-}
-
-.report-action-textarea{
-    width: 100%;
-    height: 180px;
-    margin-bottom: 20px;
-    resize: none;
-}
-
-.punish-result{
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-}
-
-.date-ban-box,
-.permanen-ban-box,
-.punish-none-box{
-    display: flex;
-    flex-direction: row;
-    margin: 8px 0 5px;
-    align-items: center;
-}
-
-.date-ban-box span,
-.permanent-ban-input,
-.punish-none-input{
-    margin-right: 5px;
-    font-size: 15px;
-}
-
-.punish-date{
-    margin-right: 10px;
-}
-
-.permanen-ban,
-.permanent-ban-input{
-    color:red;
-    font-weight: bold;
-    accent-color: red;
-}
-
-.punish-none-input,
-.permanent-ban-input{
-    width: 15px;
-    height: 15px;
-}
-
-.punish-none-input,
-.punish-none{
-    color:green;
-    font-weight: bold;
-    accent-color: green;
-}
-
-.user-search-select{
-    width: 90px;
-    height: 100%;
-    border-radius: 8px 0 0 8px;
-    padding-left: 3px;
-}
-
-.user-search-control{
-    width: 200px;
-    height: 100%;
-    margin: 0;
-    border-radius: 0 !important;
-    border: 1px solid #3c3c3cd9;
-}
-
-.user-search-btn{
-    height: 100%;
-    border-radius: 0 8px 8px 0;
-}
-
-.user-select-box{
-    display: flex;
-    flex-direction: row;
-    height: 50px;
-}
-
-.user-select-filter{
-    height: 100%;
-    padding: 8px;
-    border-right: 0.5px solid #3c3c3c26;
-    border-radius: 8px;
-}
-
-.choses-tag{
-    height: 100%;
-    border-radius: 8px;
-}
-
-.admin-user-search{
-    height: 50px;
-    padding: 8px;
-}
-
-@media (max-width: 1285px) {
-    .sales-text-box{
-        width: 170px;
-
-    }
-
-    .sales-text-box .nav{
-        flex-direction: row;
-    }
-
-    .sales-text-box ul{
-        width: 100%;
-        flex-direction: row;
-    }
-
-    .sales-text-box li{
-        width: 50%;
-    }
-
-    .sales-text-box button{
-        font-size: 13px;
-        padding: 8px;
-    }
+.detial-title-box{
+    width: 90% !important;
 }
 

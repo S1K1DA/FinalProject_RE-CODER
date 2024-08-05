@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <body>
-<link rel="stylesheet" th:href="@{/css/charge/charge-main.css}"/>
+<link rel="stylesheet" th:href="@{/css/charge/charge_main.css}"/>
 <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
 <nav th:replace="fragments/navigation :: navigation"></nav>
 <section class="charge-main-sec">
@@ -26,6 +26,13 @@
                     </thead>
                     <tbody class="payment-history-tbody">
                         <tr>
+                            <td>2024.08.02</td>
+                            <td>30개</td>
+                            <td>네이버 페이</td>
+                            <td>3,000원</td>
+                            <td class="payment-cancel">취소가능</td>
+                        </tr>
+                        <tr>
                             <td>2024.07.11</td>
                             <td>10개</td>
                             <td>카카오 페이</td>
@@ -34,16 +41,36 @@
                         </tr>
                         <tr>
                             <td>2024.07.28</td>
-                            <td>30개</td>
-                            <td>네이버 페이</td>
-                            <td>3,000원</td>
+                            <td>100개</td>
+                            <td>토스 페이</td>
+                            <td>10,000원</td>
                             <td>취소불가</td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="payment-history-pagination">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
 </section>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
+</html>

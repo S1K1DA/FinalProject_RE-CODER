@@ -3,12 +3,12 @@
 <nav th:fragment="sidebar_menu" class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
-            <a th:href="@{/admin/main}" class="b-brand text-primary sidebar-logo">
+            <a th:href="@{/admin/main}" class="b-brand text-primary sideber-logo">
                 <img th:src="@{/image/adminheartLinkLogo.png}" class="logo-image img-fluid" alt="Site logo">
                 <p class="logo-text">HEARTLINK</p>
             </a>
         </div>
-        <div class="navbar-content custom-sidebar">
+        <div class="navbar-content">
             <ul class="pc-navbar">
                 <li class="pc-item pc-caption">
                     <label>HOME</label>
@@ -16,7 +16,7 @@
                 </li>
                 <li class="pc-item">
                     <a th:href="@{/admin/main}" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-transfer-in "></i></span>
+                        <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
                         <span class="pc-mtext">HOME</span>
                     </a>
                 </li>
@@ -24,21 +24,26 @@
                     <label>문의 & 신고</label>
                     <i class="ti ti-news"></i>
                 </li>
-                <li class="pc-item">
-                    <a th:href="@{/admin/inquiries}" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-messages"></i></span>
-                        <span class="pc-mtext">문의 내역 확인</span>
+                <li class="pc-item pc-hasmenu">
+                    <a href="#!" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-menu"></i></span>
+                        <span class="pc-mtext">문의 관리</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/inquiries}">문의 내역 확인</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/inquiry/response}">문의 처리 및 답변</a></li>
+                    </ul>
                 </li>
                 <li class="pc-item pc-hasmenu">
                     <a href="#!" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-urgent"></i></span>
+                        <span class="pc-micon"><i class="ti ti-menu"></i></span>
                         <span class="pc-mtext">신고 관리</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link custom-pc-link" th:href="@{/admin/reports}">신고 내역 관리</a></li>
-                        <li class="pc-item"><a class="pc-link custom-pc-link" th:href="@{/admin/report/action}">신고 처리 및 조치</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/reports}">신고 내역 확인</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/report/action}">신고 처리 및 조치</a></li>
                     </ul>
                 </li>
                 <li class="pc-item pc-caption">
@@ -47,24 +52,24 @@
                 </li>
                 <li class="pc-item pc-hasmenu">
                     <a href="#!" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-user"></i></span>
+                        <span class="pc-micon"><i class="ti ti-menu"></i></span>
                         <span class="pc-mtext">사용자 관리</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link custom-pc-link" th:href="@{/admin/user/search}">사용자 검색</a></li>
-                        <li class="pc-item"><a class="pc-link custom-pc-link" th:href="@{/admin/user/status}">사용자 상태 관리</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/user/search}">사용자 검색</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/user/status}">사용자 상태 관리</a></li>
                     </ul>
                 </li>
                 <li class="pc-item pc-hasmenu">
                     <a href="#!" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-credit-card"></i></span>
+                        <span class="pc-micon"><i class="ti ti-menu"></i></span>
                         <span class="pc-mtext">결제 관리</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link custom-pc-link" th:href="@{/admin/payments}">결제 내역</a></li>
-                        <li class="pc-item"><a class="pc-link custom-pc-link" th:href="@{/admin/refunds}">환불 처리</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/payments}">결제 내역</a></li>
+                        <li class="pc-item"><a class="pc-link" th:href="@{/admin/refunds}">환불 처리</a></li>
                     </ul>
                 </li>
                 <li class="pc-item">

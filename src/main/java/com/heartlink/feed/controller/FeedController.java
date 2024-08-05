@@ -10,11 +10,11 @@ public class FeedController {
 
     @GetMapping("")
     public String moveMain() {
-        return "/feed/feed-main";  // "index"는 src/main/resources/templates/index.html
+        return "feed/feed_main";  // "index"는 src/main/resources/templates/admin_main.html
     }
 
     @GetMapping("/write")
     public String moveNewFeed(){
-        return "/feed/feed-write";
+        return "feed/feed_write";
     }
 }
