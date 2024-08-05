@@ -1,17 +1,56 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-<body>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <link rel="stylesheet" th:href="@{/css/review/review.css}">
+<body>
 
 <main>
     <nav th:replace="fragments/navigation :: navigation"></nav>
 
     <section class="hero-section d-flex align-items-center">
         <div class="container d-flex justify-content-center">
-            <div class="row d-flex justify-content-center align-items-start ">
+            <div class="row d-flex justify-content-center ">
+                <div class="ptreview-detailbox">
+                    <h3 class="text-primary-color">리뷰 수정</h3>
 
+                    <section class="ptreview-info">
+                        <div>
+                            <div class="profile-info-ct">
+                                <span class="sound-only">작성자</span> <strong>
+                                AhtaeKim
+                            </strong>
+                            </div>
+                        </div>
+                    </section>
 
+                    <form action="/review/photoedit" enctype="multipart/form-data" method="post">
+                        <section>
+                            <div class="form-group">
+                                <label class="text-primary-color" for="review-title">글 제목</label>
+                                <input class="form-control" id="review-title" name="review-title" value="기존 제목" required type="text">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-primary-color" for="summernote">내용</label>
+                                <div class = "post-form">
+                                    <textarea id="summernote" name="postContent" required>기존 내용</textarea>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="form-group">
+                                <label class="text-primary-color" for="review-image">사진 업로드</label>
+                                <input accept="image/*" class="form-control" id="review-image" name="review-image" type="file">
+                            </div>
+                            -->
+                        </section>
+
+                        <div class="button-container">
+                            <button class="btn-action color-pri" type="submit">수정하기</button>
+                            <button class="btn-action" onclick="location.href='/review/photomain'" type="button">목록으로</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
     </section>
@@ -20,11 +59,56 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <!-- JAVASCRIPT FILES -->
-<script th:src="@{/js/reference_js/jquery.js}"></script>
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+<script>
+    $('#summernote').summernote({
+        // 에디터 크기 설정
+        height: 400,
+        // 에디터 한글 설정
+        lang: 'ko-KR',
+        // 에디터에 커서 이동
+        toolbar: [
+            // 글자 크기 설정
+            ['fontsize', ['fontsize']],
+            // 글자 [굵게, 기울임, 밑줄, 취소 선, 지우기]
+            ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+            // 글자색 설정
+            ['color', ['color']],
+            // 표 만들기
+            ['table', ['table']],
+            // 서식 [글머리 기호, 번호매기기, 문단정렬]
+            ['para', ['ul', 'ol', 'paragraph']],
+            // 줄간격 설정
+            ['height', ['height']],
+            // 이미지 첨부
+            ['insert',['picture']]
+        ],
+        // 추가한 글꼴
+        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
+        // 추가한 폰트사이즈
+        fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72','96'],
+        // focus는 작성 페이지 접속시 에디터에 커서를 위치하도록 하려면 설정해주세요.
+        focus : true,
+        // callbacks은 이미지 업로드 처리입니다.
+        callbacks : {
+            onImageUpload : function(files, editor, welEditable) {
+                // 다중 이미지 처리를 위해 for문을 사용했습니다.
+                for (var i = 0; i < files.length; i++) {
+                    imageUploader(files[i], this);
+                }
+            }
+        }
+    });
+</script>
+
+<script th:src="@{/js/review/review.js}"></script>
+<script th:src="@{/js/reference_js/jquery.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
-<script th:src="@{/js/reference_js/custom.js}"></script>
+<!--<script th:src="@{/js/reference_js/custom.js}"></script>-->
 
 </body>
 </html>
