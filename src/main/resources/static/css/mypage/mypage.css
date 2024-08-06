@@ -151,6 +151,10 @@
 .custom-block-info {
     overflow: hidden;
     padding-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius : 0 15px 15px 0;
+    background-color: rgba(249, 249, 249, 0.5);
+    height:100%;
 }
 
 .custom-block-info p {
@@ -636,7 +640,31 @@ margin-bottom : 3rem;
 
 
 
-/* 10. 매칭 내역 페이지 */
-.matching-anounce{
+/* 기본적인 탭 메뉴 스타일 */
+.charge-my-tabs {
+    display: flex;
+}
 
+.charge-tab-ico {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+}
+
+.charge-tab-ico.active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }

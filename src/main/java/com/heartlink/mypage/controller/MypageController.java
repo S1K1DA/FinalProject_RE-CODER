@@ -23,9 +23,14 @@ public class MypageController {
         return "mypage/mypage_feedlike/mypage-feedlike";
     }
 
-    @GetMapping("/review")
-    public String reviewpage() {
-        return "mypage/mypage_review/mypage-review";
+    @GetMapping("/ptreview")
+    public String ptreview() {
+        return "mypage/mypage_review/mypage-ptreview";
+    }
+
+    @GetMapping("/lireview")
+    public String lireview() {
+        return "mypage/mypage_review/mypage-lireview";
     }
 
     @GetMapping("/proflike")

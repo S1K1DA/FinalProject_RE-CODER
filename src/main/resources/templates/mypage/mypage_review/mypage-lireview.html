@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+<nav th:replace="fragments/navigation :: navigation"></nav>
+
+<section class="hero-section">
+    <div class="container mypage-box">
+        <div class="mypage-box-container d-flex">
+            <div th:replace="mypage/mypage_nav :: mypagenav"></div>
+            <div class="custom-block d-flex flex-column align-items-start text-left p-4">
+                <div class="charge-my-tabs">
+                    <a th:href="@{/mypage/ptreview}" class="charge-tab-ico">포토후기</a>
+                    <a th:href="@{/mypage/lireview}" class="charge-tab-ico active">실시간후기</a>
+                </div>
+                <div class="custom-block-info w-100">
+                    <div class="review-section mb-5">
+                        <h4 class="text-primary-color">실시간 리뷰</h4>
+                        <div class="live-review-box">
+                            <div class="live-review-item">
+                                <div class="review-header">
+                                    <h6>리뷰 제목 1</h6>
+                                    <div class="review-rating">
+                                        ★★★★☆
+                                    </div>
+                                </div>
+                                <p>리뷰 내용 요약 1...</p>
+                            </div>
+                            <div class="live-review-item">
+                                <div class="review-header">
+                                    <h6>리뷰 제목 2</h6>
+                                    <div class="review-rating">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                                <p>리뷰 내용 요약 2...</p>
+                            </div>
+                            <div class="live-review-item">
+                                <div class="review-header">
+                                    <h6>리뷰 제목 3</h6>
+                                    <div class="review-rating">
+                                        ★★★☆☆
+                                    </div>
+                                </div>
+                                <p>리뷰 내용 요약 3...</p>
+                            </div>
+                            <div class="live-review-item">
+                                <div class="review-header">
+                                    <h6>리뷰 제목 1</h6>
+                                    <div class="review-rating">
+                                        ★★★★☆
+                                    </div>
+                                </div>
+                                <p>리뷰 내용 요약 1...</p>
+                            </div>
+                            <div class="live-review-item">
+                                <div class="review-header">
+                                    <h6>리뷰 제목 2</h6>
+                                    <div class="review-rating">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                                <p>리뷰 내용 요약 2...</p>
+                            </div>
+                            <div class="live-review-item">
+                                <div class="review-header">
+                                    <h6>리뷰 제목 3</h6>
+                                    <div class="review-rating">
+                                        ★★★☆☆
+                                    </div>
+                                </div>
+                                <p>리뷰 내용 요약 3...</p>
+                            </div>
+                            <!-- 추가 실시간 리뷰를 여기에 추가하세요 -->
+                        </div>
+                        <!-- 페이지네이션 버튼 예시 -->
+                        <div class="pagination">
+                            <button class="btn-action">이전</button>
+                            <button class="btn-action">1</button>
+                            <button class="btn-action">2</button>
+                            <button class="btn-action">다음</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
