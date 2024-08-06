@@ -124,12 +124,12 @@
     min-height: 690px;
     border-radius: 0 15px 15px 0;
     background-color: rgba(249, 249, 249, 0.3);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow:  4px 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .custom-block:hover {
     background: var(--white-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow:  4px 0 8px rgba(0, 0, 0, 0.2);
     background-color: rgba(249, 249, 249, 0.3);
     border-color: #ddd !important;
     transform: none !important;
@@ -174,7 +174,7 @@
 }
 
 .mypage-box-container .custom-block:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow:  4px 0 8px rgba(0, 0, 0, 0.2) !important;
     background-color: rgba(249, 249, 249, 0.3);
     border-color: #ddd !important;
     transform: none !important;
