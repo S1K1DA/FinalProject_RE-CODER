@@ -1,5 +1,7 @@
 package com.heartlink.mypage.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,57 +11,68 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MypageController {
 
     @GetMapping("/main")
-    public String mainpage() {
+    public String mainpage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_main/mypage-main";
     }
 
     @GetMapping("/infoedit")
-    public String editpage() {
+    public String editpage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_main/mypage-infoedit";
     }
 
     @GetMapping("/feedlike")
-    public String feedlikepage() {
+    public String feedlikepage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_feedlike/mypage-feedlike";
     }
 
     @GetMapping("/ptreview")
-    public String ptreview() {
+    public String ptreview(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_review/mypage-ptreview";
     }
 
     @GetMapping("/lireview")
-    public String lireview() {
+    public String lireview(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_review/mypage-lireview";
     }
 
     @GetMapping("/proflike")
-    public String profpage() {
+    public String profpage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
     @GetMapping("/match")
-    public String matchpage() {
+    public String matchpage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_match/mypage-match";
     }
 
     @GetMapping("/delete")
-    public String deletepage() {
+    public String deletepage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_delete/mypage-delete";
     }
 
     @GetMapping("/hobby")
-    public String hobbypage() {
+    public String hobbypage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobby";
     }
 
     @GetMapping("/sentiedit")
-    public String sentieditpage() {
+    public String sentieditpage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-sentiedit";
     }
 
     @GetMapping("/hobbyedit")
-    public String hobbyeditpage() {
+    public String hobbyeditpage(HttpServletRequest request, Model model) {
+        model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
 }
