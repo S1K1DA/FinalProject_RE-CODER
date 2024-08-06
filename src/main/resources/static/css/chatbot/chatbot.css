@@ -1,0 +1,95 @@
+/* 챗봇 버튼 */
+.chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    line-height: 1;
+}
+
+/* 챗봇 박스 */
+.chatbot-box {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    width: 400px;
+    min-height: 400px;
+    max-height: 400px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 기본적으로 숨김 */
+.hidden {
+    display: none;
+}
+
+/* 챗봇 헤더 */
+.chatbot-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 닫기버튼 */
+.close-chatbot {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* 챗봇 바디 */
+.chatbot-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+/* 챗봇 푸터 */
+.chatbot-footer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+/* 채팅입력칸 */
+.chatbot-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+/* 보내기버튼 */
+.send-message {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
