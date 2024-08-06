@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/fragments/admin_head :: admin_head"></head>
+<body>
+
+<div class="loader-bg">
+    <div class="loader-track">
+        <div class="loader-fill"></div>
+    </div>
+</div>
+
+<!--사이드 바-->
+<nav th:replace="admin/fragments/sidebar_menu :: sidebar_menu"></nav>
+
+<!-- nav 헤더 start -->
+<header th:replace="admin/fragments/admin_header :: admin_header"></header>
+
+<div class="pc-container">
+    <div class="pc-content">
+        <div class="page-header">
+            <h5 class="m-b-10">신고 처리 및 조치</h5>
+        </div>
+
+        <div class="row custom-admin-board">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="admin-action-table">
+                            <thead>
+                            <tr>
+                                <th class="report-num">신고 번호</th>
+                                <th class="user-num">신고자 번호</th>
+                                <th class="admin-num">관리자 번호</th>
+                                <th class="report-date">신고 접수일</th>
+                                <th class="report-category">신고 카테고리</th>
+                                <th class="report-response-date">처리일</th>
+                                <th class="report-reponse-result">처벌 결과</th>
+                                <th class="report-type">신고 유형</th>
+                                <th class="report-user-cnt">누적 처벌 수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td> <td>7</td> <td>12</td> <td>2024.07.18</td> <td>욕설 및 비방</td> <td>2024.07.20</td> <td>활동 정지 12일</td> <td>피드 댓글</td><td>1</td>
+                            </tr>
+                            <tr>
+                                <td>2</td> <td>7</td> <td>12</td> <td>2024.07.22</td> <td>욕설 및 비방</td> <td>2024.07.20</td> <td>활동 정지 10일</td> <td>피드 게시글</td><td>2</td>
+                            </tr>
+                            <tr>
+                                <td>3</td> <td>5</td> <td>10</td> <td>2024.07.23</td> <td>음란물 유포</td> <td>2024.07.24</td> <td class="punish-ban">영구 정지</td> <td>매칭 채팅</td><td>1</td>
+                            </tr>
+                            <tr>
+                                <td>4</td> <td>5</td> <td>12</td> <td>2024.07.30</td> <td>스팸 또는 광고</td> <td>2024.07.31</td> <td>활동 정지 5일</td> <td>실시간 리뷰</td><td>3</td>
+                            </tr>
+                            <tr>
+                                <td>5</td> <td>7</td> <td>1</td> <td>2024.08.01</td> <td>욕설 및 비방</td> <td>2024.08.07</td> <td>활동 정지 20일</td> <td>매칭 채팅</td><td>1</td>
+                            </tr>
+                            <tr>
+                                <td>6</td> <td>4</td> <td>6</td> <td>2024.08.02</td> <td>욕설 및 비방</td> <td>2024.08.07</td> <td class="punish-none">해당 사항 없음</td> <td>피드 게시글</td><td>0</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav class="custom-navigation" aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 스크립트 모듈 -->
+<script th:replace="admin/fragments/admin_script::admin_script"></script>
+</body>
+</html>

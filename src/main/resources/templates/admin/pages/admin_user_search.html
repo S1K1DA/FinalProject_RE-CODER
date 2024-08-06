@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/fragments/admin_head :: admin_head"></head>
+<body>
+
+<div class="loader-bg">
+    <div class="loader-track">
+        <div class="loader-fill"></div>
+    </div>
+</div>
+
+<!--사이드 바-->
+<nav th:replace="admin/fragments/sidebar_menu :: sidebar_menu"></nav>
+
+<!-- nav 헤더 start -->
+<header th:replace="admin/fragments/admin_header :: admin_header"></header>
+
+<div class="pc-container">
+    <div class="pc-content">
+        <div class="page-header">
+            <div class="page-header-title">
+                <h5 class="m-b-10">사용자 검색</h5>
+            </div>
+            <div class="user-select-box">
+                <div class="user-select-filter">
+                    <select class="choses-tag" name="filter" id="userFilter">
+                        <option value="none">회원 상태</option>
+                        <option value="Active">Active</option>
+                        <option value="Dormant">Dormant</option>
+                        <option value="ban">ban</option>
+                    </select>
+                </div>
+                <nav class="navbar navbar-light admin-user-search">
+                    <select class="user-search-select" id="inputGroupSelect02" name="category">
+                        <option value="user_id" selected>ID 이메일</option>
+                        <option value="user_num">회원 번호</option>
+                    </select>
+                    <input type="text" class="user-search-control" name="searchText"
+                           aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary user-search-btn" type="submit" id="button-addon2">검색</button>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row custom-admin-board">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="admin-management-table">
+                            <thead>
+                                <tr>
+                                    <td>회원 번호</td> <td>ID 이메일</td> <td>전화번호</td> <td>생년월일</td> <td>성별</td> <td>생성일</td> <td>회원 상태</td> <td>마지막 로그인</td> <td>보유 코인</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td> <td>example@gmail.com</td> <td>010-1234-5678</td> <td>2000.08.25</td> <td>여</td> <td>2024.06.13</td> <td>Active</td> <td>2024.07.31</td> <td>12개</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav class="custom-navigation" aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 스크립트 모듈 -->
+<script th:replace="admin/fragments/admin_script::admin_script"></script>
+</body>
+</html>
