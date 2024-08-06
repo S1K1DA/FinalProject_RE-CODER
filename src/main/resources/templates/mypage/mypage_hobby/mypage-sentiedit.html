@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <body>
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
 
 <main>
     <nav th:replace="fragments/navigation :: navigation"></nav>
@@ -29,9 +29,60 @@
 
                         <div class="text-center mb-5 pb-2 w-100">
                             <h3 class="text-white">성향 수정</h3>
+                            <hr class="mypage-line">
                         </div>
+                        <p class="mb-4 fw-normal">
+                            각각 최대 3개씩 선택이 가능합니다.
+                        </p>
 
+                        <form method="post" action="/mypage/sentiedit/submit">
+                            <h4 class="text-primary-color">선호하는 것</h4>
+                            <div class="checkbox-list">
+                                <label><input type="checkbox" name="likes" value="실내데이트"> 실내데이트</label>
+                                <label><input type="checkbox" name="likes" value="활발함"> 활발함</label>
+                                <label><input type="checkbox" name="likes" value="밝은 분위기"> 밝은 분위기</label>
+                                <label><input type="checkbox" name="likes" value="자연"> 자연</label>
+                                <label><input type="checkbox" name="likes" value="운동"> 운동</label>
+                                <label><input type="checkbox" name="likes" value="친절함"> 친절함</label>
+                                <label><input type="checkbox" name="likes" value="신뢰성"> 신뢰성</label>
+                                <label><input type="checkbox" name="likes" value="깔끔함"> 깔끔함</label>
+                                <label><input type="checkbox" name="likes" value="유머 감각"> 유머 감각</label>
+                                <label><input type="checkbox" name="likes" value="시간 준수"> 시간 준수</label>
+                                <label><input type="checkbox" name="likes" value="정직함"> 정직함</label>
+                                <label><input type="checkbox" name="likes" value="배려심"> 배려심</label>
+                                <label><input type="checkbox" name="likes" value="긍정적 사고"> 긍정적 사고</label>
+                                <label><input type="checkbox" name="likes" value="적극성"> 적극성</label>
+                                <label><input type="checkbox" name="likes" value="열정"> 열정</label>
+                                <label><input type="checkbox" name="likes" value="술"> 술</label>
+                                <label><input type="checkbox" name="likes" value="담배"> 담배</label>
+                            </div>
 
+                            <h4 class="text-primary-color mt-4">기피하는 것</h4>
+                            <div class="checkbox-list">
+                                <label><input type="checkbox" name="dislikes" value="혼잡한 장소"> 혼잡한 장소</label>
+                                <label><input type="checkbox" name="dislikes" value="소음"> 소음</label>
+                                <label><input type="checkbox" name="dislikes" value="어두운 분위기"> 어두운 분위기</label>
+                                <label><input type="checkbox" name="dislikes" value="무례함"> 무례함</label>
+                                <label><input type="checkbox" name="dislikes" value="기다림"> 기다림</label>
+                                <label><input type="checkbox" name="dislikes" value="더위"> 더위</label>
+                                <label><input type="checkbox" name="dislikes" value="추위"> 추위</label>
+                                <label><input type="checkbox" name="dislikes" value="불친절함"> 불친절함</label>
+                                <label><input type="checkbox" name="dislikes" value="교통 체증"> 교통 체증</label>
+                                <label><input type="checkbox" name="dislikes" value="긴 줄"> 긴 줄</label>
+                                <label><input type="checkbox" name="dislikes" value="비싼 가격"> 비싼 가격</label>
+                                <label><input type="checkbox" name="dislikes" value="지저분한 환경"> 지저분한 환경</label>
+                                <label><input type="checkbox" name="dislikes" value="강한 냄새"> 강한 냄새</label>
+                                <label><input type="checkbox" name="dislikes" value="답답한 공간"> 답답한 공간</label>
+                                <label><input type="checkbox" name="dislikes" value="부정적 사고"> 부정적 사고</label>
+                                <label><input type="checkbox" name="dislikes" value="술"> 술</label>
+                                <label><input type="checkbox" name="dislikes" value="담배"> 담배</label>
+                            </div>
+
+                            <div class="form-actions d-flex justify-content-center mt-4">
+                                <button type="submit" class="btn-submit">수정</button>
+                                <button type="button" class="btn-cancel" onclick="location.href='/mypage/hobby'">취소</button>
+                            </div>
+                        </form>
 
                     </div>
                 </div>
@@ -43,12 +94,9 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-<!-- JAVASCRIPT FILES -->
-<script th:src="@{/js/reference_js/jquery.js}"></script>
-<script th:src="@{/js/reference_js/jquery.min.js}"></script>
-<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
-<script th:src="@{/js/reference_js/custom.js}"></script>
+<script th:src="@{/js/mypage/mypage.js}"></script>
+
+
 
 </body>
 </html>

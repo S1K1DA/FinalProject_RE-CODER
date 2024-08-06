@@ -3,7 +3,7 @@
 
 <head th:replace="fragments/head :: head"></head>
 <body>
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
 
 <main>
     <nav th:replace="fragments/navigation :: navigation"></nav>
@@ -30,10 +30,115 @@
 
                         <div class="text-center mb-5 pb-2 w-100">
                             <h3 class="text-white">좋아요 내역</h3>
+                            <hr class="mypage-line">
                         </div>
 
                         <div class="custom-block-info w-100">
+                            <div class="liked-feed-list">
+                                <div class="liked-feed-item" onclick="location.href='/feed/1'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">매칭 후기 1</p>
+                                    <p class="feed-author">JaeinLee</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/2'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">연애 조언 2</p>
+                                    <p class="feed-author">EunsikJeong</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/3'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">자유보드 이야기</p>
+                                    <p class="feed-author">AhtaeKim</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/4'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">매칭 후기 2</p>
+                                    <p class="feed-author">JaeinLee</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/5'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">연애 조언 3</p>
+                                    <p class="feed-author">AhtaeKim</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/1'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">매칭 후기 1</p>
+                                    <p class="feed-author">JaeinLee</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/2'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">연애 조언 2</p>
+                                    <p class="feed-author">EunsikJeong</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/3'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">자유보드 이야기</p>
+                                    <p class="feed-author">AhtaeKim</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/4'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">매칭 후기 2</p>
+                                    <p class="feed-author">JaeinLee</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/5'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">연애 조언 3</p>
+                                    <p class="feed-author">AhtaeKim</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/1'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">매칭 후기 1</p>
+                                    <p class="feed-author">JaeinLee</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
+                                <div class="liked-feed-item" onclick="location.href='/feed/2'">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                        <i class="bi-heart feed-heart-icon"></i>
+                                    </a>
+                                    <p class="feed-title">연애 조언 2</p>
+                                    <p class="feed-author">EunsikJeong</p>
+                                    <p class="feed-liked-time">2024.07.30 15:17</p>
+                                </div>
 
+                            </div>
+                            <div class="pagination">
+                                <button class="btn-action">이전</button>
+                                <button class="btn-action">1</button>
+                                <button class="btn-action">2</button>
+                                <button class="btn-action">다음</button>
+                            </div>
                         </div>
 
                     </div>
@@ -46,13 +151,11 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
+<script th:src="@{/js/mypage/mypage.js}"></script>
 
-<!-- JAVASCRIPT FILES -->
-<script th:src="@{/js/reference_js/jquery.js}"></script>
-<script th:src="@{/js/reference_js/jquery.min.js}"></script>
-<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
-<script th:src="@{/js/reference_js/custom.js}"></script>
+<script>
+
+</script>
 
 </body>
 </html>

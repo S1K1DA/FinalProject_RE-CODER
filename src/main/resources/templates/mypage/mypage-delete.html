@@ -30,13 +30,14 @@
 
                         <div class="text-center mb-5 pb-2 w-100">
                             <h3 class="text-white">회원 탈퇴</h3>
+                            <hr class="mypage-line">
                         </div>
 
                         <div class="custom-block-info w-100">
-                            <p class="mb-4 text-center">
+                            <p class="mb-4 text-center fw-bold">
                                 정말로 회원 탈퇴를 원하십니까?
                             </p>
-                            <p class="mb-4 text-center">
+                            <p class="mb-4 text-center fw-bold">
                                 탈퇴를 하시면 모든 정보가 삭제되며 복구할 수 없습니다.
                             </p>
                             <form method="post" action="/mypage/delete" class="text-left">
@@ -44,7 +45,7 @@
                                 <p class="mb-2"><span class="label">비밀번호 확인 :</span> <input type="password" class="input-short" id="password-confirm" name="password-confirm" required></p>
                                 <div class="form-actions d-flex justify-content-center mt-4">
                                     <button type="submit" class="btn-submit">탈퇴</button>
-                                    <button type="button" class="btn-cancel" th:onclick="'location.href=\'' + @{/mypage/main} + '\''">취소</button>
+                                    <button type="button" class="btn-cancel" onclick="location.href='/mypage/main'">취소</button>
                                 </div>
                             </form>
                         </div>
@@ -59,12 +60,7 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-<!-- JAVASCRIPT FILES -->
-<script th:src="@{/js/reference_js/jquery.js}"></script>
-<script th:src="@{/js/reference_js/jquery.min.js}"></script>
-<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>
-<script th:src="@{/js/reference_js/custom.js}"></script>
+<script th:src="@{/js/mypage/mypage.js}"></script>
 
 </body>
 </html>
