@@ -116,6 +116,7 @@
 
 .view_image{
 display : block;
+width:600px;
 }
 
 .text-primary-color{
@@ -468,6 +469,11 @@ background-color:var(--white-color);
 border:1px solid #ddd;
 }
 
+.note-editable p {
+font-size:16px ;
+font-weight:normal;
+}
+
 .tooltip{
 display:none !important;
 }
@@ -476,4 +482,18 @@ display:none !important;
 display:block;
 }
 
+.note-icon-caret:before{
+display:none;}
 
+
+.content p, .content span {
+    font-size: 16px;
+}
+
+
+#summernote {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: inherit !important;
+    padding: inherit !important;
+}
