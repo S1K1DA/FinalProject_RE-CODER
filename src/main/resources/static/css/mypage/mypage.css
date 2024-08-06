@@ -151,9 +151,7 @@
 .custom-block-info {
     overflow: hidden;
     padding-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius : 0 15px 15px 0;
-    background-color: rgba(249, 249, 249, 0.5);
+
     height:100%;
 }
 
@@ -444,7 +442,11 @@ margin-bottom : 3rem;
     margin-top: 5px;
     margin-bottom: 0px !important;
 }
-
+.review-tab{
+    border: 1px solid #ddd;
+    border-radius : 0 15px 15px 0;
+    background-color: rgba(249, 249, 249, 0.5);
+}
 /* 5. 사진 후기 섹션 스타일 */
 .review-section {
     margin-bottom: 40px;
