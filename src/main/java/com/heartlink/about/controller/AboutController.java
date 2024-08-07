@@ -13,4 +13,6 @@ public class AboutController {
         return "/common/about";
     }
 
+    @GetMapping("/site")
+    public String siteAbout() {return "/common/aboutsite";}
 }
