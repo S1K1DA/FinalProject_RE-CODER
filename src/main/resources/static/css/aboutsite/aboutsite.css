@@ -1,0 +1,137 @@
+
+.about-section {
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
+
+.about-image {
+  display: block;
+  border-radius: 100%;
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+}
+
+.about-image-logo {
+  display: block;
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+}
+
+.about-image-small {
+  display: block;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+}
+
+.section-small-title {
+  color: var(--custom-btn-bg-color);
+  font-size: var(--btn-font-size);
+  font-weight: var(--font-weight-semibold);
+  display: block;
+}
+
+
+.company-wrap {
+
+}
+
+.introlist {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    list-style-type:none;
+    padding-right:2rem;
+}
+
+
+
+.introlist li {
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+    width: 48%;
+    height: 180px;
+    background-color: #fff;
+    padding: 35px 40px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 2px rgb(0 0 0 / 10%);
+
+}
+
+.introlist li::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+
+}
+
+.introlist li.intro1::before {
+    background: url("/image/team_member/team_member_eunsik.jpg") no-repeat 0 0;
+    background-size: contain;
+}
+
+.introlist li.intro2::before {
+    background: url("/image/heartLinkLogo.png") no-repeat 0 0;
+    top:65%;
+    background-size: contain;
+}
+
+.introlist li.intro3::before {
+    background: url("") no-repeat 0 0;
+    background-size: contain;
+}
+
+.introlist li.intro4::before {
+    background: url("") no-repeat 0 0;
+    background-size: contain;
+}
+
+.introlist li.intro5::before {
+    background: url("") no-repeat 0 0;
+    background-size: contain;
+}
+
+.introlist li.intro6::before {
+    background: url("") no-repeat 0 0;
+    background-size: contain;
+}
+
+
+.introlist li p {
+    font-size: 15px;
+    color: #4a4a4a;
+    line-height: 1.4;
+    margin-bottom: 5px;
+    margin-left: 140px;
+    word-break: keep-all;
+    letter-spacing: -1px;
+}
+
+.introlist li p.introtle {
+    font-size: 21px;
+    color: #000000;
+    line-height: 1.5;
+    font-weight: bold;
+    margin-left: 140px;
+    margin-bottom: 15px;
+    word-break: keep-all;
+    letter-spacing: -1px;
+}
+
+.body-wrap.intro-wrap {
+    padding: 50px 0 65px;
+}
+
+
+
