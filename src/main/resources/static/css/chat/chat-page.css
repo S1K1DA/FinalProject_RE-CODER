@@ -1,0 +1,199 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
+
+
+/* Reset CSS */
+* {
+    box-sizing: border-box;
+}
+
+/* 배경 스타일 */
+body {
+    padding: 0;
+    margin: 0;
+    background-image: url(../../image/background-img.svg);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100vh;
+}
+
+/* 메인 레이아웃 */
+.chatting-page {
+    display: flex;
+    width: 50%;
+    height: calc(100% - 100px);
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 200px auto;
+    z-index: 1;
+}
+
+/* 채팅 목록 컨테이너 */
+.chat-list-container {
+    width: 30%;
+    height: 100%;
+    background-color: #f1f1f1;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.chat-list-item:hover {
+    background-color: #ddd;
+}
+
+.chat-list-item .profile {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.chat-info {
+    flex-grow: 1;
+}
+
+.chat-info .nik-name {
+    font-weight: bold;
+    display: block;
+}
+
+.chat-info .last-message {
+    color: gray;
+    font-size: 14px;
+}
+
+.notification {
+    color: red;
+}
+
+.notification .fa-envelope {
+    font-size: 16px;
+}
+
+/* 채팅 본문 */
+.chat-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.chat-thread {
+    width: 100%;
+    height: calc(100% - 80px); /* 채팅 입력 창을 제외한 높이 */
+    background-color: #F5CBDC;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.chat-thread li {
+    display: block;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    font: 16px/20px 'Noto Sans', sans-serif;
+    border-radius: 10px;
+    background-color: #fff;
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+.chat-thread li.self {
+    background-color: #fff;
+    text-align: right;
+    border-radius: 15px 15px 0 15px;
+    margin-left: auto;
+}
+
+.chat-thread li.other {
+    background-color: #ffe4e1;
+    text-align: left;
+    border-radius: 15px 15px 15px 0;
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+.chat-window {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    background-color: #F5CBDC;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 10px 10px;
+}
+
+.chat-window-message {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.chat-window button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #ff7f7f;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-window button:hover {
+    background-color: #ff4f4f;
+}
+
+.chat-thread .profile {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.chat-thread .self-chat {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.chat-thread .self-chat .profile {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.chat-thread .self-chat .nik-name {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.chat-thread .other-chat {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.nik-name {
+    font-weight: bold;
+}
