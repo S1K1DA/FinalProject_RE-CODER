@@ -655,15 +655,15 @@ margin-bottom : 3rem;
     border: none;
     background-color: #f1f1f1;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 3px;
     font-weight: bold;
     text-decoration: none;
     color: #000;
 }
 
 .review-tab-ico.active {
-background-color: rgba(249, 249, 249, 0.5) !important;
-color : black !important;
+background-color: rgba(249, 249, 249, 0.5);
+color : black;
 }
 
 .tab-content {
