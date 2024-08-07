@@ -41,37 +41,37 @@ public class MypageController {
     }
 
     @GetMapping("/proflike")
-    public String profpage(HttpServletRequest request, Model model) {
+    public String profPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
     @GetMapping("/match")
-    public String matchpage(HttpServletRequest request, Model model) {
+    public String matchPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_match/mypage-match";
     }
 
     @GetMapping("/delete")
-    public String deletepage(HttpServletRequest request, Model model) {
+    public String deletePage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_delete/mypage-delete";
     }
 
     @GetMapping("/hobby")
-    public String hobbypage(HttpServletRequest request, Model model) {
+    public String hobbyPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobby";
     }
 
     @GetMapping("/sentiedit")
-    public String sentieditpage(HttpServletRequest request, Model model) {
+    public String sentiEditPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-sentiedit";
     }
 
     @GetMapping("/hobbyedit")
-    public String hobbyeditpage(HttpServletRequest request, Model model) {
+    public String hobbyEditPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
