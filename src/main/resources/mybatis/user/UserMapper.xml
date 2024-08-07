@@ -5,6 +5,6 @@
 
 <mapper namespace="com.example.UserMapper">
     <select id="getUserByIdTest" parameterType="Long" resultType="com.example.User">
-        SELECT * FROM users WHERE id = #{id}
+        SELECT * FROM basic_user
     </select>
 </mapper>
