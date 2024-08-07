@@ -10,11 +10,11 @@
         <div class="mypage-box-container d-flex">
             <div th:replace="mypage/mypage_nav :: mypagenav"></div>
             <div class="custom-block d-flex flex-column align-items-start text-left p-4">
-                <div class="charge-my-tabs">
-                    <a th:href="@{/mypage/ptreview}" class="charge-tab-ico">포토후기</a>
-                    <a th:href="@{/mypage/lireview}" class="charge-tab-ico active">실시간후기</a>
+                <div class="review-my-tabs">
+                    <a th:href="@{/mypage/ptreview}" class="review-tab-ico">포토후기</a>
+                    <a th:href="@{/mypage/lireview}" class="review-tab-ico active">실시간후기</a>
                 </div>
-                <div class="custom-block-info w-100">
+                <div class="custom-block-info w-100 review-tab">
                     <div class="review-section mb-5">
                         <h4 class="text-primary-color">실시간 리뷰</h4>
                         <div class="live-review-box">

@@ -447,6 +447,7 @@ margin-bottom : 3rem;
     border-radius : 0 15px 15px 0;
     background-color: rgba(249, 249, 249, 0.5);
 }
+
 /* 5. 사진 후기 섹션 스타일 */
 .review-section {
     margin-bottom: 40px;
@@ -643,11 +644,13 @@ margin-bottom : 3rem;
 
 
 /* 기본적인 탭 메뉴 스타일 */
-.charge-my-tabs {
+.review-my-tabs {
     display: flex;
 }
 
-.charge-tab-ico {
+
+
+.review-tab-ico {
     padding: 10px 20px;
     border: none;
     background-color: #f1f1f1;
@@ -658,9 +661,9 @@ margin-bottom : 3rem;
     color: #000;
 }
 
-.charge-tab-ico.active {
-    background-color: var(--primary-color);
-    color: #fff;
+.review-tab-ico.active {
+background-color: rgba(249, 249, 249, 0.5) !important;
+color : black !important;
 }
 
 .tab-content {
