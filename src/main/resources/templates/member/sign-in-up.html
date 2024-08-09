@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Sign In / Sign Up</title>-->
-<!--</head>-->
 <head th:replace="fragments/head :: head"></head>
 <body>
 
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css}">
-    <link rel="stylesheet" th:href="@{/css/member/sign-in-up.css}">
+<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css}">
+<link rel="stylesheet" th:href="@{/css/member/sign-in-up.css}">
 <nav th:replace="fragments/navigation :: navigation"></nav>
 
 <div class="wrapper">
     <div class="container-sign">
         <div class="sign-up-container">
-            <form class="register-form">
+            <form class="register-form" onsubmit="registerClick(); return false;">
                 <h1>회원가입</h1>
                 <div class="social-links">
                     <div>
@@ -28,23 +23,35 @@
                     <button type="button" class="check-btn">중복확인</button>
                 </div>
                 <div class="input-container">
-                    <input type="email" id="userEmail" placeholder="이메일">
+                    <input type="email" id="userEmail" placeholder="이메일" onblur="validateEmail();">
                     <button type="button" class="check-btn">인증</button>
                 </div>
-                <input type="password" id="userPassword" placeholder="비밀번호">
-                <input type="password" id="userPasswordConfirm" placeholder="비밀번호 확인">
-                <input type="text" id="userName" placeholder="이름">
+                <div id="textEmail" class="error-message"></div> <!-- 이메일 오류 메시지 출력 -->
+
+                <input type="password" id="userPassword" placeholder="비밀번호" onblur="validatePassword();">
+                <div id="textPwd" class="error-message"></div> <!-- 비밀번호 오류 메시지 출력 -->
+
+                <input type="password" id="userPasswordConfirm" placeholder="비밀번호 확인" onblur="validatePassword();">
+                <div id="textPwd2" class="error-message"></div> <!-- 비밀번호 확인 오류 메시지 출력 -->
+
+                <input type="text" id="userName" placeholder="이름" onblur="validateName();">
+                <div id="textName" class="error-message"></div> <!-- 이름 오류 메시지 출력 -->
+
                 <div class="birthdate-container">
-                    <input class="user-birth-front" type="text" id="userBirthFront" placeholder="주민번호 앞자리">
+                    <input class="user-birth-front" type="text" id="userBirthFront" placeholder="주민번호 앞자리" maxlength="6">
                     <span class="separator">-</span>
-                    <input class="user-birth-back" type="text" id="userBirthBack" placeholder="한자리">
+                    <input class="user-birth-back" type="text" id="userBirthBack" placeholder="한자리" maxlength="1" onblur="checkGender();">
                 </div>
-                <input type="tel" id="userPhoneNumber" placeholder="전화번호">
+                    <div id="textBirth" class="error-message"></div> <!-- 주민번호 오류 메시지 출력 -->
+
+                <input type="tel" id="userPhoneNumber" placeholder="전화번호" onblur="validatePhoneNumber();">
+                <div id="textPhone" class="error-message"></div> <!-- 전화번호 오류 메시지 출력 -->
+
                 <div class="input-container">
                     <input type="text" id="userAddress" placeholder="상세 주소">
                     <button type="button" class="check-btn">찾기</button>
                 </div>
-                <button class="form-btn">회원가입</button>
+                <button type="submit" class="form-btn">회원가입</button>
             </form>
         </div>
         <div class="sign-in-container">
@@ -77,7 +84,7 @@
         </div>
     </div>
 </div>
-    <script th:src="@{/js/member/sign-in-up.js}"></script>
-    <footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/member/sign-in-up.js}"></script>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
