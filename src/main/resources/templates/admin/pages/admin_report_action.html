@@ -16,25 +16,92 @@
 <header th:replace="admin/fragments/admin_header :: admin_header"></header>
 
 <div class="pc-container">
+    <!-- report popup -->
+    <div id="reportOverlay" class="report-overlay">
+        <div class="report-popup">
+            <h2>신고 처리</h2>
+            <div class="report-action-box">
+                <p>처리응답</p>
+                <textarea class="report-action-textarea"></textarea>
+                <div class="punish-result">
+                    <div class="date-ban-box">
+                        <span>활동 정지일</span>
+                        <input type="date" id="punishDate" class="punish-date">
+                        <span class="punish-date-result"></span>
+                    </div>
+                    <div class="result-checkbox">
+                        <div class="permanen-ban-box">
+                            <input type="checkbox" id="permanentBan" class="permanent-ban-input" name="permanentBan"/>
+                            <label for="permanentBan" class="permanen-ban">영구정지</label>
+                        </div>
+                        <div class="punish-none-box">
+                            <input type="checkbox" id="punisNone" class="punish-none-input" name="punisNone"/>
+                            <label for="punisNone" class="punish-none">해당 없음</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-bnts">
+                    <button id="actionComplate" class="action-complate">완료</button>
+                    <button id="actionCloses" class="action-close">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  popup end  -->
+
     <div class="pc-content">
         <div class="page-header">
-            <h5 class="m-b-10">신고 처리 및 조치</h5>
+            <h5 class="m-b-10">신고 내역 확인</h5>
         </div>
 
-        <div class="row">
+        <div class="row custom-admin-board">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Hello card</h5>
-                    </div>
                     <div class="card-body">
+                        <table class="admin-management-table">
+                            <thead>
+                            <tr>
+                                <th class="action-report-num">신고 번호</th>
+                                <th class="reporter-num">신고자 번호</th>
+                                <th class="reported-num">피신고자 번호</th>
+                                <th class="action-date">신고 접수일</th>
+                                <th class="action-category">신고 카테고리</th>
+                                <th class="action-type">신고 유형</th>
+                                <th class="action-type-num">신고 유형 번호</th>
+                                <th class="action-btn"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>7</td> <td>1</td> <td>7</td> <td>2024.07.29</td> <td>욕설 및 비방</td> <td>피드 댓글</td> <td>4</td> <td><button id="reportActionBtn">처리하기</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <nav class="custom-navigation" aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<script th:src="@{/js/admin/report_action.js}"></script>
 
 <!-- 스크립트 모듈 -->
 <script th:replace="admin/fragments/admin_script::admin_script"></script>

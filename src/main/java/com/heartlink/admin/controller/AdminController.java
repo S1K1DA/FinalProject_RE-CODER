@@ -28,11 +28,6 @@ public class AdminController {
         return "admin/pages/admin_inquiries";
     }
 
-    @GetMapping("/inquiry/response")
-    public String moveInquiryResponsePage(){
-        return "admin/pages/admin_inquiry_response";
-    }
-
     @GetMapping("/reports")
     public String moveReportPage(){
         return "admin/pages/admin_reports";

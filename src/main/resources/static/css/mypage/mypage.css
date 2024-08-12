@@ -280,6 +280,12 @@
     border-color: #ccc;
 }
 
+input{
+border-radius : 10px;
+border: 1px solid #ccc;
+padding: 5px 10px 5px 10px;
+}
+
 .input-short {
     width: 200px;
 }

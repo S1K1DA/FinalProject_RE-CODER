@@ -75,4 +75,9 @@ public class MypageController {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "mypage/test";
+    }
 }
