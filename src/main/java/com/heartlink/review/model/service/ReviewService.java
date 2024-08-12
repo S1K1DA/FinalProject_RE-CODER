@@ -10,4 +10,5 @@ public interface ReviewService {
     ReviewDto getReviewDetail(int reviewNo);
     boolean savePhotoReview(ReviewDto review, ReviewPhotoDto reviewPhoto);
     void increaseReviewViews(int reviewNo);
+    public String getNicknameByUserId(int userId);
 }

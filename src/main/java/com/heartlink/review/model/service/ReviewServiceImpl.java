@@ -63,4 +63,10 @@ public class ReviewServiceImpl implements ReviewService {
     public void increaseReviewViews(int reviewNo) {
         reviewDao.increaseReviewViews(reviewNo);
     }
+
+    @Override
+    public String getNicknameByUserId(int userId) {
+        return reviewDao.getNicknameByUserId(userId);
+    }
+
 }

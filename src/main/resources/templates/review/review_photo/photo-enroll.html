@@ -19,13 +19,15 @@
                         <div>
                             <div class="profile-info-ct">
                                 <span class="sound-only">작성자</span>
-                                <strong th:text="${review.reviewerNickname}">작성자 이름</strong>
+                                <strong th:text="${review.reviewerNickname}"></strong>
                             </div>
                         </div>
                     </section>
 
 
                     <form action="/review/submit" enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="userId" th:value="${review.reviewerUserId}"/> <!-- Hidden 필드로 userId 설정 -->
+                        <input type="hidden" name="reviewerNickname" th:value="${review.reviewerNickname}"/> <!-- Hidden 필드로 닉네임 설정 -->
                         <section>
                             <div class="form-group">
                                 <label class="text-primary-color" for="review-title">글 제목</label>

@@ -29,9 +29,22 @@ public class ReviewController {
     }
 
     @GetMapping("/photoenroll")
-    public String photoEnroll() {
-        return "/review/review_photo/photo-enroll";
+    public String photoEnroll(Model model) {
+        // 임의의 userId로 유저 정보 가져오기 (로그인된 유저 정보를 가져와야 함)
+        int userId = 9; // 이 값은 실제로는 로그인 세션이나 다른 방법을 통해 가져와야 합니다.
+        String reviewerNickname = reviewService.getNicknameByUserId(userId);
+
+        // ReviewDto 객체 생성 및 설정
+        ReviewDto review = new ReviewDto();
+        review.setReviewerUserId(userId);
+        review.setReviewerNickname(reviewerNickname);
+
+        // 모델에 review 객체 추가
+        model.addAttribute("review", review);
+
+        return "review/review_photo/photo-enroll";
     }
+
 
     @GetMapping("/photoedit")
     public String photoEdit() {
@@ -53,12 +66,13 @@ public class ReviewController {
     @PostMapping("/submit")
     public String submitPhotoEnroll(@RequestParam("title") String title,
                                     @RequestParam("content") String content,
+                                    @RequestParam("userId") int userId, // Hidden 필드로 전달된 userId를 받음
                                     Model model) {
         try {
             ReviewDto review = new ReviewDto();
             review.setReviewTitle(title);
             review.setReviewContent(content);
-            review.setReviewerUserId(7); // 임의의 리뷰어 사용자 ID
+            review.setReviewerUserId(userId); // Hidden 필드에서 가져온 userId를 설정
 
             boolean isSaved = reviewService.savePhotoReview(review, null);
 

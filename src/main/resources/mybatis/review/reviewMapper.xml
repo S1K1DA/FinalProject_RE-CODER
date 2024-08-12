@@ -59,4 +59,11 @@
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
+    <select id="getNicknameByUserId" resultType="string">
+        SELECT BASIC_USER_NICKNAME
+        FROM BASIC_USER
+        WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+
 </mapper>

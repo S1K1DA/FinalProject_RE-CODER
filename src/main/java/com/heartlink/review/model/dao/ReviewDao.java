@@ -38,4 +38,7 @@ public class ReviewDao {
     public int increaseReviewViews(int reviewNo) {
         return sqlSession.update("reviewMapper.increaseReviewViews", reviewNo);
     }
+    public String getNicknameByUserId(int userId) {
+        return sqlSession.selectOne("reviewMapper.getNicknameByUserId", userId);
+    }
 }
