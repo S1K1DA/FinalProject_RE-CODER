@@ -1,59 +1,89 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<head th:replace="fragments/head :: head">
+</head>
 <body>
-
-<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css}">
 <link rel="stylesheet" th:href="@{/css/member/sign-in-up.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+
 <nav th:replace="fragments/navigation :: navigation"></nav>
 
 <div class="wrapper">
     <div class="container-sign">
         <div class="sign-up-container">
-            <form class="register-form" onsubmit="registerClick(); return false;">
+            <!-- th:object를 사용하여 폼 데이터를 MemberDto 객체로 바인딩 -->
+            <form class="register-form" th:action="@{/member/register}" th:object="${memberDto}" method="post">
                 <h1>회원가입</h1>
+
                 <div class="social-links">
                     <div>
                         <a href="#"><i class="social-kakao" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <span>소셜 및 아이디를 생성하여 로그인하세요.</span>
+
+                <!-- 닉네임 -->
                 <div class="input-container">
-                    <input type="text" id="userNickname" placeholder="닉네임">
-                    <button type="button" class="check-btn">중복확인</button>
+                    <input type="text" th:field="*{nickname}" id="userNickname" placeholder="닉네임" maxlength="6" onblur="validateNick();">
+                    <button type="button" class="check-btn" onclick="checkNicknameDuplicate()">중복확인</button>
                 </div>
+                <div id="textNick" class="error-message"></div>
+
+                <!-- 이메일 -->
                 <div class="input-container">
-                    <input type="email" id="userEmail" placeholder="이메일" onblur="validateEmail();">
-                    <button type="button" class="check-btn">인증</button>
+                    <input type="email" th:field="*{email}" id="userEmail" placeholder="이메일" onblur="validateEmail();">
+                    <button type="button" class="check-btn" onclick="checkEmailDuplicate()">인증</button>
                 </div>
-                <div id="textEmail" class="error-message"></div> <!-- 이메일 오류 메시지 출력 -->
+                <div id="textEmail" class="error-message"></div>
 
-                <input type="password" id="userPassword" placeholder="비밀번호" onblur="validatePassword();">
-                <div id="textPwd" class="error-message"></div> <!-- 비밀번호 오류 메시지 출력 -->
+                <!-- 이메일 인증 코드 입력 -->
+                <div class="input-container" id="codeContainer" style="display:none;">
+                    <input type="text" id="verificationCode" placeholder="인증 코드를 입력하세요">
+                    <button type="button" class="check-btn" onclick="verifyCode()">인증 확인</button>
+                </div>
+                <div id="textCode" class="error-message"></div>
 
-                <input type="password" id="userPasswordConfirm" placeholder="비밀번호 확인" onblur="validatePassword();">
-                <div id="textPwd2" class="error-message"></div> <!-- 비밀번호 확인 오류 메시지 출력 -->
 
-                <input type="text" id="userName" placeholder="이름" onblur="validateName();">
-                <div id="textName" class="error-message"></div> <!-- 이름 오류 메시지 출력 -->
+                <!-- 비밀번호 -->
+                <input type="password" th:field="*{password}" id="userPassword" placeholder="비밀번호" onblur="validatePassword();">
+                <div id="textPwd" class="error-message"></div>
 
+                <!-- 비밀번호 확인 -->
+                <input type="password" th:field="*{confirmPassword}" id="userPasswordConfirm" placeholder="비밀번호 확인" onblur="validatePassword();">
+                <div id="textPwd2" class="error-message"></div>
+
+                <!-- 이름 -->
+                <input type="text" th:field="*{name}" id="userName" placeholder="이름" onblur="validateName();">
+                <div id="textName" class="error-message"></div>
+
+
+                <!-- 주민등록번호 -->
                 <div class="birthdate-container">
-                    <input class="user-birth-front" type="text" id="userBirthFront" placeholder="주민번호 앞자리" maxlength="6">
+                    <input class="user-birth-front" type="text" th:field="*{residentNumber}" id="userBirthFront" placeholder="주민번호 앞자리" maxlength="6" onblur="checkGender();">
                     <span class="separator">-</span>
-                    <input class="user-birth-back" type="text" id="userBirthBack" placeholder="한자리" maxlength="1" onblur="checkGender();">
+                    <input class="user-birth-back" type="text" th:field="*{gender}" id="userBirthBack" placeholder="한자리" maxlength="1" onblur="checkGender();">
                 </div>
-                    <div id="textBirth" class="error-message"></div> <!-- 주민번호 오류 메시지 출력 -->
+                <div id="textBirth" class="error-message"></div>
 
-                <input type="tel" id="userPhoneNumber" placeholder="전화번호" onblur="validatePhoneNumber();">
-                <div id="textPhone" class="error-message"></div> <!-- 전화번호 오류 메시지 출력 -->
 
+                <!-- 전화번호 -->
+                <input type="tel" th:field="*{phoneNumber}" id="userPhoneNumber" placeholder="전화번호" onblur="validatePhoneNumber();">
+                <div id="textPhone" class="error-message"></div>
+
+                <!-- 주소 -->
                 <div class="input-container">
-                    <input type="text" id="userAddress" placeholder="상세 주소">
-                    <button type="button" class="check-btn">찾기</button>
+                    <input type="text" th:field="*{address}" id="userAddress" placeholder="도로명 주소" readonly>
+                    <button type="button" class="check-btn" onclick="searchAddress()">찾기</button>
                 </div>
-                <button type="submit" class="form-btn">회원가입</button>
+
+                <!-- 회원가입 버튼 -->
+                <button type="submit" class="form-btn" onclick="registerClick(event)">회원가입</button>
             </form>
         </div>
+
+        <!-- 로그인 폼 -->
         <div class="sign-in-container">
             <form class="login-form">
                 <h1>로그인</h1>
@@ -68,6 +98,8 @@
                 <button class="form-btn">로그인</button>
             </form>
         </div>
+
+        <!-- 페이지 전환 버튼 -->
         <div class="overlay-container">
             <div class="overlay-left">
                 <img th:src="@{/image/heartLinkLogo.png}" class="logo-image img-fluid" alt="Site logo">
@@ -84,7 +116,10 @@
         </div>
     </div>
 </div>
+
 <script th:src="@{/js/member/sign-in-up.js}"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

@@ -79,6 +79,12 @@ form input {
   box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
 }
 
+#codeContainer {
+  display: flex; /* display 속성을 flex로 설정 */
+  flex-direction: row; /* 인증 코드 필드와 확인 버튼이 가로로 나란히 배치되도록 설정 */
+  align-items: center;
+}
+
 .check-btn {
   background: #F69D9D;
   color: white;

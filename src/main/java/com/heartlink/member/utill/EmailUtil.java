@@ -7,11 +7,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmailUtill {
+public class EmailUtil {
 
     private final JavaMailSender javaMailSender;
 
-    public EmailUtill(JavaMailSender javaMailSender) {
+    public EmailUtil(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 

@@ -10,11 +10,11 @@ import java.util.Random;
 @Service
 public class EmailService {
 
-    private final EmailUtill emailUtill;
+    private final EmailUtil emailUtil;
     private final Map<String, String> emailVerificationMap = new HashMap<>();
 
-    public EmailService(EmailUtill emailUtill) {
-        this.emailUtill = emailUtill;
+    public EmailService(EmailUtil emailUtil) {
+        this.emailUtil = emailUtil;
     }
 
     // 인증 코드 생성
@@ -32,7 +32,7 @@ public class EmailService {
         String subject = "HeartLink 이메일 인증 코드";
         String text = "<h3>HeartLink 이메일 인증 코드</h3><p>인증 코드는 <strong>" + code + "</strong> 입니다.</p>";
 
-        emailUtill.sendEmail(email, subject, text);
+        emailUtil.sendEmail(email, subject, text);
     }
 
     // 인증 코드 유효성 검사

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heartlink.member.model.mapper.MemberMapper">
+
+    <!-- 회원가입: MemberDto 객체의 필드를 사용하여 INSERT -->
+    <insert id="setSignUp">
+        INSERT INTO BASIC_USER (
+        BASIC_USER_EMAIL,
+        BASIC_USER_PWD,
+        BASIC_USER_NICKNAME,
+        BASIC_USER_NAME,
+        USER_ADDR,
+        BASIC_USER_TELNUM,
+        BASIC_USER_BIRTHDATE,
+        BASIC_USER_SEX
+        ) VALUES (
+        #{memberDto.email},
+        #{memberDto.password},
+        #{memberDto.nickname},
+        #{memberDto.name},
+        #{memberDto.address},
+        #{memberDto.phoneNumber},
+        #{memberDto.residentNumber},
+        CASE
+        WHEN #{memberDto.gender} IN ('1', '3') THEN 'M'
+        WHEN #{memberDto.gender} IN ('2', '4') THEN 'F'
+        ELSE NULL
+        END
+        )
+    </insert>
+
+
+    <!-- 이메일 중복 체크: 주어진 이메일로 USER 테이블에서 COUNT(*)를 수행 -->
+    <select id="duplicateEmail" resultType="int">
+        SELECT COUNT(*)
+        FROM BASIC_USER
+        WHERE BASIC_USER_EMAIL = #{email}
+    </select>
+
+    <!-- 닉네임 중복 체크: 주어진 닉네임으로 USER 테이블에서 COUNT(*)를 수행 -->
+    <select id="duplicateNick" resultType="int">
+        SELECT COUNT(*)
+        FROM BASIC_USER
+        WHERE BASIC_USER_NICKNAME = #{nickname}
+    </select>
+
+</mapper>

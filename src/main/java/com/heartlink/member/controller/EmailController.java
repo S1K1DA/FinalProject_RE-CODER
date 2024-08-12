@@ -18,6 +18,7 @@ public class EmailController {
 
     @PostMapping("/send")
     public String sendVerificationEmail(@RequestParam String email) {
+        System.out.println(email);
         try {
             emailService.sendVerificationEmail(email);
             return "인증 코드가 이메일로 전송되었습니다.";
