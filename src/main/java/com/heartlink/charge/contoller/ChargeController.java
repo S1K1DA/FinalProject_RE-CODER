@@ -1,6 +1,7 @@
 package com.heartlink.charge.contoller;
 
 import com.heartlink.charge.model.dto.ChargeRequestDto;
+import com.heartlink.charge.exception.CustomException;
 import com.heartlink.charge.model.service.ChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,8 +64,6 @@ public class ChargeController {
         chargeRequestDto.setPaymentState("Pending");
         chargeRequestDto.setPaymentMethod("CARD");
 
-        System.out.println(chargeRequestDto.toString());
-
         int setPaymentHistory = chargeService.setPaymentHistory(chargeRequestDto);
 
         if(setPaymentHistory != 1){
@@ -77,7 +76,6 @@ public class ChargeController {
     @PostMapping("/complete")
     @ResponseBody
     public ResponseEntity<?> completePayment(@RequestBody ChargeRequestDto chargeRequestDto) {
-        System.out.println("Received paymentNo: " + chargeRequestDto.getPaymentNo());
 
         String paymentNo = chargeRequestDto.getPaymentNo();
 
