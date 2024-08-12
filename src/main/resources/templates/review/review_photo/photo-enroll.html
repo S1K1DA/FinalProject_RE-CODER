@@ -18,12 +18,12 @@
                     <section class="ptreview-info">
                         <div>
                             <div class="profile-info-ct">
-                                <span class="sound-only">작성자</span> <strong>
-                                AhtaeKim
-                            </strong>
+                                <span class="sound-only">작성자</span>
+                                <strong th:text="${review.reviewerNickname}">작성자 이름</strong>
                             </div>
                         </div>
                     </section>
+
 
                     <form action="/review/submit" enctype="multipart/form-data" method="post">
                         <section>

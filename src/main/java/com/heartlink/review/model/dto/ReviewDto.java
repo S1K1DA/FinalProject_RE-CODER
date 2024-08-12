@@ -12,5 +12,6 @@ public class ReviewDto {
     private int reviewerUserId;
     private int reviewRating;
     private int reviewViews;
-    private String firstImageUrl; // 첫 번째 이미지 URL 필드 추가
+    private String firstImageUrl;
+    private String reviewerNickname;
 }

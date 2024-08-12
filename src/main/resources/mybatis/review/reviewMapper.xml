@@ -11,19 +11,22 @@
         <result column="REVIEW_RATING" property="reviewRating"/>
         <result column="REVIEW_VIEWS" property="reviewViews"/>
         <result column="REVIEW_TYPE" property="reviewType"/>
+        <result column="BASIC_USER_NICKNAME" property="reviewerNickname"/> <!-- 작성자의 닉네임 매핑 -->
     </resultMap>
 
     <!-- 리뷰 리스트 가져오기 -->
     <select id="getAllReviews" resultMap="reviewResultSet">
-        SELECT REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_RATING, REVIEW_VIEWS
-        FROM REVIEW_BOARD
+        SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
+        FROM REVIEW_BOARD r
+        JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
     </select>
 
-    <!-- 리뷰 상세와 사진 가져오기 -->
-    <select id="getReviewDetail" resultMap="reviewResultSet">
-        SELECT REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_RATING, REVIEW_VIEWS
-        FROM REVIEW_BOARD
-        WHERE REVIEW_NO = #{reviewNo}
+    <!-- 특정 리뷰 상세와 사진 가져오기 -->
+    <select id="getReviewDetail" resultMap="reviewResultSet" parameterType="int">
+        SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
+        FROM REVIEW_BOARD r
+        JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE r.REVIEW_NO = #{reviewNo}
     </select>
 
     <select id="getReviewPhotos" resultType="string">
