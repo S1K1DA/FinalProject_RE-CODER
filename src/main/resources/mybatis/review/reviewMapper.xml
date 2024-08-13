@@ -70,7 +70,7 @@
         WHERE BASIC_USER_NO = #{userId}
     </select>
 
-    <!--포토리뷰 수정-->
+    <!--포토리뷰 수정 + 수정한 시간 = REVIEW_UPDATE-->
     <update id="updatePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
         UPDATE REVIEW_BOARD
         SET REVIEW_TITLE = #{reviewTitle},
@@ -79,10 +79,11 @@
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
-    <!--리뷰 삭제-->
+    <!--리뷰 삭제 + 삭제한 시간 = REVIEW_UPDATE-->
     <update id="deleteReview" parameterType="int">
         UPDATE REVIEW_BOARD
-        SET REVIEW_DELETE = 'Y'
+        SET REVIEW_DELETE = 'Y',
+        REVIEW_UPDATE = CURRENT_TIMESTAMP
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
