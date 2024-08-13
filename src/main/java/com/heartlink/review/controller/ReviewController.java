@@ -31,7 +31,7 @@ public class ReviewController {
         int pageSize = 10;
         List<ReviewDto> reviews = reviewService.getAllReviews(); // 모든 리뷰를 가져옴
 
-        Map<String, Object> paginationData = pagination.getPaginatedData(page, pageSize, reviews);
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, reviews);
 
         model.addAttribute("reviews", paginationData.get("items"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));

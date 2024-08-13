@@ -9,7 +9,7 @@ import java.util.Map;
 @Service
 public class Pagination {
 
-    public Map<String, Object> getPaginatedData(int page, int pageSize, List<?> fullDataList) {
+    public Map<String, Object> getPagination(int page, int pageSize, List<?> fullDataList) {
         int totalItems = fullDataList.size();
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
         int offset = (page - 1) * pageSize;
