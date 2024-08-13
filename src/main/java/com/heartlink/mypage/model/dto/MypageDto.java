@@ -14,4 +14,8 @@ public class MypageDto {
     private String phone;
     private String address;
     private String mbti;
+
+    private int personalNo;
+    private String personalName;
+    private String personalType;
 }

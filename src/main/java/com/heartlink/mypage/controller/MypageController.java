@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -88,9 +89,23 @@ public class MypageController {
     }
 
     @GetMapping("/sentiedit")
-    public String sentiEditPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
-        return "mypage/mypage_hobby/mypage-sentiedit";
+    public String editSentiPage(Model model) {
+        int userId = (Integer) model.getAttribute("userId");
+
+        // 선호하는 것 (L 타입) 조회
+        List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
+
+        // 기피하는 것 (H 타입) 조회
+        List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
+
+        // 사용자가 선택한 성향 조회
+        List<Integer> userSelectedCategories = mypageService.getUserSelectedCategories(userId);
+
+        model.addAttribute("likeCategories", likeCategories);
+        model.addAttribute("dislikeCategories", dislikeCategories);
+        model.addAttribute("userSelectedCategories", userSelectedCategories);
+
+        return "mypage/mypage-sentiedit";
     }
 
     @GetMapping("/hobbyedit")
@@ -140,6 +155,17 @@ public class MypageController {
             model.addAttribute("message", "업데이트에 실패했습니다.");
             return "mypage/mypage_main/mypage-infoedit";
         }
+    }
+
+    @PostMapping("/sentiedit/submit")
+    public String submitSentiEdit(
+            @RequestParam(value = "likes", required = false) List<Integer> likeIds,
+            @RequestParam(value = "dislikes", required = false) List<Integer> dislikeIds,
+            @ModelAttribute("userId") int userId) {
+
+        mypageService.saveUserCategories(userId, likeIds, dislikeIds);
+
+        return "redirect:/mypage/main";
     }
 
 

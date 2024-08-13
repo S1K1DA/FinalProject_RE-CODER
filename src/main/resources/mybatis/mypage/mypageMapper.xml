@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mypageMapper">
 
+    <!-- 기존 유저 정보 관련 resultMap -->
     <resultMap id="userResultMap" type="com.heartlink.mypage.model.dto.MypageDto">
         <result column="BASIC_USER_NO" property="userId"/>
         <result column="BASIC_USER_EMAIL" property="email"/>
@@ -12,14 +13,17 @@
         <result column="BASIC_USER_MBTI" property="mbti"/>
     </resultMap>
 
+    <!-- 유저 정보 가져오기 -->
     <select id="getUserInfoById" parameterType="int" resultMap="userResultMap">
         SELECT * FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
     </select>
 
+    <!-- 비밀번호 가져오기 -->
     <select id="getPasswordByUserId" parameterType="int" resultType="string">
         SELECT BASIC_USER_PWD FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
     </select>
 
+    <!-- 유저 정보 업데이트 -->
     <update id="updateUserInfo" parameterType="com.heartlink.mypage.model.dto.MypageDto">
         UPDATE BASIC_USER
         SET
@@ -31,5 +35,30 @@
         WHERE BASIC_USER_NO = #{userId}
     </update>
 
+    <!-- 성향 목록 가져오기 -->
+    <select id="getPersonalCategoriesByType" parameterType="string" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT PERSONAL_NO as personalNo, PERSONAL_NAME as personalName, PERSONAL_TYPE as personalType
+        FROM PERSONAL_CATEGORY
+        WHERE PERSONAL_TYPE = #{type}
+    </select>
+
+    <!-- 특정 유저의 성향 가져오기 -->
+    <select id="getUserSelectedCategories" parameterType="int" resultType="int">
+        SELECT PERSONAL_NO
+        FROM BASIC_USER_PERSONAL
+        WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 유저 성향 초기화 (삭제) -->
+    <delete id="deleteUserCategories" parameterType="int">
+        DELETE FROM BASIC_USER_PERSONAL
+        WHERE BASIC_USER_NO = #{userId}
+    </delete>
+
+    <!-- 유저 성향 추가 -->
+    <insert id="insertUserCategories" parameterType="map">
+        INSERT INTO BASIC_USER_PERSONAL (BASIC_USER_NO, PERSONAL_NO)
+        VALUES (#{userId}, #{personalNo})
+    </insert>
 
 </mapper>
