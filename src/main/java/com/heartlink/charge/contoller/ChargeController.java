@@ -1,7 +1,6 @@
 package com.heartlink.charge.contoller;
 
 import com.heartlink.charge.model.dto.ChargeRequestDto;
-import com.heartlink.charge.exception.CustomException;
 import com.heartlink.charge.model.service.ChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -34,43 +35,28 @@ public class ChargeController {
         return "mypage/mypage_coin_charge/charge-history";
     }
 
-    @GetMapping("/sequence")
+
+
+    @PostMapping("/payment-order")
     @ResponseBody
-    public String getSequence(){
-        int currentSequence = chargeService.getCurrentSequence();
-        String stringSequence = Integer.toString(currentSequence);
+    public ResponseEntity<String> getSequence(@RequestBody ChargeRequestDto chargeRequestDto){
+        String thisSequence = chargeService.getCurrentSequence();
 
-        // 현재시간 생성
-        LocalDate SequenceNow = LocalDate.now();
-        // SequenceNow포매팅
-        String formatedNow = SequenceNow.format(DateTimeFormatter.ofPattern("yyMMdd"));
-
-        // 최종 결제 번호 MID
-        String resultMID = "";
-        if(currentSequence < 10){
-            resultMID = formatedNow + "-00" + stringSequence;
-        }else if (10 <= currentSequence && currentSequence < 100){
-            resultMID = formatedNow + "-0" + stringSequence;
-        }else {
-            resultMID = formatedNow + "-" + stringSequence;
+        if(Objects.isNull(thisSequence)){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database 조회 실패");
         }
 
-        return resultMID;
-    }
-
-    @PostMapping("/pending")
-    @ResponseBody
-    public String paymentState(@RequestBody ChargeRequestDto chargeRequestDto){
         chargeRequestDto.setPaymentState("Pending");
-        chargeRequestDto.setPaymentMethod("CARD");
+        chargeRequestDto.setPaymentMethod("NONE");
+        chargeRequestDto.setPaymentNo(thisSequence);
 
         int setPaymentHistory = chargeService.setPaymentHistory(chargeRequestDto);
 
-        if(setPaymentHistory != 1){
-            return "failed";
+        if(setPaymentHistory == 0){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database 데이터 삽입 실패");
         }
 
-        return "success";
+        return ResponseEntity.status(HttpStatus.OK).body(thisSequence);
     }
 
     @PostMapping("/complete")

@@ -10,12 +10,12 @@ public class AdminController {
 
     @GetMapping("/login")
     public String moveLoginPage(){
-        return "admin-login";
+        return "/admin/admin_user/admin-login";
     }
 
     @GetMapping("/register")
     public String moveRegisterPage(){
-        return "admin-register";
+        return "admin/admin_user/admin-register";
     }
 
     @GetMapping("/main")

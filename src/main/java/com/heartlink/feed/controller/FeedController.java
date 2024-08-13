@@ -10,7 +10,7 @@ public class FeedController {
 
     @GetMapping("")
     public String moveMain() {
-        return "feed/feed_main";  // "index"는 src/main/resources/templates/admin_main.html
+        return "feed/feed_main";  // "index"는 src/main/resources/templates/admin-main.html
     }
 
     @GetMapping("/write")
