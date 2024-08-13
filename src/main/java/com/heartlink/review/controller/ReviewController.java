@@ -5,10 +5,8 @@ import com.heartlink.review.model.dto.ReviewDto;
 import com.heartlink.review.model.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +19,15 @@ public class ReviewController {
     private final Pagination pagination;
 
     public ReviewController(ReviewService reviewService, Pagination pagination) {
-
         this.reviewService = reviewService;
         this.pagination = pagination;
+    }
+
+    // 모든 요청에 대해 userId를 모델에 추가
+    @ModelAttribute
+    public void addUserToModel(Model model) {
+        int userId = 9; // 임의로 설정한 userId, 실제로는 로그인 정보로 대체되어야 함
+        model.addAttribute("userId", userId);
     }
 
     @GetMapping("/photomain")
@@ -43,13 +47,11 @@ public class ReviewController {
 
     @GetMapping("/photoenroll")
     public String photoEnroll(Model model) {
-        // 임의의 userId로 유저 정보 가져오기 (로그인된 유저 정보를 가져와야 함)
-        int userId = 9; // 이 값은 실제로는 로그인 세션이나 다른 방법을 통해 가져와야 합니다.
-        String reviewerNickname = reviewService.getNicknameByUserId(userId);
+        String reviewerNickname = reviewService.getNicknameByUserId((Integer) model.getAttribute("userId"));
 
         // ReviewDto 객체 생성 및 설정
         ReviewDto review = new ReviewDto();
-        review.setReviewerUserId(userId);
+        review.setReviewerUserId((Integer) model.getAttribute("userId"));
         review.setReviewerNickname(reviewerNickname);
 
         // 모델에 review 객체 추가
@@ -58,25 +60,42 @@ public class ReviewController {
         return "review/review_photo/photo-enroll";
     }
 
-
     @GetMapping("/photoedit")
     public String photoEdit(@RequestParam("reviewNo") int reviewNo, Model model) {
-        ReviewDto review = reviewService.getReviewDetail(reviewNo);
-        model.addAttribute("review", review);
-        return "review/review_photo/photo-edit";
+        ReviewDto review = reviewService.getReviewDetail(reviewNo); // 조회수 증가 없음
+        int currentUserId = (Integer) model.getAttribute("userId");
+
+        if (review.getReviewerUserId() == currentUserId) {
+            model.addAttribute("review", review);
+            return "review/review_photo/photo-edit";
+        } else {
+            model.addAttribute("message", "작성자만 글을 수정할 수 있습니다.");
+            return "redirect:/review/photodetail?reviewNo=" + reviewNo;
+        }
     }
 
     @GetMapping("/photodetail")
     public String photoDetail(@RequestParam("reviewNo") int reviewNo, Model model) {
-        ReviewDto review = reviewService.getReviewDetail(reviewNo);
+        ReviewDto review = reviewService.getReviewDetailWithViews(reviewNo); // 조회수 증가
         model.addAttribute("review", review);
         return "/review/review_photo/photo-detail";
     }
 
     @GetMapping("/livemain")
-    public String liveMain() {
+    public String liveMain(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 10;
+        List<ReviewDto> liveReviews = reviewService.getLiveReviews();
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
+
+        model.addAttribute("liveReviews", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/review/livemain");
+
         return "/review/live-main";
     }
+
 
     @PostMapping("/submit")
     public String submitPhotoEnroll(@RequestParam("title") String title,
@@ -111,19 +130,26 @@ public class ReviewController {
                                     @RequestParam("reviewContent") String content,
                                     Model model) {
         try {
-            ReviewDto review = new ReviewDto();
-            review.setReviewNo(reviewNo);
-            review.setReviewTitle(title);
-            review.setReviewContent(content);
+            int currentUserId = (Integer) model.getAttribute("userId");
+            ReviewDto review = reviewService.getReviewDetail(reviewNo);
 
-            boolean isUpdated = reviewService.updatePhotoReview(review);
+            // 작성자와 현재 userId가 동일할 때만 수정 가능
+            if (review.getReviewerUserId() == currentUserId) {
+                review.setReviewTitle(title);
+                review.setReviewContent(content);
 
-            if (isUpdated) {
-                model.addAttribute("message", "글이 성공적으로 수정되었습니다.");
-                return "redirect:/review/photodetail?reviewNo=" + reviewNo;
+                boolean isUpdated = reviewService.updatePhotoReview(review);
+
+                if (isUpdated) {
+                    model.addAttribute("message", "글이 성공적으로 수정되었습니다.");
+                    return "redirect:/review/photodetail?reviewNo=" + reviewNo;
+                } else {
+                    model.addAttribute("message", "글 수정에 실패했습니다.");
+                    return "review/review_photo/photo-edit";
+                }
             } else {
-                model.addAttribute("message", "글 수정에 실패했습니다.");
-                return "review/review_photo/photo-edit";
+                model.addAttribute("message", "작성자만 글을 수정할 수 있습니다.");
+                return "redirect:/review/photodetail?reviewNo=" + reviewNo;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,5 +174,44 @@ public class ReviewController {
         }
         return "redirect:/review/photomain";
     }
+
+    @PostMapping("/submitLiveReview")
+    public String submitLiveReview(@RequestParam("review_content") String content,
+                                   @RequestParam("rating") int rating,
+                                   @RequestParam("userId") int userId,
+                                   Model model) {
+        try {
+            ReviewDto review = new ReviewDto();
+            review.setReviewContent(content);
+            review.setReviewRating(rating);
+            review.setReviewerUserId(userId);
+
+            boolean isSaved = reviewService.saveLiveReview(review);
+
+            if (isSaved) {
+                return "redirect:/review/livemain";
+            } else {
+                model.addAttribute("message", "리뷰 작성에 실패했습니다.");
+                return "review/live-main";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            return "review/live-main";
+        }
+    }
+
+
+    @PostMapping("/deleteLiveReview")
+    public String deleteLiveReview(@RequestParam("reviewNo") int reviewNo, RedirectAttributes redirectAttributes) {
+        boolean isDeleted = reviewService.deleteReview(reviewNo);
+        if (isDeleted) {
+            redirectAttributes.addFlashAttribute("message", "리뷰가 삭제되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "리뷰 삭제에 실패했습니다.");
+        }
+        return "redirect:/review/livemain";
+    }
+
 
 }

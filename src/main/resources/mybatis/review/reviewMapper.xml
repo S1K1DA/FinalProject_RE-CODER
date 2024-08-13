@@ -11,7 +11,8 @@
         <result column="REVIEW_RATING" property="reviewRating"/>
         <result column="REVIEW_VIEWS" property="reviewViews"/>
         <result column="REVIEW_TYPE" property="reviewType"/>
-        <result column="BASIC_USER_NICKNAME" property="reviewerNickname"/> <!-- 작성자의 닉네임 매핑 -->
+        <result column="BASIC_USER_NICKNAME" property="reviewerNickname"/>
+        <result column="REVIEW_DELETE" property="reviewDelete"/>
     </resultMap>
 
     <!-- 리뷰 리스트 가져오기 -->
@@ -22,8 +23,6 @@
         WHERE r.REVIEW_TYPE = 'P' AND r.REVIEW_DELETE = 'N'
         ORDER BY r.REVIEW_NO DESC
     </select>
-
-
 
     <!-- 특정 리뷰 상세와 사진 가져오기 -->
     <select id="getReviewDetail" resultMap="reviewResultSet" parameterType="int">
@@ -45,6 +44,12 @@
         VALUES (REVIEW_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContent}, #{reviewerUserId}, 'P')
     </insert>
 
+    <!-- Live Review 저장 -->
+    <insert id="saveLiveReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
+        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_RATING, REVIEW_TYPE)
+        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewContent}, #{reviewerUserId}, #{reviewRating}, 'L')
+    </insert>
+
     <!-- 마지막 리뷰 번호 가져오기 -->
     <select id="getLastReviewNo" resultType="string">
         SELECT REVIEW_SEQ.CURRVAL FROM DUAL
@@ -63,14 +68,14 @@
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
-    <!--아이디에서 닉네임 가져옴-->
+    <!-- 아이디에서 닉네임 가져옴 -->
     <select id="getNicknameByUserId" resultType="string">
         SELECT BASIC_USER_NICKNAME
         FROM BASIC_USER
         WHERE BASIC_USER_NO = #{userId}
     </select>
 
-    <!--포토리뷰 수정 + 수정한 시간 = REVIEW_UPDATE-->
+    <!-- 포토리뷰 수정 + 수정한 시간 = REVIEW_UPDATE -->
     <update id="updatePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
         UPDATE REVIEW_BOARD
         SET REVIEW_TITLE = #{reviewTitle},
@@ -79,7 +84,7 @@
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
-    <!--리뷰 삭제 + 삭제한 시간 = REVIEW_UPDATE-->
+    <!-- 리뷰 삭제 + 삭제한 시간 = REVIEW_UPDATE -->
     <update id="deleteReview" parameterType="int">
         UPDATE REVIEW_BOARD
         SET REVIEW_DELETE = 'Y',
@@ -87,7 +92,12 @@
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
-
-
+    <!-- Live Review 목록 가져오기 -->
+    <select id="getLiveReviews" resultMap="reviewResultSet">
+        SELECT REVIEW_NO, REVIEW_CONTENT, REVIEW_RATING
+        FROM REVIEW_BOARD
+        WHERE REVIEW_TYPE = 'L' AND REVIEW_DELETE = 'N'
+        ORDER BY REVIEW_NO DESC
+    </select>
 
 </mapper>

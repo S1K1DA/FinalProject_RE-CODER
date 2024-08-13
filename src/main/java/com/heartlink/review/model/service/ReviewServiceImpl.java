@@ -40,6 +40,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto getReviewDetail(int reviewNo) {
+        return reviewDao.getReviewDetail(reviewNo); // 조회수 증가 없음
+    }
+
+    @Override
+    public ReviewDto getReviewDetailWithViews(int reviewNo) {
         reviewDao.increaseReviewViews(reviewNo);
         return reviewDao.getReviewDetail(reviewNo);
     }
@@ -77,6 +82,17 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public boolean deleteReview(int reviewNo) {
         return reviewDao.deleteReview(reviewNo) > 0;
+    }
+
+    // Live Review 관련 메서드 구현
+    @Override
+    public boolean saveLiveReview(ReviewDto review) {
+        return reviewDao.saveLiveReview(review) > 0;
+    }
+
+    @Override
+    public List<ReviewDto> getLiveReviews() {
+        return reviewDao.getLiveReviews();
     }
 
 

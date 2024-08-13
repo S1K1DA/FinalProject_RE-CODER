@@ -494,3 +494,16 @@ display:none;}
     margin: inherit !important;
     padding: inherit !important;
 }
+
+.live-review-item{
+margin-bottom:10px;
+}
+
+.live-review-delete-button{
+background:none;
+border:none;
+padding:0;
+color:inherit;
+cursor:pointer;
+
+}
