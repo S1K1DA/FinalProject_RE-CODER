@@ -45,4 +45,9 @@ public class ReviewDao {
     public int updatePhotoReview(ReviewDto review) {
         return sqlSession.update("reviewMapper.updatePhotoReview", review);
     }
+
+    public int deleteReview(int reviewNo) {
+        return sqlSession.update("reviewMapper.deleteReview", reviewNo);
+    }
+
 }

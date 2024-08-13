@@ -14,8 +14,16 @@
                     <!-- 리뷰 제목 동적 표시 -->
                     <h3 class="text-primary-color" th:text="${review.reviewTitle}">커플후기</h3>
                     <div class="button-container">
-                        <button class="btn-action color-sec" th:onclick="'location.href=/review/delete?reviewNo=' + ${review.reviewNo}">삭제하기</button>
-                        <button class="btn-action color-pri" th:onclick="'location.href=\'/review/photoedit?reviewNo=' + ${review.reviewNo} + '\''">수정하기</button>
+                        <!-- 삭제하기 버튼 -->
+                        <form action="/review/delete" method="post" style="display:inline;">
+                            <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
+                            <button class="btn-action color-sec" type="submit">삭제하기</button>
+                        </form>
+
+                        <!-- 수정하기 버튼 -->
+                        <a class="btn-action color-pri" th:href="@{'/review/photoedit?reviewNo=' + ${review.reviewNo}}">수정하기</a>
+
+                        <!-- 목록으로 버튼 -->
                         <button class="btn-action" onclick="location.href='/review/photomain'">목록으로</button>
                     </div>
 

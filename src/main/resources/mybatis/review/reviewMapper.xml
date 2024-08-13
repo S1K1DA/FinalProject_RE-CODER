@@ -19,9 +19,10 @@
         SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
         FROM REVIEW_BOARD r
         JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
-        WHERE r.REVIEW_TYPE = 'P'
+        WHERE r.REVIEW_TYPE = 'P' AND r.REVIEW_DELETE = 'N'
         ORDER BY r.REVIEW_NO DESC
     </select>
+
 
 
     <!-- 특정 리뷰 상세와 사진 가져오기 -->
@@ -62,12 +63,14 @@
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
+    <!--아이디에서 닉네임 가져옴-->
     <select id="getNicknameByUserId" resultType="string">
         SELECT BASIC_USER_NICKNAME
         FROM BASIC_USER
         WHERE BASIC_USER_NO = #{userId}
     </select>
 
+    <!--포토리뷰 수정-->
     <update id="updatePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
         UPDATE REVIEW_BOARD
         SET REVIEW_TITLE = #{reviewTitle},
@@ -75,6 +78,14 @@
         REVIEW_UPDATE = CURRENT_TIMESTAMP
         WHERE REVIEW_NO = #{reviewNo}
     </update>
+
+    <!--리뷰 삭제-->
+    <update id="deleteReview" parameterType="int">
+        UPDATE REVIEW_BOARD
+        SET REVIEW_DELETE = 'Y'
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
 
 
 

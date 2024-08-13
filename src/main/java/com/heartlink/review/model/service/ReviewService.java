@@ -12,5 +12,7 @@ public interface ReviewService {
     void increaseReviewViews(int reviewNo);
     public String getNicknameByUserId(int userId);
     public boolean updatePhotoReview(ReviewDto review);
+    boolean deleteReview(int reviewNo);
+
 
 }

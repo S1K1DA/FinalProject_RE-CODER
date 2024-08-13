@@ -74,4 +74,10 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewDao.updatePhotoReview(review) > 0;
     }
 
+    @Override
+    public boolean deleteReview(int reviewNo) {
+        return reviewDao.deleteReview(reviewNo) > 0;
+    }
+
+
 }
