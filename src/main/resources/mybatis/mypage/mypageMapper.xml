@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mypageMapper">
+
+    <resultMap id="userResultMap" type="com.heartlink.mypage.model.dto.MypageDto">
+        <result column="BASIC_USER_NO" property="userId"/>
+        <result column="BASIC_USER_EMAIL" property="email"/>
+        <result column="BASIC_USER_NICKNAME" property="nickname"/>
+        <result column="BASIC_USER_NAME" property="name"/>
+        <result column="USER_ADDR" property="address"/>
+        <result column="BASIC_USER_TELNUM" property="phone"/>
+        <result column="BASIC_USER_MBTI" property="mbti"/>
+    </resultMap>
+
+    <select id="getUserInfoById" parameterType="int" resultMap="userResultMap">
+        SELECT * FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <select id="getPasswordByUserId" parameterType="int" resultType="string">
+        SELECT BASIC_USER_PWD FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <update id="updateUserInfo" parameterType="com.heartlink.mypage.model.dto.MypageDto">
+        UPDATE BASIC_USER
+        SET
+        BASIC_USER_NICKNAME = #{nickname},
+        USER_ADDR = #{address},
+        BASIC_USER_TELNUM = #{phone},
+        BASIC_USER_UPDATE = CURRENT_TIMESTAMP,
+        BASIC_USER_MBTI = #{mbti}
+        WHERE BASIC_USER_NO = #{userId}
+    </update>
+
+
+</mapper>
