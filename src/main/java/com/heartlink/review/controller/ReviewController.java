@@ -1,5 +1,6 @@
 package com.heartlink.review.controller;
 
+import com.heartlink.review.common.Pagination;
 import com.heartlink.review.model.dto.ReviewDto;
 import com.heartlink.review.model.service.ReviewService;
 import org.springframework.stereotype.Controller;
@@ -10,21 +11,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/review")
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final Pagination pagination;
 
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, Pagination pagination) {
+
         this.reviewService = reviewService;
+        this.pagination = pagination;
     }
 
     @GetMapping("/photomain")
-    public String photoMain(Model model) {
-        List<ReviewDto> reviews = reviewService.getAllReviews();
-        model.addAttribute("reviews", reviews);
+    public String photoMain(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 10;
+        List<ReviewDto> reviews = reviewService.getAllReviews(); // 모든 리뷰를 가져옴
+
+        Map<String, Object> paginationData = pagination.getPaginatedData(page, pageSize, reviews);
+
+        model.addAttribute("reviews", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/review/photomain");
+
         return "/review/review_photo/photo-main";
     }
 
