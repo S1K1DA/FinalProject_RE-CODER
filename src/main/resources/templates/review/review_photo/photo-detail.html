@@ -15,7 +15,7 @@
                     <h3 class="text-primary-color" th:text="${review.reviewTitle}">커플후기</h3>
                     <div class="button-container">
                         <!-- 삭제하기 버튼 -->
-                        <form action="/review/delete" method="post" style="display:inline;">
+                        <form action="/review/delete" method="post" style="display:inline;" onsubmit="return confirmDelete();">
                             <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
                             <button class="btn-action color-sec" type="submit">삭제하기</button>
                         </form>

@@ -33,3 +33,8 @@ window.onload = function() {
         alert(message);
     }
 };
+
+// 리뷰 삭제 확인
+function confirmDelete() {
+    return confirm('정말로 이 리뷰를 삭제하시겠습니까?');
+}
