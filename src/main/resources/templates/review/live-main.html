@@ -17,6 +17,10 @@
                 <div class="review-info">
                     <p>모든 실시간 리뷰는 익명으로 작성됩니다. </p>
                 </div>
+
+                <!-- 서버에서 전달된 메시지를 처리하기 위한 블록 -->
+                <div th:if="${message}" class="alert" th:text="${message}"></div>
+
                 <form action="/review/submitLiveReview" id="liveReviewForm" method="POST">
                     <input name="userId" th:value="${userId}" type="hidden"/>
                     <div class="review-input-row">
@@ -54,10 +58,10 @@
                                         <div class="more-dropdown-content">
                                             <div class="more-ele">신고하기</div>
                                             <div class="more-ele">
-                                            <form action="/review/deleteLiveReview" method="POST" style="display:inline;">
-                                                <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
-                                                <button class="live-review-delete-button" type="submit">삭제</button>
-                                            </form>
+                                                <form action="/review/deleteLiveReview" method="POST" style="display:inline;">
+                                                    <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
+                                                    <button class="live-review-delete-button" type="submit">삭제</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
