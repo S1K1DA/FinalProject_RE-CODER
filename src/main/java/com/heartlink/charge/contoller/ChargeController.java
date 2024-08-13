@@ -2,6 +2,7 @@ package com.heartlink.charge.contoller;
 
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.service.ChargeService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,8 +62,9 @@ public class ChargeController {
 
     @PostMapping("/complete")
     @ResponseBody
-    public ResponseEntity<?> completePayment(@RequestBody ChargeRequestDto chargeRequestDto) {
-
+    public ResponseEntity<?> completePayment(@RequestBody ChargeRequestDto chargeRequestDto, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        System.out.println("referer: " + referer);
         String paymentNo = chargeRequestDto.getPaymentNo();
 
         try {

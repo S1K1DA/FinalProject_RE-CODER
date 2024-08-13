@@ -190,6 +190,7 @@ ul, li{
 .payment-history-area{
     color: #5a5a5a;
     position: relative;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
@@ -198,17 +199,22 @@ ul, li{
     border-radius: 0 5px 5px 5px;
     background-color: #fff;
     padding: 30px;
+    justify-content: flex-start;
+    position: relative;
 }
 
 .payment-history-table{
     width: 100%;
     padding: 10px;
+    background-color: #e9b5c1;
+    border-radius: 15px;
     text-align: center;
     border-top: 1.5px solid #3c3c3c2b;
     border-bottom: 1.5px solid #3c3c3c2b;
 }
 
 .payment-history-thead{
+    border-bottom: 1px solid #3c3c3c;
     font-weight: bold;
     font-size: 17px;
     border-bottom: 1.5px solid #3c3c3c2b;
