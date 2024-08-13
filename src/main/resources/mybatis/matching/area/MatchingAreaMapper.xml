@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mappers/ChargeMapper.xml -->
+<mapper namespace="com.heartlink.matching.area.model.mapper.MatchingAreaMapper">
+    <resultMap id="resultMatchingUser" type="MatchingAreaDto">
+        <result column="basic_user_no" property="basicUserNo"/>
+        <result column="user_addr" property="userAddr"/>
+        <result column="basic_user_mbti" property="basicUserMbti"/>
+        <result column="basic_user_nickname" property="basicUserNickname"/>
+        <result column="basic_user_name" property="basicUserName"/>
+        <result column="basic_user_birthdate" property="basicUserBirthdate"/>
+    </resultMap>
+    <resultMap id="resultMatchingDetail" type="MatchingAreaDto">
+        <result column="hobby_name" property="hobbyName"/>
+        <result column="personal_name" property="personalName"/>
+    </resultMap>
+
+    <select id="setUserLocation" resultType="java.lang.String">
+        SELECT USER_ADDR FROM BASIC_USER bu
+        WHERE BASIC_USER_NO = #{basicUserNo}
+    </select>
+
+</mapper>
