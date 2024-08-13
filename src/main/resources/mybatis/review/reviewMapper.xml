@@ -19,7 +19,10 @@
         SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
         FROM REVIEW_BOARD r
         JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE r.REVIEW_TYPE = 'P'
+        ORDER BY r.REVIEW_NO DESC
     </select>
+
 
     <!-- 특정 리뷰 상세와 사진 가져오기 -->
     <select id="getReviewDetail" resultMap="reviewResultSet" parameterType="int">
@@ -64,6 +67,15 @@
         FROM BASIC_USER
         WHERE BASIC_USER_NO = #{userId}
     </select>
+
+    <update id="updatePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
+        UPDATE REVIEW_BOARD
+        SET REVIEW_TITLE = #{reviewTitle},
+        REVIEW_CONTENT = #{reviewContent},
+        REVIEW_UPDATE = CURRENT_TIMESTAMP
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
 
 
 </mapper>

@@ -41,4 +41,8 @@ public class ReviewDao {
     public String getNicknameByUserId(int userId) {
         return sqlSession.selectOne("reviewMapper.getNicknameByUserId", userId);
     }
+
+    public int updatePhotoReview(ReviewDto review) {
+        return sqlSession.update("reviewMapper.updatePhotoReview", review);
+    }
 }

@@ -15,7 +15,7 @@
                     <h3 class="text-primary-color" th:text="${review.reviewTitle}">커플후기</h3>
                     <div class="button-container">
                         <button class="btn-action color-sec" th:onclick="'location.href=/review/delete?reviewNo=' + ${review.reviewNo}">삭제하기</button>
-                        <button class="btn-action color-pri" th:onclick="'location.href=/review/photoedit?reviewNo=' + ${review.reviewNo}">수정하기</button>
+                        <button class="btn-action color-pri" th:onclick="'location.href=\'/review/photoedit?reviewNo=' + ${review.reviewNo} + '\''">수정하기</button>
                         <button class="btn-action" onclick="location.href='/review/photomain'">목록으로</button>
                     </div>
 
@@ -30,7 +30,6 @@
                                     <span th:text="${review.reviewViews}">조회수</span>명 읽음
                                 </strong>
                             </div>
-
                         </div>
                     </section>
 

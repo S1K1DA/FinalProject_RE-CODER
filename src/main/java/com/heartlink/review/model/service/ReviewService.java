@@ -11,4 +11,6 @@ public interface ReviewService {
     boolean savePhotoReview(ReviewDto review, ReviewPhotoDto reviewPhoto);
     void increaseReviewViews(int reviewNo);
     public String getNicknameByUserId(int userId);
+    public boolean updatePhotoReview(ReviewDto review);
+
 }

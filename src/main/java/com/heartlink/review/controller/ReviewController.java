@@ -47,8 +47,10 @@ public class ReviewController {
 
 
     @GetMapping("/photoedit")
-    public String photoEdit() {
-        return "/review/review_photo/photo-edit";
+    public String photoEdit(@RequestParam("reviewNo") int reviewNo, Model model) {
+        ReviewDto review = reviewService.getReviewDetail(reviewNo);
+        model.addAttribute("review", review);
+        return "review/review_photo/photo-edit";
     }
 
     @GetMapping("/photodetail")
@@ -87,6 +89,33 @@ public class ReviewController {
             e.printStackTrace();
             model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
             return "review/review_photo/photo-enroll";
+        }
+    }
+
+    @PostMapping("/photoedit")
+    public String updatePhotoReview(@RequestParam("reviewNo") int reviewNo,
+                                    @RequestParam("reviewTitle") String title,
+                                    @RequestParam("reviewContent") String content,
+                                    Model model) {
+        try {
+            ReviewDto review = new ReviewDto();
+            review.setReviewNo(reviewNo);
+            review.setReviewTitle(title);
+            review.setReviewContent(content);
+
+            boolean isUpdated = reviewService.updatePhotoReview(review);
+
+            if (isUpdated) {
+                model.addAttribute("message", "글이 성공적으로 수정되었습니다.");
+                return "redirect:/review/photodetail?reviewNo=" + reviewNo;
+            } else {
+                model.addAttribute("message", "글 수정에 실패했습니다.");
+                return "review/review_photo/photo-edit";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            return "review/review_photo/photo-edit";
         }
     }
 }

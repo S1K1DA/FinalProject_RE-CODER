@@ -69,4 +69,9 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewDao.getNicknameByUserId(userId);
     }
 
+    @Override
+    public boolean updatePhotoReview(ReviewDto review) {
+        return reviewDao.updatePhotoReview(review) > 0;
+    }
+
 }
