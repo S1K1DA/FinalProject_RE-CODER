@@ -46,14 +46,14 @@ public class MypageController {
     public String editPage(HttpServletRequest request, Model model) {
         Integer userId = (Integer) model.getAttribute("userId");
         MypageDto user = mypageService.getUserInfo(userId);
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
         return "mypage/mypage_main/mypage-infoedit";
     }
 
     @GetMapping("/feedlike")
     public String feedlikepage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_feedlike/mypage-feedlike";
     }
 
@@ -98,19 +98,19 @@ public class MypageController {
 
     @GetMapping("/proflike")
     public String profPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
     @GetMapping("/match")
     public String matchPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_match/mypage-match";
     }
 
     @GetMapping("/delete")
     public String deletePage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_delete/mypage-delete";
     }
 
@@ -131,7 +131,7 @@ public class MypageController {
         List<MypageDto> userHobbies = mypageService.getUserHobbies(userId);
         model.addAttribute("userHobbies", userHobbies);
 
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_hobby/mypage-hobby";
     }
 
@@ -167,7 +167,7 @@ public class MypageController {
 
         model.addAttribute("hobbyCategories", hobbyCategories);
         model.addAttribute("userHobbyIds", userHobbyIds);
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
 
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
