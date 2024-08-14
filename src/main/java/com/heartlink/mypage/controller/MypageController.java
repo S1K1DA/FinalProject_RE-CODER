@@ -79,7 +79,7 @@ public class MypageController {
 
     @GetMapping("/lireview")
     public String lireview(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
-        int pageSize = 10;
+        int pageSize = 5;
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);
 
