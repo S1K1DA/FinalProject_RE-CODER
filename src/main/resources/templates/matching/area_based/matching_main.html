@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<head th:replace="~{fragments/head :: head}"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/matching/matching_area.css}">
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=deccfadc6082bace7755580e5d770d4d&libraries=services,clusterer"></script>
-<nav th:replace="fragments/navigation :: navigation"></nav>
+    <nav th:replace="~{fragments/navigation :: navigation}"></nav>
     <section class="matching-main-sec">
         <div class="container matching-out-box">
             <div class="matching-my-tabs">
@@ -98,8 +97,7 @@
             </div>
         </div>
     </section>
-<!--<script th:src="@{/js/matching/areamatching.js}"></script>-->
-<script src="/js/matching/areamatching.js"></script>
-<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/matching/areamatching.js}"></script>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

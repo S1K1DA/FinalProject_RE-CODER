@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/fragments/admin-head :: admin_head"></head>
+<head th:replace="~{admin/fragments/admin-head :: admin_head}"></head>
 <body>
 
 <div class="loader-bg">
@@ -10,10 +10,10 @@
 </div>
 
 <!--사이드 바-->
-<nav th:replace="admin/fragments/sidebar-menu :: sidebar_menu"></nav>
+<nav th:replace="~{admin/fragments/sidebar-menu :: sidebar_menu}"></nav>
 
 <!-- nav 헤더 start -->
-<header th:replace="admin/fragments/admin-header :: admin_header"></header>
+<header th:replace="~{admin/fragments/admin-header :: admin_header}"></header>
 
 <div class="pc-container">
     <div class="pc-content">
@@ -86,6 +86,6 @@
 
 
 <!-- 스크립트 모듈 -->
-<script th:replace="admin/fragments/admin-script::admin_script"></script>
+<script th:replace="~{admin/fragments/admin-script::admin_script}"></script>
 </body>
 </html>
