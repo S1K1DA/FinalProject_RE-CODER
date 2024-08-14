@@ -481,6 +481,10 @@ list-style-type: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.photo-review-item:hover {
+        background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
+    }
+
 .photo-review-item p {
     font-size : 1rem !important;
 }
@@ -524,7 +528,6 @@ list-style-type: none;
 
 .review-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -541,6 +544,7 @@ list-style-type: none;
 .review-rating {
     font-size: 1.2rem;
     color: gold;
+    text-align:left;
 }
 
 /* 페이지네이션 */
@@ -775,4 +779,175 @@ color:var(--white-color);
 .dislike-inbox{
 background-color:var(--secondary-color);
 color:var(--white-color);
+}
+
+/* 라이브리뷰 페이지 스타일 */
+
+/* 실시간 리뷰 섹션 스타일 */
+
+
+.text-primary-color {
+    color: var(--primary-color);
+}
+
+.live-review-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.live-review-item {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom:10px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.live-review-item h6 {
+    font-size: 1.4rem !important;
+}
+
+.live-review-item p {
+    font-size: 1rem !important;
+    margin-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 200px;
+    font-weight: normal;
+}
+
+.review-rating {
+    font-size: 1.2rem;
+    color: gold;
+    padding-left: 20px;
+}
+
+.more-icon-image {
+    width: 28px;
+    height: 28px;
+    position: relative;
+}
+
+.more-icon-image:hover{
+    opacity: 0.45;
+}
+
+
+/* 드롭다운 컨테이너 */
+.dropdown-more {
+    position: relative;
+    display: inline-block;
+}
+
+/* 더보기 버튼 아이콘 */
+.more-icon {
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* 드롭다운 콘텐츠 */
+.more-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 8%);
+    z-index: 1;
+    border-radius: 5px;
+    right: 15%;
+}
+
+/* 드롭다운 항목 */
+.more-ele {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+}
+
+.more-ele:last-child {
+    border-bottom: none;
+}
+
+.more-ele:hover {
+    background-color: #f1f1f1;
+}
+
+.feed-icons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more-icon{
+    padding: 8px 0;
+    margin-right: 0;
+    position: relative;
+    right: -10%;
+}
+
+
+/* 드롭다운 애니메이션 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.more-dropdown-content.show {
+    display: block;
+    animation: slideDown 0.3s forwards;
+}
+
+.more-dropdown-content.hide {
+    display: block;
+    animation: slideUp 0.3s forwards;
+}
+
+.live-review-item .feed-icons {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.live-review-item:hover .feed-icons {
+    opacity: 1;
+}
+
+.live-review-delete-button{
+background:none;
+border:none;
+padding:0;
+color:inherit;
+cursor:pointer;
+}
+
+.review-section h4{
+margin-left : 50px;
+margin-top: 10px !important;
+margin-bottom : 30px !important;
 }

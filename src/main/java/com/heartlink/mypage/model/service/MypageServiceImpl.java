@@ -5,6 +5,8 @@ import com.heartlink.mypage.model.dto.MypageDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MypageServiceImpl implements MypageService {
@@ -15,57 +17,84 @@ public class MypageServiceImpl implements MypageService {
         this.mypageDao = mypageDao;
     }
 
-    //유저 정보 가져오기
+    // 유저 정보 관련 메소드
     @Override
     public MypageDto getUserInfo(int userId) {
         return mypageDao.getUserInfoById(userId);
     }
 
-    //userId의 패스워드 가져오기
     @Override
     public String getPasswordByUserId(int userId) {
         return mypageDao.getPasswordByUserId(userId);
     }
 
-    //유저 정보 업데이트
     @Override
     public int updateUserInfo(MypageDto user) {
         return mypageDao.updateUserInfo(user);
     }
 
-    //타입별 성향 리스트 가져오기
+    // 유저 성향 관련 메소드
     @Override
     public List<MypageDto> getPersonalCategoriesByType(String type) {
         return mypageDao.getPersonalCategoriesByType(type);
     }
 
-    //유저의 성향 리스트 가져오기
     @Override
     public List<Integer> getUserSelectedCategories(int userId) {
         return mypageDao.getUserSelectedCategories(userId);
     }
 
-    //유저의 성향 리스트 저장
     @Override
     public void saveUserCategories(int userId, List<Integer> categoryIds) {
         mypageDao.saveUserCategories(userId, categoryIds);
     }
 
-    //취미 리스트 가져오기
+    // 유저 취미 관련 메소드
     @Override
     public List<MypageDto> getHobbyCategories() {
         return mypageDao.getHobbyCategories();
     }
 
-    //유저 취미 리스트 저장
     @Override
     public void saveUserHobbies(int userId, List<Integer> hobbyIds) {
         mypageDao.saveUserHobbies(userId, hobbyIds);
     }
 
-    //유저 취미 리스트 가져오기
     @Override
     public List<MypageDto> getUserHobbies(int userId) {
         return mypageDao.getUserHobbies(userId);
+    }
+
+    // 유저 리뷰 관련 메소드
+    @Override
+    public List<MypageDto> getLiveReviews(int userId) {
+        List<MypageDto> liveReviews = mypageDao.getReviewsByType(userId, "L");
+        for (MypageDto review : liveReviews) {
+            String firstImageUrl = extractFirstImageUrl(review.getReviewContent());
+            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/default-thumbnail.jpg");
+        }
+        return liveReviews;
+    }
+
+    @Override
+    public List<MypageDto> getPhotoReviews(int userId) {
+        List<MypageDto> photoReviews = mypageDao.getReviewsByType(userId, "P");
+        for (MypageDto review : photoReviews) {
+            String firstImageUrl = extractFirstImageUrl(review.getReviewContent());
+            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/default-thumbnail.jpg");
+        }
+        return photoReviews;
+    }
+
+    // 리뷰 내용에서 첫 번째 이미지 URL 추출
+    @Override
+    public String extractFirstImageUrl(String content) {
+        String imgTagPattern = "<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>";
+        Pattern pattern = Pattern.compile(imgTagPattern);
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            return matcher.group(1); // 첫 번째 이미지의 URL 추출
+        }
+        return null;
     }
 }

@@ -101,4 +101,18 @@
         WHERE uh.BASIC_USER_NO = #{userId}
     </select>
 
+    <!-- 리뷰 목록 가져오기 -->
+    <select id="getReviewsByType" parameterType="map" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT REVIEW_NO as reviewNo, REVIEWER_USER_ID as reviewerUserId,
+        REVIEW_INDATE as reviewIndate, REVIEW_UPDATE as reviewUpdate, REVIEW_DELETE as reviewDelete,
+        REVIEW_RATING as reviewRating, REVIEW_CONTENT as reviewContent, REVIEW_VIEWS as reviewViews,
+        REVIEW_TYPE as reviewType, REVIEW_TITLE as reviewTitle
+        FROM REVIEW_BOARD
+        WHERE REVIEWER_USER_ID = #{userId}
+        AND REVIEW_TYPE = #{reviewType}
+        AND REVIEW_DELETE = 'N'
+        ORDER BY REVIEW_INDATE DESC
+    </select>
+
+
 </mapper>

@@ -3,6 +3,7 @@
 <head th:replace="fragments/head :: head"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+
 <nav th:replace="fragments/navigation :: navigation"></nav>
 
 <section class="hero-section">
@@ -18,69 +19,36 @@
                     <div class="review-section mb-5">
                         <h4 class="text-primary-color">라이브 리뷰</h4>
                         <div class="live-review-box">
-                            <div class="live-review-item">
+                            <div th:each="review : ${liveReviews}" class="live-review-item">
                                 <div class="review-header">
-                                    <h6>리뷰 제목 1</h6>
                                     <div class="review-rating">
-                                        ★★★★☆
+                                        <!-- 채워진 별 -->
+                                        <span th:each="i : ${#numbers.sequence(1, review.reviewRating)}">★</span><span th:if="${review.reviewRating < 5}" th:each="i : ${#numbers.sequence(1, 5 - review.reviewRating)}">☆</span>
+                                    </div>
+
+                                    <div class="feed-icons">
+                                        <div class="dropdown-more">
+                                            <a class="more-drop-btn more-icon">
+                                                <img alt="More" class="more-icon-image" th:src="@{/image/icon_more.png}"/>
+                                            </a>
+                                            <div class="more-dropdown-content">
+                                                <div class="more-ele">신고하기</div>
+                                                <div class="more-ele" onclick="submitDeleteForm(this)">
+                                                    <form action="/review/deleteLiveReview" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                                        <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
+                                                        <button class="live-review-delete-button" type="submit" style="display:none;">삭제</button>
+                                                    </form>
+                                                    삭제
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <p>리뷰 내용 요약 1...</p>
+                                <p th:text="${#strings.abbreviate(review.reviewContent, 100)}"></p>
                             </div>
-                            <div class="live-review-item">
-                                <div class="review-header">
-                                    <h6>리뷰 제목 2</h6>
-                                    <div class="review-rating">
-                                        ★★★★★
-                                    </div>
-                                </div>
-                                <p>리뷰 내용 요약 2...</p>
-                            </div>
-                            <div class="live-review-item">
-                                <div class="review-header">
-                                    <h6>리뷰 제목 3</h6>
-                                    <div class="review-rating">
-                                        ★★★☆☆
-                                    </div>
-                                </div>
-                                <p>리뷰 내용 요약 3...</p>
-                            </div>
-                            <div class="live-review-item">
-                                <div class="review-header">
-                                    <h6>리뷰 제목 1</h6>
-                                    <div class="review-rating">
-                                        ★★★★☆
-                                    </div>
-                                </div>
-                                <p>리뷰 내용 요약 1...</p>
-                            </div>
-                            <div class="live-review-item">
-                                <div class="review-header">
-                                    <h6>리뷰 제목 2</h6>
-                                    <div class="review-rating">
-                                        ★★★★★
-                                    </div>
-                                </div>
-                                <p>리뷰 내용 요약 2...</p>
-                            </div>
-                            <div class="live-review-item">
-                                <div class="review-header">
-                                    <h6>리뷰 제목 3</h6>
-                                    <div class="review-rating">
-                                        ★★★☆☆
-                                    </div>
-                                </div>
-                                <p>리뷰 내용 요약 3...</p>
-                            </div>
-                            <!-- 추가 실시간 리뷰를 여기에 추가하세요 -->
                         </div>
-                        <!-- 페이지네이션 버튼 예시 -->
-                        <div class="pagination">
-                            <button class="btn-action">이전</button>
-                            <button class="btn-action">1</button>
-                            <button class="btn-action">2</button>
-                            <button class="btn-action">다음</button>
-                        </div>
+                        <!-- 페이지네이션 추가 -->
+                        <div th:replace="fragments/pagination :: pagination"></div>
                     </div>
                 </div>
             </div>
@@ -89,5 +57,11 @@
 </section>
 
 <footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/reference_js/jquery.js}"></script>
+<script th:src="@{/js/reference_js/jquery.min.js}"></script>
+<script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/reference_js/custom.js}"></script>
+<script th:src="@{/js/review/review.js}"></script>
+
 </body>
 </html>

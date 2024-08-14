@@ -2,6 +2,7 @@ package com.heartlink.mypage.controller;
 
 import com.heartlink.mypage.model.dto.MypageDto;
 import com.heartlink.mypage.model.service.MypageService;
+import com.heartlink.review.common.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 public class MypageController {
 
     private final MypageService mypageService;
+    private final Pagination pagination;
 
-    public MypageController(MypageService mypageService) {
+    public MypageController(MypageService mypageService, Pagination pagination) {
         this.mypageService = mypageService;
+        this.pagination = pagination;
     }
 
     // 모든 요청에 대해 userId를 모델에 추가
@@ -55,14 +58,38 @@ public class MypageController {
     }
 
     @GetMapping("/ptreview")
-    public String ptreview(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
+    public String ptreview(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 10;
+        int userId = (Integer) model.getAttribute("userId");
+        List<MypageDto> photoReviews = mypageService.getPhotoReviews(userId);
+
+        // 페이지네이션 데이터 생성
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, photoReviews);
+
+        model.addAttribute("photoReviews", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/mypage/ptreview");
+
         return "mypage/mypage_review/mypage-ptreview";
     }
 
+
+
     @GetMapping("/lireview")
-    public String lireview(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI());
+    public String lireview(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 10;
+        int userId = (Integer) model.getAttribute("userId");
+        List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);
+
+        // 페이지네이션 데이터 생성
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
+
+        model.addAttribute("liveReviews", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/mypage/lireview");
+
         return "mypage/mypage_review/mypage-lireview";
     }
 
@@ -141,7 +168,6 @@ public class MypageController {
 
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
-
 
     // 비밀번호 확인 요청 처리
     @PostMapping("/validatePassword")
