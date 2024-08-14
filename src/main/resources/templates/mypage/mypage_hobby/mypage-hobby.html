@@ -26,40 +26,41 @@
                                 <h4 class="text-primary-color">성향</h4>
                                 <div class="like-dislike-container d-flex w-100">
                                     <div class="like-box flex-fill p-3">
-                                        <h6>선호하는 것</h6>
+                                        <h6>좋아하는 것</h6>
                                         <ul class="font-size-20">
                                             <li th:each="like : ${likeCategories}"
-                                                th:if="${userSelectedCategories.contains(like.personalNo)}"
-                                                th:text="${like.personalName}">
-                                                <!-- 선택한 항목 출력 -->
+                                                th:if="${userSelectedCategories.contains(like.personalNo)}">
+                                                <div th:text="${like.personalName}" class="like-inbox"></div>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="like-box flex-fill p-3">
-                                        <h6>기피하는 것</h6>
+                                        <h6>싫어하는 것</h6>
                                         <ul class="font-size-20">
                                             <li th:each="dislike : ${dislikeCategories}"
-                                                th:if="${userSelectedCategories.contains(dislike.personalNo)}"
-                                                th:text="${dislike.personalName}">
-                                                <!-- 선택한 항목 출력 -->
+                                                th:if="${userSelectedCategories.contains(dislike.personalNo)}">
+                                                <div th:text="${dislike.personalName}" class="dislike-inbox"></div>
                                             </li>
                                         </ul>
                                     </div>
-
                                 </div>
                                 <div class="text-center mt-3">
                                     <button class="btn-action" th:onclick="'location.href=\'' + @{/mypage/sentiedit} + '\''">성향 수정</button>
                                 </div>
                             </div>
+
                             <div class="hobby-box-2 flex-fill p-3">
                                 <h4 class="text-primary-color">취미</h4>
                                 <ul class="font-size-20">
-                                    <li th:each="hobby : ${userHobbies}" th:text="${hobby.hobbyName}"></li>
+                                    <li th:each="hobby : ${userHobbies}">
+                                        <div th:text="${hobby.hobbyName}" class="like-inbox"></div>
+                                    </li>
                                 </ul>
                                 <div class="text-center mt-3">
                                     <button class="btn-action" onclick="location.href='/mypage/hobbyedit'">취미 수정</button>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>

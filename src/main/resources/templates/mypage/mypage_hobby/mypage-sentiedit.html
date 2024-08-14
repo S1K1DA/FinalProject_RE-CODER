@@ -24,7 +24,7 @@
                         </p>
 
                         <form method="post" action="/mypage/sentiedit/submit">
-                            <h4 class="text-primary-color">선호하는 것</h4>
+                            <h4 class="text-primary-color">좋아하는 것</h4>
                             <div class="checkbox-list">
                                 <label th:each="category : ${likeCategories}">
                                     <input type="checkbox" name="likes" th:value="${category.personalNo}"
@@ -33,7 +33,7 @@
                                 </label>
                             </div>
 
-                            <h4 class="text-primary-color mt-4">기피하는 것</h4>
+                            <h4 class="text-primary-color mt-4">싫어하는 것</h4>
                             <div class="checkbox-list">
                                 <label th:each="category : ${dislikeCategories}">
                                     <input type="checkbox" name="dislikes" th:value="${category.personalNo}"
