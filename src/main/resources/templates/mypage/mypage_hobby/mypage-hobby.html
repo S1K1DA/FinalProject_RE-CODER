@@ -54,11 +54,7 @@
                             <div class="hobby-box-2 flex-fill p-3">
                                 <h4 class="text-primary-color">취미</h4>
                                 <ul class="font-size-20">
-                                    <li>여행</li>
-                                    <li>뒹굴거리기</li>
-                                    <li>독서</li>
-                                    <li>캠핑</li>
-                                    <li>드라이브</li>
+                                    <li th:each="hobby : ${userHobbies}" th:text="${hobby.hobbyName}"></li>
                                 </ul>
                                 <div class="text-center mt-3">
                                     <button class="btn-action" onclick="location.href='/mypage/hobbyedit'">취미 수정</button>
