@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="pagination" class="pagination">
-    <button class="btn-action" th:disabled="${currentPage == 1}" th:href="@{${paginationUrl}(page=${currentPage - 1})}">이전</button>
+    <a class="btn-action" th:disabled="${currentPage == 1}" th:href="@{${paginationUrl}(page=${currentPage - 1})}">이전</a>
     <span th:each="page : ${#numbers.sequence(1, totalPages)}">
         <a class="btn-action" th:classappend="${page == currentPage} ? 'active'" th:href="@{${paginationUrl}(page=${page})}"
            th:text="${page}"></a>
     </span>
-    <button class="btn-action" th:disabled="${currentPage == totalPages}" th:href="@{${paginationUrl}(page=${currentPage + 1})}">다음</button>
+    <a class="btn-action" th:disabled="${currentPage == totalPages}" th:href="@{${paginationUrl}(page=${currentPage + 1})}">다음</a>
 </div>
 </html>
