@@ -3,6 +3,7 @@ package com.heartlink.review.controller;
 import com.heartlink.review.common.Pagination;
 import com.heartlink.review.model.dto.ReviewDto;
 import com.heartlink.review.model.service.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -203,13 +204,18 @@ public class ReviewController {
 
 
     @PostMapping("/deleteLiveReview")
-    public String deleteLiveReview(@RequestParam("reviewNo") int reviewNo, RedirectAttributes redirectAttributes) {
+    public String deleteLiveReview(@RequestParam("reviewNo") int reviewNo,
+                                   RedirectAttributes redirectAttributes,
+                                   HttpServletRequest request) {
         boolean isDeleted = reviewService.deleteReview(reviewNo);
         if (isDeleted) {
             redirectAttributes.addFlashAttribute("message", "리뷰가 삭제되었습니다.");
         } else {
             redirectAttributes.addFlashAttribute("message", "리뷰 삭제에 실패했습니다.");
         }
-        return "redirect:/review/livemain";
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
+
 }
