@@ -18,4 +18,7 @@ public class MypageDto {
     private int personalNo;
     private String personalName;
     private String personalType;
+
+    private int hobbyNo;
+    private String hobbyName;
 }

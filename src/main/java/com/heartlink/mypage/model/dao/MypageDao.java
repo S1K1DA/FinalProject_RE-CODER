@@ -38,7 +38,6 @@ public class MypageDao {
     }
 
     public void saveUserCategories(int userId, List<Integer> categoryIds) {
-        // 기존의 성향 데이터를 삭제한 후, 새로운 데이터를 삽입
         sqlSession.delete("mypageMapper.deleteUserCategories", userId);
 
         if (categoryIds != null && !categoryIds.isEmpty()) {
@@ -47,5 +46,26 @@ public class MypageDao {
             params.put("categoryIds", categoryIds);
             sqlSession.insert("mypageMapper.insertUserCategories", params);
         }
+    }
+
+    // 새로운 메소드들 추가
+    public List<MypageDto> getHobbyCategories() {
+        return sqlSession.selectList("mypageMapper.getHobbyCategories");
+    }
+
+    public void saveUserHobbies(int userId, List<Integer> hobbyIds) {
+        // 기존 취미 데이터를 삭제한 후, 새로운 데이터를 삽입
+        sqlSession.delete("mypageMapper.deleteUserHobbies", userId);
+
+        if (hobbyIds != null && !hobbyIds.isEmpty()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("userId", userId);
+            params.put("hobbyIds", hobbyIds);
+            sqlSession.insert("mypageMapper.insertUserHobbies", params);
+        }
+    }
+
+    public List<MypageDto> getUserHobbies(int userId) {
+        return sqlSession.selectList("mypageMapper.getUserHobbies", userId);
     }
 }

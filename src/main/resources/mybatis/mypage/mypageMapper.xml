@@ -69,4 +69,36 @@
         </foreach>
     </insert>
 
+    <!-- 취미 목록 가져오기 -->
+    <select id="getHobbyCategories" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT HOBBY_NO as hobbyNo, HOBBY_NAME as hobbyName FROM HOBBY_CATEGORY
+    </select>
+
+    <!-- 유저 취미 삭제 -->
+    <delete id="deleteUserHobbies" parameterType="int">
+        DELETE FROM BASIC_USER_HOBBY WHERE BASIC_USER_NO = #{userId}
+    </delete>
+
+    <!-- 유저 취미 추가 -->
+    <insert id="insertUserHobbies" parameterType="map">
+        <foreach collection="hobbyIds" item="hobbyNo" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
+            INTO BASIC_USER_HOBBY (
+            BASIC_USER_NO,
+            HOBBY_NO
+            )
+            VALUES (
+            #{userId},
+            #{hobbyNo}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 유저의 취미 목록 가져오기 -->
+    <select id="getUserHobbies" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT h.HOBBY_NO as hobbyNo, h.HOBBY_NAME as hobbyName
+        FROM HOBBY_CATEGORY h
+        JOIN BASIC_USER_HOBBY uh ON h.HOBBY_NO = uh.HOBBY_NO
+        WHERE uh.BASIC_USER_NO = #{userId}
+    </select>
+
 </mapper>

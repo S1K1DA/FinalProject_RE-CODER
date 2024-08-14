@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/mypage")
@@ -85,25 +86,24 @@ public class MypageController {
 
     @GetMapping("/hobby")
     public String hobbyPage(HttpServletRequest request, Model model) {
-        int userId = (Integer) model.getAttribute("userId");  // 모델에서 userId를 가져옴
+        int userId = (Integer) model.getAttribute("userId");
 
-        // 선호하는 것 (L 타입) 조회
+        // 성향 조회
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
-
-        // 기피하는 것 (H 타입) 조회
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
-
-        // 사용자가 선택한 성향 조회
         List<Integer> userSelectedCategories = mypageService.getUserSelectedCategories(userId);
 
         model.addAttribute("likeCategories", likeCategories);
         model.addAttribute("dislikeCategories", dislikeCategories);
         model.addAttribute("userSelectedCategories", userSelectedCategories);
 
+        // 취미 조회
+        List<MypageDto> userHobbies = mypageService.getUserHobbies(userId);
+        model.addAttribute("userHobbies", userHobbies);
+
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobby";
     }
-
 
     @GetMapping("/sentiedit")
     public String editSentiPage(Model model) {
@@ -127,9 +127,21 @@ public class MypageController {
 
     @GetMapping("/hobbyedit")
     public String hobbyEditPage(HttpServletRequest request, Model model) {
+        int userId = (Integer) model.getAttribute("userId");
+
+        // 모든 취미 항목을 가져옴
+        List<MypageDto> hobbyCategories = mypageService.getHobbyCategories();
+        // 사용자가 선택한 취미 항목을 가져옴
+        List<MypageDto> userHobbies = mypageService.getUserHobbies(userId);
+        List<Integer> userHobbyIds = userHobbies.stream().map(MypageDto::getHobbyNo).collect(Collectors.toList());
+
+        model.addAttribute("hobbyCategories", hobbyCategories);
+        model.addAttribute("userHobbyIds", userHobbyIds);
         model.addAttribute("currentUrl", request.getRequestURI());
+
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
+
 
     // 비밀번호 확인 요청 처리
     @PostMapping("/validatePassword")
@@ -189,6 +201,17 @@ public class MypageController {
 
         // 전체 성향 데이터 저장
         mypageService.saveUserCategories(userId, allCategoryIds);
+
+        return "redirect:/mypage/hobby";
+    }
+
+    @PostMapping("/hobbyedit/submit")
+    public String submitHobbyEdit(
+            @RequestParam(value = "hobbies", required = false) List<Integer> hobbyIds,
+            @ModelAttribute("userId") int userId) {
+
+        // 유저의 선택한 취미를 저장
+        mypageService.saveUserHobbies(userId, hobbyIds);
 
         return "redirect:/mypage/hobby";
     }

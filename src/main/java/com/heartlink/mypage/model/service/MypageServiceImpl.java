@@ -44,4 +44,20 @@ public class MypageServiceImpl implements MypageService {
     public void saveUserCategories(int userId, List<Integer> categoryIds) {
         mypageDao.saveUserCategories(userId, categoryIds);
     }
+
+    // 추가된 메소드들
+    @Override
+    public List<MypageDto> getHobbyCategories() {
+        return mypageDao.getHobbyCategories();
+    }
+
+    @Override
+    public void saveUserHobbies(int userId, List<Integer> hobbyIds) {
+        mypageDao.saveUserHobbies(userId, hobbyIds);
+    }
+
+    @Override
+    public List<MypageDto> getUserHobbies(int userId) {
+        return mypageDao.getUserHobbies(userId);
+    }
 }
