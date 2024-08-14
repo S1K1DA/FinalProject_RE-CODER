@@ -37,7 +37,7 @@ public class MypageController {
     public String mainpage(HttpServletRequest request, Model model) {
         int userId = (Integer) model.getAttribute("userId");  // 모델에서 userId를 가져옴
         MypageDto user = mypageService.getUserInfo(userId);
-        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]); // 쿼리 파라미터를 제거한 URL을 currentUrl로 설정
         model.addAttribute("user", user);
         return "mypage/mypage_main/mypage-main";
     }
@@ -58,7 +58,7 @@ public class MypageController {
     }
 
     @GetMapping("/ptreview")
-    public String ptreview(@RequestParam(name="page", defaultValue = "1") int page, Model model) {
+    public String ptreview(HttpServletRequest request, @RequestParam(name="page", defaultValue = "1") int page, Model model) {
         int pageSize = 6; // 여기서 페이지 크기를 설정
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> photoReviews = mypageService.getPhotoReviews(userId);
@@ -71,6 +71,7 @@ public class MypageController {
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/ptreview");
 
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_review/mypage-ptreview";
     }
 
@@ -78,7 +79,7 @@ public class MypageController {
 
 
     @GetMapping("/lireview")
-    public String lireview(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
+    public String lireview(HttpServletRequest request, @RequestParam(name="page",defaultValue = "1") int page, Model model) {
         int pageSize = 5;
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);
@@ -91,6 +92,7 @@ public class MypageController {
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/lireview");
 
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_review/mypage-lireview";
     }
 
