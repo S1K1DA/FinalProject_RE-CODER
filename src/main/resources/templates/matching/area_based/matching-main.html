@@ -17,81 +17,8 @@
                 <a class="map-find" id="find-location">이곳에서 찾기</a>
                 <div class="matching-list-box">
                     <p>매칭 가능 리스트</p>
-                    <ul>
-                        <li class="matching-list-item">
-                            <div class="matching-request-box">
-                                <img th:src="@{/image/user_profile/matching_ex_leesooji.png}" class="matching-photo">
-                                <a class="matching-request">매칭 신청</a>
-                            </div>
-                            <table class="matching-info">
-                                <tr>
-                                    <td><p class="matching-name">이수지</p></td>
-                                    <td><p class="matching-age">27세</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-job">마케팅 매니저</p>
-                                    </td>
-                                    <td class="info-menu"><p>직업</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-hobby">요가, 독서, 영화감상, 베이킹</p>
-                                    </td>
-                                    <td class="info-menu"><p>취미</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-type">책임감 있고 성실한 사람</p>
-                                        <p class="matching-type">대화가 잘 통하는 사람</p>
-                                    </td>
-                                    <td class="info-menu"><p>이상형</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-mbti">ENFP</p>
-                                    </td>
-                                    <td class="info-menu"><p>MBTI</p></td>
-                                </tr>
-                            </table>
-                        </li>
-                        <li class="matching-list-item">
-                            <div class="matching-request-box">
-                                <img th:src="@{/image/user_profile/matching_ex_choihyunah.png}" class="matching-photo">
-                                <a class="matching-request">매칭 신청</a>
-                            </div>
-                            <table class="matching-info">
-                                <tr>
-                                    <td><p class="matching-name">최현아</p></td>
-                                    <td><p class="matching-age">34세</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-job">디자인 디렉터</p>
-                                    </td>
-                                    <td class="info-menu"><p>직업</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-hobby">전시회 감상, 사진촬영, 여행, 요리</p>
-                                    </td>
-                                    <td class="info-menu"><p>취미</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-type">예술적인 감각이 뛰어나고 감성적인 사람</p>
-                                        <p class="matching-type">서로의 공간을 존중하는 사람</p>
-                                    </td>
-                                    <td class="info-menu"><p>이상형</p></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="matching-mbti">ISFP</p>
-                                    </td>
-                                    <td class="info-menu"><p>MBTI</p></td>
-                                </tr>
-                            </table>
-                        </li>
+                    <ul id="matching-list">
+
                     </ul>
                 </div>
             </div>
@@ -131,7 +58,7 @@
                 });
 
                 var infowindow = new kakao.maps.InfoWindow({
-                    content: '<div style="width:80px;text-align:center;padding:6px 0;">내 위치</div>'
+                    content: '<div style="width:150px;text-align:center;padding:6px 0;">내 위치</div>'
                 });
                 infowindow.open(map, marker);
 
@@ -140,7 +67,7 @@
         });
 
         // 마커 이미지
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+        var imageSrc = '/image/location-pin.png';
 
         async function fetchUsersInBounds(map) {
             var bounds = map.getBounds();
@@ -166,6 +93,9 @@
 
                 var positions = [];
 
+                var matchingList = document.getElementById('matching-list');
+                matchingList.innerHTML = '';
+
                 // 사용자 데이터 배열을 반복하여 positions 배열을 생성합니다
                 for (var i = 0; i < responseJson.length; i++) {
                     positions.push({
@@ -176,7 +106,7 @@
 
                 // 마커를 지도에 추가합니다
                 for (var i = 0; i < positions.length; i++) {
-                    var imageSize = new kakao.maps.Size(24, 35);
+                    var imageSize = new kakao.maps.Size(45, 45);
                     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
                     var marker = new kakao.maps.Marker({
@@ -185,6 +115,49 @@
                         title: positions[i].title,
                         image: markerImage
                     });
+
+                    // 리스트 항목 생성
+                    var listItem = document.createElement('li');
+                    listItem.className = 'matching-list-item';
+                    listItem.innerHTML = `
+                        <div class="matching-request-box">
+                            <img src="/image/user_profile/${responseJson[i].profileImageUrl || 'default_image.png'}" class="matching-photo">
+                            <a class="matching-request">매칭 신청</a>
+                        </div>
+                        <table class="matching-info">
+                            <tr>
+                                <td><p class="matching-name">${responseJson[i].basicUserName}</p></td>
+                                <td><p class="matching-age">${calculateAge(responseJson[i].basicUserBirthdate)}세</p></td>
+                            </tr>
+                            <tr>
+                                <td><p class="matching-hobby">${responseJson[i].hobbyName}</p></td>
+                                <td class="info-menu"><p>취미</p></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="matching-type">${responseJson[i].personalLike}</p>
+                                </td>
+                                <td class="info-menu">
+                                    <p>LIKE</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="matching-type">${responseJson[i].personalHate}</p>
+                                </td>
+                                <td class="info-menu">
+                                    <p>HATE</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><p class="matching-mbti">${responseJson[i].basicUserMbti}</p></td>
+                                <td class="info-menu"><p>MBTI</p></td>
+                            </tr>
+                        </table>
+                    `;
+
+                    matchingList.appendChild(listItem);
+
                 }
 
             } catch (error) {
@@ -195,6 +168,35 @@
         document.getElementById('find-location').addEventListener('click', function() {
             fetchUsersInBounds(map);
         });
+
+        function calculateAge(birthdateString) {
+            // 주어진 생일 문자열을 Date 객체로 변환
+            const birthdate = new Date(birthdateString);
+
+            // 현재 날짜
+            const today = new Date();
+
+            // 생일의 연도, 월, 일
+            const birthYear = birthdate.getFullYear();
+            const birthMonth = birthdate.getMonth();
+            const birthDay = birthdate.getDate();
+
+            // 현재 연도, 월, 일
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            const currentDay = today.getDate();
+
+            // 기본 나이 계산
+            let age = currentYear - birthYear;
+
+            // 생일이 아직 오지 않은 경우 나이 -1
+            if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+                age--;
+            }
+
+            return age;
+        }
+
     });
 
 </script>

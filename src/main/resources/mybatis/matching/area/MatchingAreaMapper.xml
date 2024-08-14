@@ -12,8 +12,8 @@
         <result column="latitude" property="latitude"/>
         <result column="longitude" property="longitude"/>
         <result column="hobby_name" property="hobbyName"/>
-        <result column="personal_name" property="personalName"/>
-        <result column="personal_type" property="personalType"/>
+        <result column="personal_like" property="personalLike"/>
+        <result column="personal_hate" property="personalHate"/>
     </resultMap>
 
     <select id="setUserLocation" resultMap="resultMatchingUser">
@@ -28,9 +28,9 @@
                b.BASIC_USER_MBTI,
                ul.LATITUDE,
                ul.LONGITUDE,
-               LISTAGG(DISTINCT hc.HOBBY_NAME, ', ') WITHIN GROUP (ORDER BY hc.HOBBY_NAME) AS hobbyName,
-       LISTAGG(DISTINCT CASE WHEN pc.PERSONAL_TYPE = 'L' THEN pc.PERSONAL_NAME END, ', ') WITHIN GROUP (ORDER BY pc.PERSONAL_NAME) AS personalLike,
-            LISTAGG(DISTINCT CASE WHEN pc.PERSONAL_TYPE = 'H' THEN pc.PERSONAL_NAME END, ', ') WITHIN GROUP (ORDER BY pc.PERSONAL_NAME) AS personalHate
+               LISTAGG(DISTINCT hc.HOBBY_NAME, ', ') WITHIN GROUP (ORDER BY hc.HOBBY_NAME) AS hobby_name,
+       LISTAGG(DISTINCT CASE WHEN pc.PERSONAL_TYPE = 'L' THEN pc.PERSONAL_NAME END, ', ') WITHIN GROUP (ORDER BY pc.PERSONAL_NAME) AS personal_like,
+            LISTAGG(DISTINCT CASE WHEN pc.PERSONAL_TYPE = 'H' THEN pc.PERSONAL_NAME END, ', ') WITHIN GROUP (ORDER BY pc.PERSONAL_NAME) AS personal_hate
         FROM BASIC_USER b
             LEFT JOIN BASIC_USER_LOCATION ul ON b.BASIC_USER_NO = ul.BASIC_USER_NO
             LEFT JOIN BASIC_USER_HOBBY buh ON b.BASIC_USER_NO = buh.BASIC_USER_NO

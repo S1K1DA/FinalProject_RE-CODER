@@ -193,9 +193,10 @@ ul, li{
 }
 
 .info-menu{
+    text-align: right;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .info-menu p{
