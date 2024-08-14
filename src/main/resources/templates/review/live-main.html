@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- 서버에서 전달된 메시지를 처리하기 위한 블록 -->
-                <div th:if="${message}" class="alert" th:text="${message}"></div>
+                <div th:if="${message}" class="alert" th:text="${message}" style="display:none;"></div>
 
                 <form action="/review/submitLiveReview" id="liveReviewForm" method="POST">
                     <input name="userId" th:value="${userId}" type="hidden"/>
@@ -57,11 +57,12 @@
                                         </a>
                                         <div class="more-dropdown-content">
                                             <div class="more-ele">신고하기</div>
-                                            <div class="more-ele">
-                                                <form action="/review/deleteLiveReview" method="POST" style="display:inline;">
+                                            <div class="more-ele" onclick="submitDeleteForm(this)">
+                                                <form action="/review/deleteLiveReview" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
                                                     <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
-                                                    <button class="live-review-delete-button" type="submit">삭제</button>
+                                                    <button class="live-review-delete-button" type="submit" style="display:none;">삭제</button>
                                                 </form>
+                                                삭제
                                             </div>
                                         </div>
                                     </div>
@@ -85,6 +86,7 @@
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/custom.js}"></script>
 <script th:src="@{/js/review/review.js}"></script>
+
 
 </body>
 </html>

@@ -28,7 +28,7 @@ function imageUploader(file, el) {
 
 // 페이지 로드 시 서버에서 전달된 메시지를 확인하고 알림창을 표시
 window.onload = function() {
-    var message = /*[[${message}]]*/ '';
+    var message = document.querySelector('.alert')?.textContent;
     if (message) {
         alert(message);
     }
@@ -38,3 +38,13 @@ window.onload = function() {
 function confirmDelete() {
     return confirm('정말로 이 리뷰를 삭제하시겠습니까?');
 }
+
+function submitDeleteForm(element) {
+        if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+            // 클릭된 div 안에 있는 form을 찾습니다
+            var form = element.querySelector('form');
+            if (form) {
+                form.submit();
+            }
+        }
+    }
