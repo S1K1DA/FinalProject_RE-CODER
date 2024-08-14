@@ -15,9 +15,13 @@ public class MatchingAreaDto {
     private String basicUserNickname;
     private String basicUserName;
     private String basicUserBirthdate;
+    private String basicUserSex;
 
     private String hobbyName;
-    private String personalName;
+    private String personalLike;
+    private String personalHate;
 
+    private float latitude; //위도
+    private float longitude; //경도
 
 }
