@@ -25,7 +25,7 @@ public class MypageDao {
         return sqlSession.selectOne("mypageMapper.getPasswordByUserId", userId);
     }
 
-    public int updateUserInfo(MypageDto user) {  // 반환 타입을 int로 유지
+    public int updateUserInfo(MypageDto user) {
         return sqlSession.update("mypageMapper.updateUserInfo", user);
     }
 
@@ -38,7 +38,9 @@ public class MypageDao {
     }
 
     public void saveUserCategories(int userId, List<Integer> categoryIds) {
+        // 기존의 성향 데이터를 삭제한 후, 새로운 데이터를 삽입
         sqlSession.delete("mypageMapper.deleteUserCategories", userId);
+
         if (categoryIds != null && !categoryIds.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("userId", userId);

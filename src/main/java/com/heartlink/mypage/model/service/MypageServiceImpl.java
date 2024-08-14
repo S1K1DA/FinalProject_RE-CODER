@@ -27,7 +27,7 @@ public class MypageServiceImpl implements MypageService {
 
     @Override
     public int updateUserInfo(MypageDto user) {
-        return mypageDao.updateUserInfo(user);  // 반환값을 반환하도록 수정
+        return mypageDao.updateUserInfo(user);
     }
 
     @Override
@@ -41,13 +41,7 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
-    public void saveUserCategories(int userId, List<Integer> likeIds, List<Integer> dislikeIds) {
-        // 기존 유저 성향을 삭제 후, 새로운 데이터를 저장
-        if (likeIds != null) {
-            mypageDao.saveUserCategories(userId, likeIds);
-        }
-        if (dislikeIds != null) {
-            mypageDao.saveUserCategories(userId, dislikeIds);
-        }
+    public void saveUserCategories(int userId, List<Integer> categoryIds) {
+        mypageDao.saveUserCategories(userId, categoryIds);
     }
 }

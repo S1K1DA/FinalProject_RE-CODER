@@ -13,18 +13,7 @@
 
                 <div class="mypage-box-container d-flex">
                     <div th:replace="mypage/mypage_nav :: mypagenav"></div>
-<!--                    <div class="sidebar-menu">-->
-<!--                        <ul class="menu-list">-->
-<!--                            <li><a th:href="@{/mypage/main}">내 정보</a></li>-->
-<!--                            <li class="active"><a th:href="@{#}">성향/취미</a></li>-->
-<!--                            <li><a th:href="@{/mypage/review}">내 후기</a></li>-->
-<!--                            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>-->
-<!--                            <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>-->
-<!--                            <li><a th:href="@{/mypage/cash}">결제 내역</a></li>-->
-<!--                            <li><a th:href="@{/mypage/match}">매칭 내역</a></li>-->
-<!--                            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
+
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
 
                         <div class="text-center mb-5 pb-2 w-100">
@@ -39,23 +28,24 @@
                                     <div class="like-box flex-fill p-3">
                                         <h6>선호하는 것</h6>
                                         <ul class="font-size-20">
-                                            <li th:each="like : ${likes}" th:text="${like}">선호하는 항목</li>
-
-                                            <li>실내데이트</li>
-                                            <li>활발함</li>
-                                            <li>밝은 분위기</li>
+                                            <li th:each="like : ${likeCategories}"
+                                                th:if="${userSelectedCategories.contains(like.personalNo)}"
+                                                th:text="${like.personalName}">
+                                                <!-- 이곳에 선택된 항목의 이름이 출력됩니다 -->
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="like-box flex-fill p-3">
                                         <h6>기피하는 것</h6>
                                         <ul class="font-size-20">
-                                            <li th:each="dislike : ${dislikes}" th:text="${dislike}">기피하는 항목</li>
-
-                                            <li>혼잡한 장소</li>
-                                            <li>소음</li>
-                                            <li>어두운 분위기</li>
+                                            <li th:each="dislike : ${dislikeCategories}"
+                                                th:if="${userSelectedCategories.contains(dislike.personalNo)}"
+                                                th:text="${dislike.personalName}">
+                                                <!-- 이곳에 선택된 항목의 이름이 출력됩니다 -->
+                                            </li>
                                         </ul>
                                     </div>
+
                                 </div>
                                 <div class="text-center mt-3">
                                     <button class="btn-action" th:onclick="'location.href=\'' + @{/mypage/sentiedit} + '\''">성향 수정</button>
@@ -87,7 +77,6 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
-
 
 </body>
 </html>

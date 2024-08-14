@@ -57,8 +57,16 @@
 
     <!-- 유저 성향 추가 -->
     <insert id="insertUserCategories" parameterType="map">
-        INSERT INTO BASIC_USER_PERSONAL (BASIC_USER_NO, PERSONAL_NO)
-        VALUES (#{userId}, #{personalNo})
+        <foreach collection="categoryIds" item="personalNo" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
+            INTO BASIC_USER_PERSONAL (
+            BASIC_USER_NO,
+            PERSONAL_NO
+            )
+            VALUES (
+            #{userId},
+            #{personalNo}
+            )
+        </foreach>
     </insert>
 
 </mapper>

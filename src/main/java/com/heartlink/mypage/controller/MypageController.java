@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +85,25 @@ public class MypageController {
 
     @GetMapping("/hobby")
     public String hobbyPage(HttpServletRequest request, Model model) {
+        int userId = (Integer) model.getAttribute("userId");  // 모델에서 userId를 가져옴
+
+        // 선호하는 것 (L 타입) 조회
+        List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
+
+        // 기피하는 것 (H 타입) 조회
+        List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
+
+        // 사용자가 선택한 성향 조회
+        List<Integer> userSelectedCategories = mypageService.getUserSelectedCategories(userId);
+
+        model.addAttribute("likeCategories", likeCategories);
+        model.addAttribute("dislikeCategories", dislikeCategories);
+        model.addAttribute("userSelectedCategories", userSelectedCategories);
+
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobby";
     }
+
 
     @GetMapping("/sentiedit")
     public String editSentiPage(Model model) {
@@ -105,7 +122,7 @@ public class MypageController {
         model.addAttribute("dislikeCategories", dislikeCategories);
         model.addAttribute("userSelectedCategories", userSelectedCategories);
 
-        return "mypage/mypage-sentiedit";
+        return "mypage/mypage_hobby/mypage-sentiedit";
     }
 
     @GetMapping("/hobbyedit")
@@ -113,7 +130,6 @@ public class MypageController {
         model.addAttribute("currentUrl", request.getRequestURI());
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
-
 
     // 비밀번호 확인 요청 처리
     @PostMapping("/validatePassword")
@@ -131,7 +147,6 @@ public class MypageController {
         }
         return response;
     }
-
 
     @PostMapping("/update")
     public String updateUserInfo(
@@ -163,11 +178,18 @@ public class MypageController {
             @RequestParam(value = "dislikes", required = false) List<Integer> dislikeIds,
             @ModelAttribute("userId") int userId) {
 
-        mypageService.saveUserCategories(userId, likeIds, dislikeIds);
+        // 모든 성향 데이터 합치기
+        List<Integer> allCategoryIds = new ArrayList<>();
+        if (likeIds != null) {
+            allCategoryIds.addAll(likeIds);
+        }
+        if (dislikeIds != null) {
+            allCategoryIds.addAll(dislikeIds);
+        }
 
-        return "redirect:/mypage/main";
+        // 전체 성향 데이터 저장
+        mypageService.saveUserCategories(userId, allCategoryIds);
+
+        return "redirect:/mypage/hobby";
     }
-
-
-
 }
