@@ -11,17 +11,19 @@
         <div class="container d-flex justify-content-center">
             <div class="row d-flex justify-content-center align-items-start ">
                 <div class="ptreview-detailbox">
-                    <!-- 리뷰 제목 동적 표시 -->
-                    <h3 class="text-primary-color" th:text="${review.reviewTitle}">커플후기</h3>
+                    <!--리뷰제목-->
+                    <h3 class="text-primary-color" th:text="${review.reviewTitle}"></h3>
                     <div class="button-container">
                         <!-- 삭제하기 버튼 -->
-                        <form action="/review/delete" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                        <form action="/review/delete" method="post" style="display:inline;" onsubmit="return confirmDelete();"
+                              th:if="${review.reviewerUserId} == ${userId}">
                             <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
                             <button class="btn-action color-sec" type="submit">삭제하기</button>
                         </form>
 
-                        <!-- 수정하기 버튼 -->
-                        <a class="btn-action color-pri" th:href="@{'/review/photoedit?reviewNo=' + ${review.reviewNo}}">수정하기</a>
+                        <!-- 수정하기 버튼  -->
+                        <a class="btn-action color-pri" th:href="@{'/review/photoedit?reviewNo=' + ${review.reviewNo}}"
+                           th:if="${review.reviewerUserId} == ${userId}">수정하기</a>
 
                         <!-- 목록으로 버튼 -->
                         <a class="btn-action" th:href="@{'/review/photomain'}">목록으로</a>
@@ -42,10 +44,8 @@
                     </section>
 
                     <section>
-                        <!-- 리뷰 내용 및 함께한 사람의 ID 동적 표시 -->
-                        <div class="ptreview-con" th:utext="${review.reviewContent}">
-                            <!-- 리뷰 내용이 동적으로 추가됩니다 -->
-                        </div>
+                        <!-- 리뷰 내용  -->
+                        <div class="ptreview-con" th:utext="${review.reviewContent}">리뷰 내용</div>
                     </section>
 
                 </div>
