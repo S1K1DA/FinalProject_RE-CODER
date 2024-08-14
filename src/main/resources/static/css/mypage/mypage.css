@@ -334,6 +334,14 @@ padding: 5px 10px 5px 10px;
     justify-content: space-between;
 }
 
+.hobby-box-2 ul{
+padding:0px;
+}
+
+.hobby-box-2 ul li{
+list-style-type: none;
+}
+
 
 .hobby-box-2 h4 {
 margin-bottom : 3rem;
@@ -355,6 +363,14 @@ margin-bottom : 3rem;
 .like-dislike-container {
     display: flex;
     width: 100%;
+}
+.like-dislike-container ul{
+padding : 0px !important;
+}
+
+.like-dislike-container ul li{
+list-style-type: none;
+
 }
 
 .like-box {
@@ -737,3 +753,4 @@ color : black;
 .btn-popup:hover {
     opacity: 0.9;
 }
+
