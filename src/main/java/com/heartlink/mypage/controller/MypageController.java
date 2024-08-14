@@ -58,8 +58,8 @@ public class MypageController {
     }
 
     @GetMapping("/ptreview")
-    public String ptreview(@RequestParam(defaultValue = "1") int page, Model model) {
-        int pageSize = 10;
+    public String ptreview(@RequestParam(name="page", defaultValue = "1") int page, Model model) {
+        int pageSize = 6; // 여기서 페이지 크기를 설정
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> photoReviews = mypageService.getPhotoReviews(userId);
 
@@ -76,8 +76,9 @@ public class MypageController {
 
 
 
+
     @GetMapping("/lireview")
-    public String lireview(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String lireview(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
         int pageSize = 10;
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);

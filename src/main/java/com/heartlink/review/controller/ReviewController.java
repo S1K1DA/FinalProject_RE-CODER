@@ -32,7 +32,7 @@ public class ReviewController {
     }
 
     @GetMapping("/photomain")
-    public String photoMain(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String photoMain(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
         int pageSize = 10;
         List<ReviewDto> reviews = reviewService.getAllReviews(); // 모든 리뷰를 가져옴
 
@@ -83,7 +83,7 @@ public class ReviewController {
     }
 
     @GetMapping("/livemain")
-    public String liveMain(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String liveMain(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
         int pageSize = 10;
         List<ReviewDto> liveReviews = reviewService.getLiveReviews();
 
