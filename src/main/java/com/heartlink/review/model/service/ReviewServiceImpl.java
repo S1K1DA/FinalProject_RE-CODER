@@ -18,6 +18,7 @@ public class ReviewServiceImpl implements ReviewService {
         this.reviewDao = reviewDao;
     }
 
+    //리뷰 목록 가져오기
     @Override
     public List<ReviewDto> getAllReviews() {
         List<ReviewDto> reviews = reviewDao.getAllReviews();
@@ -28,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews;
     }
 
+    //리뷰의 글에서 이미지 추출
     private String extractFirstImageUrl(String content) {
         String imgTagPattern = "<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>";
         Pattern pattern = Pattern.compile(imgTagPattern);
@@ -38,17 +40,20 @@ public class ReviewServiceImpl implements ReviewService {
         return null;
     }
 
+    //리뷰 상세보기
     @Override
     public ReviewDto getReviewDetail(int reviewNo) {
         return reviewDao.getReviewDetail(reviewNo); // 조회수 증가 없음
     }
 
+    //리뷰 상세보기 + 조회수증가
     @Override
     public ReviewDto getReviewDetailWithViews(int reviewNo) {
         reviewDao.increaseReviewViews(reviewNo);
         return reviewDao.getReviewDetail(reviewNo);
     }
 
+    //포토리뷰 저장
     @Override
     public boolean savePhotoReview(ReviewDto review, ReviewPhotoDto reviewPhoto) {
         int reviewResult = reviewDao.savePhotoReview(review);
@@ -64,32 +69,37 @@ public class ReviewServiceImpl implements ReviewService {
         return false;
     }
 
+    //조회수 증가
     @Override
     public void increaseReviewViews(int reviewNo) {
         reviewDao.increaseReviewViews(reviewNo);
     }
 
+    //userId에서 닉네임을 가져옴
     @Override
     public String getNicknameByUserId(int userId) {
         return reviewDao.getNicknameByUserId(userId);
     }
 
+    //포토리뷰 업데이트
     @Override
     public boolean updatePhotoReview(ReviewDto review) {
         return reviewDao.updatePhotoReview(review) > 0;
     }
 
+    //리뷰 삭제
     @Override
     public boolean deleteReview(int reviewNo) {
         return reviewDao.deleteReview(reviewNo) > 0;
     }
 
-    // Live Review 관련 메서드 구현
+    //라이브리뷰 저장
     @Override
     public boolean saveLiveReview(ReviewDto review) {
         return reviewDao.saveLiveReview(review) > 0;
     }
 
+    //라이브리뷰 목록 가져오기
     @Override
     public List<ReviewDto> getLiveReviews() {
         return reviewDao.getLiveReviews();
