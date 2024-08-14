@@ -31,7 +31,7 @@
                                             <li th:each="like : ${likeCategories}"
                                                 th:if="${userSelectedCategories.contains(like.personalNo)}"
                                                 th:text="${like.personalName}">
-                                                <!-- 이곳에 선택된 항목의 이름이 출력됩니다 -->
+                                                <!-- 선택한 항목 출력 -->
                                             </li>
                                         </ul>
                                     </div>
@@ -41,7 +41,7 @@
                                             <li th:each="dislike : ${dislikeCategories}"
                                                 th:if="${userSelectedCategories.contains(dislike.personalNo)}"
                                                 th:text="${dislike.personalName}">
-                                                <!-- 이곳에 선택된 항목의 이름이 출력됩니다 -->
+                                                <!-- 선택한 항목 출력 -->
                                             </li>
                                         </ul>
                                     </div>
