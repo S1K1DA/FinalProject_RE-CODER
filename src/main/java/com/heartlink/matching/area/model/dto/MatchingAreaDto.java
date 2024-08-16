@@ -1,5 +1,6 @@
 package com.heartlink.matching.area.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 @Getter
@@ -21,7 +22,16 @@ public class MatchingAreaDto {
     private String personalLike;
     private String personalHate;
 
-    private float latitude; //위도
-    private float longitude; //경도
+    private String photoName;
+    private String photoOriginName;
+    private String photoIndate;
+    private String photoPath;
+
+    private String consentLocationInfo;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##.######")
+    private double latitude; //위도
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "###.######")
+    private double longitude; //경도
 
 }

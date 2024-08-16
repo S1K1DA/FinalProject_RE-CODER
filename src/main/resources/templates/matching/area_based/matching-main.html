@@ -8,7 +8,7 @@
     <section class="matching-main-sec">
         <div class="container matching-out-box">
             <div class="matching-my-tabs">
-                <a class="matching-tab-ico not-choice" hre  f="#">MBTI 매칭</a>
+                <a class="matching-tab-ico not-choice" href="#">MBTI 매칭</a>
                 <a class="matching-tab-ico not-choice" href="#">이상형 매칭</a>
                 <a class="matching-tab-ico" th:href="@{/matching-area/main}">위치 기반 매칭</a>
             </div>
@@ -29,6 +29,7 @@
         var addr = `[[${addr}]]`;
         var userSex = `[[${userSex}]]`;
         var map;
+        var markers = []; // 전역 마커 배열
 
         if (typeof kakao.maps === 'undefined') {
             console.error('Kakao Maps API is not loaded.');
@@ -49,9 +50,6 @@
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-                console.log('Latitude:', coords.getLat());
-                console.log('Longitude:', coords.getLng());
-
                 var marker = new kakao.maps.Marker({
                     map: map,
                     position: coords
@@ -67,12 +65,43 @@
         });
 
         // 마커 이미지
-        var imageSrc = '/image/location-pin.png';
+        var imageSrc = '/image/area_map/location-pin1.png';
+
+        // 마커를 지도에 추가하는 함수
+        function addMarker(position, userId) {
+            var imageSize = new kakao.maps.Size(40, 40);
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: position,
+                title: userId,
+                image: markerImage
+            });
+
+            // 생성된 마커를 배열에 추가합니다
+            markers.push(marker);
+
+            kakao.maps.event.addListener(marker, 'click', function() {
+                highlightMatchingUser(marker.getTitle());
+            });
+        }
+
+        // 배열에 추가된 마커들을 지도에서 삭제하는 함수
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = []; // 마커 배열을 비움
+        }
 
         async function fetchUsersInBounds(map) {
             var bounds = map.getBounds();
 
             try {
+                // 기존 마커를 삭제합니다
+                clearMarkers();
+
                 const response = await fetch('/matching-area/bounds', {
                     method: 'POST',
                     headers: {
@@ -89,42 +118,37 @@
 
                 const responseJson = await response.json();
 
-                console.log(responseJson);
-
-                var positions = [];
 
                 var matchingList = document.getElementById('matching-list');
                 matchingList.innerHTML = '';
 
-                // 사용자 데이터 배열을 반복하여 positions 배열을 생성합니다
+                // 사용자 데이터 배열을 반복하여 마커를 생성합니다
                 for (var i = 0; i < responseJson.length; i++) {
-                    positions.push({
-                        title: responseJson[i].basicUserName,
-                        latlng: new kakao.maps.LatLng(responseJson[i].latitude, responseJson[i].longitude)
-                    });
-                }
+                    var position = new kakao.maps.LatLng(responseJson[i].latitude, responseJson[i].longitude);
+                    addMarker(position, responseJson[i].basicUserNo);
 
-                // 마커를 지도에 추가합니다
-                for (var i = 0; i < positions.length; i++) {
-                    var imageSize = new kakao.maps.Size(45, 45);
-                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-                    var marker = new kakao.maps.Marker({
-                        map: map,
-                        position: positions[i].latlng,
-                        title: positions[i].title,
-                        image: markerImage
-                    });
 
                     // 리스트 항목 생성
                     var listItem = document.createElement('li');
                     listItem.className = 'matching-list-item';
-                    listItem.innerHTML = `
+                    let resultInnerHtml = `
                         <div class="matching-request-box">
-                            <img src="/image/user_profile/${responseJson[i].profileImageUrl || 'default_image.png'}" class="matching-photo">
-                            <a class="matching-request">매칭 신청</a>
+                            <img src="/image/user_profile/${responseJson[i].photoOriginName || 'default_image.png'}" class="matching-photo">
+                            <a class="matching-request" name="area-mathing-btn" >매칭 신청</a>
+                            <input id="matchingUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
                         </div>
                         <table class="matching-info">
+                        `;
+                    if(responseJson[i].latitude == 0.0){
+                        resultInnerHtml += `
+                            <tr>
+                                <td colspan="2" style="font-size: 12px;">
+                                    <p>상제 위치 정보 미동의</p>
+                                </td>
+                            </tr>
+                            `;
+                    }
+                    resultInnerHtml += `
                             <tr>
                                 <td><p class="matching-name">${responseJson[i].basicUserName}</p></td>
                                 <td><p class="matching-age">${calculateAge(responseJson[i].basicUserBirthdate)}세</p></td>
@@ -155,8 +179,24 @@
                             </tr>
                         </table>
                     `;
-
+                    listItem.innerHTML = resultInnerHtml;
                     matchingList.appendChild(listItem);
+
+                    let areaMatchingBtn = document.getElementsByName('area-mathing-btn');
+
+                    for (const ele of Array.from(areaMatchingBtn)) {
+                        ele.addEventListener("click", function(){
+                            yesOrNo("매칭신청 하시겠습니까?",
+                                    "question",
+                                    "rgb(255 128 135)",
+                                    "rgb(150 150 150)",
+                                    "예",
+                                    "아니요",
+                                    "매칭 완료!",
+                                    "success",
+                                    "");
+                        });
+                    }
 
                 }
 
@@ -165,10 +205,13 @@
             }
         }
 
+
+        // '이곳에서 찾기' 버튼 이벤트
         document.getElementById('find-location').addEventListener('click', function() {
             fetchUsersInBounds(map);
         });
 
+        // 나이 구하는 함수
         function calculateAge(birthdateString) {
             // 주어진 생일 문자열을 Date 객체로 변환
             const birthdate = new Date(birthdateString);
@@ -197,7 +240,36 @@
             return age;
         }
 
+        // 선택된 매칭회원 하이라이팅
+        function highlightMatchingUser(userId) {
+            // matching-list 내 모든 li 요소를 가져옴
+            var matchingItems = document.querySelectorAll('.matching-list-item');
+            var matchingList = document.getElementById('matching-list');
+
+            // userId와 일치하는지 확인
+            matchingItems.forEach(function(item) {
+                var matchingUserNo = item.querySelector('#matchingUserNo').value;
+
+                if (matchingUserNo === userId) {
+                    // 일치하는 경우 배경색 변경
+                    item.style.backgroundColor = 'rgb(218 151 200 / 27%)';
+
+                    matchingList.scroll({
+                        top: item.offsetTop - matchingList.clientHeight / 2 + item.clientHeight / 2,
+                        behavior: 'smooth'
+                    });
+
+
+                } else {
+                    // 일치하지 않는 경우 배경색 초기화
+                    item.style.backgroundColor = ''; // 기본 배경색으로 초기화
+                }
+            });
+        }
+
+
     });
+
 
 </script>
 <footer th:replace="~{fragments/footer :: footer}"></footer>

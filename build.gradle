@@ -44,7 +44,6 @@ dependencies {
     // 마이바티스
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
-    implementation 'com.baomidou:mybatis-plus-boot-starter:3.4.3'
 
     // 오라클
     runtimeOnly 'com.oracle.database.jdbc:ojdbc11'

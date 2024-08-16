@@ -7,7 +7,7 @@
 <nav th:replace="fragments/navigation :: navigation"></nav>
 <section class="write-feed-sec">
     <div class="container write-feed-box">
-        <form class="write-main-box">
+        <form class="write-main-box" th:action="@{/feed/enroll}" th:method="@{POST}">
             <div class="write-title-box">
                 <input class="write-title" type="text" placeholder="제목"/>
                 <select class="choses-tag" name="Tag" id="feed-tag">

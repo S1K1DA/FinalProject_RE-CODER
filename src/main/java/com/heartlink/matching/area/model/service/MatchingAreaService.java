@@ -28,6 +28,17 @@ public class MatchingAreaService {
 
         List<MatchingAreaDto> userDetails = areaMapper.selectUserDetails(bounds);
 
+        for (MatchingAreaDto item : userDetails) {
+            // consentLocationInfo 값 가져오기
+            String consentLocationInfo = item.getConsentLocationInfo();
+
+            // consentLocationInfo 값 확인하고 처리
+            if ("N".equals(consentLocationInfo)) {
+                item.setLatitude(0);
+                item.setLongitude(0);
+            }
+        }
+
         return userDetails;
     }
 

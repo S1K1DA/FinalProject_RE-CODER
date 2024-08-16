@@ -44,6 +44,8 @@ public class MatchingAreaController {
 
         List<MatchingAreaDto> userList = matchingAreaService.getUserIsBounds(bounds);
 
+
+
         return ResponseEntity.ok(userList);
     }
 
