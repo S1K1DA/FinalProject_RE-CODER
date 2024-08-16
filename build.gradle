@@ -77,6 +77,10 @@ dependencies {
 
     // 이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    
+    // HTML 태그 클리닝
+    implementation 'org.apache.commons:commons-text:1.10.0'
+
 }
 
 

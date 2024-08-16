@@ -9,8 +9,8 @@
     <div class="container write-feed-box">
         <form class="write-main-box" th:action="@{/feed/enroll}" th:method="@{POST}">
             <div class="write-title-box">
-                <input class="write-title" type="text" placeholder="제목"/>
-                <select class="choses-tag" name="Tag" id="feed-tag">
+                <input class="write-title" type="text" placeholder="제목" name="feedTitle"/>
+                <select class="choses-tag" name="feedTag" id="feed-tag">
                     <option value="none">= 태그 선택 =</option>
                     <option value="매칭 후기">매칭 후기</option>
                     <option value="연애 조언">연애 조언</option>
@@ -18,9 +18,8 @@
                 </select>
             </div>
             <div class="toolbar">
-                <a href="#" data-command="h1">H1</a>
-                <a href="#" data-command="h2">H2</a>
-                <a href="#" data-command="h3">H3</a>
+                <a href="#" data-command="h2">H1</a>
+                <a href="#" data-command="h3">H2</a>
                 <a href="#" data-command="p" style="margin-right: 8px;">P</a>
 
                 <a href="#" data-command="bold">
@@ -52,6 +51,7 @@
             <div class="editor" contenteditable="true">
 
             </div>
+            <input type="hidden" id="hidden-feedContent" name="feedContent">
             <div class="submit-btn-box">
                 <button class="feed-submit-btn" type="submit">등록</button>
 <!--                <button class="feed-submit-btn" type="submit">수정</button>-->
@@ -60,6 +60,6 @@
     </div>
 </section>
 <footer th:replace="fragments/footer :: footer"></footer>
-<script src="/js/feed/texteditor.js"></script>
+<script src="/js/feed/feed-write.js"></script>
 </body>
 </html>
