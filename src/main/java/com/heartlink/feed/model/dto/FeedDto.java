@@ -11,6 +11,7 @@ public class FeedDto {
 
     private int feedNo;
     private int aouthorUserNo;
+    private String basicUserNickname;
 
     private String feedTitle;
     private String feedContent;
@@ -18,4 +19,10 @@ public class FeedDto {
     private String feedUpdate;
     private String feedState;
     private String feedTag;
+
+    private String commentUserNickname;
+    private String commentContent;
+    private String commentIndate;
+
+    private int likeCount;
 }

@@ -11,7 +11,34 @@
         <result column="feed_update" property="feedUpdate" />
         <result column="feed_state" property="feedState" />
         <result column="feed_tag" property="feedTag" />
+        <result column="basic_user_nickname" property="basicUserNickname" />
+        <result column="commnet_user_nickname" property="commentUserNickname" />
+        <result column="comment_content" property="commentContent" />
+        <result column="comment_indate" property="commentIndate" />
+        <result column="like_cnt" property="likeCount" />
     </resultMap>
+
+    <select id="getFeedList" resultMap="resultMapFeed">
+        SELECT bu.BASIC_USER_NICKNAME , FEED_TITLE , FEED_CONTENT , FEED_INDATE , FEED_TAG, FEED_NO
+        FROM FEEDS f
+                 JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
+        WHERE FEED_STATE = 'N'
+    </select>
+
+    <select id="getCommentList" resultMap="resultMapFeed">
+        SELECT bu.BASIC_USER_NICKNAME AS COMMENT_USER_NICKNAME, fc.COMMENT_CONTENT , fc.COMMENT_INDATE
+        FROM FEED_COMMENTS fc
+                 JOIN BASIC_USER bu
+                      ON fc.COMMENT_USER_NO = bu.BASIC_USER_NO
+        WHERE FEED_NO = #{feedNo}
+          AND fc.COMMENT_STATE = 'N'
+    </select>
+
+    <select id="getLikeCount" resultMap="resultMapFeed">
+        SELECT COALESCE(COUNT(DISTINCT BASIC_USER_NO), 0) AS LIKE_CNT
+        FROM FEED_LIKES fl
+        WHERE FEED_NO = #{feedNo}
+    </select>
 
     <insert id="setFeedEnroll">
         INSERT INTO FEEDS f VALUES(

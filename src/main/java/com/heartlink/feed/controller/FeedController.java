@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/feed")
 public class FeedController {
@@ -27,9 +29,11 @@ public class FeedController {
     @GetMapping("")
     public String moveMain(Model model) {
 
+        List<FeedDto> feedList = feedService.getFeedList();
 
+        System.out.println(feedList.toString());
 
-        model.addAttribute("",);
+        model.addAttribute("feedList", feedList);
 
         return "feed/feed-main";
     }
