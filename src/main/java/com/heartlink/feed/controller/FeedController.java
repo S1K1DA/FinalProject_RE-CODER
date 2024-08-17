@@ -30,9 +30,6 @@ public class FeedController {
     public String moveMain(Model model) {
 
         List<FeedDto> feedList = feedService.getFeedList();
-
-        System.out.println(feedList.toString());
-
         model.addAttribute("feedList", feedList);
 
         return "feed/feed-main";

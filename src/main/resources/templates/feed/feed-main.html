@@ -59,7 +59,7 @@
                         </div>
                         <div class="feed-icon-box">
                             <p class="feed-nickname" th:text="${feed.basicUserNickname}"></p>
-                            <p class="feed-like-cnt">1,504</p>
+                            <p class="feed-like-cnt" th:type="${feed.likeCount}"></p>
                         </div>
                         <div class="feed-remark">
                             <p class="feed-indate"  th:if="${feed.feedTag != 'none' }" th:text="${feed.feedTag}"></p>
@@ -68,21 +68,21 @@
                         </div>
                     </div>
                     <div class="feed-content-box">
-                            <span class="feed-content" th:text="${feed.feedContent}">
+                            <span class="feed-content" th:utext="${feed.feedContent}">
                             </span>
                     </div>
                 </div>
-                <div class="feed-reply-box">
+                <div class="feed-reply-box" >
                     <input type="hidden" value="${feed.feedNo}">
-                    <div class="feed-reply-main">
+                    <div class="feed-reply-main" th:if="${feed.commentContent != null}">
                         <div class="feed-reply-ele">
                             <div class="reply-profile-box">
-                                <p class="reply-nickname">Haewon</p>
-                                <p class="reply-indate">2024.07.30 16:33</p>
+                                <p class="reply-nickname" th:text="${feed.commentUserNickname}"></p>
+                                <p class="reply-indate" th:text="${feed.commentIndate}"></p>
                                 <a class="bi-x reply-delete"></a>
                             </div>
                             <div class="reply-content-box">
-                                <span class="reply-content">Your perspective just made my day brighter!</span>
+                                <span class="reply-content"th:text="${feed.commentContent}"></span>
                             </div>
                         </div>
                     </div>

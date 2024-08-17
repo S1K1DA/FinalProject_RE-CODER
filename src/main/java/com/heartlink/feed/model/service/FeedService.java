@@ -2,6 +2,7 @@ package com.heartlink.feed.model.service;
 
 import com.heartlink.feed.model.dto.FeedDto;
 import com.heartlink.feed.model.mapper.FeedMapper;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,16 @@ public class FeedService {
     public List<FeedDto> getFeedList(){
         List<FeedDto> textList = feedMapper.getFeedList();
 
+
         for (FeedDto feed : textList) {
             int feedNo = feed.getFeedNo();
 
+            // 태그 다시 달아주기
+            String originalContent = StringEscapeUtils.unescapeHtml4(feed.getFeedContent());
+            feed.setFeedContent(originalContent);
+
             // 댓글 리스트 가져오기
             List<FeedDto> commentList = feedMapper.getCommentList(feedNo);
-
-            System.out.println(commentList.toString());
 
             for(FeedDto comment : commentList){
                 feed.setCommentContent(comment.getCommentContent());
