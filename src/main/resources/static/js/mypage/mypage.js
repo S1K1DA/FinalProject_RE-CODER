@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     heartIcons.forEach(heart => {
         heart.addEventListener('click', function(event) {
-            event.stopPropagation();  // 부모 요소의 클릭 이벤트 전파를 막음
+            event.stopPropagation();
             this.classList.toggle('liked');
         });
     });
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     heartIcons2.forEach(heart => {
         heart.addEventListener('click', function(event) {
-            event.stopPropagation();  // 부모 요소의 클릭 이벤트 전파를 막음
+            event.stopPropagation();
             this.classList.toggle('liked');
         });
     });
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitPasswordButton = document.getElementById('submitPassword');
     const passwordInput = document.getElementById('passwordInput');
 
-    // 요소가 존재하는지 확인한 후 이벤트 리스너 추가
     if (openPopupButton && popup && closePopupButton && submitPasswordButton && passwordInput) {
         openPopupButton.addEventListener('click', function () {
             popup.style.display = 'flex';
@@ -91,14 +90,52 @@ document.addEventListener('DOMContentLoaded', function () {
                           popup.style.display = 'none';
                       }
                   });
+            } else {
+                alert('비밀번호를 입력해주세요.');
             }
         });
 
         passwordInput.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
-                event.preventDefault(); // 기본 동작 막기 (폼 제출 등)
-                submitPasswordButton.click();  // 확인 버튼 클릭
+                event.preventDefault();
+                submitPasswordButton.click();
             }
+        });
+    }
+
+    // 탈퇴 폼 처리
+    const deleteForm = document.querySelector('form[action="/mypage/delete"]');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password-confirm').value;
+
+            if (!password || !passwordConfirm) {
+                alert('비밀번호와 비밀번호 확인을 입력해주세요.');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                alert('비밀번호 확인이 일치하지 않습니다.');
+                return;
+            }
+
+            fetch('/mypage/validatePassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: password })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.valid) {
+                      deleteForm.submit();
+                  } else {
+                      alert('입력한 비밀번호가 현재 비밀번호와 일치하지 않습니다.');
+                  }
+              });
         });
     }
 });
