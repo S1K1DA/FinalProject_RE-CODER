@@ -36,18 +36,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 좋아요 하트 아이콘 클릭 처리
-    const heartIcons = document.querySelectorAll('.feed-heart');
+    // 피드 좋아요 하트 아이콘 클릭 처리
+    const feedHeartIcons = document.querySelectorAll('.feed-heart');
 
-    heartIcons.forEach(heart => {
+    feedHeartIcons.forEach(heart => {
         heart.addEventListener('click', function(event) {
             event.stopPropagation();
-            toggleLike(this);
+            toggleFeedLike(this);
         });
     });
 
-    // 좋아요 토글 함수
-    function toggleLike(element) {
+    // 프로필 좋아요 하트 아이콘 클릭 처리
+    const profHeartIcons = document.querySelectorAll('.prof-heart');
+
+    profHeartIcons.forEach(heart => {
+        heart.addEventListener('click', function(event) {
+            event.stopPropagation();
+            toggleProfileLike(this);
+        });
+    });
+
+    // 피드 좋아요 토글 함수
+    function toggleFeedLike(element) {
         const feedNo = element.closest('.liked-feed-item').getAttribute('data-feed-no');
         const isLiked = element.classList.contains('liked');
 
@@ -67,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         } else {
-            // 좋아요 추가 (이미 좋아요 되어있으므로 이 부분은 필요 없을 수 있습니다)
+            // 좋아요 추가
             fetch(`/mypage/likeFeed`, {
                 method: 'POST',
                 headers: {
@@ -79,6 +89,44 @@ document.addEventListener('DOMContentLoaded', function () {
                     element.classList.add('liked');
                 } else {
                     alert('좋아요 추가에 실패했습니다.');
+                }
+            });
+        }
+    }
+
+    // 프로필 좋아요 토글 함수
+    function toggleProfileLike(element) {
+        const likedUserNo = element.closest('.liked-prof-item').getAttribute('data-liked-user-no');
+        const isLiked = element.classList.contains('liked');
+
+        if (isLiked) {
+            // 프로필 좋아요 해제
+            fetch(`/mypage/unlikeProfile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ likedUserNo: likedUserNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.remove('liked');
+                } else {
+                    alert('프로필 좋아요 해제에 실패했습니다.');
+                }
+            });
+        } else {
+            // 프로필 좋아요 추가
+            fetch(`/mypage/likeProfile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ likedUserNo: likedUserNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.add('liked');
+                } else {
+                    alert('프로필 좋아요 추가에 실패했습니다.');
                 }
             });
         }

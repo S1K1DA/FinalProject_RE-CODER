@@ -132,4 +132,22 @@ public class MypageServiceImpl implements MypageService {
     public List<MypageDto> getUserMatchingHistory(int userId) {
         return mypageDao.getUserMatchingHistory(userId);
     }
+
+    // 좋아요한 프로필 목록 가져오기
+    @Override
+    public List<MypageDto> getLikedProfiles(int userId) {
+        return mypageDao.getLikedProfiles(userId);
+    }
+
+    // 프로필 좋아요 추가
+    @Override
+    public boolean likeProfile(int userId, int likedUserNo) {
+        return mypageDao.insertProfileLike(userId, likedUserNo) > 0;
+    }
+
+    // 프로필 좋아요 해제
+    @Override
+    public boolean unlikeProfile(int userId, int likedUserNo) {
+        return mypageDao.deleteProfileLike(userId, likedUserNo) > 0;
+    }
 }

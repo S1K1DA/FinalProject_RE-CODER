@@ -46,4 +46,11 @@ public interface MypageService {
     public boolean likeFeed(int userId, int feedNo);
 
     List<MypageDto> getUserMatchingHistory(int userId);
+
+    // 프로필 좋아요 관련 메소드
+    List<MypageDto> getLikedProfiles(int userId);
+
+    public boolean unlikeProfile(int userId, int likedUserNo);
+
+    public boolean likeProfile(int userId, int likedUserNo);
 }

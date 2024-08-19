@@ -108,4 +108,20 @@ public class MypageDao {
         return sqlSession.selectList("mypageMapper.getUserMatchingHistory", userId);
     }
 
+    public List<MypageDto> getLikedProfiles(int userId) {
+        return sqlSession.selectList("mypageMapper.getLikedProfiles", userId);
+    }
+
+    // 프로필 좋아요 추가
+    public int insertProfileLike(int userId, int likedUserNo) {
+        Map<String, Integer> params = Map.of("userId", userId, "likedUserNo", likedUserNo);
+        return sqlSession.insert("mypageMapper.insertProfileLike", params);
+    }
+
+    // 프로필 좋아요 해제
+    public int deleteProfileLike(int userId, int likedUserNo) {
+        Map<String, Integer> params = Map.of("userId", userId, "likedUserNo", likedUserNo);
+        return sqlSession.delete("mypageMapper.deleteProfileLike", params);
+    }
+
 }

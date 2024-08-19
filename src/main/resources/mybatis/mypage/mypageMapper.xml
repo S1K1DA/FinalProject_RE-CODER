@@ -58,14 +58,8 @@
     <!-- 유저 성향 추가 -->
     <insert id="insertUserCategories" parameterType="map">
         <foreach collection="categoryIds" item="personalNo" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
-            INTO BASIC_USER_PERSONAL (
-            BASIC_USER_NO,
-            PERSONAL_NO
-            )
-            VALUES (
-            #{userId},
-            #{personalNo}
-            )
+            INTO BASIC_USER_PERSONAL (BASIC_USER_NO, PERSONAL_NO)
+            VALUES (#{userId}, #{personalNo})
         </foreach>
     </insert>
 
@@ -82,14 +76,8 @@
     <!-- 유저 취미 추가 -->
     <insert id="insertUserHobbies" parameterType="map">
         <foreach collection="hobbyIds" item="hobbyNo" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
-            INTO BASIC_USER_HOBBY (
-            BASIC_USER_NO,
-            HOBBY_NO
-            )
-            VALUES (
-            #{userId},
-            #{hobbyNo}
-            )
+            INTO BASIC_USER_HOBBY (BASIC_USER_NO, HOBBY_NO)
+            VALUES (#{userId}, #{hobbyNo})
         </foreach>
     </insert>
 
@@ -103,10 +91,17 @@
 
     <!-- 리뷰 목록 가져오기 -->
     <select id="getReviewsByType" parameterType="map" resultType="com.heartlink.mypage.model.dto.MypageDto">
-        SELECT REVIEW_NO as reviewNo, REVIEWER_USER_ID as reviewerUserId,
-        REVIEW_INDATE as reviewIndate, REVIEW_UPDATE as reviewUpdate, REVIEW_DELETE as reviewDelete,
-        REVIEW_RATING as reviewRating, REVIEW_CONTENT as reviewContent, REVIEW_VIEWS as reviewViews,
-        REVIEW_TYPE as reviewType, REVIEW_TITLE as reviewTitle
+        SELECT
+        REVIEW_NO as reviewNo,
+        REVIEWER_USER_ID as reviewerUserId,
+        REVIEW_INDATE as reviewIndate,
+        REVIEW_UPDATE as reviewUpdate,
+        REVIEW_DELETE as reviewDelete,
+        REVIEW_RATING as reviewRating,
+        REVIEW_CONTENT as reviewContent,
+        REVIEW_VIEWS as reviewViews,
+        REVIEW_TYPE as reviewType,
+        REVIEW_TITLE as reviewTitle
         FROM REVIEW_BOARD
         WHERE REVIEWER_USER_ID = #{userId}
         AND REVIEW_TYPE = #{reviewType}
@@ -123,7 +118,11 @@
 
     <!-- 좋아요한 피드 목록 가져오기 -->
     <select id="getLikedFeeds" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
-        SELECT f.FEED_NO as feedNo, f.FEED_TITLE as feedTitle, u.BASIC_USER_NICKNAME as author, l.LIKE_INDATE as likedTime
+        SELECT
+        f.FEED_NO as feedNo,
+        f.FEED_TITLE as feedTitle,
+        u.BASIC_USER_NICKNAME as author,
+        l.LIKE_INDATE as likedTime
         FROM FEEDS f
         JOIN FEED_LIKES l ON f.FEED_NO = l.FEED_NO
         JOIN BASIC_USER u ON f.AUTHOR_USER_NO = u.BASIC_USER_NO
@@ -133,19 +132,24 @@
 
     <!-- 좋아요 해제 -->
     <delete id="deleteFeedLike" parameterType="map">
-        DELETE FROM FEED_LIKES WHERE FEED_NO = #{feedNo} AND BASIC_USER_NO = #{userId}
+        DELETE FROM FEED_LIKES
+        WHERE FEED_NO = #{feedNo}
+        AND BASIC_USER_NO = #{userId}
     </delete>
 
     <!-- 좋아요 추가 -->
     <insert id="insertFeedLike" parameterType="map">
-        INSERT INTO FEED_LIKES (FEED_NO, BASIC_USER_NO) VALUES (#{feedNo}, #{userId})
+        INSERT INTO FEED_LIKES (FEED_NO, BASIC_USER_NO)
+        VALUES (#{feedNo}, #{userId})
     </insert>
 
+    <!-- 탈퇴 유저 기록 추가 -->
     <insert id="insertDeletedUser" parameterType="int">
         INSERT INTO DELETED_USER (BASIC_USER_NO, DELETED_USER_INDATE)
         VALUES (#{userId}, CURRENT_TIMESTAMP)
     </insert>
 
+    <!-- 유저 매칭 히스토리 가져오기 -->
     <select id="getUserMatchingHistory" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
         SELECT
         m.MATCHING_NO as matchingNo,
@@ -163,13 +167,36 @@
         JOIN
         BASIC_USER u2 ON m.MATCHED_USER_NO = u2.BASIC_USER_NO
         WHERE
-        m.MATCHING_USER_NO = #{userId} OR m.MATCHED_USER_NO = #{userId}
+        m.MATCHING_USER_NO = #{userId}
+        OR m.MATCHED_USER_NO = #{userId}
         ORDER BY
         m.MATCHING_INDATE DESC
         FETCH FIRST 10 ROWS ONLY
     </select>
 
+    <!-- 프로필 좋아요 목록 가져오기 -->
+    <select id="getLikedProfiles" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT
+        u.BASIC_USER_NO as likedUserNo,
+        u.BASIC_USER_NICKNAME as likedUserNickname,
+        l.LIKE_INDATE as likeIndate
+        FROM USER_LIKES l
+        JOIN BASIC_USER u ON l.LIKED_USER_NO = u.BASIC_USER_NO
+        WHERE l.LIKER_USER_NO = #{userId}
+        ORDER BY l.LIKE_INDATE DESC
+    </select>
 
+    <!-- 프로필 좋아요 추가 -->
+    <insert id="insertProfileLike" parameterType="map">
+        INSERT INTO USER_LIKES (LIKE_NO, LIKED_USER_NO, LIKER_USER_NO, LIKE_INDATE)
+        VALUES (LIKE_SEQ.NEXTVAL, #{likedUserNo}, #{userId}, CURRENT_TIMESTAMP)
+    </insert>
 
+    <!-- 프로필 좋아요 해제 -->
+    <delete id="deleteProfileLike" parameterType="map">
+        DELETE FROM USER_LIKES
+        WHERE LIKED_USER_NO = #{likedUserNo}
+        AND LIKER_USER_NO = #{userId}
+    </delete>
 
 </mapper>

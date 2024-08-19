@@ -110,9 +110,22 @@ public class MypageController {
         return "mypage/mypage_review/mypage-lireview";
     }
 
+    // 프로필 좋아요 페이지
     @GetMapping("/proflike")
-    public String profPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
+    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 8; // 한 페이지에 보여줄 아이템 수
+        int userId = (Integer) model.getAttribute("userId");
+
+        List<MypageDto> likedProfiles = mypageService.getLikedProfiles(userId);
+
+        // 페이지네이션 처리
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
+
+        model.addAttribute("likedProfiles", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/mypage/proflike");
+
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
@@ -279,6 +292,30 @@ public class MypageController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    // 프로필 좋아요 추가
+    @PostMapping("/likeProfile")
+    @ResponseBody
+    public Map<String, Boolean> likeProfile(@RequestBody Map<String, Integer> payload, Model model) {
+        int userId = (Integer) model.getAttribute("userId");
+        int likedUserNo = payload.get("likedUserNo");
+
+        boolean isLiked = mypageService.likeProfile(userId, likedUserNo);
+
+        return Map.of("success", isLiked);
+    }
+
+    // 프로필 좋아요 해제
+    @PostMapping("/unlikeProfile")
+    @ResponseBody
+    public Map<String, Boolean> unlikeProfile(@RequestBody Map<String, Integer> payload, Model model) {
+        int userId = (Integer) model.getAttribute("userId");
+        int likedUserNo = payload.get("likedUserNo");
+
+        boolean isUnliked = mypageService.unlikeProfile(userId, likedUserNo);
+
+        return Map.of("success", isUnliked);
     }
 
 }
