@@ -100,4 +100,8 @@ public class MypageDao {
         return sqlSession.insert("mypageMapper.insertFeedLike", params);
     }
 
+    public int insertDeletedUser(int userId) {
+        return sqlSession.insert("mypageMapper.insertDeletedUser", userId);
+    }
+
 }

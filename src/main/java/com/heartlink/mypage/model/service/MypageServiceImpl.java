@@ -102,8 +102,13 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public boolean deleteUserById(int userId) {
         int result = mypageDao.updateUserStatusToDeleted(userId);
-        return result > 0;
+        if (result > 0) {
+            mypageDao.insertDeletedUser(userId);  // DELETED_USER 테이블에 삽입
+            return true;
+        }
+        return false;
     }
+
 
     // 좋아요한 피드 목록 가져오기
     @Override

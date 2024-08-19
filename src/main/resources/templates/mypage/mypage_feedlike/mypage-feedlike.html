@@ -28,9 +28,9 @@
                                     <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
                                         <i class="bi-heart feed-heart-icon"></i>
                                     </a>
-                                    <p class="feed-title" th:text="${feed.feedTitle}">매칭 후기 1</p>
-                                    <p class="feed-author" th:text="${feed.author}">JaeinLee</p>
-                                    <p class="feed-liked-time" th:text="${#dates.format(feed.likedTime, 'yyyy.MM.dd HH:mm')}">2024.07.30 15:17</p>
+                                    <p class="feed-title" th:text="${feed.feedTitle}">제목</p>
+                                    <p class="feed-author" th:text="${feed.author}">작성자</p>
+                                    <p class="feed-liked-time" th:text="${#dates.format(feed.likedTime, 'yyyy.MM.dd HH:mm')}">시간 : 2024.07.30 15:17</p>
                                 </div>
                             </div>
                             <!-- 페이지네이션 -->

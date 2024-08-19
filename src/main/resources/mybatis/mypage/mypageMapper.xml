@@ -141,6 +141,11 @@
         INSERT INTO FEED_LIKES (FEED_NO, BASIC_USER_NO) VALUES (#{feedNo}, #{userId})
     </insert>
 
+    <insert id="insertDeletedUser" parameterType="int">
+        INSERT INTO DELETED_USER (BASIC_USER_NO, DELETED_USER_INDATE)
+        VALUES (#{userId}, CURRENT_TIMESTAMP)
+    </insert>
+
 
 
 </mapper>
