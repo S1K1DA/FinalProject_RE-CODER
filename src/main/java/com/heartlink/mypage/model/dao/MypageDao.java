@@ -104,4 +104,8 @@ public class MypageDao {
         return sqlSession.insert("mypageMapper.insertDeletedUser", userId);
     }
 
+    public List<MypageDto> getUserMatchingHistory(int userId) {
+        return sqlSession.selectList("mypageMapper.getUserMatchingHistory", userId);
+    }
+
 }

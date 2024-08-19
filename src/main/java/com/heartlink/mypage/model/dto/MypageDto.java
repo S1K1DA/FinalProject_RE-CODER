@@ -46,4 +46,10 @@ public class MypageDto {
     private String author;
     private Date likedTime;
 
+    //매칭 관련 필드들 추가
+    private int matchingNo;
+    private Date matchingIndate;
+    private String partnerName;        // 매칭 상대 이름
+    private String matchingState;      // 매칭 성공 여부
+    private String matchingChattingState; // 채팅 종료 여부
 }

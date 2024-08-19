@@ -146,6 +146,30 @@
         VALUES (#{userId}, CURRENT_TIMESTAMP)
     </insert>
 
+    <select id="getUserMatchingHistory" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT
+        m.MATCHING_NO as matchingNo,
+        m.MATCHING_INDATE as matchingIndate,
+        CASE
+        WHEN m.MATCHING_USER_NO = #{userId} THEN u2.BASIC_USER_NICKNAME
+        ELSE u1.BASIC_USER_NICKNAME
+        END as partnerName,
+        m.MATCHING_STATE as matchingState,
+        m.MATCHING_CHATTING_STATE as matchingChattingState
+        FROM
+        MATCHING_STATE m
+        JOIN
+        BASIC_USER u1 ON m.MATCHING_USER_NO = u1.BASIC_USER_NO
+        JOIN
+        BASIC_USER u2 ON m.MATCHED_USER_NO = u2.BASIC_USER_NO
+        WHERE
+        m.MATCHING_USER_NO = #{userId} OR m.MATCHED_USER_NO = #{userId}
+        ORDER BY
+        m.MATCHING_INDATE DESC
+        FETCH FIRST 10 ROWS ONLY
+    </select>
+
+
 
 
 </mapper>

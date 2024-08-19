@@ -24,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
         List<ReviewDto> reviews = reviewDao.getAllReviews();
         for (ReviewDto review : reviews) {
             String firstImageUrl = extractFirstImageUrl(review.getReviewContent());
-            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/default-thumbnail.jpg");
+            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/mainThumbnail.jpg");
         }
         return reviews;
     }

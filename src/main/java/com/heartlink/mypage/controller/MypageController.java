@@ -118,7 +118,12 @@ public class MypageController {
 
     @GetMapping("/match")
     public String matchPage(HttpServletRequest request, Model model) {
+        int userId = (Integer) model.getAttribute("userId");
+        List<MypageDto> matchingHistory = mypageService.getUserMatchingHistory(userId);
+
+        model.addAttribute("matchingHistory", matchingHistory);
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
+
         return "mypage/mypage_match/mypage-match";
     }
 

@@ -71,7 +71,7 @@ public class MypageServiceImpl implements MypageService {
         List<MypageDto> liveReviews = mypageDao.getReviewsByType(userId, "L");
         for (MypageDto review : liveReviews) {
             String firstImageUrl = extractFirstImageUrl(review.getReviewContent());
-            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/default-thumbnail.jpg");
+            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/mainThumbnail.jpg");
         }
         return liveReviews;
     }
@@ -81,7 +81,7 @@ public class MypageServiceImpl implements MypageService {
         List<MypageDto> photoReviews = mypageDao.getReviewsByType(userId, "P");
         for (MypageDto review : photoReviews) {
             String firstImageUrl = extractFirstImageUrl(review.getReviewContent());
-            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/default-thumbnail.jpg");
+            review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/mainThumbnail.jpg");
         }
         return photoReviews;
     }
@@ -128,4 +128,8 @@ public class MypageServiceImpl implements MypageService {
         return result > 0;
     }
 
+    @Override
+    public List<MypageDto> getUserMatchingHistory(int userId) {
+        return mypageDao.getUserMatchingHistory(userId);
+    }
 }

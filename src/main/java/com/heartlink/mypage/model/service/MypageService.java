@@ -44,4 +44,6 @@ public interface MypageService {
     public boolean unlikeFeed(int userId, int feedNo);
 
     public boolean likeFeed(int userId, int feedNo);
+
+    List<MypageDto> getUserMatchingHistory(int userId);
 }
