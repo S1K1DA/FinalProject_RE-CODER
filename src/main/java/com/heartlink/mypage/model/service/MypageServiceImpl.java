@@ -97,4 +97,30 @@ public class MypageServiceImpl implements MypageService {
         }
         return null;
     }
+
+    // 유저 상태 변경 -deleted
+    @Override
+    public boolean deleteUserById(int userId) {
+        int result = mypageDao.updateUserStatusToDeleted(userId);
+        return result > 0;
+    }
+
+    // 좋아요한 피드 목록 가져오기
+    @Override
+    public List<MypageDto> getLikedFeeds(int userId) {
+        return mypageDao.getLikedFeeds(userId);
+    }
+
+    @Override
+    public boolean unlikeFeed(int userId, int feedNo) {
+        int result = mypageDao.deleteFeedLike(userId, feedNo);
+        return result > 0;
+    }
+
+    @Override
+    public boolean likeFeed(int userId, int feedNo) {
+        int result = mypageDao.insertFeedLike(userId, feedNo);
+        return result > 0;
+    }
+
 }

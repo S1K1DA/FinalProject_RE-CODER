@@ -114,5 +114,33 @@
         ORDER BY REVIEW_INDATE DESC
     </select>
 
+    <!-- 유저 상태를 DELETED로 업데이트 -->
+    <update id="updateUserStatusToDeleted" parameterType="int">
+        UPDATE BASIC_USER
+        SET BASIC_USER_STATUS = 'DELETED'
+        WHERE BASIC_USER_NO = #{userId}
+    </update>
+
+    <!-- 좋아요한 피드 목록 가져오기 -->
+    <select id="getLikedFeeds" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT f.FEED_NO as feedNo, f.FEED_TITLE as feedTitle, u.BASIC_USER_NICKNAME as author, l.LIKE_INDATE as likedTime
+        FROM FEEDS f
+        JOIN FEED_LIKES l ON f.FEED_NO = l.FEED_NO
+        JOIN BASIC_USER u ON f.AUTHOR_USER_NO = u.BASIC_USER_NO
+        WHERE l.BASIC_USER_NO = #{userId}
+        ORDER BY l.LIKE_INDATE DESC
+    </select>
+
+    <!-- 좋아요 해제 -->
+    <delete id="deleteFeedLike" parameterType="map">
+        DELETE FROM FEED_LIKES WHERE FEED_NO = #{feedNo} AND BASIC_USER_NO = #{userId}
+    </delete>
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertFeedLike" parameterType="map">
+        INSERT INTO FEED_LIKES (FEED_NO, BASIC_USER_NO) VALUES (#{feedNo}, #{userId})
+    </insert>
+
+
 
 </mapper>

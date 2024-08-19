@@ -34,4 +34,14 @@ public interface MypageService {
 
     // 리뷰 내용에서 첫 번째 이미지 URL 추출
     String extractFirstImageUrl(String content);
+
+    //유저 상태 delete 변경
+    boolean deleteUserById(int userId);
+
+    // 좋아요한 피드 가져오기
+    List<MypageDto> getLikedFeeds(int userId);
+
+    public boolean unlikeFeed(int userId, int feedNo);
+
+    public boolean likeFeed(int userId, int feedNo);
 }

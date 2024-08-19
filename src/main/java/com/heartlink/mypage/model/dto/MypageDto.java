@@ -39,4 +39,11 @@ public class MypageDto {
     private String reviewType;
     private String reviewTitle;
     private String firstImageUrl;
+
+    // 피드 관련 필드들 추가
+    private int feedNo;
+    private String feedTitle;
+    private String author;
+    private Date likedTime;
+
 }

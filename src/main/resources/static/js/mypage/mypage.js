@@ -42,18 +42,47 @@ document.addEventListener('DOMContentLoaded', function () {
     heartIcons.forEach(heart => {
         heart.addEventListener('click', function(event) {
             event.stopPropagation();
-            this.classList.toggle('liked');
+            toggleLike(this);
         });
     });
 
-    const heartIcons2 = document.querySelectorAll('.prof-heart');
+    // 좋아요 토글 함수
+    function toggleLike(element) {
+        const feedNo = element.closest('.liked-feed-item').getAttribute('data-feed-no');
+        const isLiked = element.classList.contains('liked');
 
-    heartIcons2.forEach(heart => {
-        heart.addEventListener('click', function(event) {
-            event.stopPropagation();
-            this.classList.toggle('liked');
-        });
-    });
+        if (isLiked) {
+            // 좋아요 해제
+            fetch(`/mypage/unlikeFeed`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ feedNo: feedNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.remove('liked');
+                } else {
+                    alert('좋아요 해제에 실패했습니다.');
+                }
+            });
+        } else {
+            // 좋아요 추가 (이미 좋아요 되어있으므로 이 부분은 필요 없을 수 있습니다)
+            fetch(`/mypage/likeFeed`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ feedNo: feedNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.add('liked');
+                } else {
+                    alert('좋아요 추가에 실패했습니다.');
+                }
+            });
+        }
+    }
 
     // 팝업 관련 기능
     const openPopupButton = document.querySelector('.btn-edit-trigger');

@@ -4,6 +4,8 @@ import com.heartlink.mypage.model.dto.MypageDto;
 import com.heartlink.mypage.model.service.MypageService;
 import com.heartlink.review.common.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,6 @@ public class MypageController {
         this.pagination = pagination;
     }
 
-    // 모든 요청에 대해 userId를 모델에 추가
     @ModelAttribute
     public void addUserToModel(Model model) {
         int userId = 9; // 임의로 설정한 userId, 실제로는 로그인 정보로 대체되어야 함
@@ -35,9 +36,9 @@ public class MypageController {
 
     @GetMapping("/main")
     public String mainpage(HttpServletRequest request, Model model) {
-        int userId = (Integer) model.getAttribute("userId");  // 모델에서 userId를 가져옴
+        int userId = (Integer) model.getAttribute("userId");
         MypageDto user = mypageService.getUserInfo(userId);
-        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]); // 쿼리 파라미터를 제거한 URL을 currentUrl로 설정
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
         return "mypage/mypage_main/mypage-main";
     }
@@ -52,18 +53,35 @@ public class MypageController {
     }
 
     @GetMapping("/feedlike")
-    public String feedlikepage(HttpServletRequest request, Model model) {
+    public String feedlikepage(HttpServletRequest request,
+                               @RequestParam(name = "page", defaultValue = "1") int page,
+                               Model model) {
+        int userId = (Integer) model.getAttribute("userId");
+        int pageSize = 12;  // 한 페이지에 표시할 항목 수
+
+        // 전체 좋아요한 피드 목록 가져오기
+        List<MypageDto> likedFeeds = mypageService.getLikedFeeds(userId);
+
+        // 페이지네이션 처리
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedFeeds);
+
+        // 모델에 페이지네이션 관련 데이터 추가
+        model.addAttribute("likedFeeds", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/mypage/feedlike");
+
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_feedlike/mypage-feedlike";
     }
 
+
     @GetMapping("/ptreview")
-    public String ptreview(HttpServletRequest request, @RequestParam(name="page", defaultValue = "1") int page, Model model) {
-        int pageSize = 6; // 여기서 페이지 크기를 설정
+    public String ptreview(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 6;
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> photoReviews = mypageService.getPhotoReviews(userId);
 
-        // 페이지네이션 데이터 생성
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, photoReviews);
 
         model.addAttribute("photoReviews", paginationData.get("items"));
@@ -75,16 +93,12 @@ public class MypageController {
         return "mypage/mypage_review/mypage-ptreview";
     }
 
-
-
-
     @GetMapping("/lireview")
-    public String lireview(HttpServletRequest request, @RequestParam(name="page",defaultValue = "1") int page, Model model) {
+    public String lireview(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "1") int page, Model model) {
         int pageSize = 5;
         int userId = (Integer) model.getAttribute("userId");
         List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);
 
-        // 페이지네이션 데이터 생성
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
 
         model.addAttribute("liveReviews", paginationData.get("items"));
@@ -118,7 +132,6 @@ public class MypageController {
     public String hobbyPage(HttpServletRequest request, Model model) {
         int userId = (Integer) model.getAttribute("userId");
 
-        // 성향 조회
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
         List<Integer> userSelectedCategories = mypageService.getUserSelectedCategories(userId);
@@ -127,7 +140,6 @@ public class MypageController {
         model.addAttribute("dislikeCategories", dislikeCategories);
         model.addAttribute("userSelectedCategories", userSelectedCategories);
 
-        // 취미 조회
         List<MypageDto> userHobbies = mypageService.getUserHobbies(userId);
         model.addAttribute("userHobbies", userHobbies);
 
@@ -139,13 +151,8 @@ public class MypageController {
     public String editSentiPage(Model model) {
         int userId = (Integer) model.getAttribute("userId");
 
-        // 선호하는 것 (L 타입) 조회
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
-
-        // 기피하는 것 (H 타입) 조회
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
-
-        // 사용자가 선택한 성향 조회
         List<Integer> userSelectedCategories = mypageService.getUserSelectedCategories(userId);
 
         model.addAttribute("likeCategories", likeCategories);
@@ -159,9 +166,7 @@ public class MypageController {
     public String hobbyEditPage(HttpServletRequest request, Model model) {
         int userId = (Integer) model.getAttribute("userId");
 
-        // 모든 취미 항목을 가져옴
         List<MypageDto> hobbyCategories = mypageService.getHobbyCategories();
-        // 사용자가 선택한 취미 항목을 가져옴
         List<MypageDto> userHobbies = mypageService.getUserHobbies(userId);
         List<Integer> userHobbyIds = userHobbies.stream().map(MypageDto::getHobbyNo).collect(Collectors.toList());
 
@@ -172,7 +177,6 @@ public class MypageController {
         return "mypage/mypage_hobby/mypage-hobbyedit";
     }
 
-    // 비밀번호 확인 요청 처리
     @PostMapping("/validatePassword")
     @ResponseBody
     public Map<String, Boolean> validatePassword(@RequestBody Map<String, String> payload, Model model) {
@@ -181,36 +185,17 @@ public class MypageController {
         String storedPassword = mypageService.getPasswordByUserId(userId);
 
         Map<String, Boolean> response = new HashMap<>();
-        if (storedPassword != null && storedPassword.equals(inputPassword)) {
-            response.put("valid", true);
-        } else {
-            response.put("valid", false);
-        }
+        response.put("valid", storedPassword != null && storedPassword.equals(inputPassword));
         return response;
     }
 
     @PostMapping("/update")
-    public String updateUserInfo(
-            @ModelAttribute("user") MypageDto user,
-            Model model) {
-
-        // 현재 로그인한 유저의 ID 가져오기
+    public String updateUserInfo(@ModelAttribute("user") MypageDto user, Model model) {
         Integer userId = (Integer) model.getAttribute("userId");
         user.setUserId(userId);
 
-        // MypageDto 객체의 데이터 출력 (로그로 확인)
-        System.out.println("업데이트할 데이터: " + user);
-
-        // 정보 업데이트
         int result = mypageService.updateUserInfo(user);
-
-        // 업데이트 결과 확인
-        if(result > 0) {
-            return "redirect:/mypage/main";
-        } else {
-            model.addAttribute("message", "업데이트에 실패했습니다.");
-            return "mypage/mypage_main/mypage-infoedit";
-        }
+        return result > 0 ? "redirect:/mypage/main" : "mypage/mypage_main/mypage-infoedit";
     }
 
     @PostMapping("/sentiedit/submit")
@@ -219,18 +204,11 @@ public class MypageController {
             @RequestParam(value = "dislikes", required = false) List<Integer> dislikeIds,
             @ModelAttribute("userId") int userId) {
 
-        // 모든 성향 데이터 합치기
         List<Integer> allCategoryIds = new ArrayList<>();
-        if (likeIds != null) {
-            allCategoryIds.addAll(likeIds);
-        }
-        if (dislikeIds != null) {
-            allCategoryIds.addAll(dislikeIds);
-        }
+        if (likeIds != null) allCategoryIds.addAll(likeIds);
+        if (dislikeIds != null) allCategoryIds.addAll(dislikeIds);
 
-        // 전체 성향 데이터 저장
         mypageService.saveUserCategories(userId, allCategoryIds);
-
         return "redirect:/mypage/hobby";
     }
 
@@ -239,9 +217,63 @@ public class MypageController {
             @RequestParam(value = "hobbies", required = false) List<Integer> hobbyIds,
             @ModelAttribute("userId") int userId) {
 
-        // 유저의 선택한 취미를 저장
         mypageService.saveUserHobbies(userId, hobbyIds);
-
         return "redirect:/mypage/hobby";
     }
+
+    @PostMapping("/delete")
+    public String deleteUser(
+            @RequestParam("password") String password,
+            @RequestParam("password-confirm") String passwordConfirm,
+            HttpServletRequest request,
+            Model model) {
+
+        int userId = (Integer) model.getAttribute("userId");
+
+        if (!password.equals(passwordConfirm)) {
+            return "mypage/mypage_delete/mypage-delete";
+        }
+
+        Map<String, String> payload = new HashMap<>();
+        payload.put("password", password);
+        Map<String, Boolean> validationResult = validatePassword(payload, model);
+
+        if (validationResult.get("valid")) {
+            boolean isDeleted = mypageService.deleteUserById(userId);
+            return isDeleted ? "redirect:/login?logout" : "mypage/mypage_delete/mypage-delete";
+        } else {
+            return "mypage/mypage_delete/mypage-delete";
+        }
+    }
+
+    @PostMapping("/unlikeFeed")
+    @ResponseBody
+    public ResponseEntity<Void> unlikeFeed(@RequestBody Map<String, Integer> payload, Model model) {
+        Integer userId = (Integer) model.getAttribute("userId");
+        Integer feedNo = payload.get("feedNo");
+
+        boolean success = mypageService.unlikeFeed(userId, feedNo);
+
+        if (success) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/likeFeed")
+    @ResponseBody
+    public ResponseEntity<Void> likeFeed(@RequestBody Map<String, Integer> payload, Model model) {
+        Integer userId = (Integer) model.getAttribute("userId");
+        Integer feedNo = payload.get("feedNo");
+
+        boolean success = mypageService.likeFeed(userId, feedNo);
+
+        if (success) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

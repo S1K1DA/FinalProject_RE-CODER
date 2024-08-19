@@ -75,4 +75,29 @@ public class MypageDao {
         params.put("reviewType", reviewType);
         return sqlSession.selectList("mypageMapper.getReviewsByType", params);
     }
+
+    // 유저 상태 변경 -deleted
+    public int updateUserStatusToDeleted(int userId) {
+        return sqlSession.update("mypageMapper.updateUserStatusToDeleted", userId);
+    }
+
+    // 좋아요한 피드 목록 가져오기
+    public List<MypageDto> getLikedFeeds(int userId) {
+        return sqlSession.selectList("mypageMapper.getLikedFeeds", userId);
+    }
+
+    public int deleteFeedLike(int userId, int feedNo) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("feedNo", feedNo);
+        return sqlSession.delete("mypageMapper.deleteFeedLike", params);
+    }
+
+    public int insertFeedLike(int userId, int feedNo) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("feedNo", feedNo);
+        return sqlSession.insert("mypageMapper.insertFeedLike", params);
+    }
+
 }
