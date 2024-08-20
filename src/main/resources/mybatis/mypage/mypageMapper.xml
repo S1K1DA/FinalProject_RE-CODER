@@ -3,7 +3,7 @@
 <mapper namespace="mypageMapper">
 
     <!-- 기존 유저 정보 관련 resultMap -->
-    <resultMap id="userResultMap" type="com.heartlink.mypage.model.dto.MypageDto">
+    <resultMap id="userResultMap" type="MypageDto">
         <result column="BASIC_USER_NO" property="userId"/>
         <result column="BASIC_USER_EMAIL" property="email"/>
         <result column="BASIC_USER_NICKNAME" property="nickname"/>
@@ -24,7 +24,7 @@
     </select>
 
     <!-- 유저 정보 업데이트 -->
-    <update id="updateUserInfo" parameterType="com.heartlink.mypage.model.dto.MypageDto">
+    <update id="updateUserInfo" parameterType="MypageDto">
         UPDATE BASIC_USER
         SET
         BASIC_USER_NICKNAME = #{nickname},
@@ -36,7 +36,7 @@
     </update>
 
     <!-- 성향 목록 가져오기 -->
-    <select id="getPersonalCategoriesByType" parameterType="string" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getPersonalCategoriesByType" parameterType="string" resultType="MypageDto">
         SELECT PERSONAL_NO as personalNo, PERSONAL_NAME as personalName, PERSONAL_TYPE as personalType
         FROM PERSONAL_CATEGORY
         WHERE PERSONAL_TYPE = #{type}
@@ -64,7 +64,7 @@
     </insert>
 
     <!-- 취미 목록 가져오기 -->
-    <select id="getHobbyCategories" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getHobbyCategories" resultType="MypageDto">
         SELECT HOBBY_NO as hobbyNo, HOBBY_NAME as hobbyName FROM HOBBY_CATEGORY
     </select>
 
@@ -82,7 +82,7 @@
     </insert>
 
     <!-- 유저의 취미 목록 가져오기 -->
-    <select id="getUserHobbies" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getUserHobbies" parameterType="int" resultType="MypageDto">
         SELECT h.HOBBY_NO as hobbyNo, h.HOBBY_NAME as hobbyName
         FROM HOBBY_CATEGORY h
         JOIN BASIC_USER_HOBBY uh ON h.HOBBY_NO = uh.HOBBY_NO
@@ -90,7 +90,7 @@
     </select>
 
     <!-- 리뷰 목록 가져오기 -->
-    <select id="getReviewsByType" parameterType="map" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getReviewsByType" parameterType="map" resultType="MypageDto">
         SELECT
         REVIEW_NO as reviewNo,
         REVIEWER_USER_ID as reviewerUserId,
@@ -117,7 +117,7 @@
     </update>
 
     <!-- 좋아요한 피드 목록 가져오기 -->
-    <select id="getLikedFeeds" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getLikedFeeds" parameterType="int" resultType="MypageDto">
         SELECT
         f.FEED_NO as feedNo,
         f.FEED_TITLE as feedTitle,
@@ -150,7 +150,7 @@
     </insert>
 
     <!-- 유저 매칭 히스토리 가져오기 -->
-    <select id="getUserMatchingHistory" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getUserMatchingHistory" parameterType="int" resultType="MypageDto">
         SELECT
         m.MATCHING_NO as matchingNo,
         m.MATCHING_INDATE as matchingIndate,
@@ -175,7 +175,7 @@
     </select>
 
     <!-- 프로필 좋아요 목록 가져오기 -->
-    <select id="getLikedProfiles" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+    <select id="getLikedProfiles" parameterType="int" resultType="MypageDto">
         SELECT
         u.BASIC_USER_NO as likedUserNo,
         u.BASIC_USER_NICKNAME as likedUserNickname,
