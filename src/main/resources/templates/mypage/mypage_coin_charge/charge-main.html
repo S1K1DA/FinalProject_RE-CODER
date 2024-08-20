@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<head th:replace="~{fragments/head :: head}"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/charge/charge_main.css}"/>
 <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
-<nav th:replace="fragments/navigation :: navigation"></nav>
+<nav th:replace="~{fragments/navigation :: navigation}"></nav>
 <section class="charge-main-sec">
     <div class="container charge-out-box">
     <div th:replace="mypage/mypage_nav :: mypagenav"></div>
@@ -26,37 +26,37 @@
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
-                                    <p>코인 1개</p>
-                                </div>
-                                <a class="coin-package-price">100원</a>
-                            </div>
-                            <div class="coin-package-sell">
-                                <div class="coin-package-item">
-                                    <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 10개</p>
                                 </div>
-                                <a class="coin-package-price">1,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="10">1,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 30개</p>
                                 </div>
-                                <a class="coin-package-price">3,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="30">3,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 50개</p>
                                 </div>
-                                <a class="coin-package-price">5,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="50">5,000원</a>
+                            </div>
+                            <div class="coin-package-sell">
+                                <div class="coin-package-item">
+                                    <img th:src="@{/image/coin_icon.png}" class="coin-icon">
+                                    <p>코인 70개</p>
+                                </div>
+                                <a class="coin-package-price" name="coin-price" data-value="70">7,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 100개</p>
                                 </div>
-                                <a class="coin-package-price">10,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="100">10,000원</a>
                             </div>
                         </div>
                         <div class="coin-package-column">
@@ -65,35 +65,35 @@
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 200개</p>
                                 </div>
-                                <a class="coin-package-price">20,00원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="200">20,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 300개</p>
                                 </div>
-                                <a class="coin-package-price">30,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="30000">30,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 500개</p>
                                 </div>
-                                <a class="coin-package-price">50,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="500">50,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 700개</p>
                                 </div>
-                                <a class="coin-package-price">70,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="700">70,000원</a>
                             </div>
                             <div class="coin-package-sell">
                                 <div class="coin-package-item">
                                     <img th:src="@{/image/coin_icon.png}" class="coin-icon">
                                     <p>코인 1000개</p>
                                 </div>
-                                <a class="coin-package-price">100,000원</a>
+                                <a class="coin-package-price" name="coin-price" data-value="1000">100,000원</a>
                             </div>
                         </div>
                     </div>
@@ -102,5 +102,6 @@
         </div>
     </div>
 </section>
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/mypage/charge/charge_request.js}"></script>
 </body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/feed/feed_write.css}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+<nav th:replace="fragments/navigation :: navigation"></nav>
+<section class="write-feed-sec">
+    <div class="container write-feed-box">
+        <form class="write-main-box" th:action="@{/feed/modifiedcomplete}" th:method="@{POST}">
+            <div class="write-title-box">
+                <input class="write-title" type="text" placeholder="제목" name="feedTitle" th:value="${feed.feedTitle}"/>
+                <input type="hidden" th:value="${feed.feedNo}" name="feedNo"/>
+                <select class="choses-tag" name="feedTag" id="feed-tag" th:field="${feed.feedTag}">
+                    <option value="none">= 태그 선택 =</option>
+                    <option value="매칭 후기">매칭 후기</option>
+                    <option value="연애 조언">연애 조언</option>
+                    <option value="자유 보드">자유 보드</option>
+                </select>
+            </div>
+            <div class="toolbar">
+                <a href="#" data-command="h2">H1</a>
+                <a href="#" data-command="h3">H2</a>
+                <a href="#" data-command="h4">H3</a>
+                <a href="#" data-command="p" style="margin-right: 8px;">P</a>
+
+                <a href="#" data-command="bold">
+                    <i class="fa fa-bold"></i>
+                </a>
+                <a href="#" data-command="italic">
+                    <i class="fa fa-italic"></i>
+                </a>
+                <a href="#" data-command="underline">
+                    <i class="fa fa-underline"></i>
+                </a>
+                <a href="#" data-command="strikeThrough" style="margin-right: 8px;">
+                    <i class="fa fa-strikethrough"></i>
+                </a>
+
+                <a href="#" data-command="justifyLeft">
+                    <i class="fa fa-align-left"></i>
+                </a>
+                <a href="#" data-command="justifyCenter">
+                    <i class="fa fa-align-center"></i>
+                </a>
+                <a href="#" data-command="justifyRight">
+                    <i class="fa fa-align-right"></i>
+                </a>
+                <a href="#" data-command="justifyFull" style="margin-right: 8px;">
+                    <i class="fa fa-align-justify"></i>
+                </a>
+            </div>
+            <div class="editor" id="edit-content-box" contenteditable="true" th:utext="${feed.feedContent}">
+            </div>
+            <input type="hidden" id="hidden-feedContent" name="feedContent">
+            <div class="submit-btn-box">
+                <button class="feed-submit-btn" type="submit">수정</button>
+            </div>
+        </form>
+    </div>
+</section>
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/feed/feed-write.js}"></script>
+</body>
+</html>

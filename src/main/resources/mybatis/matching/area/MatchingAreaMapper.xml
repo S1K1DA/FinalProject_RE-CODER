@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mappers/ChargeMapper.xml -->
+<mapper namespace="com.heartlink.matching.area.model.mapper.MatchingAreaMapper">
+    <resultMap id="resultMatchingUser" type="MatchingAreaDto">
+        <result column="basic_user_no" property="basicUserNo"/>
+        <result column="user_addr" property="userAddr"/>
+        <result column="basic_user_mbti" property="basicUserMbti"/>
+        <result column="basic_user_nickname" property="basicUserNickname"/>
+        <result column="basic_user_name" property="basicUserName"/>
+        <result column="basic_user_birthdate" property="basicUserBirthdate"/>
+        <result column="BASIC_USER_SEX" property="basicUserSex"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="hobby_name" property="hobbyName"/>
+        <result column="personal_like" property="personalLike"/>
+        <result column="personal_hate" property="personalHate"/>
+        <result column="photo_name" property="photoName"/>
+        <result column="photo_origin_name" property="photoOriginName"/>
+        <result column="photo_indate" property="photoIndate"/>
+        <result column="photo_path" property="photoPath"/>
+        <result column="CONSENT_LOCATION_INFO" property="consentLocationInfo"/>
+    </resultMap>
+
+    <select id="setUserLocation" resultMap="resultMatchingUser">
+        SELECT USER_ADDR, BASIC_USER_SEX FROM BASIC_USER bu
+        WHERE BASIC_USER_NO = #{basicUserNo}
+    </select>
+
+    <select id="selectUserDetails" resultMap="resultMatchingUser">
+        SELECT b.BASIC_USER_NO,
+               b.BASIC_USER_NAME,
+               b.BASIC_USER_BIRTHDATE,
+               b.BASIC_USER_MBTI,
+               b.CONSENT_LOCATION_INFO,
+               ul.LATITUDE,
+               ul.LONGITUDE,
+               LISTAGG(DISTINCT hc.HOBBY_NAME, ', ') WITHIN GROUP (ORDER BY hc.HOBBY_NAME) AS hobby_name,
+       LISTAGG(DISTINCT CASE WHEN pc.PERSONAL_TYPE = 'L' THEN pc.PERSONAL_NAME END, ', ') WITHIN GROUP (ORDER BY pc.PERSONAL_NAME) AS personal_like,
+            LISTAGG(DISTINCT CASE WHEN pc.PERSONAL_TYPE = 'H' THEN pc.PERSONAL_NAME END, ', ') WITHIN GROUP (ORDER BY pc.PERSONAL_NAME) AS personal_hate,
+            bp.PHOTO_ORIGIN_NAME,
+            bp.PHOTO_NAME,
+            bp.PHOTO_PATH,
+            bp.PHOTO_INDATE
+        FROM BASIC_USER b
+            LEFT JOIN BASIC_USER_LOCATION ul ON b.BASIC_USER_NO = ul.BASIC_USER_NO
+            LEFT JOIN BASIC_USER_HOBBY buh ON b.BASIC_USER_NO = buh.BASIC_USER_NO
+            LEFT JOIN HOBBY_CATEGORY hc ON buh.HOBBY_NO = hc.HOBBY_NO
+            LEFT JOIN BASIC_USER_PERSONAL bup ON b.BASIC_USER_NO = bup.BASIC_USER_NO
+            LEFT JOIN PERSONAL_CATEGORY pc ON bup.PERSONAL_NO = pc.PERSONAL_NO
+            LEFT JOIN BASIC_USER_PHOTO bp ON b.BASIC_USER_NO = bp.BASIC_USER_NO
+        WHERE ul.LATITUDE BETWEEN #{bounds.southLat} AND #{bounds.northLat}
+          AND ul.LONGITUDE BETWEEN #{bounds.southLng} AND #{bounds.northLng}
+          AND b.BASIC_USER_STATUS = 'ACTIVE'
+            <choose>
+                <when test='bounds.requesterSex.equals("F")'>
+                    AND b.BASIC_USER_SEX = 'M'
+                </when>
+                <when test='bounds.requesterSex.equals("M")'>
+                    AND b.BASIC_USER_SEX = 'F'
+                </when>
+            </choose>
+        GROUP BY b.BASIC_USER_NO,
+            b.BASIC_USER_NAME,
+            b.BASIC_USER_BIRTHDATE,
+            b.BASIC_USER_MBTI,
+            b.CONSENT_LOCATION_INFO,
+            ul.LATITUDE,
+            ul.LONGITUDE,
+            bp.PHOTO_ORIGIN_NAME,
+            bp.PHOTO_NAME,
+            bp.PHOTO_PATH,
+            bp.PHOTO_INDATE
+    </select>
+</mapper>

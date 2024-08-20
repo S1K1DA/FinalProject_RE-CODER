@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "index";  // "index"는 src/main/resources/templates/admin_main.html
+        return "index";  // "index"는 src/main/resources/templates/admin-main.html
     }
 }

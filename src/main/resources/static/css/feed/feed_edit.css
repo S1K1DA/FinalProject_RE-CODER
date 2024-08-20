@@ -1,0 +1,113 @@
+body{
+    background-image: url(../../image/background-img.svg);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.write-feed-sec{
+    display: flex !important;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.write-feed-box{
+    display: flex !important;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    width: 100%;
+}
+
+.write-main-box{
+    border-radius: 20px;
+    height: 700px;
+    background-color: #ffffff9c;
+    flex-direction: column;
+    padding: 30px;
+    width: 90%;
+    box-shadow: 3px 4px 17px 1px #5c59592b;
+}
+
+.toolbar{
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.toolbar > a{
+    margin: 0 10px;
+}
+
+.toolbar > i{
+    font-size: 22px;
+}
+
+.write-title-box{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.write-title{
+    height: 100%;
+    width: 80%;
+    border-radius: 10px 0 0 10px;
+    border: 1.5px solid #0000002e;
+    padding-left: 15px;
+}
+
+.choses-tag{
+    width: 20%;
+    height: 100%;
+    border-radius: 0 10px 10px 0;
+    border: 1.5px solid #0000002e;
+}
+
+.choses-tag >  option{
+    padding: 10px 20px;
+    border-radius: 2px;
+}
+
+.editor{
+    font-size: 18px;
+    height: 77.5%;
+    width: 100%;
+    background-color: #fff;
+    border: 1.5px solid #0000002e;
+    border-radius: 20px;
+    padding: 20px;
+    overflow: auto;
+}
+
+.editor > p {
+    font-size: 18px;
+}
+
+.editor.focus{
+    border: none;
+}
+
+.submit-btn-box{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.feed-submit-btn{
+    border-radius: 10px;
+    border: none;
+    padding: 8px 14px;
+    font-size: 18px;
+    background-color: #d9294f;
+    color : #fff;
+}
+
+.feed-submit-btn:hover{
+    background-color: #efa7b7;
+    color : #fff;
+}

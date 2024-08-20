@@ -24,6 +24,12 @@
     height: auto;
 }
 
+.sidebar-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .logo-text{
     font-size: 28px;
     font-weight: bold;
