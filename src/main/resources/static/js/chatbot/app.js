@@ -59,7 +59,6 @@ function showUserMessage(message) {
 
 function showMessage(message) {
     const chatbotBody = document.querySelector('.chatbot-body');
-//    console.log("Received message: " + message);
 
     const jsonStartIndex = message.indexOf('[[');
     if (jsonStartIndex !== -1) {
@@ -77,9 +76,19 @@ function showMessage(message) {
                 jsonData.forEach(function(row) {
                     row.forEach(function(item) {
                         let buttonTitle = item.data.title;
-                        let postback = item.data.data.action.data.postback;
+                        let actionType = item.data.data.action.type;
+                        let actionData = item.data.data.action.data;
+
                         let buttonContainer = document.createElement('div');
-                        buttonContainer.innerHTML = `<button class='option-button' onclick='handlePostback("${postback}")'>${buttonTitle}</button>`;
+
+                        if (actionType === 'postback') {
+                            let postback = actionData.postback;
+                            buttonContainer.innerHTML = `<button class='option-button' onclick='handlePostback("${postback}")'>${buttonTitle}</button>`;
+                        } else if (actionType === 'link') {
+                            let url = actionData.url;
+                            buttonContainer.innerHTML = `<button class='option-button' onclick='window.open("${url}", "_blank")'>${buttonTitle}</button>`;
+                        }
+
                         chatbotBody.appendChild(buttonContainer);
                     });
                 });
