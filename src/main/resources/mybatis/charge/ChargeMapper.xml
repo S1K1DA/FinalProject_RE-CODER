@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mappers/ChargeMapper.xml -->
+<mapper namespace="com.heartlink.charge.model.mapper.ChargeMapper">
+
+    <resultMap id="resultMapCharge" type="ChargeRequestDto">
+        <result column="payment_no" property="paymentNo"/>
+        <result column="payment_user_email" property="paymentUserEmail"/>
+        <result column="payment_date" property="paymentDate"/>
+        <result column="payment_amount" property="paymentAmount"/>
+        <result column="payment_method" property="paymentMethod"/>
+        <result column="payment_state" property="paymentState"/>
+        <result column="payment_product" property="paymentProduct"/>
+        <result column="payment_reference" property="paymentReference"/>
+    </resultMap>
+
+    <!-- 시퀀스 값을 가져오는 SQL 쿼리 -->
+    <select id="getCurrentSequence" resultType="java.lang.Integer">
+        SELECT PAYMENT_SEQ.NEXTVAL FROM DUAL
+    </select>
+
+    <insert id="setPaymentHistory">
+        INSERT INTO PAYMENT_HISTORY VALUES(
+            #{paymentNo},
+            #{paymentUserEmail},
+            SYSDATE,
+            #{paymentAmount},
+            #{paymentMethod},
+            #{paymentState},
+            #{paymentProduct},
+            null
+        )
+    </insert>
+
+    <select id="setPaymentDbDetails" resultMap="resultMapCharge">
+        SELECT * FROM PAYMENT_HISTORY ph
+        WHERE PAYMENT_NO = #{paymentNo}
+    </select>
+
+    <update id="setPaymentState">
+        UPDATE PAYMENT_HISTORY
+        SET
+            PAYMENT_STATE = #{paymentState},
+            PAYMENT_METHOD = #{paymentMethod},
+            PAYMENT_REFERENCE = #{paymentReference}
+        WHERE PAYMENT_NO = #{paymentNo}
+
+    </update>
+
+</mapper>

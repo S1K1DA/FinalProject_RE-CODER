@@ -152,6 +152,19 @@ public class FeedController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/like")
+    public ResponseEntity<?> setLikeFeed(@RequestParam("feedNo")int feedNo){
+        int userNo = 2; // 임시 하드코딩
+
+        int userLikeFeed = feedService.setFeedLike(feedNo, userNo);
+
+        if(userLikeFeed != 1){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok().build();
+
+    }
 
 }
 

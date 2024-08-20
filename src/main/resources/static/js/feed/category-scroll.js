@@ -31,8 +31,6 @@ async function loadMoreData() {
         const response = await fetch(`/feed/reload?filter=${filter}&page=${currentPage}`);
         const result = await response.json();
 
-        console.log(result); // 응답 전체 로그
-        console.log(result.data); // data 부분 로그
 
         if (!Array.isArray(result.data)) {
             console.error('Expected an array but received:', result.data);

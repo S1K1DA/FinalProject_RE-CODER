@@ -81,4 +81,8 @@ public class FeedService {
     public int setFeedDelete(int feedNo){
         return feedMapper.setFeedDelete(feedNo);
     }
+
+    public int setFeedLike(int feedNo, int userNo){
+        return feedMapper.setFeedLike(feedNo, userNo);
+    }
 }
