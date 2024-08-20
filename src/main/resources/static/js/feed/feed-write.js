@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             const command = aEl.dataset.command;
 
-            if (command === 'h1' || command === 'h2' || command === 'h3' || command === 'p') {
+            if (command === 'h2' || command === 'h3' || command === 'h4' || command === 'p') {
                 document.execCommand('formatBlock', false, command);
             } else {
                 document.execCommand(command);
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // feed 작성시
     const form = document.querySelector('.write-main-box');
     const editor = document.querySelector('.editor');
     const feedContent = document.getElementById('hidden-feedContent');
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // contenteditable 내용을 가져와서 hidden input에 설정
         feedContent.value = editor.innerHTML;
     });
+
 });
 
 

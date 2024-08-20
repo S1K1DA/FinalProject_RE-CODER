@@ -7,32 +7,34 @@
 <section class="feed-sec">
     <div class="container feed-box">
         <div class="feed-side-bar">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                <label class="form-check-label" for="exampleRadios1">
-                    <p class="radio-text">전체</p>
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                <label class="form-check-label" for="exampleRadios2">
-                    <p class="radio-text"># 매칭 후기</p>
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option2">
-                <label class="form-check-label" for="exampleRadios2">
-                    <p class="radio-text"># 연애 조언</p>
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="option2">
-                <label class="form-check-label" for="exampleRadios2">
-                    <p class="radio-text"># 자유보드</p>
-                </label>
-            </div>
+            <form action="#" method="get" id="filterForm">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filter" id="exampleRadios1" value="전체" th:checked="${filter == '전체'}" data-th-checked="전체"/>
+                    <label class="form-check-label" for="exampleRadios1">
+                        <p class="radio-text">전체</p>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filter" id="exampleRadios2" value="매칭 후기" th:checked="${filter == '매칭 후기'}">
+                    <label class="form-check-label" for="exampleRadios2">
+                        <p class="radio-text"># 매칭 후기</p>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filter" id="exampleRadios3" value="연애 조언" th:checked="${filter == '연애 조언'}">
+                    <label class="form-check-label" for="exampleRadios3">
+                        <p class="radio-text"># 연애 조언</p>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filter" id="exampleRadios4" value="자유 보드" th:checked="${filter == '자유 보드'}">
+                    <label class="form-check-label" for="exampleRadios4">
+                        <p class="radio-text"># 자유 보드</p>
+                    </label>
+                </div>
+            </form>
         </div>
-        <div class="feed-main-box">
+        <div class="feed-main-box" id="feed-main-box">
             <div class="new-feed-box">
                 <button class="new-feed-btn" onclick="location.href='/feed/write'">New Feed</button>
             </div>
@@ -50,6 +52,7 @@
                                         <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
                                     </a>
                                     <div class="more-dropdown-content">
+                                        <input type="hidden" th:value="${feed.feedNo}">
                                         <div class="more-ele">신고하기</div>
                                         <div class="more-ele">삭제</div>
                                         <div class="more-ele">수정</div>
@@ -72,17 +75,20 @@
                             </span>
                     </div>
                 </div>
-                <div class="feed-reply-box" >
+                <div class="reply-list-submit-box" id="reply-list-submit-box">
+                    <div class="feed-reply-box" >
                     <input type="hidden" value="${feed.feedNo}">
-                    <div class="feed-reply-main" th:if="${feed.commentContent != null}">
-                        <div class="feed-reply-ele">
-                            <div class="reply-profile-box">
-                                <p class="reply-nickname" th:text="${feed.commentUserNickname}"></p>
-                                <p class="reply-indate" th:text="${feed.commentIndate}"></p>
-                                <a class="bi-x reply-delete"></a>
-                            </div>
-                            <div class="reply-content-box">
-                                <span class="reply-content"th:text="${feed.commentContent}"></span>
+                        <div class="feed-reply-main" th:each="comment : ${feed.comments}">
+                            <div class="feed-reply-ele">
+                                <div class="reply-profile-box">
+                                    <input type="hidden" th:value="${comment.commentNo}">
+                                    <p class="reply-nickname" th:text="${comment.commentUserNickname}"></p>
+                                    <p class="reply-indate" th:text="${comment.commentIndate}"></p>
+                                    <a class="bi-x reply-delete"></a>
+                                </div>
+                                <div class="reply-content-box">
+                                    <span class="reply-content"th:text="${comment.commentContent}"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,9 +100,14 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 전체 태그 -->
+
         </div>
     </div>
 </section>
+<script th:src="@{/js/feed/feed-add-delete.js}"></script>
+<script th:src="@{/js/feed/category-scroll.js}"></script>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

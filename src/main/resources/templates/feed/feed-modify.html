@@ -7,10 +7,11 @@
 <nav th:replace="fragments/navigation :: navigation"></nav>
 <section class="write-feed-sec">
     <div class="container write-feed-box">
-        <form class="write-main-box" th:action="@{/feed/enroll}" th:method="@{POST}">
+        <form class="write-main-box" th:action="@{/feed/modifiedcomplete}" th:method="@{POST}">
             <div class="write-title-box">
-                <input class="write-title" type="text" placeholder="제목" name="feedTitle"/>
-                <select class="choses-tag" name="feedTag" id="feed-tag">
+                <input class="write-title" type="text" placeholder="제목" name="feedTitle" th:value="${feed.feedTitle}"/>
+                <input type="hidden" th:value="${feed.feedNo}" name="feedNo"/>
+                <select class="choses-tag" name="feedTag" id="feed-tag" th:field="${feed.feedTag}">
                     <option value="none">= 태그 선택 =</option>
                     <option value="매칭 후기">매칭 후기</option>
                     <option value="연애 조언">연애 조언</option>
@@ -20,6 +21,7 @@
             <div class="toolbar">
                 <a href="#" data-command="h2">H1</a>
                 <a href="#" data-command="h3">H2</a>
+                <a href="#" data-command="h4">H3</a>
                 <a href="#" data-command="p" style="margin-right: 8px;">P</a>
 
                 <a href="#" data-command="bold">
@@ -48,13 +50,11 @@
                     <i class="fa fa-align-justify"></i>
                 </a>
             </div>
-            <div class="editor" contenteditable="true">
-
+            <div class="editor" id="edit-content-box" contenteditable="true" th:utext="${feed.feedContent}">
             </div>
             <input type="hidden" id="hidden-feedContent" name="feedContent">
             <div class="submit-btn-box">
-                <button class="feed-submit-btn" type="submit">등록</button>
-<!--                <button class="feed-submit-btn" type="submit">수정</button>-->
+                <button class="feed-submit-btn" type="submit">수정</button>
             </div>
         </form>
     </div>

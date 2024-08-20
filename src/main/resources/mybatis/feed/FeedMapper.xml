@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.heartlink.feed.model.mapper.FeedMapper">
-
     <resultMap id="resultMapFeed" type="FeedDto">
         <result column="feed_no" property="feedNo" />
         <result column="aouthor_user_no" property="aouthorUserNo" />
@@ -12,26 +11,58 @@
         <result column="feed_state" property="feedState" />
         <result column="feed_tag" property="feedTag" />
         <result column="basic_user_nickname" property="basicUserNickname" />
-        <result column="commnet_user_nickname" property="commentUserNickname" />
-        <result column="comment_content" property="commentContent" />
-        <result column="comment_indate" property="commentIndate" />
+        <result column="commnet_user_no" property="commentUserNo" />
         <result column="like_cnt" property="likeCount" />
+
     </resultMap>
 
+    <resultMap id="commentResultMap" type="FeedCommentDto">
+        <result column="comment_no" property="commentNo"/>
+        <result column="comment_user_nickname" property="commentUserNickname"/>
+        <result column="comment_content" property="commentContent"/>
+        <result column="comment_indate" property="commentIndate"/>
+    </resultMap>
+
+
     <select id="getFeedList" resultMap="resultMapFeed">
-        SELECT bu.BASIC_USER_NICKNAME , FEED_TITLE , FEED_CONTENT , FEED_INDATE , FEED_TAG, FEED_NO
+        SELECT *
+        FROM (
+        SELECT bu.BASIC_USER_NICKNAME ,
+               FEED_TITLE ,
+               FEED_CONTENT ,
+               FEED_INDATE ,
+               FEED_UPDATEd_DATE ,
+               FEED_TAG, FEED_NO,
+               ROW_NUMBER() OVER (ORDER BY f.FEED_INDATE DESC) AS row_num
         FROM FEEDS f
                  JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
         WHERE FEED_STATE = 'N'
+        <choose>
+            <when test="feedTag.equals('전체')">
+                -- 모든 태그 포함
+            </when>
+            <when test="feedTag.equals('매칭 후기')">
+                AND FEED_TAG = '매칭 후기'
+            </when>
+            <when test="feedTag.equals('자유 보드')">
+                AND FEED_TAG = '자유 보드'
+            </when>
+            <when test="feedTag.equals('연애 조언')">
+                AND FEED_TAG = '연애 조언'
+            </when>
+        </choose>
+        )
+        WHERE row_num BETWEEN #{start} AND #{end}
     </select>
 
-    <select id="getCommentList" resultMap="resultMapFeed">
-        SELECT bu.BASIC_USER_NICKNAME AS COMMENT_USER_NICKNAME, fc.COMMENT_CONTENT , fc.COMMENT_INDATE
+    <select id="getCommentList" resultMap="commentResultMap">
+        SELECT bu.BASIC_USER_NICKNAME AS COMMENT_USER_NICKNAME, fc.COMMENT_CONTENT , fc.COMMENT_INDATE, fc.COMMENT_NO
         FROM FEED_COMMENTS fc
                  JOIN BASIC_USER bu
                       ON fc.COMMENT_USER_NO = bu.BASIC_USER_NO
         WHERE FEED_NO = #{feedNo}
-          AND fc.COMMENT_STATE = 'N'
+        AND fc.COMMENT_STATE = 'N'
+        ORDER BY COMMENT_INDATE ASC
     </select>
 
     <select id="getLikeCount" resultType="java.lang.Integer">
@@ -52,5 +83,45 @@
             #{feedTag}
         )
     </insert>
+
+    <insert id="setCommentEnroll">
+        INSERT INTO FEED_COMMENTS fc VALUES(
+            FEED_COMMENT_SEQ.NEXTVAL,
+            #{feedNo},
+            #{commentUserNo},
+            #{commentContent},
+            SYSDATE,
+            DEFAULT
+        )
+    </insert>
+
+    <select id="setModifyFeed" resultMap="resultMapFeed">
+        SELECT FEED_TITLE , FEED_CONTENT ,FEED_TAG, FEED_NO
+        FROM FEEDS f
+        WHERE FEED_NO = #{feedNo}
+
+    </select>
+
+    <update id="setUpdateFeed">
+        UPDATE FEEDS
+        SET
+            FEED_TITLE = #{feedTitle},
+            FEED_CONTENT = #{feedContent},
+            FEED_UPDATED_DATE = SYSDATE,
+            FEED_TAG = #{feedTag}
+        WHERE FEED_NO = #{feedNo}
+    </update>
+
+    <update id="setCommentDelete">
+        UPDATE FEED_COMMENTS
+        SET COMMENT_STATE = 'Y'
+        WHERE COMMENT_NO = #{commentNo}
+    </update>
+
+    <update id="setFeedDelete">
+        UPDATE FEEDS
+        SET FEED_STATE = 'Y'
+        WHERE FEED_NO = #{feedNo}
+    </update>
 
 </mapper>

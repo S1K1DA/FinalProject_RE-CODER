@@ -2,6 +2,8 @@ package com.heartlink.feed.model.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor // 기본 생성자 생성
@@ -20,9 +22,7 @@ public class FeedDto {
     private String feedState;
     private String feedTag;
 
-    private String commentUserNickname;
-    private String commentContent;
-    private String commentIndate;
+    private List<FeedCommentDto> comments;
 
     private int likeCount;
 }
