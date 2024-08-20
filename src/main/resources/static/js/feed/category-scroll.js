@@ -12,7 +12,7 @@ function applyFilter(event) {
 
 let isLoading = false; // 데이터 로딩 상태
 let hasMoreData = true; // 더 많은 데이터가 있는지 여부
-let currentPage = 1; // 현재 페이지 번호
+let currentPage = 2; // 현재 페이지 번호
 
 // 스크롤 이벤트 리스너
 window.addEventListener('scroll', () => {
