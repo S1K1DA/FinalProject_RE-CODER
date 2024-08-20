@@ -9,10 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const userNo = 2;
 
-            console.log(feedNo);
-            console.log(commentContent);
-            console.log(userNo);
-
             if (commentContent === '') {
                 alert('댓글 내용을 입력해주세요.');
                 return;
@@ -56,8 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.isConfirmed) {
                 const replyElement = element.closest('.feed-reply-main');
                 const commentNo = replyElement.querySelector('input[type="hidden"]').value;
-
-                console.log(commentNo);
 
                 fetch('/feed/deletecomment', {
                     method: 'POST',
@@ -105,8 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const feedElement = element.closest('.feed-ele');
                 const feedNo = feedElement.querySelector('input[type="hidden"]').value;
 
-                console.log(feedNo);
-
                 fetch('/feed/delete', {
                     method: 'POST',
                     headers: {
@@ -139,5 +131,31 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     };
+
+    window.feedLikeBtn = function (element){
+        const feedElement = element.closest('.feed-ele');
+        const likeHeart = document.getElementById('like-heart');
+        const feedNo = feedElement.querySelector('input[type="hidden"]').value;
+
+        fetch(`/feed/like?feedNo=${feedNo}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '좋아요 성공!',
+                });
+                likeHeart.style.backgroundColor = '#d9294f';
+                likeHeart.style.color = '#fff';
+
+            } else {
+                throw new Error('좋아요 실패');
+            }
+        })
+    }
 
 });

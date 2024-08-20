@@ -44,7 +44,7 @@
                         <div class="feed-title-box">
                             <p class="feed-title" th:text="${feed.feedTitle}"></p>
                             <div class="feed-icons">
-                                <a href="#" class="badge ms-auto feed-heart">
+                                <a class="badge ms-auto feed-heart" id="like-heart" onclick="feedLikeBtn(this)">
                                     <i class="bi-heart feed-heart-icon"></i>
                                 </a>
                                 <div class="dropdown-more">
@@ -54,15 +54,15 @@
                                     <div class="more-dropdown-content">
                                         <input type="hidden" th:value="${feed.feedNo}">
                                         <div class="more-ele">신고하기</div>
-                                        <div class="more-ele">삭제</div>
-                                        <div class="more-ele">수정</div>
+                                        <div class="more-ele" onclick="deleteFeed(this)">삭제</div>
+                                        <div class="more-ele" th:attr="onclick='location.href=\'feed/modify?feedNo='+${feed.feedNo}+'\''">수정</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="feed-icon-box">
                             <p class="feed-nickname" th:text="${feed.basicUserNickname}"></p>
-                            <p class="feed-like-cnt" th:type="${feed.likeCount}"></p>
+                            <p class="feed-like-cnt" th:text="${feed.likeCount}"></p>
                         </div>
                         <div class="feed-remark">
                             <p class="feed-indate"  th:if="${feed.feedTag != 'none' }" th:text="${feed.feedTag}"></p>
@@ -84,7 +84,7 @@
                                     <input type="hidden" th:value="${comment.commentNo}">
                                     <p class="reply-nickname" th:text="${comment.commentUserNickname}"></p>
                                     <p class="reply-indate" th:text="${comment.commentIndate}"></p>
-                                    <a class="bi-x reply-delete"></a>
+                                    <a class="bi-x reply-delete" onclick="deleteReply(this)"></a>
                                 </div>
                                 <div class="reply-content-box">
                                     <span class="reply-content"th:text="${comment.commentContent}"></span>
@@ -94,8 +94,8 @@
                     </div>
                     <div class="answer-reply-box">
                         <div class="answer-text-box">
-                            <textarea class="answer-text"></textarea>
-                            <button class="answer-submit">등록</button>
+                            <textarea class="answer-text" placeholder="댓글을 입력해주세요."></textarea>
+                            <button class="answer-submit" id="comment-submit-btn">등록</button>
                         </div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
         </div>
     </div>
 </section>
-<script th:src="@{/js/feed/feed-add-delete.js}"></script>
+<script th:src="@{/js/feed/feed-common.js}"></script>
 <script th:src="@{/js/feed/category-scroll.js}"></script>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

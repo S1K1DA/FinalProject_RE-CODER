@@ -26,5 +26,7 @@ public interface FeedMapper {
     public int setCommentDelete(int commentNo);
 
     public int setFeedDelete(int feedNo);
+
+    public int setFeedLike(int feedNo, int userNo);
 }
 

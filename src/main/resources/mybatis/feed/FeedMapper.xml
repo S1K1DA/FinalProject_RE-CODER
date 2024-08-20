@@ -124,4 +124,12 @@
         WHERE FEED_NO = #{feedNo}
     </update>
 
+    <insert id="setFeedLike">
+        INSERT INTO FEED_LIKES fl VALUES (
+            #{feedNo},
+            #{userNo},
+            SYSDATE
+            )
+    </insert>
+
 </mapper>
