@@ -60,6 +60,22 @@ dependencies {
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // JSON Simple 라이브러리 추가
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    // Spring Messaging 라이브러리 추가
+    implementation 'org.springframework:spring-messaging'
+
+    // SockJS WebJars 라이브러리
+    implementation 'org.webjars:sockjs-client:1.5.1'
+
+    // STOMP WebSocket WebJars 라이브러리
+    implementation 'org.webjars:stomp-websocket:2.3.3'
+
+    //WebSocket starter
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+
     // 이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 }

@@ -17,7 +17,12 @@
                 <div class="review-info">
                     <p>모든 실시간 리뷰는 익명으로 작성됩니다. </p>
                 </div>
-                <form action="#" method="POST">
+
+                <!-- 서버에서 전달된 메시지를 처리하기 위한 블록 -->
+                <div th:if="${message}" class="alert" th:text="${message}" style="display:none;"></div>
+
+                <form action="/review/submitLiveReview" id="liveReviewForm" method="POST">
+                    <input name="userId" th:value="${userId}" type="hidden"/>
                     <div class="review-input-row">
                         <label for="review-content">리뷰 입력:</label>
                         <div class="right-side-elements">
@@ -26,124 +31,48 @@
                                 <option value="2">★★☆☆☆</option>
                                 <option value="3">★★★☆☆</option>
                                 <option value="4">★★★★☆</option>
-                                <option value="5" selected>★★★★★</option>
+                                <option selected value="5">★★★★★</option>
                             </select>
-                            <button type="submit" class="review-button">리뷰 작성</button>
+                            <button class="review-button" type="submit">리뷰 작성</button>
                         </div>
                     </div>
                     <div class="review-textarea">
-                        <textarea id="review-content" name="review_content" rows="3" cols="40"></textarea>
+                        <textarea cols="40" id="review-content" name="review_content" rows="3"></textarea>
                     </div>
                 </form>
 
                 <hr class="review-divider">
 
                 <div class="review-section">
-                    <div class="live-review-box">
-                        <div class="live-review-item">
+                    <div class="live-review-box" th:each="review : ${liveReviews}">
+                        <div class="live-review-item" id="review-item" th:id="'review-item-' + ${review.reviewNo}">
                             <div class="review-header">
-                                <div class="review-rating">
-                                    ★★★★☆
-                                </div>
-                                <div class="feed-icons">
-                                    <div class="dropdown-more">
-                                        <a class="more-drop-btn more-icon">
-                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
-                                        </a>
-                                        <div class="more-dropdown-content">
-                                            <div class="more-ele">신고하기</div>
-                                            <div class="more-ele">삭제</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>대화가 잘 통하고, 이성에 대한 호감 및 비호감 관련한 성향도 잘 맞는 것 같아서 시간이 금방 지나갔습니다. 얘기도 잘 들어주시고 많이 배려해주시는 모습이, 동갑이지만 오빠같이 느껴지고 편안하고 즐거운 시간이었습니다.</p>
-                        </div>
-                        <div class="live-review-item">
-                            <div class="review-header">
-                                <div class="review-rating">
+                                <div class="review-rating" th:text="${review.starRating}">
                                     ★★★★★
                                 </div>
                                 <div class="feed-icons">
                                     <div class="dropdown-more">
                                         <a class="more-drop-btn more-icon">
-                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
+                                            <img alt="More" class="more-icon-image" th:src="@{/image/icon_more.png}"/>
                                         </a>
                                         <div class="more-dropdown-content">
                                             <div class="more-ele">신고하기</div>
-                                            <div class="more-ele">삭제</div>
+                                            <div class="more-ele" onclick="submitDeleteForm(this)">
+                                                <form action="/review/deleteLiveReview" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                                    <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
+                                                    <button class="live-review-delete-button" type="submit" style="display:none;">삭제</button>
+                                                </form>
+                                                삭제
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <p>잘 웃고 편안하게 즐거운 시간이었어요~</p>
+                            <p th:text="${review.reviewContent}">리뷰 내용</p>
                         </div>
-                        <div class="live-review-item">
-                            <div class="review-header">
-                                <div class="review-rating">
-                                    ★★★☆☆
-                                </div>
-                                <div class="feed-icons">
-                                    <div class="dropdown-more">
-                                        <a class="more-drop-btn more-icon">
-                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
-                                        </a>
-                                        <div class="more-dropdown-content">
-                                            <div class="more-ele">신고하기</div>
-                                            <div class="more-ele">삭제</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>매너도 좋으시고 상대방에 대해 예의도 지켜주셨습니다</p>
-                        </div>
-                        <div class="live-review-item">
-                            <div class="review-header">
-                                <div class="review-rating">
-                                    ★★★★☆
-                                </div>
-                                <div class="feed-icons">
-                                    <div class="dropdown-more">
-                                        <a class="more-drop-btn more-icon">
-                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
-                                        </a>
-                                        <div class="more-dropdown-content">
-                                            <div class="more-ele">신고하기</div>
-                                            <div class="more-ele">삭제</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>리뷰 내용 요약 4@@@@@@@@@@@@@@@@@@@@@@@@@</p>
-                        </div>
-                        <div class="live-review-item">
-                            <div class="review-header">
-                                <div class="review-rating">
-                                    ★★☆☆☆
-                                </div>
-                                <div class="feed-icons">
-                                    <div class="dropdown-more">
-                                        <a class="more-drop-btn more-icon">
-                                            <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
-                                        </a>
-                                        <div class="more-dropdown-content">
-                                            <div class="more-ele">신고하기</div>
-                                            <div class="more-ele">삭제</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>리뷰 내용 요약 5...@@@@@@@@@@@@@@@@@@@@@@@@@@@</p>
-                        </div>
-                        <!-- 추가 실시간 리뷰를 여기에 추가하세요 -->
                     </div>
-                    <!-- 페이지네이션 버튼 예시 -->
-                    <div class="pagination">
-                        <button class="btn-action">이전</button>
-                        <button class="btn-action">1</button>
-                        <button class="btn-action">2</button>
-                        <button class="btn-action">다음</button>
-                    </div>
+
+                    <div th:replace="fragments/pagination :: pagination"></div>
                 </div>
             </div>
         </div>
@@ -152,12 +81,12 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-<!-- JAVASCRIPT FILES -->
 <script th:src="@{/js/reference_js/jquery.js}"></script>
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
-<!--<script th:src="@{/js/reference_js/owl.carousel.min.js}"></script>-->
 <script th:src="@{/js/reference_js/custom.js}"></script>
+<script th:src="@{/js/review/review.js}"></script>
+
 
 </body>
 </html>

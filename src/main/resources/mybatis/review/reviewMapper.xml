@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reviewMapper">
+
+    <!-- ReviewDto에 대한 ResultMap 설정 -->
+    <resultMap type="com.heartlink.review.model.dto.ReviewDto" id="reviewResultSet">
+        <result column="REVIEW_NO" property="reviewNo"/>
+        <result column="REVIEW_TITLE" property="reviewTitle"/>
+        <result column="REVIEW_CONTENT" property="reviewContent"/>
+        <result column="REVIEWER_USER_ID" property="reviewerUserId"/>
+        <result column="REVIEW_RATING" property="reviewRating"/>
+        <result column="REVIEW_VIEWS" property="reviewViews"/>
+        <result column="REVIEW_TYPE" property="reviewType"/>
+        <result column="BASIC_USER_NICKNAME" property="reviewerNickname"/>
+        <result column="REVIEW_DELETE" property="reviewDelete"/>
+    </resultMap>
+
+    <!-- 리뷰 리스트 가져오기 -->
+    <select id="getAllReviews" resultMap="reviewResultSet">
+        SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
+        FROM REVIEW_BOARD r
+        JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE r.REVIEW_TYPE = 'P' AND r.REVIEW_DELETE = 'N'
+        ORDER BY r.REVIEW_NO DESC
+    </select>
+
+    <!-- 특정 리뷰 상세와 사진 가져오기 -->
+    <select id="getReviewDetail" resultMap="reviewResultSet" parameterType="int">
+        SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
+        FROM REVIEW_BOARD r
+        JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE r.REVIEW_NO = #{reviewNo}
+    </select>
+
+    <select id="getReviewPhotos" resultType="string">
+        SELECT PHOTO_PATH || '/' || PHOTO_NAME AS photoUrl
+        FROM REVIEW_PHOTO_BOARD
+        WHERE REVIEW_NO = #{reviewNo}
+    </select>
+
+    <!-- 리뷰 저장 -->
+    <insert id="savePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
+        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_TYPE )
+        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContent}, #{reviewerUserId}, 'P')
+    </insert>
+
+    <!-- Live Review 저장 -->
+    <insert id="saveLiveReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
+        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_RATING, REVIEW_TYPE)
+        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewContent}, #{reviewerUserId}, #{reviewRating}, 'L')
+    </insert>
+
+    <!-- 마지막 리뷰 번호 가져오기 -->
+    <select id="getLastReviewNo" resultType="string">
+        SELECT REVIEW_SEQ.CURRVAL FROM DUAL
+    </select>
+
+    <!-- 리뷰 사진 저장 -->
+    <insert id="saveReviewPhoto" parameterType="com.heartlink.review.model.dto.ReviewPhotoDto">
+        INSERT INTO REVIEW_PHOTO_BOARD (PHOTO_NO, REVIEW_NO, PHOTO_PATH, PHOTO_NAME)
+        VALUES (REVIEW_PHOTO_SEQ.NEXTVAL, #{reviewNo}, #{photoPath}, #{photoName})
+    </insert>
+
+    <!-- 조회수 증가 -->
+    <update id="increaseReviewViews" parameterType="int">
+        UPDATE REVIEW_BOARD
+        SET REVIEW_VIEWS = REVIEW_VIEWS + 1
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
+    <!-- 아이디에서 닉네임 가져옴 -->
+    <select id="getNicknameByUserId" resultType="string">
+        SELECT BASIC_USER_NICKNAME
+        FROM BASIC_USER
+        WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 포토리뷰 수정 + 수정한 시간 = REVIEW_UPDATE -->
+    <update id="updatePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
+        UPDATE REVIEW_BOARD
+        SET REVIEW_TITLE = #{reviewTitle},
+        REVIEW_CONTENT = #{reviewContent},
+        REVIEW_UPDATE = CURRENT_TIMESTAMP
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
+    <!-- 리뷰 삭제 + 삭제한 시간 = REVIEW_UPDATE -->
+    <update id="deleteReview" parameterType="int">
+        UPDATE REVIEW_BOARD
+        SET REVIEW_DELETE = 'Y',
+        REVIEW_UPDATE = CURRENT_TIMESTAMP
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
+    <!-- Live Review 목록 가져오기 -->
+    <select id="getLiveReviews" resultMap="reviewResultSet">
+        SELECT REVIEW_NO, REVIEW_CONTENT, REVIEW_RATING
+        FROM REVIEW_BOARD
+        WHERE REVIEW_TYPE = 'L' AND REVIEW_DELETE = 'N'
+        ORDER BY REVIEW_NO DESC
+    </select>
+
+</mapper>

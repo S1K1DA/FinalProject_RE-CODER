@@ -9,7 +9,7 @@
 
     <section class="hero-section d-flex align-items-center">
         <div class="container d-flex justify-content-center">
-            <div class="row d-flex justify-content-center align-items-start ">
+            <div class="row d-flex justify-content-center align-items-start">
                 <div class="text-center mb-5 pb-2 w-100">
                     <h2 class="text-white">사진 리뷰</h2>
                     <hr class="review-line">
@@ -18,144 +18,32 @@
                 <div class="w-100 d-flex justify-content-end mb-2">
                     <button class="btn-action" onclick="location.href='/review/photoenroll'">글 쓰러가기</button>
                 </div>
+
                 <ul class="ptlist">
-                    <li>
-                        <a th:href="@{/review/photodetail}">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
+                    <!-- 리뷰 리스트 반복 -->
+                    <li th:each="review : ${reviews}">
+                        <a th:href="@{/review/photodetail(reviewNo=${review.reviewNo})}">
+                            <p class="list-thumb">
+                                <img th:src="${review.firstImageUrl}" alt="사진">
+                            </p>
                             <div>
-                                <p class="pt-title">결혼후기
-                                </p>
-                                <p class="pt-info">
-                                    JaeinLee
-                                </p>
+                                <p class="pt-title" th:text="${review.reviewTitle}"></p>
+                                <p class="pt-info" th:text="${review.reviewerNickname}"></p>
                             </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>115</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">커플후기
-                                </p>
-                                <p class="pt-info">
-                                    AhtaeKim
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>360</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">만남후기(매니저소개)
-                                </p>
-                                <p class="pt-info">
-                                    JaeinLee
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>179</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">커플후기
-                                </p>
-                                <p class="pt-info">
-                                    AhtaeKim
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>202</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">커플후기
-                                </p>
-                                <p class="pt-info">
-                                    JaeinLee
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>260</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">결혼후기
-                                </p>
-                                <p class="pt-info">
-                                    EunsikJeong
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>299</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">결혼후기
-                                </p>
-                                <p class="pt-info">
-                                    EunsikJeong
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>359</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">만남후기(매니저소개)
-                                </p>
-                                <p class="pt-info">
-                                    AhtaeKim
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>333</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">결혼후기
-                                </p>
-                                <p class="pt-info">
-                                    EunsikJeong
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>535</b>명 읽음</span></p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <p class="list-thumb"><img th:src="@{/image/review/weding-review2.jpg}" alt="사진"></p>
-                            <div>
-                                <p class="pt-title">만남후기(개별만남)
-                                </p>
-                                <p class="pt-info">
-                                    AhtaeKim
-                                </p>
-                            </div>
-                            <p class="b-info"><span><i class="icon_users"></i> <b>303</b>명 읽음</span></p>
+                            <p class="b-info">
+                                <span><i class="icon-users"></i> <b th:text="${review.reviewViews}"></b>명 읽음</span>
+                            </p>
                         </a>
                     </li>
                 </ul>
-                <div class="pagination">
-                    <button class="btn-action">이전</button>
-                    <button class="btn-action">1</button>
-                    <button class="btn-action">2</button>
-                    <button class="btn-action">다음</button>
-                </div>
+                <div th:replace="fragments/pagination :: pagination"></div>
+
+<!--                <div class="pagination">-->
+<!--                    <button class="btn-action">이전</button>-->
+<!--                    <button class="btn-action">1</button>-->
+<!--                    <button class="btn-action">2</button>-->
+<!--                    <button class="btn-action">다음</button>-->
+<!--                </div>-->
             </div>
         </div>
     </section>

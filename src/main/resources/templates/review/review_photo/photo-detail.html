@@ -11,45 +11,44 @@
         <div class="container d-flex justify-content-center">
             <div class="row d-flex justify-content-center align-items-start ">
                 <div class="ptreview-detailbox">
-                    <h3 class="text-primary-color">커플후기</h3>
+                    <!--리뷰제목-->
+                    <h3 class="text-primary-color" th:text="${review.reviewTitle}"></h3>
                     <div class="button-container">
-                        <button class="btn-action color-sec" onclick="location.href='#'">삭제하기</button>
-                        <button class="btn-action color-pri" onclick="location.href='/review/photoedit'">수정하기</button>
-                        <button class="btn-action" onclick="location.href='/review/photomain'">목록으로</button>
+                        <!-- 삭제하기 버튼 -->
+                        <form action="/review/delete" method="post" style="display:inline;" onsubmit="return confirmDelete();"
+                              th:if="${review.reviewerUserId} == ${userId}">
+                            <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
+                            <button class="btn-action color-sec" type="submit">삭제하기</button>
+                        </form>
+
+                        <!-- 수정하기 버튼  -->
+                        <a class="btn-action color-pri" th:href="@{'/review/photoedit?reviewNo=' + ${review.reviewNo}}"
+                           th:if="${review.reviewerUserId} == ${userId}">수정하기</a>
+
+                        <!-- 목록으로 버튼 -->
+                        <a class="btn-action" th:href="@{'/review/photomain'}">목록으로</a>
                     </div>
 
                     <section class="ptreview-info">
                         <div>
-                            <div class="profile_info_ct">
-                                <span class="sound_only">작성자</span> <strong>
-                                AhtaeKim
-                            </strong>
-                                <span class="sound_only">조회</span><strong><i class="icon_users"></i>672명 읽음</strong>
+                            <div class="profile-info-ct">
+                                <span class="sound-only">작성자</span>
+                                <strong th:text="${review.reviewerNickname}">작성자 이름</strong>
+                                <span class="sound-only">조회</span>
+                                <strong>
+                                    <i class="icon-users"></i>
+                                    <span th:text="${review.reviewViews}">조회수</span>명 읽음
+                                </strong>
                             </div>
                         </div>
                     </section>
 
                     <section>
-                        <div id="ptreview-img">
-                            <a class="view_image"
-                               href="#"
-                               onclick="window.open('/image/review/weding-review2.jpg', 'new window', 'width=800,height=600'); return false;">
-                            <img alt="사진" th:src="@{/image/review/weding-review2.jpg}" width="600">
-                            </a>
-
-                        </div>
-
-                        <div class="ptreview_con">커플후기 올립니다!!ㅎㅎ<br><br>
-                            소개팅에서 좋은사람을 만나 행복한 연애 중입니다~ 벌써 만난지 1년이 넘었네요!<br><br>
-                            처음엔 정말 반신반의했는데 괜히 걱정했던 것 같아요!ㅎㅎ<br><br>
-                            좋은사람 만나게 해주셔서 너무 감사드리고, 다른 분들도 꼭 이곳에서 좋은 인연 만나셔서 행복한 연애하시길 바라겠습니다:)<br><br>
-                            다음번에는 결혼식 후기로 돌아올게요!!!
-                        </div>
+                        <!-- 리뷰 내용  -->
+                        <div class="ptreview-con" th:utext="${review.reviewContent}">리뷰 내용</div>
                     </section>
 
                 </div>
-
-
             </div>
         </div>
     </section>
@@ -58,7 +57,5 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/review/review.js}"></script>
-
-
 </body>
 </html>

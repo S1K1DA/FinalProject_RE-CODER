@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+
+<main>
+    <nav th:replace="fragments/navigation :: navigation"></nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container d-flex justify-content-center">
+            <div class="row d-flex justify-content-center mypage-box">
+                <div class="mypage-box-container d-flex">
+                    <div th:replace="mypage/mypage_nav :: mypagenav"></div>
+                    <div class="custom-block d-flex flex-column align-items-start text-left p-4">
+                        <div class="text-center mb-5 pb-2 w-100">
+                            <h3 class="text-white">마이페이지</h3>
+                            <hr class="mypage-line">
+                        </div>
+                        <div class="custom-block-info w-100 position-relative">
+                            <div class="profile-picture">
+                                <img th:src="@{/image/review/weding-review2.jpg}" alt="프로필 사진">
+                            </div>
+                            <p class="mb-2"><span class="label fw-bold">이메일 :</span> <span th:text="${user.email}">abc@gmail.com</span></p>
+                            <p class="mb-2"><span class="label fw-bold">닉네임 :</span> <span th:text="${user.nickname}">닉네임</span></p>
+                            <p class="mb-2"><span class="label fw-bold">이름 :</span> <span th:text="${user.name}">이름</span></p>
+                            <p class="mb-2"><span class="label fw-bold">전화번호 :</span> <span th:text="${user.phone}">전화번호</span></p>
+                            <p class="mb-2"><span class="label fw-bold">주소 :</span> <span th:text="${user.address}">주소</span></p>
+                            <p class="mb-2"><span class="label fw-bold">MBTI :</span> <span th:text="${user.mbti}">MBTI</span></p>
+                        </div>
+                        <div class="form-actions d-flex justify-content-center mt-4 w-100">
+                            <button type="button" class="btn-submit btn-edit-trigger">수정하기</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 비밀번호 확인용 팝업창 -->
+    <div id="passwordPopup" class="popup">
+        <div class="popup-content">
+            <h4>비밀번호 확인</h4>
+            <input type="password" id="passwordInput" placeholder="비밀번호 입력">
+            <div class="popup-buttons">
+                <button id="submitPassword" class="btn-popup btn-confirm">확인</button>
+                <button id="closePopup" class="btn-popup btn-cancel">취소</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<script th:src="@{/js/mypage/mypage.js}"></script>
+
+</body>
+</html>

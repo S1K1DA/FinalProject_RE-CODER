@@ -30,11 +30,8 @@
     width: 72px;
     height: 72px;
     border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
 	overflow: hidden;
+	margin-bottom : 0px;
 }
 .list-thumb img {
     width: 100%;
@@ -45,20 +42,20 @@
     color: #757575;
     font-size: 13px;
 }
-.pt_title {
+.pt-title {
     display: flex;
     align-items: center;
     font-size: 17px;
     font-weight: 500;
     color: #222222;
 }
-.pt_info {
+.pt-info {
     font-size: 13px;
     color: #757575;
     margin-top: 10px;
 }
 
-.icon_users {
+.icon-users {
     width: 16px;
     height: 16px;
     display: block;
@@ -114,7 +111,7 @@
     position: relative;
 }
 
-.view_image{
+.view-image{
 display : block;
 width:600px;
 }
@@ -497,3 +494,24 @@ display:none;}
     margin: inherit !important;
     padding: inherit !important;
 }
+
+.live-review-item{
+margin-bottom:10px;
+}
+
+.live-review-delete-button{
+background:none;
+border:none;
+padding:0;
+color:inherit;
+cursor:pointer;
+
+}
+
+.pagination .btn-action.active {
+        background-color: var(--primary-color) !important; /* 활성화된 페이지의 배경색 */
+        color: white !important; /* 활성화된 페이지의 글자색 */
+        font-weight: bold !important; /* 활성화된 페이지의 글자 두께 */
+        border: 1px solid var(--primary-color) !important; /* 활성화된 페이지의 테두리 */
+        pointer-events: none !important; /* 활성화된 페이지의 클릭 방지 */
+    }

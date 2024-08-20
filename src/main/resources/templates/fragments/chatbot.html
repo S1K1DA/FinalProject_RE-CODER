@@ -1,4 +1,8 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
 <div class="site-chatbot" th:fragment="chatbot">
     <div class="chatbot-button" id="chatbot-button">
         <i class="bi bi-chat"></i>
@@ -10,20 +14,22 @@
             <span>문의사항 챗봇</span>
             <button class="close-chatbot" id="close-chatbot">&times;</button>
         </div>
-        <div class="chatbot-body">
-            <!-- 상대방(챗봇)의 메시지 -->
-            <div class="chatbot-message chatbot-message-left">
-                안녕하세요! 무엇을 도와드릴까요?
+        <div class="chatbot-body" id="chatbot-body">
+            <!-- 채팅 위치 -->
+        </div>
+
+        <div class="chatbot-footer" id="chatbot-footer">
+            <div class="persistent-menu hidden" id="persistent-menu">
+                <!-- 고정 메뉴 버튼 -->
             </div>
-            <!-- 사용자의 메시지 -->
-            <div class="chatbot-message chatbot-message-right">
-                물어보고 싶은게 있어요!
+            <div class="chatbot-input-container">
+                <input class="chatbot-input" id="chatbot-input" placeholder="메시지를 입력하세요..." type="text">
+                <button class="send-message" id="send-message">전송</button>
             </div>
         </div>
-        <div class="chatbot-footer">
-            <input class="chatbot-input" id="chatbot-input" placeholder="메시지를 입력하세요..." type="text">
-            <button class="send-message" id="send-message">전송</button>
-        </div>
+
     </div>
 </div>
+
+</body>
 </html>

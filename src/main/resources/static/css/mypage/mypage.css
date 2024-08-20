@@ -280,6 +280,12 @@
     border-color: #ccc;
 }
 
+input{
+border-radius : 10px;
+border: 1px solid #ccc;
+padding: 5px 10px 5px 10px;
+}
+
 .input-short {
     width: 200px;
 }
@@ -299,7 +305,7 @@
 .hobby-box-1 {
     flex: 1;
     width: 60%;
-    height: 40vh;
+    height: 45vh;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: rgba(249, 249, 249, 0.3);
@@ -315,7 +321,7 @@
 .hobby-box-2 {
     flex: 1;
     width: 40%;
-    height: 40vh;
+    height: 45vh;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: rgba(249, 249, 249, 0.3);
@@ -326,6 +332,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.hobby-box-2 ul{
+padding:0px;
+}
+
+.hobby-box-2 ul li{
+list-style-type: none;
 }
 
 
@@ -349,6 +363,14 @@ margin-bottom : 3rem;
 .like-dislike-container {
     display: flex;
     width: 100%;
+}
+.like-dislike-container ul{
+padding : 0px !important;
+}
+
+.like-dislike-container ul li{
+list-style-type: none;
+
 }
 
 .like-box {
@@ -451,13 +473,16 @@ margin-bottom : 3rem;
 .photo-review-item {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: calc(33% - 20px);
     background-color: white;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.photo-review-item:hover {
+        background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
+    }
 
 .photo-review-item p {
     font-size : 1rem !important;
@@ -470,9 +495,14 @@ margin-bottom : 3rem;
     border-radius: 10px;
 }
 
+.photo-review-item h6 {
+    text-align:left;
+}
+
 .photo-review-content {
     text-align: center;
     margin-top: 10px;
+    padding-left:10px;
 }
 
 .icon-users {
@@ -502,7 +532,6 @@ margin-bottom : 3rem;
 
 .review-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -519,6 +548,7 @@ margin-bottom : 3rem;
 .review-rating {
     font-size: 1.2rem;
     color: gold;
+    text-align:left;
 }
 
 /* 페이지네이션 */
@@ -665,3 +695,272 @@ color : black;
 .tab-content.active {
     display: block;
 }
+
+
+/* 팝업창 스타일 */
+.popup {
+    display: none; /* 팝업이 기본적으로 닫혀 있도록 설정 */
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+}
+
+.popup h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.popup input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-popup {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-popup:hover {
+    opacity: 0.9;
+}
+
+.font-size-20 li{
+
+}
+.font-size-20 li div {
+    padding: 3px;
+    width : 135px;
+    margin: 3px 0;
+    border-radius: 5px;
+    display:inline-block;
+    font-weight:normal;
+
+}
+
+.like-inbox{
+background-color:var(--primary-color);
+color:var(--white-color);
+}
+
+.dislike-inbox{
+background-color:var(--secondary-color);
+color:var(--white-color);
+}
+
+/* 라이브리뷰 페이지 스타일 */
+
+/* 실시간 리뷰 섹션 스타일 */
+
+
+.text-primary-color {
+    color: var(--primary-color);
+}
+
+.live-review-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.live-review-item {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom:10px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.live-review-item h6 {
+    font-size: 1.4rem !important;
+}
+
+.live-review-item p {
+    font-size: 1rem !important;
+    margin-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 200px;
+    font-weight: normal;
+}
+
+.review-rating {
+    font-size: 1.2rem;
+    color: gold;
+    padding-left: 20px;
+}
+
+.more-icon-image {
+    width: 28px;
+    height: 28px;
+    position: relative;
+}
+
+.more-icon-image:hover{
+    opacity: 0.45;
+}
+
+
+/* 드롭다운 컨테이너 */
+.dropdown-more {
+    position: relative;
+    display: inline-block;
+}
+
+/* 더보기 버튼 아이콘 */
+.more-icon {
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* 드롭다운 콘텐츠 */
+.more-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 8%);
+    z-index: 1;
+    border-radius: 5px;
+    right: 15%;
+}
+
+/* 드롭다운 항목 */
+.more-ele {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+}
+
+.more-ele:last-child {
+    border-bottom: none;
+}
+
+.more-ele:hover {
+    background-color: #f1f1f1;
+}
+
+.feed-icons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more-icon{
+    padding: 8px 0;
+    margin-right: 0;
+    position: relative;
+    right: -10%;
+}
+
+
+/* 드롭다운 애니메이션 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.more-dropdown-content.show {
+    display: block;
+    animation: slideDown 0.3s forwards;
+}
+
+.more-dropdown-content.hide {
+    display: block;
+    animation: slideUp 0.3s forwards;
+}
+
+.live-review-item .feed-icons {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.live-review-item:hover .feed-icons {
+    opacity: 1;
+}
+
+.live-review-delete-button{
+background:none;
+border:none;
+padding:0;
+color:inherit;
+cursor:pointer;
+}
+
+.review-section h4{
+margin-left : 50px;
+margin-top: 10px !important;
+margin-bottom : 30px !important;
+}
+
+.pagination .btn-action.active {
+        background-color: var(--primary-color) !important; /* 활성화된 페이지의 배경색 */
+        color: white !important; /* 활성화된 페이지의 글자색 */
+        font-weight: bold !important; /* 활성화된 페이지의 글자 두께 */
+        border: 1px solid var(--primary-color) !important; /* 활성화된 페이지의 테두리 */
+        pointer-events: none !important; /* 활성화된 페이지의 클릭 방지 */
+    }
+

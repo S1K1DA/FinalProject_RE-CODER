@@ -16103,7 +16103,7 @@ pre[class*=language-] > code {
 ==========================  **/
 .pc-sidebar {
   background: var(--pc-sidebar-background);
-  width: 260px;
+  width: 300px;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -16113,7 +16113,7 @@ pre[class*=language-] > code {
   border-right: var(--pc-sidebar-border);
 }
 .pc-sidebar .navbar-wrapper {
-  width: 260px;
+  width: 300px;
   background: inherit;
 }
 .pc-sidebar ul {
@@ -16356,7 +16356,7 @@ pre[class*=language-] > code {
     z-index: 5;
   }
   .navbar-overlay .pc-sidebar:not(.pc-over-menu-active) {
-    left: -260px;
+    left: -300px;
     box-shadow: none;
   }
   .pc-sidebar {
@@ -16389,7 +16389,7 @@ pre[class*=language-] > code {
     display: none;
   }
   .pc-sidebar {
-    left: -260px;
+    left: -300px;
     box-shadow: none;
     top: 0;
     transition: all 0.2s ease-in-out;
@@ -16420,7 +16420,7 @@ pre[class*=language-] > code {
   color: var(--pc-header-color);
   min-height: 80px;
   position: fixed;
-  left: 260px;
+  left: 300px;
   right: 0;
   z-index: 1025;
   display: flex;
@@ -16434,7 +16434,7 @@ pre[class*=language-] > code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 260px;
+  width: 300px;
   padding: 16px 10px 16px 24px;
 }
 .pc-header .header-wrapper {
@@ -16947,7 +16947,7 @@ pre[class*=language-] > code {
 .pc-footer {
   position: relative;
   z-index: 5;
-  margin-left: 260px;
+  margin-left: 300px;
   margin-top: 80px;
   padding: 15px 0;
 }
@@ -16994,11 +16994,12 @@ body {
 .pc-container {
   position: relative;
   top: 80px;
-  margin-left: 260px;
+  margin-left: 300px;
   margin-right: 20px;
   min-height: calc(100vh - 141px);
   background: var(--bs-body-bg);
   border-radius: 8px;
+  padding: 0 10px;
 }
 .pc-container .pc-content {
   padding-left: 20px;
@@ -17021,7 +17022,7 @@ body {
   display: flex;
   align-items: center;
   top: 80px;
-  left: 260px;
+  left: 300px;
   right: 0;
   z-index: 1023;
   min-height: 55px;

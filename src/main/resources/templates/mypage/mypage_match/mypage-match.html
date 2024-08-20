@@ -49,32 +49,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>2024-08-01</td>
-                                        <td>이름1</td>
-                                        <td class="text-success">Y</td>
-                                        <td class="text-success">Y</td>
+                                    <tr th:each="match : ${matchingHistory}">
+                                        <td th:text="${#dates.format(match.matchingIndate, 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${match.partnerName}"></td>
+                                        <td th:text="${match.matchingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingState == 'Y' ? 'text-success' : 'text-danger'}"></td>
+                                        <td th:text="${match.matchingChattingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingChattingState == 'Y' ? 'text-success' : 'text-danger'}"></td>
                                     </tr>
-                                    <tr>
-                                        <td>2024-08-01</td>
-                                        <td>이름2</td>
-                                        <td class="text-success">Y</td>
-                                        <td class="text-success">Y</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2024-08-01</td>
-                                        <td>이름3</td>
-                                        <td class="text-success">Y</td>
-                                        <td class="text-danger">N</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2024-08-01</td>
-                                        <td>이름4</td>
-                                        <td class="text-success">Y</td>
-                                        <td class="text-success">Y</td>
-                                    </tr>
-
-
                                     </tbody>
                                 </table>
                             </div>

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="fragments/head :: head"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
@@ -13,136 +14,26 @@
 
                 <div class="mypage-box-container d-flex">
                     <div th:replace="mypage/mypage_nav :: mypagenav"></div>
-<!--                    <div class="sidebar-menu">-->
-<!--                        <ul class="menu-list">-->
-<!--                            <li><a th:href="@{/mypage/main}">내 정보</a></li>-->
-<!--                            <li><a th:href="@{/mypage/hobby}">성향/취미</a></li>-->
-<!--                            <li><a th:href="@{/mypage/review}">내 후기</a></li>-->
-<!--                            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>-->
-<!--                            <li class="active"><a th:href="@{#}">프로필 좋아요 목록</a></li>-->
-<!--                            <li><a th:href="@{/mypage/cash}">결제 내역</a></li>-->
-<!--                            <li><a th:href="@{/mypage/match}">매칭 내역</a></li>-->
-<!--                            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
+
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
 
                         <div class="text-center mb-5 pb-2 w-100">
-                            <h3 class="text-white">좋아요 내역</h3>
+                            <h3 class="text-white">프로필 좋아요 목록</h3>
                             <hr class="mypage-line">
                         </div>
 
                         <div class="custom-block-info w-100">
                             <div class="liked-prof-list">
-                                <div class="liked-prof-item" onclick="location.href='/prof/1'">
+                                <div th:each="like : ${likedProfiles}" class="liked-prof-item" th:data-liked-user-no="${like.likedUserNo}" th:onclick="'location.href=\'/profile/' + ${like.likedUserNo} + '\''">
                                     <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
                                         <i class="bi-heart prof-heart-icon"></i>
                                     </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_jaein.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">JaeinLee</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
+                                    <img class="prof-img" th:src="@{/image/mainThumbnail.jpg}" alt="프로필 이미지">
+                                    <p class="prof-author" th:text="${like.likedUserNickname}">사용자 이름</p>
+                                    <p class="prof-liked-time" th:text="${#dates.format(like.likeIndate, 'yyyy.MM.dd HH:mm')}">좋아요 시간</p>
                                 </div>
-
-                                <div class="liked-prof-item" onclick="location.href='/prof/2'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_eunsik.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">EunsikJeong</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/3'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">AhtaeKim</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/4'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">JongsunPark</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/1'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_jaein.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">JaeinLee</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-
-                                <div class="liked-prof-item" onclick="location.href='/prof/2'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_eunsik.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">EunsikJeong</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/3'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">AhtaeKim</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/4'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">JongsunPark</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/1'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_jaein.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">JaeinLee</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-
-                                <div class="liked-prof-item" onclick="location.href='/prof/2'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_eunsik.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">EunsikJeong</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/3'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">AhtaeKim</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-                                <div class="liked-prof-item" onclick="location.href='/prof/4'">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
-                                        <i class="bi-heart prof-heart-icon"></i>
-                                    </a>
-                                    <img class="prof-img" th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="프로필 이미지">
-                                    <p class="prof-author">JongsunPark</p>
-                                    <p class="prof-liked-time">2024.07.30 15:17</p>
-                                </div>
-
-
-
                             </div>
-                            <div class="pagination">
-                                <button class="btn-action">이전</button>
-                                <button class="btn-action">1</button>
-                                <button class="btn-action">2</button>
-                                <button class="btn-action">다음</button>
-                            </div>
+                            <div th:replace="fragments/pagination :: pagination"></div>
                         </div>
 
                     </div>
@@ -156,10 +47,6 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
-
-<script>
-
-</script>
 
 </body>
 </html>

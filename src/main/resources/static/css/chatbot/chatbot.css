@@ -1,9 +1,16 @@
+/* 기본적으로 모든 요소의 마진과 패딩을 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* 챗봇 버튼 */
 .chatbot-button {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: #fff;
     border-radius: 50%;
     padding: 0;
@@ -39,6 +46,7 @@
 .hidden {
     display: none;
 }
+
 /* 챗봇 메시지 */
 .chatbot-message {
     max-width: 75%;
@@ -52,7 +60,7 @@
 
 /* 내 메시지 - 오른쪽 정렬 */
 .chatbot-message-right {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
     align-self: flex-end;
     border-bottom-right-radius: 0;
@@ -68,7 +76,7 @@
 
 /* 챗봇 헤더 */
 .chatbot-header {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: #fff;
     padding: 10px;
     border-radius: 10px 10px 0 0;
@@ -93,15 +101,42 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 }
 
 /* 챗봇 푸터 */
 .chatbot-footer {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding: 10px;
     border-top: 1px solid #ddd;
+}
+
+/* 고정 메뉴 */
+.persistent-menu {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* 홈으로 돌아가기 버튼 */
+.home-button {
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    padding: 0 10px 0 10px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 0;
+}
+
+/* 채팅입력칸과 전송 버튼을 같은 줄에 위치 */
+.chatbot-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* 채팅입력칸 */
@@ -110,15 +145,40 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 20px;
-    margin-right: 10px;
 }
 
 /* 보내기버튼 */
 .send-message {
-    background-color: #007bff;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: white;
     border: none;
     padding: 10px;
     border-radius: 20px;
     cursor: pointer;
+}
+
+/* 객관식 폼 버튼 */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 5px;
+}
+
+/* 개별 버튼 스타일 */
+.option-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.option-button:hover {
+color : var(--secondary-color);
 }

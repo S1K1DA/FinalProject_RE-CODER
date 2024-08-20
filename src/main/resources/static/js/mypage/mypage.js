@@ -36,22 +36,183 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 좋아요 하트 아이콘 클릭 처리
-    const heartIcons = document.querySelectorAll('.feed-heart');
+    // 피드 좋아요 하트 아이콘 클릭 처리
+    const feedHeartIcons = document.querySelectorAll('.feed-heart');
 
-    heartIcons.forEach(heart => {
+    feedHeartIcons.forEach(heart => {
         heart.addEventListener('click', function(event) {
-            event.stopPropagation();  // 부모 요소의 클릭 이벤트 전파를 막음
-            this.classList.toggle('liked');
+            event.stopPropagation();
+            toggleFeedLike(this);
         });
     });
 
-    const heartIcons2 = document.querySelectorAll('.prof-heart');
+    // 프로필 좋아요 하트 아이콘 클릭 처리
+    const profHeartIcons = document.querySelectorAll('.prof-heart');
 
-        heartIcons2.forEach(heart => {
-            heart.addEventListener('click', function(event) {
-                event.stopPropagation();  // 부모 요소의 클릭 이벤트 전파를 막음
-                this.classList.toggle('liked');
-            });
+    profHeartIcons.forEach(heart => {
+        heart.addEventListener('click', function(event) {
+            event.stopPropagation();
+            toggleProfileLike(this);
         });
+    });
+
+    // 피드 좋아요 토글 함수
+    function toggleFeedLike(element) {
+        const feedNo = element.closest('.liked-feed-item').getAttribute('data-feed-no');
+        const isLiked = element.classList.contains('liked');
+
+        if (isLiked) {
+            // 좋아요 해제
+            fetch(`/mypage/unlikeFeed`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ feedNo: feedNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.remove('liked');
+                } else {
+                    alert('좋아요 해제에 실패했습니다.');
+                }
+            });
+        } else {
+            // 좋아요 추가
+            fetch(`/mypage/likeFeed`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ feedNo: feedNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.add('liked');
+                } else {
+                    alert('좋아요 추가에 실패했습니다.');
+                }
+            });
+        }
+    }
+
+    // 프로필 좋아요 토글 함수
+    function toggleProfileLike(element) {
+        const likedUserNo = element.closest('.liked-prof-item').getAttribute('data-liked-user-no');
+        const isLiked = element.classList.contains('liked');
+
+        if (isLiked) {
+            // 프로필 좋아요 해제
+            fetch(`/mypage/unlikeProfile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ likedUserNo: likedUserNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.remove('liked');
+                } else {
+                    alert('프로필 좋아요 해제에 실패했습니다.');
+                }
+            });
+        } else {
+            // 프로필 좋아요 추가
+            fetch(`/mypage/likeProfile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ likedUserNo: likedUserNo })
+            }).then(response => {
+                if (response.ok) {
+                    element.classList.add('liked');
+                } else {
+                    alert('프로필 좋아요 추가에 실패했습니다.');
+                }
+            });
+        }
+    }
+
+    // 팝업 관련 기능
+    const openPopupButton = document.querySelector('.btn-edit-trigger');
+    const popup = document.getElementById('passwordPopup');
+    const closePopupButton = document.getElementById('closePopup');
+    const submitPasswordButton = document.getElementById('submitPassword');
+    const passwordInput = document.getElementById('passwordInput');
+
+    if (openPopupButton && popup && closePopupButton && submitPasswordButton && passwordInput) {
+        openPopupButton.addEventListener('click', function () {
+            popup.style.display = 'flex';
+            passwordInput.focus();
+        });
+
+        closePopupButton.addEventListener('click', function () {
+            popup.style.display = 'none';
+        });
+
+        submitPasswordButton.addEventListener('click', function () {
+            const password = passwordInput.value;
+            if (password) {
+                fetch('/mypage/validatePassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.valid) {
+                          window.location.href = '/mypage/infoedit';
+                      } else {
+                          alert('비밀번호가 일치하지 않습니다.');
+                          popup.style.display = 'none';
+                      }
+                  });
+            } else {
+                alert('비밀번호를 입력해주세요.');
+            }
+        });
+
+        passwordInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                submitPasswordButton.click();
+            }
+        });
+    }
+
+    // 탈퇴 폼 처리
+    const deleteForm = document.querySelector('form[action="/mypage/delete"]');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password-confirm').value;
+
+            if (!password || !passwordConfirm) {
+                alert('비밀번호와 비밀번호 확인을 입력해주세요.');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                alert('비밀번호 확인이 일치하지 않습니다.');
+                return;
+            }
+
+            fetch('/mypage/validatePassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: password })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.valid) {
+                      deleteForm.submit();
+                  } else {
+                      alert('입력한 비밀번호가 현재 비밀번호와 일치하지 않습니다.');
+                  }
+              });
+        });
+    }
 });

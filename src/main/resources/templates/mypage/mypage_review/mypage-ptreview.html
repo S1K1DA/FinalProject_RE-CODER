@@ -11,43 +11,23 @@
             <div th:replace="mypage/mypage_nav :: mypagenav"></div>
             <div class="custom-block d-flex flex-column align-items-start text-left p-4">
                 <div class="review-my-tabs">
-                    <a th:href="@{/mypage/ptreview}" class="review-tab-ico active">포토후기</a>
-                    <a th:href="@{/mypage/lireview}" class="review-tab-ico">실시간후기</a>
+                    <a th:href="@{/mypage/ptreview}" class="review-tab-ico active">포토 리뷰</a>
+                    <a th:href="@{/mypage/lireview}" class="review-tab-ico">라이브 리뷰</a>
                 </div>
                 <div class="custom-block-info w-100 review-tab">
                     <div class="review-section mb-5">
-                        <h4 class="text-primary-color">사진 후기</h4>
+                        <h4 class="text-primary-color">포토 리뷰</h4>
                         <div class="photo-review-box">
-                            <div class="photo-review-item">
-                                <img th:src="@{/image/review/weding-review2.jpg}" alt="사진 후기 이미지">
+                            <a th:each="review : ${photoReviews}" th:href="@{'/review/photodetail?reviewNo=' + ${review.reviewNo}}" class="photo-review-item">
+                                <img th:src="${review.firstImageUrl}" alt="사진 후기 이미지">
                                 <div class="photo-review-content">
-                                    <h6>후기 제목 1</h6>
-                                    <p><i class="icon-users"></i> 123명 읽음</p>
+                                    <h6 th:text="${review.reviewTitle}">후기 제목</h6>
+                                    <p><i class="icon-users"></i> <span th:text="${review.reviewViews}"></span>명 읽음</p>
                                 </div>
-                            </div>
-                            <div class="photo-review-item">
-                                <img th:src="@{/image/review/weding-review2.jpg}" alt="사진 후기 이미지">
-                                <div class="photo-review-content">
-                                    <h6>후기 제목 2</h6>
-                                    <p><i class="icon-users"></i> 456명 읽음</p>
-                                </div>
-                            </div>
-                            <div class="photo-review-item">
-                                <img th:src="@{/image/review/weding-review2.jpg}" alt="사진 후기 이미지">
-                                <div class="photo-review-content">
-                                    <h6>후기 제목 3</h6>
-                                    <p><i class="icon-users"></i> 789명 읽음</p>
-                                </div>
-                            </div>
-                            <!-- 추가 사진 후기를 여기에 추가하세요 -->
+                            </a>
                         </div>
-                        <!-- 페이지네이션 버튼 예시 -->
-                        <div class="pagination">
-                            <button class="btn-action">이전</button>
-                            <button class="btn-action">1</button>
-                            <button class="btn-action">2</button>
-                            <button class="btn-action">다음</button>
-                        </div>
+                        <!-- 페이지네이션 추가 -->
+                        <div th:replace="fragments/pagination :: pagination"></div>
                     </div>
                 </div>
             </div>

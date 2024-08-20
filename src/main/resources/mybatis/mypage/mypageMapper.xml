@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mypageMapper">
+
+    <!-- 기존 유저 정보 관련 resultMap -->
+    <resultMap id="userResultMap" type="com.heartlink.mypage.model.dto.MypageDto">
+        <result column="BASIC_USER_NO" property="userId"/>
+        <result column="BASIC_USER_EMAIL" property="email"/>
+        <result column="BASIC_USER_NICKNAME" property="nickname"/>
+        <result column="BASIC_USER_NAME" property="name"/>
+        <result column="USER_ADDR" property="address"/>
+        <result column="BASIC_USER_TELNUM" property="phone"/>
+        <result column="BASIC_USER_MBTI" property="mbti"/>
+    </resultMap>
+
+    <!-- 유저 정보 가져오기 -->
+    <select id="getUserInfoById" parameterType="int" resultMap="userResultMap">
+        SELECT * FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 비밀번호 가져오기 -->
+    <select id="getPasswordByUserId" parameterType="int" resultType="string">
+        SELECT BASIC_USER_PWD FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 유저 정보 업데이트 -->
+    <update id="updateUserInfo" parameterType="com.heartlink.mypage.model.dto.MypageDto">
+        UPDATE BASIC_USER
+        SET
+        BASIC_USER_NICKNAME = #{nickname},
+        USER_ADDR = #{address},
+        BASIC_USER_TELNUM = #{phone},
+        BASIC_USER_UPDATE = CURRENT_TIMESTAMP,
+        BASIC_USER_MBTI = #{mbti}
+        WHERE BASIC_USER_NO = #{userId}
+    </update>
+
+    <!-- 성향 목록 가져오기 -->
+    <select id="getPersonalCategoriesByType" parameterType="string" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT PERSONAL_NO as personalNo, PERSONAL_NAME as personalName, PERSONAL_TYPE as personalType
+        FROM PERSONAL_CATEGORY
+        WHERE PERSONAL_TYPE = #{type}
+    </select>
+
+    <!-- 특정 유저의 성향 가져오기 -->
+    <select id="getUserSelectedCategories" parameterType="int" resultType="int">
+        SELECT PERSONAL_NO
+        FROM BASIC_USER_PERSONAL
+        WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 유저 성향 초기화 (삭제) -->
+    <delete id="deleteUserCategories" parameterType="int">
+        DELETE FROM BASIC_USER_PERSONAL
+        WHERE BASIC_USER_NO = #{userId}
+    </delete>
+
+    <!-- 유저 성향 추가 -->
+    <insert id="insertUserCategories" parameterType="map">
+        <foreach collection="categoryIds" item="personalNo" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
+            INTO BASIC_USER_PERSONAL (BASIC_USER_NO, PERSONAL_NO)
+            VALUES (#{userId}, #{personalNo})
+        </foreach>
+    </insert>
+
+    <!-- 취미 목록 가져오기 -->
+    <select id="getHobbyCategories" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT HOBBY_NO as hobbyNo, HOBBY_NAME as hobbyName FROM HOBBY_CATEGORY
+    </select>
+
+    <!-- 유저 취미 삭제 -->
+    <delete id="deleteUserHobbies" parameterType="int">
+        DELETE FROM BASIC_USER_HOBBY WHERE BASIC_USER_NO = #{userId}
+    </delete>
+
+    <!-- 유저 취미 추가 -->
+    <insert id="insertUserHobbies" parameterType="map">
+        <foreach collection="hobbyIds" item="hobbyNo" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
+            INTO BASIC_USER_HOBBY (BASIC_USER_NO, HOBBY_NO)
+            VALUES (#{userId}, #{hobbyNo})
+        </foreach>
+    </insert>
+
+    <!-- 유저의 취미 목록 가져오기 -->
+    <select id="getUserHobbies" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT h.HOBBY_NO as hobbyNo, h.HOBBY_NAME as hobbyName
+        FROM HOBBY_CATEGORY h
+        JOIN BASIC_USER_HOBBY uh ON h.HOBBY_NO = uh.HOBBY_NO
+        WHERE uh.BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 리뷰 목록 가져오기 -->
+    <select id="getReviewsByType" parameterType="map" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT
+        REVIEW_NO as reviewNo,
+        REVIEWER_USER_ID as reviewerUserId,
+        REVIEW_INDATE as reviewIndate,
+        REVIEW_UPDATE as reviewUpdate,
+        REVIEW_DELETE as reviewDelete,
+        REVIEW_RATING as reviewRating,
+        REVIEW_CONTENT as reviewContent,
+        REVIEW_VIEWS as reviewViews,
+        REVIEW_TYPE as reviewType,
+        REVIEW_TITLE as reviewTitle
+        FROM REVIEW_BOARD
+        WHERE REVIEWER_USER_ID = #{userId}
+        AND REVIEW_TYPE = #{reviewType}
+        AND REVIEW_DELETE = 'N'
+        ORDER BY REVIEW_INDATE DESC
+    </select>
+
+    <!-- 유저 상태를 DELETED로 업데이트 -->
+    <update id="updateUserStatusToDeleted" parameterType="int">
+        UPDATE BASIC_USER
+        SET BASIC_USER_STATUS = 'DELETED'
+        WHERE BASIC_USER_NO = #{userId}
+    </update>
+
+    <!-- 좋아요한 피드 목록 가져오기 -->
+    <select id="getLikedFeeds" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT
+        f.FEED_NO as feedNo,
+        f.FEED_TITLE as feedTitle,
+        u.BASIC_USER_NICKNAME as author,
+        l.LIKE_INDATE as likedTime
+        FROM FEEDS f
+        JOIN FEED_LIKES l ON f.FEED_NO = l.FEED_NO
+        JOIN BASIC_USER u ON f.AUTHOR_USER_NO = u.BASIC_USER_NO
+        WHERE l.BASIC_USER_NO = #{userId}
+        ORDER BY l.LIKE_INDATE DESC
+    </select>
+
+    <!-- 좋아요 해제 -->
+    <delete id="deleteFeedLike" parameterType="map">
+        DELETE FROM FEED_LIKES
+        WHERE FEED_NO = #{feedNo}
+        AND BASIC_USER_NO = #{userId}
+    </delete>
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertFeedLike" parameterType="map">
+        INSERT INTO FEED_LIKES (FEED_NO, BASIC_USER_NO)
+        VALUES (#{feedNo}, #{userId})
+    </insert>
+
+    <!-- 탈퇴 유저 기록 추가 -->
+    <insert id="insertDeletedUser" parameterType="int">
+        INSERT INTO DELETED_USER (BASIC_USER_NO, DELETED_USER_INDATE)
+        VALUES (#{userId}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 유저 매칭 히스토리 가져오기 -->
+    <select id="getUserMatchingHistory" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT
+        m.MATCHING_NO as matchingNo,
+        m.MATCHING_INDATE as matchingIndate,
+        CASE
+        WHEN m.MATCHING_USER_NO = #{userId} THEN u2.BASIC_USER_NICKNAME
+        ELSE u1.BASIC_USER_NICKNAME
+        END as partnerName,
+        m.MATCHING_STATE as matchingState,
+        m.MATCHING_CHATTING_STATE as matchingChattingState
+        FROM
+        MATCHING_STATE m
+        JOIN
+        BASIC_USER u1 ON m.MATCHING_USER_NO = u1.BASIC_USER_NO
+        JOIN
+        BASIC_USER u2 ON m.MATCHED_USER_NO = u2.BASIC_USER_NO
+        WHERE
+        m.MATCHING_USER_NO = #{userId}
+        OR m.MATCHED_USER_NO = #{userId}
+        ORDER BY
+        m.MATCHING_INDATE DESC
+        FETCH FIRST 10 ROWS ONLY
+    </select>
+
+    <!-- 프로필 좋아요 목록 가져오기 -->
+    <select id="getLikedProfiles" parameterType="int" resultType="com.heartlink.mypage.model.dto.MypageDto">
+        SELECT
+        u.BASIC_USER_NO as likedUserNo,
+        u.BASIC_USER_NICKNAME as likedUserNickname,
+        l.LIKE_INDATE as likeIndate
+        FROM USER_LIKES l
+        JOIN BASIC_USER u ON l.LIKED_USER_NO = u.BASIC_USER_NO
+        WHERE l.LIKER_USER_NO = #{userId}
+        ORDER BY l.LIKE_INDATE DESC
+    </select>
+
+    <!-- 프로필 좋아요 추가 -->
+    <insert id="insertProfileLike" parameterType="map">
+        INSERT INTO USER_LIKES (LIKE_NO, LIKED_USER_NO, LIKER_USER_NO, LIKE_INDATE)
+        VALUES (LIKE_SEQ.NEXTVAL, #{likedUserNo}, #{userId}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 프로필 좋아요 해제 -->
+    <delete id="deleteProfileLike" parameterType="map">
+        DELETE FROM USER_LIKES
+        WHERE LIKED_USER_NO = #{likedUserNo}
+        AND LIKER_USER_NO = #{userId}
+    </delete>
+
+</mapper>
