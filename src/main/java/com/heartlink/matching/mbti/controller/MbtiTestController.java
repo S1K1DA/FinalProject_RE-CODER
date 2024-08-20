@@ -1,4 +1,4 @@
-package com.heartlink.matching.controller;
+package com.heartlink.matching.mbti.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,5 @@ public class MbtiTestController {
         return "matching/mbti-test";
     }
 
-    @GetMapping("/map")
-    public String moveMain(){
-        return "matching/area_based/matching_main";
-    }
 
 }

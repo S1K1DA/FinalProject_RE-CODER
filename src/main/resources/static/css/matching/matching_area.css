@@ -78,7 +78,7 @@ ul, li{
     padding-left: 20px;
     border-radius: 0 15px 15px 0;
     width: 40%;
-    height: 700px;
+    height: 650px;
     overflow: hidden;
     color: #ffF
 }
@@ -193,9 +193,10 @@ ul, li{
 }
 
 .info-menu{
+    text-align: right;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .info-menu p{
