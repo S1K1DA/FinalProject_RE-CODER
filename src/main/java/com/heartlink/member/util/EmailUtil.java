@@ -1,4 +1,4 @@
-package com.heartlink.member.utill;
+package com.heartlink.member.util;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

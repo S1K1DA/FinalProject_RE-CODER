@@ -4,6 +4,9 @@ import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.model.mapper.MemberMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Service
 public class MemberService {
@@ -46,4 +49,31 @@ public class MemberService {
     public boolean isNicknameDuplicate(String nickname) {
         return memberMapper.duplicateNick(nickname) > 0;
     }
+
+
+    // 로그인 인증 메서드
+    public MemberDto verifyLogin(String email, String password) {
+        MemberDto member = memberMapper.findByEmail(email);
+
+        if (member != null && passwordEncoder.matches(password, member.getPassword())) {
+            return member;
+        } else {
+            return null;
+        }
+    }
+
+
+
+    // 로그인한 사용자 정보를 반환하는 메서드
+    public MemberDto getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // 로그인한 사용자의 이메일을 가져옵니다.
+        return memberMapper.findByEmail(email); // 이메일을 사용해 사용자 정보를 조회합니다.
+    }
+
+    // DB에 토큰 저장하는 메서드
+    public void saveToken(int userNumber, String accessToken, String refreshToken) {
+        memberMapper.saveToken(userNumber, accessToken, refreshToken);
+    }
+
 }

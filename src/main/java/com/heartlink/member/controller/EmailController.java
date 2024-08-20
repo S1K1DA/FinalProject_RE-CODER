@@ -1,6 +1,6 @@
 package com.heartlink.member.controller;
 
-import com.heartlink.member.utill.EmailService;
+import com.heartlink.member.util.EmailService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
