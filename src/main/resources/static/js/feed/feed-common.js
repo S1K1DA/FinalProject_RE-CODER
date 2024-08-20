@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        feedNo: feedNo
+                        commentNo: commentNo
                     }),
                 })
                     .then(response => {
