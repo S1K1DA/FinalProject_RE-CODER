@@ -2,11 +2,16 @@ package com.heartlink.member.controller;
 
 import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.model.service.MemberService;
+import com.heartlink.member.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.validation.Valid;
 
@@ -15,10 +20,12 @@ import jakarta.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, JwtUtil jwtUtil) {
         this.memberService = memberService;
+        this.jwtUtil = jwtUtil;
     }
 
     // 회원가입, 로그인 페이지 이동
@@ -71,4 +78,49 @@ public class MemberController {
         }
         return "사용 가능한 닉네임입니다.";
     }
+
+
+    // 로그인 요청 처리
+    @PostMapping("/login")
+    @ResponseBody
+    public String loginMember(@RequestParam String email, @RequestParam String password, HttpServletResponse response, Model model) {
+        MemberDto member = memberService.verifyLogin(email, password);
+
+        if (member != null) {
+            // 로그인 성공 시 JWT 토큰 생성
+            String accessToken = jwtUtil.generateToken(member.getEmail(), member.getUserNumber());
+            String refreshToken = jwtUtil.generateRefreshToken(member.getEmail(), member.getUserNumber());
+
+            // JWT를 쿠키에 저장
+            Cookie jwtCookie = new Cookie("token", accessToken);
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (예: 1일)
+            response.addCookie(jwtCookie);
+
+            // DB에 토큰 저장
+            memberService.saveToken(member.getUserNumber(), accessToken, refreshToken);
+
+            return "success"; // 로그인 성공 메시지 반환
+        } else {
+            return "failure"; // 로그인 실패 메시지 반환
+        }
+    }
+
+//    @PostMapping("/logout")
+//    public String logout(HttpServletRequest request, HttpServletResponse response) {
+//        // 쿠키 삭제
+//        Cookie jwtCookie = new Cookie("token", null);
+//        jwtCookie.setHttpOnly(true);
+//        jwtCookie.setMaxAge(0);
+//        jwtCookie.setPath("/");
+//        response.addCookie(jwtCookie);
+//
+//        // SecurityContext 클리어
+//        SecurityContextHolder.clearContext();
+//
+//        return "redirect:/"; // 메인 페이지로 리다이렉트
+//    }
+
 }
+

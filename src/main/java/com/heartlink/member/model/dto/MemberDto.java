@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Size;
 @Setter
 public class MemberDto {
 
+    private int userNumber;
+
     @Email
     @NotBlank
     private String email;
