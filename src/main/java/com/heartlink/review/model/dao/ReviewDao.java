@@ -67,4 +67,13 @@ public class ReviewDao {
         return sqlSession.selectList("reviewMapper.getLiveReviews");
     }
 
+    // 닉네임 중복 체크 메소드
+    public int checkNicknameDuplicate(String nickname) {
+        return sqlSession.selectOne("mypageMapper.checkNicknameDuplicate", nickname);
+    }
+
+
+
+
+
 }

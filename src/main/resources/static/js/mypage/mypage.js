@@ -196,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
                               title: '오류',
                               text: '비밀번호가 일치하지 않습니다.',
                           });
+                          passwordInput.value = ''; // 비밀번호 틀렸을 시 비워줍니다.
                           popup.style.display = 'none';
                       }
                   });
@@ -216,7 +217,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 탈퇴 폼 처리
+
+
+});
+
+
+// 탈퇴 폼 처리
     const deleteForm = document.querySelector('form[action="/mypage/delete"]');
     if (deleteForm) {
         deleteForm.addEventListener('submit', function(event) {
@@ -263,4 +269,13 @@ document.addEventListener('DOMContentLoaded', function () {
               });
         });
     }
-});
+
+    // MBTI 검사 열기
+    function openMbtiTest() {
+        const mbtiWindow = window.open('/matching/mbti', '_blank', 'width=600,height=800');
+
+        window.receiveMbtiResult = function(result) {
+            const sanitizedResult = result.replace(/\s+/g, ''); // 값에서 공백을 제거
+            document.getElementById('user-mbti').value = sanitizedResult;
+        };
+    }

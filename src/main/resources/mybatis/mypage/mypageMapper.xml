@@ -63,6 +63,7 @@
         </foreach>
     </insert>
 
+
     <!-- 취미 목록 가져오기 -->
     <select id="getHobbyCategories" resultType="MypageDto">
         SELECT HOBBY_NO as hobbyNo, HOBBY_NAME as hobbyName FROM HOBBY_CATEGORY
