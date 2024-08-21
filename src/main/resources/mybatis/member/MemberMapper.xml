@@ -30,6 +30,20 @@
         )
     </insert>
 
+    <select id="setUserNo" resultType="java.lang.Integer">
+        SELECT BASIC_USER_NO
+        FROM BASIC_USER
+        WHERE BASIC_USER_EMAIL = #{userEmail}
+    </select>
+
+    <insert id="setLocation">
+        INSERT INTO BASIC_USER_LOCATION VALUES(
+            #{memberDto.userNumber},
+            #{memberDto.latitude},
+            #{memberDto.longitude}
+        )
+    </insert>
+
 
     <!-- 이메일 중복 체크: 주어진 이메일로 USER 테이블에서 COUNT(*)를 수행 -->
     <select id="duplicateEmail" resultType="int">

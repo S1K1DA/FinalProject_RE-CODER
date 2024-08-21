@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 // 누구나 접근할 수 있는 페이지 설정
-                                .requestMatchers("/","/about/site","/notices/list", "/notices/detail", "/css/**", "/js/**", "/image/**", "/fonts/**").permitAll()
+                                .requestMatchers("/**","/about/site","/notices/list", "/notices/detail", "/css/**", "/js/**", "/image/**", "/fonts/**").permitAll()
                                 .requestMatchers("/member/**", "/api/email/**", "/webjars/**").permitAll()
                                 // 그 외의 모든 요청은 인증 필요
                                 .anyRequest().authenticated()

@@ -29,7 +29,7 @@ public class MatchingAreaDto {
 
     private String consentLocationInfo;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##.######")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "###.######")
     private double latitude; //위도
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "###.######")
     private double longitude; //경도
