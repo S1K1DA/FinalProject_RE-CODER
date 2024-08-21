@@ -10,6 +10,17 @@ function applyFilter(event) {
     window.location.href = url.toString();
 }
 
+
+// 정렬
+document.getElementById('feed-array').addEventListener('change', function() {
+    const selectedValue = this.value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('feed-array', selectedValue);
+    window.location.href = url.toString();
+});
+
+
+
 let isLoading = false; // 데이터 로딩 상태
 let hasMoreData = true; // 더 많은 데이터가 있는지 여부
 let currentPage = 2; // 현재 페이지 번호

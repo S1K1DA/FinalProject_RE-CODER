@@ -36,10 +36,9 @@
         </div>
         <div class="feed-main-box" id="feed-main-box">
             <div class="new-feed-box">
-                <select class="choses-array" name="feedArray" id="feed-array">
-                    <option value="none">= 정렬 기준 =</option>
-                    <option value="작성일">작성일</option>
-                    <option value="좋아요 수">좋아요 수</option>
+                <select class="choses-array" name="feedArray" id="feed-array" >
+                    <option value="작성일" th:selected="${feedArray == '작성일'}">작성일</option>
+                    <option value="좋아요 수" th:selected="${feedArray == '좋아요 수'}">좋아요 수</option>
                 </select>
                 <button class="new-feed-btn" onclick="location.href='/feed/write'">New Feed</button>
             </div>
