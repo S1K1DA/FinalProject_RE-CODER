@@ -15,11 +15,12 @@
                     <h3 class="text-primary-color" th:text="${review.reviewTitle}"></h3>
                     <div class="button-container">
                         <!-- 삭제하기 버튼 -->
-                        <form action="/review/delete" method="post" style="display:inline;" onsubmit="return confirmDelete();"
-                              th:if="${review.reviewerUserId} == ${userId}">
-                            <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
-                            <button class="btn-action color-sec" type="submit">삭제하기</button>
-                        </form>
+                        <div onclick="submitDeleteForm(this);" th:if="${review.reviewerUserId} == ${userId}">
+                            <form action="/review/delete" method="post" style="display:inline;">
+                                <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
+                                <button class="btn-action color-sec" type="button">삭제하기</button>
+                            </form>
+                        </div>
 
                         <!-- 수정하기 버튼  -->
                         <a class="btn-action color-pri" th:href="@{'/review/photoedit?reviewNo=' + ${review.reviewNo}}"
@@ -57,5 +58,6 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/review/review.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

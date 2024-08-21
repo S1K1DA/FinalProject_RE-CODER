@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
         checkbox.addEventListener('change', () => {
             if (document.querySelectorAll('input[name="likes"]:checked').length > maxSentiSelections) {
                 checkbox.checked = false;
-                alert(`최대 ${maxSentiSelections}개까지 선택할 수 있습니다.`);
+                Swal.fire({
+                    icon: 'warning',
+                    title: '선택 초과',
+                    text: `최대 ${maxSentiSelections}개까지 선택할 수 있습니다.`,
+                });
             }
         });
     });
@@ -19,7 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
         checkbox.addEventListener('change', () => {
             if (document.querySelectorAll('input[name="dislikes"]:checked').length > maxSentiSelections) {
                 checkbox.checked = false;
-                alert(`최대 ${maxSentiSelections}개까지 선택할 수 있습니다.`);
+                Swal.fire({
+                    icon: 'warning',
+                    title: '선택 초과',
+                    text: `최대 ${maxSentiSelections}개까지 선택할 수 있습니다.`,
+                });
             }
         });
     });
@@ -31,7 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
         checkbox.addEventListener('change', () => {
             if (document.querySelectorAll('input[name="hobbies"]:checked').length > maxHobbySelections) {
                 checkbox.checked = false;
-                alert(`취미는 최대 ${maxHobbySelections}개까지 선택할 수 있습니다.`);
+                Swal.fire({
+                    icon: 'warning',
+                    title: '선택 초과',
+                    text: `취미는 최대 ${maxHobbySelections}개까지 선택할 수 있습니다.`,
+                });
             }
         });
     });
@@ -73,7 +85,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     element.classList.remove('liked');
                 } else {
-                    alert('좋아요 해제에 실패했습니다.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '실패',
+                        text: '좋아요 해제에 실패했습니다.',
+                    });
                 }
             });
         } else {
@@ -88,7 +104,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     element.classList.add('liked');
                 } else {
-                    alert('좋아요 추가에 실패했습니다.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '실패',
+                        text: '좋아요 추가에 실패했습니다.',
+                    });
                 }
             });
         }
@@ -111,7 +131,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     element.classList.remove('liked');
                 } else {
-                    alert('프로필 좋아요 해제에 실패했습니다.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '실패',
+                        text: '프로필 좋아요 해제에 실패했습니다.',
+                    });
                 }
             });
         } else {
@@ -126,7 +150,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     element.classList.add('liked');
                 } else {
-                    alert('프로필 좋아요 추가에 실패했습니다.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '실패',
+                        text: '프로필 좋아요 추가에 실패했습니다.',
+                    });
                 }
             });
         }
@@ -163,12 +191,20 @@ document.addEventListener('DOMContentLoaded', function () {
                       if (data.valid) {
                           window.location.href = '/mypage/infoedit';
                       } else {
-                          alert('비밀번호가 일치하지 않습니다.');
+                          Swal.fire({
+                              icon: 'error',
+                              title: '오류',
+                              text: '비밀번호가 일치하지 않습니다.',
+                          });
                           popup.style.display = 'none';
                       }
                   });
             } else {
-                alert('비밀번호를 입력해주세요.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: '경고',
+                    text: '비밀번호를 입력해주세요.',
+                });
             }
         });
 
@@ -190,12 +226,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const passwordConfirm = document.getElementById('password-confirm').value;
 
             if (!password || !passwordConfirm) {
-                alert('비밀번호와 비밀번호 확인을 입력해주세요.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: '경고',
+                    text: '비밀번호와 비밀번호 확인을 입력해주세요.',
+                });
                 return;
             }
 
             if (password !== passwordConfirm) {
-                alert('비밀번호 확인이 일치하지 않습니다.');
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: '비밀번호 확인이 일치하지 않습니다.',
+                });
                 return;
             }
 
@@ -210,7 +254,11 @@ document.addEventListener('DOMContentLoaded', function () {
                   if (data.valid) {
                       deleteForm.submit();
                   } else {
-                      alert('입력한 비밀번호가 현재 비밀번호와 일치하지 않습니다.');
+                      Swal.fire({
+                          icon: 'error',
+                          title: '오류',
+                          text: '입력한 비밀번호가 현재 비밀번호와 일치하지 않습니다.',
+                      });
                   }
               });
         });
