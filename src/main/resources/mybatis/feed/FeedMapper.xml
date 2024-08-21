@@ -27,19 +27,32 @@
     <select id="getFeedList" resultMap="resultMapFeed">
         SELECT *
         FROM (
-        SELECT bu.BASIC_USER_NICKNAME ,
-               FEED_TITLE ,
-               FEED_CONTENT ,
-               FEED_INDATE ,
-               FEED_UPDATEd_DATE ,
-               FEED_TAG, FEED_NO,
-               ROW_NUMBER() OVER (ORDER BY f.FEED_INDATE DESC) AS row_num
+        SELECT bu.BASIC_USER_NICKNAME,
+        FEED_TITLE,
+        FEED_CONTENT,
+        FEED_INDATE,
+        FEED_UPDATED_DATE,
+        FEED_TAG,
+        FEED_NO,
+        ROW_NUMBER() OVER (
+        <choose>
+            <when test="feedArray.equals('작성일')">
+                ORDER BY f.FEED_INDATE DESC
+            </when>
+            <when test="feedArray.equals('좋아요 수')">
+                ORDER BY (SELECT COUNT(*) FROM FEED_LIKES WHERE FEED_NO = f.FEED_NO) DESC
+            </when>
+            <otherwise>
+                ORDER BY f.FEED_INDATE DESC
+            </otherwise>
+        </choose>
+        ) AS row_num
         FROM FEEDS f
-                 JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
+        JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
         WHERE FEED_STATE = 'N'
         <choose>
             <when test="feedTag.equals('전체')">
-                -- 모든 태그 포함
+                <!-- 모든 태그 포함 -->
             </when>
             <when test="feedTag.equals('매칭 후기')">
                 AND FEED_TAG = '매칭 후기'
@@ -54,6 +67,7 @@
         )
         WHERE row_num BETWEEN #{start} AND #{end}
     </select>
+
 
     <select id="getCommentList" resultMap="commentResultMap">
         SELECT bu.BASIC_USER_NICKNAME AS COMMENT_USER_NICKNAME, fc.COMMENT_CONTENT , fc.COMMENT_INDATE, fc.COMMENT_NO

@@ -19,14 +19,14 @@ public class FeedService {
         this.feedMapper = feedMapper;
     }
 
-    public List<FeedDto> getFeedList(String tag, int start, int end){
+    public List<FeedDto> getFeedList(String tag, int start, int end, String feedArray){
 
         String feedTag = "전체";
         if (!tag.equals("전체")) {
             feedTag = tag;
         }
 
-        List<FeedDto> textList = feedMapper.getFeedList(feedTag, start, end);
+        List<FeedDto> textList = feedMapper.getFeedList(feedTag, start, end, feedArray);
 
         for (FeedDto feed : textList) {
             int feedNo = feed.getFeedNo();

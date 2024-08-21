@@ -11,7 +11,7 @@ public interface FeedMapper {
 
     public int setFeedEnroll(FeedDto feedDto);
 
-    public List<FeedDto> getFeedList(String feedTag, int start, int end);
+    public List<FeedDto> getFeedList(String feedTag, int start, int end, String feedArray);
 
     public List<FeedCommentDto> getCommentList(int feedNo);
 
