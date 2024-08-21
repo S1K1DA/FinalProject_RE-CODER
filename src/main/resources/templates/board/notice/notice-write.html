@@ -9,6 +9,17 @@
 <main class="editor-main">
     <div class="editor-container">
         <h2>공지사항 글쓰기</h2>
+
+    <div class="editor-header">
+        <!-- 상단 고정 체크박스 추가 -->
+        <div class="pin-checkbox-container">
+            <label for="priority" class="pin-checkbox-label">
+                <input type="checkbox" id="priority" name="noticePriority" class="pin-checkbox" value="Y">
+                상단에 고정
+            </label>
+        </div>
+    </div>
+
         <input type="text" id="title" placeholder="제목을 입력하세요" class="editor-title"/>
         <div class="editor-toolbar">
             <button type="button" class="toolbar-btn" data-command="bold"><i class="fa fa-bold"></i></button>
