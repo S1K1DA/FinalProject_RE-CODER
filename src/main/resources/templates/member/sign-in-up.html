@@ -4,8 +4,8 @@
 </head>
 <body>
 <link rel="stylesheet" th:href="@{/css/member/sign-in-up.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 
 <nav th:replace="fragments/navigation :: navigation"></nav>
@@ -85,7 +85,7 @@
 
         <!-- 로그인 폼 -->
         <div class="sign-in-container">
-            <form class="login-form">
+            <form class="login-form" th:action="@{/member/login}" th:object="${memberDto}" method="post">
                 <h1>로그인</h1>
                 <div class="social-links">
                     <div>
@@ -93,9 +93,10 @@
                     </div>
                 </div>
                 <span>소셜 로그인</span>
-                <input type="Id" placeholder="아이디">
-                <input type="password" placeholder="비밀번호">
-                <button class="form-btn">로그인</button>
+
+                <input type="email" th:field="*{email}" name="email" placeholder="이메일" required>
+                <input type="password" th:field="*{password}" name="password" placeholder="비밀번호" required>
+                <button class="form-btn" type="submit">로그인</button>
             </form>
         </div>
 

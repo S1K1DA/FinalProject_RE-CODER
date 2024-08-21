@@ -337,7 +337,6 @@ function registerClick(event) {
 }
 
 // 주소 가져오기
-// 주소 가져오기
 function searchAddress() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -366,4 +365,34 @@ function searchAddress() {
 }
 
 
+// 로그인
+document.querySelector('.login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
+    const form = event.target;
+    const formData = new FormData(form);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    fetch('/member/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            email: email,
+            password: password
+        })
+    })
+    .then(response => response.text()) // 서버에서 텍스트로 응답을 받음
+    .then(result => {
+        if (result === 'success') {
+            alert('로그인 성공!');
+            window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
+        } else {
+            alert('로그인 실패. 이메일 또는 비밀번호가 잘못되었습니다.');
+            window.location.href = '/member/sign'
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});

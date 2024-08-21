@@ -45,4 +45,33 @@
         WHERE BASIC_USER_NICKNAME = #{nickname}
     </select>
 
+    <!-- 로그인 -->
+    <select id="findByEmail" parameterType="String" resultType="com.heartlink.member.model.dto.MemberDto">
+        SELECT
+        BASIC_USER_NO AS userNumber,
+        BASIC_USER_EMAIL AS email,
+        BASIC_USER_PWD AS password,
+        BASIC_USER_NICKNAME AS nickname,
+        BASIC_USER_NAME AS name,
+        USER_ADDR AS address,
+        BASIC_USER_TELNUM AS phoneNumber,
+        BASIC_USER_BIRTHDATE AS residentNumber,
+        BASIC_USER_SEX AS gender
+        FROM BASIC_USER
+        WHERE BASIC_USER_EMAIL = #{email}
+    </select>
+
+    <insert id="saveToken">
+        INSERT INTO user_tokens (token_id, user_no, access_token, refresh_token, create_date)
+        VALUES (TOKEN_SEQ.NEXTVAL, #{userNumber}, #{accessToken}, #{refreshToken}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <select id="findTokenByUserNumber" resultType="java.lang.String">
+        SELECT access_token
+        FROM user_tokens
+        WHERE user_no = #{userNumber}
+        AND delete_date IS NULL
+    </select>
+
+
 </mapper>

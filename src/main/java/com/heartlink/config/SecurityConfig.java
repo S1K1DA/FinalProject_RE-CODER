@@ -4,8 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -13,6 +15,12 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
     // 비밀번호 암호화를 위한 BCryptPasswordEncoder 빈 등록
     @Bean
@@ -40,12 +48,23 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 보호 비활성화
-                .cors(cors -> cors.disable())  // CORS 설정 비활성화 (필요시 CORS 설정 활성화 가능)
+                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/css/**", "/js/**", "/image/**", "/fonts/**").permitAll() // 정적 리소스에 대한 접근 허용
-                                .anyRequest().permitAll() // 모든 요청 허용
-                );
+                                // 누구나 접근할 수 있는 페이지 설정
+                                .requestMatchers("/", "/member/logout","/about/site","/notices/list", "/notices/detail","/member/sign", "/member/login", "/member/register", "/css/**", "/js/**", "/image/**", "/fonts/**").permitAll()
+                                // 그 외의 모든 요청은 인증 필요
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않음 (JWT 사용)
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/member/logout")  // 로그아웃 URL 설정
+                                .logoutSuccessUrl("/member/sign")  // 로그아웃 성공 시 리디렉션할 URL
+                                .invalidateHttpSession(true)  // 세션 무효화
+                                .deleteCookies("token")  // 쿠키 삭제
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // JwtFilter를 UsernamePasswordAuthenticationFilter 이전에 추가
         return http.build();
     }
 }
