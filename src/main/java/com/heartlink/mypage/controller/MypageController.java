@@ -1,11 +1,14 @@
 package com.heartlink.mypage.controller;
 
+import com.heartlink.member.util.JwtUtil;
 import com.heartlink.mypage.model.dto.MypageDto;
 import com.heartlink.mypage.model.service.MypageService;
 import com.heartlink.review.common.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,21 +25,25 @@ public class MypageController {
 
     private final MypageService mypageService;
     private final Pagination pagination;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    public MypageController(MypageService mypageService, Pagination pagination) {
+    public MypageController(MypageService mypageService, Pagination pagination, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.mypageService = mypageService;
         this.pagination = pagination;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @ModelAttribute
-    public void addUserToModel(Model model) {
-        int userId = 9; // 임의로 설정한 userId, 실제로는 로그인 정보로 대체되어야 함
-        model.addAttribute("userId", userId);
+    // SecurityContext에서 userId 가져오기
+    private int getCurrentUserId() {
+        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        return jwtUtil.getUserNumberFromToken(jwt);
     }
 
     @GetMapping("/main")
     public String mainpage(HttpServletRequest request, Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
         MypageDto user = mypageService.getUserInfo(userId);
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
@@ -45,7 +52,7 @@ public class MypageController {
 
     @GetMapping("/infoedit")
     public String editPage(HttpServletRequest request, Model model) {
-        Integer userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
         MypageDto user = mypageService.getUserInfo(userId);
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
@@ -56,16 +63,12 @@ public class MypageController {
     public String feedlikepage(HttpServletRequest request,
                                @RequestParam(name = "page", defaultValue = "1") int page,
                                Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
         int pageSize = 12;  // 한 페이지에 표시할 항목 수
 
-        // 전체 좋아요한 피드 목록 가져오기
         List<MypageDto> likedFeeds = mypageService.getLikedFeeds(userId);
-
-        // 페이지네이션 처리
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedFeeds);
 
-        // 모델에 페이지네이션 관련 데이터 추가
         model.addAttribute("likedFeeds", paginationData.get("items"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
@@ -75,13 +78,12 @@ public class MypageController {
         return "mypage/mypage_feedlike/mypage-feedlike";
     }
 
-
     @GetMapping("/ptreview")
     public String ptreview(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+        int userId = getCurrentUserId();
         int pageSize = 6;
-        int userId = (Integer) model.getAttribute("userId");
-        List<MypageDto> photoReviews = mypageService.getPhotoReviews(userId);
 
+        List<MypageDto> photoReviews = mypageService.getPhotoReviews(userId);
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, photoReviews);
 
         model.addAttribute("photoReviews", paginationData.get("items"));
@@ -95,10 +97,10 @@ public class MypageController {
 
     @GetMapping("/lireview")
     public String lireview(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+        int userId = getCurrentUserId();
         int pageSize = 5;
-        int userId = (Integer) model.getAttribute("userId");
-        List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);
 
+        List<MypageDto> liveReviews = mypageService.getLiveReviews(userId);
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
 
         model.addAttribute("liveReviews", paginationData.get("items"));
@@ -110,15 +112,12 @@ public class MypageController {
         return "mypage/mypage_review/mypage-lireview";
     }
 
-    // 프로필 좋아요 페이지
     @GetMapping("/proflike")
     public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
-        int pageSize = 8; // 한 페이지에 보여줄 아이템 수
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
+        int pageSize = 8;
 
         List<MypageDto> likedProfiles = mypageService.getLikedProfiles(userId);
-
-        // 페이지네이션 처리
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
 
         model.addAttribute("likedProfiles", paginationData.get("items"));
@@ -131,7 +130,7 @@ public class MypageController {
 
     @GetMapping("/match")
     public String matchPage(HttpServletRequest request, Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
         List<MypageDto> matchingHistory = mypageService.getUserMatchingHistory(userId);
 
         model.addAttribute("matchingHistory", matchingHistory);
@@ -148,7 +147,7 @@ public class MypageController {
 
     @GetMapping("/hobby")
     public String hobbyPage(HttpServletRequest request, Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
 
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
@@ -167,7 +166,7 @@ public class MypageController {
 
     @GetMapping("/sentiedit")
     public String editSentiPage(Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
 
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
@@ -182,7 +181,7 @@ public class MypageController {
 
     @GetMapping("/hobbyedit")
     public String hobbyEditPage(HttpServletRequest request, Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
 
         List<MypageDto> hobbyCategories = mypageService.getHobbyCategories();
         List<MypageDto> userHobbies = mypageService.getUserHobbies(userId);
@@ -197,19 +196,19 @@ public class MypageController {
 
     @PostMapping("/validatePassword")
     @ResponseBody
-    public Map<String, Boolean> validatePassword(@RequestBody Map<String, String> payload, Model model) {
-        Integer userId = (Integer) model.getAttribute("userId");
+    public Map<String, Boolean> validatePassword(@RequestBody Map<String, String> payload) {
+        int userId = getCurrentUserId();
         String inputPassword = payload.get("password");
         String storedPassword = mypageService.getPasswordByUserId(userId);
 
         Map<String, Boolean> response = new HashMap<>();
-        response.put("valid", storedPassword != null && storedPassword.equals(inputPassword));
+        response.put("valid", storedPassword != null && passwordEncoder.matches(inputPassword, storedPassword));
         return response;
     }
 
     @PostMapping("/update")
-    public String updateUserInfo(@ModelAttribute("user") MypageDto user, Model model) {
-        Integer userId = (Integer) model.getAttribute("userId");
+    public String updateUserInfo(@ModelAttribute("user") MypageDto user) {
+        int userId = getCurrentUserId();
         user.setUserId(userId);
 
         int result = mypageService.updateUserInfo(user);
@@ -219,8 +218,9 @@ public class MypageController {
     @PostMapping("/sentiedit/submit")
     public String submitSentiEdit(
             @RequestParam(value = "likes", required = false) List<Integer> likeIds,
-            @RequestParam(value = "dislikes", required = false) List<Integer> dislikeIds,
-            @ModelAttribute("userId") int userId) {
+            @RequestParam(value = "dislikes", required = false) List<Integer> dislikeIds) {
+
+        int userId = getCurrentUserId();  // 여기서 userId를 가져옵니다.
 
         List<Integer> allCategoryIds = new ArrayList<>();
         if (likeIds != null) allCategoryIds.addAll(likeIds);
@@ -232,8 +232,9 @@ public class MypageController {
 
     @PostMapping("/hobbyedit/submit")
     public String submitHobbyEdit(
-            @RequestParam(value = "hobbies", required = false) List<Integer> hobbyIds,
-            @ModelAttribute("userId") int userId) {
+            @RequestParam(value = "hobbies", required = false) List<Integer> hobbyIds) {
+
+        int userId = getCurrentUserId();  // 여기서 userId를 가져옵니다.
 
         mypageService.saveUserHobbies(userId, hobbyIds);
         return "redirect:/mypage/hobby";
@@ -242,21 +243,16 @@ public class MypageController {
     @PostMapping("/delete")
     public String deleteUser(
             @RequestParam("password") String password,
-            @RequestParam("password-confirm") String passwordConfirm,
-            HttpServletRequest request,
-            Model model) {
+            @RequestParam("password-confirm") String passwordConfirm) {
 
-        int userId = (Integer) model.getAttribute("userId");
+        int userId = getCurrentUserId();
 
         if (!password.equals(passwordConfirm)) {
             return "mypage/mypage_delete/mypage-delete";
         }
 
-        Map<String, String> payload = new HashMap<>();
-        payload.put("password", password);
-        Map<String, Boolean> validationResult = validatePassword(payload, model);
-
-        if (validationResult.get("valid")) {
+        String storedPassword = mypageService.getPasswordByUserId(userId);
+        if (storedPassword != null && passwordEncoder.matches(password, storedPassword)) {
             boolean isDeleted = mypageService.deleteUserById(userId);
             return isDeleted ? "redirect:/login?logout" : "mypage/mypage_delete/mypage-delete";
         } else {
@@ -266,8 +262,8 @@ public class MypageController {
 
     @PostMapping("/unlikeFeed")
     @ResponseBody
-    public ResponseEntity<Void> unlikeFeed(@RequestBody Map<String, Integer> payload, Model model) {
-        Integer userId = (Integer) model.getAttribute("userId");
+    public ResponseEntity<Void> unlikeFeed(@RequestBody Map<String, Integer> payload) {
+        int userId = getCurrentUserId();
         Integer feedNo = payload.get("feedNo");
 
         boolean success = mypageService.unlikeFeed(userId, feedNo);
@@ -281,8 +277,8 @@ public class MypageController {
 
     @PostMapping("/likeFeed")
     @ResponseBody
-    public ResponseEntity<Void> likeFeed(@RequestBody Map<String, Integer> payload, Model model) {
-        Integer userId = (Integer) model.getAttribute("userId");
+    public ResponseEntity<Void> likeFeed(@RequestBody Map<String, Integer> payload) {
+        int userId = getCurrentUserId();
         Integer feedNo = payload.get("feedNo");
 
         boolean success = mypageService.likeFeed(userId, feedNo);
@@ -294,11 +290,10 @@ public class MypageController {
         }
     }
 
-    // 프로필 좋아요 추가
     @PostMapping("/likeProfile")
     @ResponseBody
-    public Map<String, Boolean> likeProfile(@RequestBody Map<String, Integer> payload, Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+    public Map<String, Boolean> likeProfile(@RequestBody Map<String, Integer> payload) {
+        int userId = getCurrentUserId();
         int likedUserNo = payload.get("likedUserNo");
 
         boolean isLiked = mypageService.likeProfile(userId, likedUserNo);
@@ -306,11 +301,10 @@ public class MypageController {
         return Map.of("success", isLiked);
     }
 
-    // 프로필 좋아요 해제
     @PostMapping("/unlikeProfile")
     @ResponseBody
-    public Map<String, Boolean> unlikeProfile(@RequestBody Map<String, Integer> payload, Model model) {
-        int userId = (Integer) model.getAttribute("userId");
+    public Map<String, Boolean> unlikeProfile(@RequestBody Map<String, Integer> payload) {
+        int userId = getCurrentUserId();
         int likedUserNo = payload.get("likedUserNo");
 
         boolean isUnliked = mypageService.unlikeProfile(userId, likedUserNo);

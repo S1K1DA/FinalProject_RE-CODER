@@ -25,11 +25,11 @@ public class ReviewController {
     }
 
     // 모든 요청에 대해 userId를 모델에 추가
-    @ModelAttribute
-    public void addUserToModel(Model model) {
-        int userId = 9; // 임의로 설정한 userId, 실제로는 로그인 정보로 대체되어야 함
-        model.addAttribute("userId", userId);
-    }
+//    @ModelAttribute
+//    public void addUserToModel(Model model) {
+//        int userId = 9; // 임의로 설정한 userId, 실제로는 로그인 정보로 대체되어야 함
+//        model.addAttribute("userId", userId);
+//    }
 
     @GetMapping("/photomain")
     public String photoMain(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
