@@ -38,15 +38,28 @@ function resetQuestion() {
 }
 
 function showResults() {
-    const resultContainer = document.getElementById('result');
     const result = `
         ${answers.E > answers.I ? 'E' : 'I'}
         ${answers.S > answers.N ? 'S' : 'N'}
         ${answers.T > answers.F ? 'T' : 'F'}
         ${answers.J > answers.P ? 'J' : 'P'}
     `;
-    resultContainer.innerHTML = `결과: ${result}`;
+
+    // 검사 결과를 화면에 표시
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = `
+        <p>검사 결과: ${result}</p>
+        ${window.opener && !window.opener.closed ? '<button id="useMbtiButton" class="mbti-button">이 MBTI 사용하기</button>' : ''}
+    `;
     resultContainer.style.display = 'block';
+
+    // 만약 부모 창에서 열린 경우, MBTI 사용하기 버튼 클릭 시 부모 창에 결과 전달
+    if (window.opener && !window.opener.closed) {
+        document.getElementById('useMbtiButton').addEventListener('click', () => {
+            window.opener.receiveMbtiResult(result.trim());
+            window.close();
+        });
+    }
 }
 
 // 첫 질문 표시

@@ -150,4 +150,5 @@ public class MypageServiceImpl implements MypageService {
     public boolean unlikeProfile(int userId, int likedUserNo) {
         return mypageDao.deleteProfileLike(userId, likedUserNo) > 0;
     }
+    
 }

@@ -124,4 +124,5 @@ public class MypageDao {
         return sqlSession.delete("mypageMapper.deleteProfileLike", params);
     }
 
+
 }

@@ -215,6 +215,21 @@ public class MypageController {
         return result > 0 ? "redirect:/mypage/main" : "mypage/mypage_main/mypage-infoedit";
     }
 
+    @PostMapping("/updateMbti")
+    @ResponseBody
+    public ResponseEntity<String> updateUserMbti(@RequestParam("mbti") String mbti) {
+        int userId = getCurrentUserId();
+        MypageDto user = mypageService.getUserInfo(userId);
+        user.setMbti(mbti);
+
+        int result = mypageService.updateUserInfo(user);
+        if(result > 0) {
+            return ResponseEntity.ok("MBTI 업데이트 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("MBTI 업데이트 실패");
+        }
+    }
+
     @PostMapping("/sentiedit/submit")
     public String submitSentiEdit(
             @RequestParam(value = "likes", required = false) List<Integer> likeIds,

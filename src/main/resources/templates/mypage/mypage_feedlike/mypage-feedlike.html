@@ -25,7 +25,7 @@
                             <div class="liked-feed-list">
                                 <div th:each="feed : ${likedFeeds}" class="liked-feed-item" th:data-feed-no="${feed.feedNo}" th:onclick="'location.href=\'/feed/' + ${feed.feedNo} + '\''">
 
-                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                    <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation();">
                                         <i class="bi-heart feed-heart-icon"></i>
                                     </a>
                                     <p class="feed-title" th:text="${feed.feedTitle}">제목</p>
