@@ -1,12 +1,26 @@
 package com.heartlink.admin.controller;
 
+import com.heartlink.admin.model.dto.AdminMemberDto;
+import com.heartlink.admin.model.service.AdminMemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    private final AdminMemberService memberService;
+
+    @Autowired
+    public AdminController(AdminMemberService memberService){
+        this.memberService = memberService;
+    }
+
 
     @GetMapping("/login")
     public String moveLoginPage(){
@@ -44,7 +58,12 @@ public class AdminController {
     }
 
     @GetMapping("/user/search")
-    public String moveUserSearchPage(){
+    public String moveUserSearchPage(Model model){
+
+        List<AdminMemberDto> userList = memberService.getAllUser();
+
+        model.addAttribute("userList", userList);
+
         return "admin/pages/admin-user-search";
     }
 

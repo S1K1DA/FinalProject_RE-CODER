@@ -42,6 +42,11 @@ public class MemberService {
         // 회원 정보 저장
         memberMapper.setSignUp(memberDto);
 
+        int userNo = memberMapper.setUserNo(memberDto.getEmail());
+        memberDto.setUserNumber(userNo);
+        memberMapper.setLocation(memberDto);
+
+
         System.out.println("사용자가 성공적으로 등록되었습니다.");
     }
 

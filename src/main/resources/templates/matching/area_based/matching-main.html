@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e606de56cb20485d9ccd4bf443da31d&libraries=services"></script>
 <link rel="stylesheet" th:href="@{/css/matching/matching_area.css}">
     <nav th:replace="~{fragments/navigation :: navigation}"></nav>
     <section class="matching-main-sec">
@@ -69,6 +68,7 @@
 
         // 마커를 지도에 추가하는 함수
         function addMarker(position, userId) {
+
             var imageSize = new kakao.maps.Size(40, 40);
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
@@ -118,15 +118,13 @@
 
                 const responseJson = await response.json();
 
-
                 var matchingList = document.getElementById('matching-list');
                 matchingList.innerHTML = '';
 
                 // 사용자 데이터 배열을 반복하여 마커를 생성합니다
                 for (var i = 0; i < responseJson.length; i++) {
-                    var position = new kakao.maps.LatLng(responseJson[i].latitude, responseJson[i].longitude);
+                    var position = new kakao.maps.LatLng(responseJson[i].longitude, responseJson[i].latitude);
                     addMarker(position, responseJson[i].basicUserNo);
-
 
                     // 리스트 항목 생성
                     var listItem = document.createElement('li');
