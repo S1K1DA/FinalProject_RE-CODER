@@ -160,21 +160,22 @@ public class ReviewController {
     }
 
     @PostMapping("/delete")
-    public String deleteReview(@RequestParam("reviewNo") int reviewNo, Model model) {
+    public String deleteReview(@RequestParam("reviewNo") int reviewNo, RedirectAttributes redirectAttributes) {
         try {
             boolean isDeleted = reviewService.deleteReview(reviewNo);
 
             if (isDeleted) {
-                model.addAttribute("message", "리뷰가 성공적으로 삭제되었습니다.");
+                redirectAttributes.addFlashAttribute("message", "리뷰가 성공적으로 삭제되었습니다.");
             } else {
-                model.addAttribute("message", "리뷰 삭제에 실패했습니다.");
+                redirectAttributes.addFlashAttribute("message", "리뷰 삭제에 실패했습니다.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("message", "오류가 발생했습니다: " + e.getMessage());
         }
         return "redirect:/review/photomain";
     }
+
 
     @PostMapping("/submitLiveReview")
     public String submitLiveReview(@RequestParam("review_content") String content,
