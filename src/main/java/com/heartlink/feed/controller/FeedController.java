@@ -7,7 +7,6 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +55,7 @@ public class FeedController {
     public String setFeedEnroll(FeedDto feedDto){
         String escapeContent = StringEscapeUtils.escapeHtml4(feedDto.getFeedContent());
 
-        feedDto.setAouthorUserNo(1);
+        feedDto.setAouthorUserNo(9);
         feedDto.setFeedContent(escapeContent);
 
         int feedEnroll = feedService.setFeedEnroll(feedDto);

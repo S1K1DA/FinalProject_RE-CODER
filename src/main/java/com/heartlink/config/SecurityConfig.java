@@ -51,11 +51,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                // 누구나 접근할 수 있는 페이지 설정
-                                .requestMatchers("/","/about/site","/notices/list", "/notices/detail", "/css/**", "/js/**", "/image/**", "/fonts/**").permitAll()
-                                .requestMatchers("/member/**", "/api/email/**", "/webjars/**").permitAll()
-                                // 그 외의 모든 요청은 인증 필요
-                                .anyRequest().authenticated()
+                                // 일부 페이지만 접속 권한 설정 
+                                .requestMatchers("/matching/**").authenticated()    //은식
+                                .requestMatchers("/mypage/**").authenticated()    //아태
+                                .requestMatchers("/matching/**").authenticated()    //재인
+
+                                // 그 외의 모든 요청은 권한 허용
+                                .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않음 (JWT 사용)
                 .logout(logout ->
