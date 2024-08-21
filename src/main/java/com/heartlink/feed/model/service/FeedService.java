@@ -26,10 +26,6 @@ public class FeedService {
             feedTag = tag;
         }
 
-        System.out.println("서비스 태그 : " + tag);
-        System.out.println("서비스 시작점 : " + start);
-        System.out.println("서비스 끝점 : " + end);
-
         List<FeedDto> textList = feedMapper.getFeedList(feedTag, start, end);
 
         for (FeedDto feed : textList) {
