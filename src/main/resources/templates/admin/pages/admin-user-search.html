@@ -49,12 +49,16 @@
                         <table class="admin-management-table">
                             <thead>
                                 <tr>
-                                    <td>회원 번호</td> <td>ID 이메일</td> <td>전화번호</td> <td>생년월일</td> <td>성별</td> <td>생성일</td> <td>회원 상태</td> <td>마지막 로그인</td> <td>보유 코인</td>
+                                    <td>회원 번호</td> <td>ID 이메일</td> <td>전화번호</td> <td>생년월일</td> <td>성별</td> <td>생성일</td> <td>회원 상태</td> <td>마지막 로그인</td> <td>보유 코인</td><td>위치정보 동의</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td> <td>example@gmail.com</td> <td>010-1234-5678</td> <td>2000.08.25</td> <td>여</td> <td>2024.06.13</td> <td>Active</td> <td>2024.07.31</td> <td>12개</td>
+                                <tr th:each="user : ${userList}">
+                                    <td th:text="${user.basicUserNo}"></td> <td th:text="${user.basicUserEmail}">example@gmail.com</td>
+                                    <td th:text="${user.basicUserTelnum}">010-1234-5678</td> <td th:text="${user.basicUserBirthdate}">2000.08.25</td>
+                                    <td th:text="${user.basicUserSex}">여</td> <td th:text="${user.basicUserIndate}">2024.06.13</td>
+                                    <td th:text="${user.basicUserStatus}">Active</td> <td th:text="${user.lastLoginDate}">2024.07.31</td>
+                                    <td th:text="${user.basicUserCoin}">12개</td><td th:text="${user.consentLocationInfo}">Y</td>
                                 </tr>
                             </tbody>
                         </table>

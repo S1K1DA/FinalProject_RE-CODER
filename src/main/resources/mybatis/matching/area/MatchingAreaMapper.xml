@@ -49,8 +49,8 @@
             LEFT JOIN BASIC_USER_PERSONAL bup ON b.BASIC_USER_NO = bup.BASIC_USER_NO
             LEFT JOIN PERSONAL_CATEGORY pc ON bup.PERSONAL_NO = pc.PERSONAL_NO
             LEFT JOIN BASIC_USER_PHOTO bp ON b.BASIC_USER_NO = bp.BASIC_USER_NO
-        WHERE ul.LATITUDE BETWEEN #{bounds.southLat} AND #{bounds.northLat}
-          AND ul.LONGITUDE BETWEEN #{bounds.southLng} AND #{bounds.northLng}
+        WHERE ul.LONGITUDE BETWEEN #{bounds.southLat} AND #{bounds.northLat}
+          AND ul.LATITUDE BETWEEN #{bounds.southLng} AND #{bounds.northLng}
           AND b.BASIC_USER_STATUS = 'ACTIVE'
             <choose>
                 <when test='bounds.requesterSex.equals("F")'>

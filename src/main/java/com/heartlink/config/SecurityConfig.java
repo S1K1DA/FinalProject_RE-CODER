@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+
                                 // 일부 페이지만 접속 권한 설정 
                                 .requestMatchers("/matching/**").authenticated()    //은식
                                 .requestMatchers("/mypage/**").authenticated()    //아태

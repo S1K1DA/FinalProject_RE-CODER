@@ -28,6 +28,8 @@ public class MatchingAreaService {
 
         List<MatchingAreaDto> userDetails = areaMapper.selectUserDetails(bounds);
 
+        System.out.println(userDetails.stream().toList());
+
         for (MatchingAreaDto item : userDetails) {
             // consentLocationInfo 값 가져오기
             String consentLocationInfo = item.getConsentLocationInfo();
