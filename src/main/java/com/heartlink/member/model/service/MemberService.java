@@ -19,6 +19,11 @@ public class MemberService {
         this.memberMapper = memberMapper;
     }
 
+    // 이메일로 사용자 정보 조회
+    public MemberDto findByEmail(String email) {
+        return memberMapper.findByEmail(email);
+    }
+
     public void registerMember(MemberDto memberDto) {
         // 이메일 중복 체크
         if (isEmailDuplicate(memberDto.getEmail())) {
