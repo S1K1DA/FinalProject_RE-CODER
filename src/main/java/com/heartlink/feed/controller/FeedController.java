@@ -32,7 +32,7 @@ public class FeedController {
 
     @GetMapping("")
     public String moveMain(@RequestParam(value = "filter", defaultValue = "전체")String filter ,
-                           @RequestParam(value = "feed-array", defaultValue = "작성일") String feedArray,
+                           @RequestParam(value = "feedarray", defaultValue = "작성일") String feedArray,
                            @RequestParam(value = "start", defaultValue = "0") int start,
                            Model model) {
 
@@ -128,7 +128,7 @@ public class FeedController {
 
     @GetMapping("/reload")
     public ResponseEntity<?> reloadFeed(@RequestParam("filter") String filter,
-                                        @RequestParam("feed-array") String feedArray,
+                                        @RequestParam(value = "feedarray", defaultValue = "작성일") String feedArray,
                                         @RequestParam("page") int page) {
         int pageSize = 5; // 페이지당 데이터 수
         List<FeedDto> feedList;
