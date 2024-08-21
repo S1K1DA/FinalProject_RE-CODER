@@ -358,6 +358,23 @@ function searchAddress() {
             // 최종 주소 합치기
             let finalAddress = fullRoadAddress + extraAddress;
 
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            var callback = function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+
+                    const longitude = document.getElementById('addr-longitude');
+                    const latitude = document.getElementById('addr-latitude');
+
+                    longitude.value = result[0].x;
+                    latitude.value = result[0].y;
+
+                }
+            };
+
+            geocoder.addressSearch(finalAddress, callback);
+
+
             // 도로명 주소를 input 필드에 설정
             document.getElementById('userAddress').value = finalAddress;
         }

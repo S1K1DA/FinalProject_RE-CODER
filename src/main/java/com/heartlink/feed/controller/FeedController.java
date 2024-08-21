@@ -31,15 +31,17 @@ public class FeedController {
 
     @GetMapping("")
     public String moveMain(@RequestParam(value = "filter", defaultValue = "전체")String filter ,
+                           @RequestParam(value = "feedarray", defaultValue = "작성일") String feedArray,
                            @RequestParam(value = "start", defaultValue = "0") int start,
                            Model model) {
 
         int pageSize = 5; // 페이지 당 데이터 수
         int end = start + pageSize;
 
-        List<FeedDto> feedList = feedService.getFeedList(filter, start, end);
+        List<FeedDto> feedList = feedService.getFeedList(filter, start, end, feedArray);
 
         model.addAttribute("filter", filter);
+        model.addAttribute("feedArray", feedArray);
         model.addAttribute("feedList", feedList);
         model.addAttribute("start", end); // 클라이언트에게 다음 요청 시 사용할 시작 페이지 번호 전달
 
@@ -104,12 +106,7 @@ public class FeedController {
     public ResponseEntity<?> setCommentDelete(@RequestBody FeedCommentDto commentDto){
 
         int commentNo = commentDto.getCommentNo();
-
-        System.out.println(commentNo+ "----");
-
         int deleteComment = feedService.setCommentDelete(commentNo);
-
-        System.out.println(deleteComment);
 
         if(deleteComment != 1){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database 데이터 삽입 실패");
@@ -130,6 +127,7 @@ public class FeedController {
 
     @GetMapping("/reload")
     public ResponseEntity<?> reloadFeed(@RequestParam("filter") String filter,
+                                        @RequestParam(value = "feedarray", defaultValue = "작성일") String feedArray,
                                         @RequestParam("page") int page) {
         int pageSize = 5; // 페이지당 데이터 수
         List<FeedDto> feedList;
@@ -138,7 +136,7 @@ public class FeedController {
         int start = (page - 1) * pageSize + 1;
         int end = page * pageSize;
 
-        feedList = feedService.getFeedList(filter, start, end);
+        feedList = feedService.getFeedList(filter, start, end, feedArray);
 
         // 데이터가 없으면 hasMoreData를 false로 설정할 수 있습니다.
         boolean hasMoreData = feedList.size() == pageSize;
@@ -162,7 +160,6 @@ public class FeedController {
         }
 
         return ResponseEntity.ok().build();
-
     }
 
 }

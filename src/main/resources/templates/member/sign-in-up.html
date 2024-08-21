@@ -74,6 +74,8 @@
 
                 <!-- 주소 -->
                 <div class="input-container">
+                    <input type="hidden" id="addr-latitude" name="longitude">
+                    <input type="hidden" id="addr-longitude" name="latitude">
                     <input type="text" th:field="*{address}" id="userAddress" placeholder="도로명 주소" readonly>
                     <button type="button" class="check-btn" onclick="searchAddress()">찾기</button>
                 </div>
