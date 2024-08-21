@@ -240,6 +240,7 @@ main {
     background: transparent;
     border: 2px solid var(--custom-btn-bg-color);
     color: var(--custom-btn-bg-color);
+    font-size:  18.5px !important;
 }
 
 .custom-border-btn:hover {
@@ -1476,6 +1477,16 @@ main {
 .social-icon-link:hover {
     background: var(--primary-color);
     color: var(--white-color);
+}
+
+.logout-btn{
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.logout-btn:hover{
+    color: #d9294f;
 }
 
 
