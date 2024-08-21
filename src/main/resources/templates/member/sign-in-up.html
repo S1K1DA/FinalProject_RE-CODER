@@ -26,7 +26,7 @@
 
                 <!-- 닉네임 -->
                 <div class="input-container">
-                    <input type="text" th:field="*{nickname}" id="userNickname" placeholder="닉네임" maxlength="6" onblur="validateNick();">
+                    <input type="text" th:field="*{nickname}" id="userNickname" placeholder="닉네임(한글만)" maxlength="6" onblur="validateNick();">
                     <button type="button" class="check-btn" onclick="checkNicknameDuplicate()">중복확인</button>
                 </div>
                 <div id="textNick" class="error-message"></div>
