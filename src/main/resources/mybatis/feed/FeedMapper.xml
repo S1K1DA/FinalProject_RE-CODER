@@ -99,7 +99,6 @@
         SELECT FEED_TITLE , FEED_CONTENT ,FEED_TAG, FEED_NO
         FROM FEEDS f
         WHERE FEED_NO = #{feedNo}
-
     </select>
 
     <update id="setUpdateFeed">

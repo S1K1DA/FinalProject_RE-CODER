@@ -105,12 +105,7 @@ public class FeedController {
     public ResponseEntity<?> setCommentDelete(@RequestBody FeedCommentDto commentDto){
 
         int commentNo = commentDto.getCommentNo();
-
-        System.out.println(commentNo+ "----");
-
         int deleteComment = feedService.setCommentDelete(commentNo);
-
-        System.out.println(deleteComment);
 
         if(deleteComment != 1){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database 데이터 삽입 실패");
@@ -163,7 +158,6 @@ public class FeedController {
         }
 
         return ResponseEntity.ok().build();
-
     }
 
 }

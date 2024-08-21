@@ -40,7 +40,17 @@ label{
 .new-feed-box{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+.choses-array{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 9px;
+    font-size: 15px;
+    position: relative;
+    top: 25px;
+    color: #4e4f50;
 }
 
 .new-feed-btn{
@@ -512,3 +522,5 @@ textarea:focus {
     display: block;
     animation: slideUp 0.3s forwards;
 }
+
+

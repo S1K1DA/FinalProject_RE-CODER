@@ -22,7 +22,7 @@ window.addEventListener('scroll', () => {
 });
 
 async function loadMoreData() {
-    if (isLoading || !hasMoreData) return;
+    if (isLoading || !hasMoreData) return;  // 로딩 중또는 불러올 데이터가 없을시
     isLoading = true;
 
     const filter = document.querySelector('input[name="filter"]:checked')?.value;
@@ -50,7 +50,7 @@ async function loadMoreData() {
                 <div class="feed-title-box">
                 <p class="feed-title">${feed.feedTitle}</p>
             <div class="feed-icons">
-                <a href="#" class="badge ms-auto feed-heart">
+                <a href="#" class="badge ms-auto feed-heart" onclick="feedLikeBtn(this)">
                     <i class="bi-heart feed-heart-icon"></i>
                 </a>
                 <div class="dropdown-more">
@@ -59,9 +59,9 @@ async function loadMoreData() {
                     </a>
                     <div class="more-dropdown-content">
                         <input type="hidden" value="${feed.feedNo}">
-                            <div class="more-ele">신고하기</div>
-                            <div class="more-ele">삭제</div>
-                            <div class="more-ele">수정</div>
+                        <div class="more-ele">신고하기</div>
+                        <div class="more-ele" onclick="deleteFeed(this)">삭제</div>
+                        <div class="more-ele" th:attr="onclick='location.href=\\'feed/modify?feedNo='+${feed.feedNo}+'\\''">수정</div>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@ async function loadMoreData() {
                 <div class="answer-reply-box">
                     <div class="answer-text-box">
                         <textarea class="answer-text"></textarea>
-                        <button class="answer-submit">등록</button>
+                        <button class="answer-submit" id="comment-submit-btn">등록</button>
                     </div>
                 </div>
             </div>`;
