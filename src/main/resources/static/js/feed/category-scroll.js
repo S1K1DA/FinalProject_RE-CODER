@@ -15,7 +15,7 @@ function applyFilter(event) {
 document.getElementById('feed-array').addEventListener('change', function() {
     const selectedValue = this.value;
     const url = new URL(window.location.href);
-    url.searchParams.set('feed-array', selectedValue);
+    url.searchParams.set('feedarray', selectedValue);
     window.location.href = url.toString();
 });
 
