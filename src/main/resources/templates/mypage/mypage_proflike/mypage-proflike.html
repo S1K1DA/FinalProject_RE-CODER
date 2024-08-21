@@ -25,7 +25,7 @@
                         <div class="custom-block-info w-100">
                             <div class="liked-prof-list">
                                 <div th:each="like : ${likedProfiles}" class="liked-prof-item" th:data-liked-user-no="${like.likedUserNo}" th:onclick="'location.href=\'/profile/' + ${like.likedUserNo} + '\''">
-                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation(); toggleLike(this);">
+                                    <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation();">
                                         <i class="bi-heart prof-heart-icon"></i>
                                     </a>
                                     <img class="prof-img" th:src="@{/image/mainThumbnail.jpg}" alt="프로필 이미지">

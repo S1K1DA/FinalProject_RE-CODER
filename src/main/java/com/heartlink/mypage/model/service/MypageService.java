@@ -53,4 +53,5 @@ public interface MypageService {
     public boolean unlikeProfile(int userId, int likedUserNo);
 
     public boolean likeProfile(int userId, int likedUserNo);
+
 }

@@ -28,9 +28,10 @@
                                 <input id="user-email" name="email" type="text" th:value="${user.email}" disabled>
                             </p>
                             <p class="mb-2"><span class="label fw-bold">닉네임 :</span> <input id="user-nickname" name="nickname" type="text" th:value="${user.nickname}"></p>
-                            <p class="mb-2"><span class="label fw-bold">전화번호 :</span> <input id="user-phone" name="phone" readonly type="text" th:value="${user.phone}"> <button class="btn-action" type="button">전화번호 변경</button></p>
+                            <p class="mb-2"><span class="label fw-bold">전화번호 :</span> <input id="user-phone" name="phone" type="text" th:value="${user.phone}">
                             <p class="mb-2"><span class="label fw-bold">주소 :</span> <input id="user-address" name="address" readonly type="text" th:value="${user.address}"> <button class="btn-action" type="button">주소 변경</button></p>
-                            <p class="mb-2"><span class="label fw-bold">MBTI :</span> <input id="user-mbti" name="mbti" readonly type="text" th:value="${user.mbti}"> <button class="btn-action" type="button">MBTI 검사</button></p>
+                            <p class="mb-2"><span class="label fw-bold">MBTI :</span> <input id="user-mbti" name="mbti" readonly type="text" th:value="${user.mbti}"> <button class="btn-action" type="button" onclick="openMbtiTest()">MBTI 검사</button>
+                            </p>
                         </div>
                         <div class="form-actions d-flex justify-content-center mt-4">
                             <button class="btn-submit" type="submit">수정</button>
