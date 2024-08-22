@@ -1,4 +1,4 @@
-package com.heartlink.charge.config;
+package com.heartlink.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

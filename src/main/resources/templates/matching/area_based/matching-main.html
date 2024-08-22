@@ -184,15 +184,29 @@
 
                     for (const ele of Array.from(areaMatchingBtn)) {
                         ele.addEventListener("click", function(){
-                            yesOrNo("매칭신청 하시겠습니까?",
-                                    "question",
-                                    "rgb(255 128 135)",
-                                    "rgb(150 150 150)",
-                                    "예",
-                                    "아니요",
-                                    "매칭 완료!",
-                                    "success",
-                                    "");
+
+                            Swal.fire({
+                                title: "매칭신청 하시겠습니까?",
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonColor: "rgb(255 128 135)",
+                                cancelButtonColor: "rgb(150 150 150)",
+                                confirmButtonText: "예",
+                                cancelButtonText: "아니요"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    return Swal.fire({
+                                        title: "매칭 완료!",
+                                        icon: "success"
+                                    });
+                                } else {
+                                    return Promise.reject();
+                                }
+                            }).then(() => {
+                                if(url !== ''){
+                                    location.href = "#";
+                                }
+                            });
                         });
                     }
 

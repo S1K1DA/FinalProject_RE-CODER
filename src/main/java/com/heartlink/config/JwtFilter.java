@@ -32,14 +32,14 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = getJwtFromCookies(request);
-        System.out.println("Filter JWT: " + jwt);
+//        System.out.println("Filter JWT: " + jwt);
 
         if (StringUtils.hasText(jwt) && jwtUtil.validateToken(jwt)) {
             String email = jwtUtil.getEmailFromToken(jwt);
             int userId = jwtUtil.getUserNumberFromToken(jwt); // JWT에서 userId를 추출
 
-            System.out.println("JWT email: " + email);
-            System.out.println("JWT userId: " + userId);
+//            System.out.println("JWT email: " + email);
+//            System.out.println("JWT userId: " + userId);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, jwt, userDetails.getAuthorities());
