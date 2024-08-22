@@ -124,5 +124,11 @@ public class MypageDao {
         return sqlSession.delete("mypageMapper.deleteProfileLike", params);
     }
 
+    //닉네임체크
+    public int countByNickname(String nickname) {
+        return sqlSession.selectOne("mypageMapper.countByNickname", nickname);
+    }
+    
+
 
 }

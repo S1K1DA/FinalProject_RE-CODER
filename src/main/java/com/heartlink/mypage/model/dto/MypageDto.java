@@ -14,7 +14,7 @@ public class MypageDto {
     private String nickname;
     private String name;
     private String phone;
-    private String address;
+    private String fullAddress;
     private String mbti;
 
     // 성향 관련 필드들

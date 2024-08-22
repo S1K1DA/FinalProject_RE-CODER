@@ -328,4 +328,11 @@ public class MypageController {
         return Map.of("success", isUnliked);
     }
 
+    @PostMapping("/checkNickname")
+    public ResponseEntity<Map<String, Boolean>> checkNickname(@RequestBody Map<String, String> payload) {
+        String nickname = payload.get("nickname");
+        boolean isUnique = mypageService.isNicknameUnique(nickname);
+        return ResponseEntity.ok(Map.of("isUnique", isUnique));
+    }
+
 }
