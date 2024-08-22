@@ -5,7 +5,7 @@ const CHANNEL_KEY = payment.channelKey;
 let coinPriceBtnEle = document.getElementsByName('coin-price');
 let resultCoinCnt = "";
 let resultCoinPrice = "";
-let userEmail = "john.doe@example.com"; // 임시
+let userEmail = document.getElementById('mypage-user-email').value; // 임시
 
 for (const ele of Array.from(coinPriceBtnEle)) {
     ele.addEventListener("click", coinResponseTest);
@@ -14,7 +14,7 @@ for (const ele of Array.from(coinPriceBtnEle)) {
 async function coinResponseTest(event) {
     event.preventDefault(); // 링크의 기본 동작 막음
 
-    resultCoinCnt = "하트 코인 " + event.target.getAttribute('data-value') + "개";
+    resultCoinCnt = event.target.getAttribute('data-value');
     resultCoinPrice = event.target.getAttribute('data-value') * 100;
 
     try {
@@ -24,7 +24,7 @@ async function coinResponseTest(event) {
             body: JSON.stringify({
                 paymentUserEmail: userEmail,
                 paymentAmount: resultCoinPrice,
-                paymentProduct: resultCoinCnt,
+                paymentCoin: resultCoinCnt,
             }),
         });
 
@@ -54,7 +54,7 @@ async function requestPayment(paymentNo) {
             storeId: SHOP_ID,
             channelKey: CHANNEL_KEY,
             paymentId: paymentNo,
-            orderName: resultCoinCnt,
+            orderName: "하트 코인 "+resultCoinCnt+ "개",
             totalAmount: resultCoinPrice,
             currency: "KRW",
             payMethod: "CARD",
@@ -67,7 +67,11 @@ async function requestPayment(paymentNo) {
 
         if (paymentResponse.code != null) {
             // 오류 발생
-            return alert(paymentResponse.message);
+            console.log(paymentResponse.message);
+            return Swal.fire({
+                    title: "결제 실패",
+                    icon: "error"
+                });
         }
 
         await fetch("/charge/complete", {
@@ -85,7 +89,10 @@ async function requestPayment(paymentNo) {
             }
         }).then(data => {
             // 정상적인 응답을 받은 경우
-            alert("결제 완료"); // 또는 응답 데이터에 따라 알림을 다르게 할 수 있습니다.
+            Swal.fire({
+                title: "결제 완료",
+                icon: "success"
+            })
         }).catch(error => {
             // 오류가 발생한 경우
             alert("결제 실패, 문제가 발생했습니다.");
@@ -95,3 +102,5 @@ async function requestPayment(paymentNo) {
         alert("An error occurred : " + error);
     }
 }
+
+

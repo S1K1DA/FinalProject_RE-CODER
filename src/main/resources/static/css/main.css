@@ -1187,9 +1187,11 @@ main {
   PAGINATION
 -----------------------------------------*/
 .pagination {
-    border: 1px solid #dee2e6;
-    border-radius: var(--border-radius-large);
-    padding: 20px;
+    /*border: 1px solid #dee2e6;*/
+    /*border-radius: var(--border-radius-large);*/
+    /*padding: 20px;*/
+    position: absolute;
+    bottom: 6%;
 }
 
 .page-link {
