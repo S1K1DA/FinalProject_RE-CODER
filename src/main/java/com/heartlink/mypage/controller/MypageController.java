@@ -113,7 +113,7 @@ public class MypageController {
     }
 
     @GetMapping("/proflike")
-    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page,HttpServletRequest request, Model model) {
         int userId = getCurrentUserId();
         int pageSize = 8;
 
@@ -125,6 +125,7 @@ public class MypageController {
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/proflike");
 
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
