@@ -54,7 +54,7 @@ async function requestPayment(paymentNo) {
             storeId: SHOP_ID,
             channelKey: CHANNEL_KEY,
             paymentId: paymentNo,
-            orderName: resultCoinCnt,
+            orderName: "하트 코인 "+resultCoinCnt+ "개",
             totalAmount: resultCoinPrice,
             currency: "KRW",
             payMethod: "CARD",
@@ -67,7 +67,11 @@ async function requestPayment(paymentNo) {
 
         if (paymentResponse.code != null) {
             // 오류 발생
-            return alert(paymentResponse.message);
+            console.log(paymentResponse.message);
+            return Swal.fire({
+                    title: "결제 실패",
+                    icon: "error"
+                });
         }
 
         await fetch("/charge/complete", {
@@ -85,7 +89,10 @@ async function requestPayment(paymentNo) {
             }
         }).then(data => {
             // 정상적인 응답을 받은 경우
-            alert("결제 완료"); // 또는 응답 데이터에 따라 알림을 다르게 할 수 있습니다.
+            Swal.fire({
+                title: "결제 완료",
+                icon: "success"
+            })
         }).catch(error => {
             // 오류가 발생한 경우
             alert("결제 실패, 문제가 발생했습니다.");
@@ -95,4 +102,5 @@ async function requestPayment(paymentNo) {
         alert("An error occurred : " + error);
     }
 }
+
 

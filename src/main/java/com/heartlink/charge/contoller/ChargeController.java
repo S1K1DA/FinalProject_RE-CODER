@@ -3,6 +3,7 @@ package com.heartlink.charge.contoller;
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.service.ChargeService;
 import com.heartlink.member.util.JwtUtil;
+import com.heartlink.review.common.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +27,17 @@ import java.util.Objects;
 public class ChargeController {
 
     private final ChargeService chargeService;
+    private final Pagination pagination;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public ChargeController(ChargeService chargeService, JwtUtil jwtUtil){
+    public ChargeController(ChargeService chargeService,
+                            Pagination pagination,
+                            JwtUtil jwtUtil){
         this.chargeService = chargeService;
+        this.pagination = pagination;
         this.jwtUtil = jwtUtil;
+
     }
 
 
@@ -49,13 +57,21 @@ public class ChargeController {
     }
 
     @GetMapping("/history")
-    public String cashpage(Model model) {
+    public String cashpage(@RequestParam(name="page", defaultValue = "1") int page,
+                           Model model) {
+
+        int pageSize = 5;
+
         String userEmail = getCurrentUserEmail();
 
         List<ChargeRequestDto> userPaymentHistory = chargeService.getUserPaymentHistory(userEmail);
 
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, userPaymentHistory);
 
-        model.addAttribute("userPaymentHistory", userPaymentHistory);
+        model.addAttribute("userPaymentHistory", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("paginationUrl", "/charge/history");
 
         return "mypage/mypage_coin_charge/charge-history";
     }
@@ -113,7 +129,7 @@ public class ChargeController {
             int dbAmount = dbResponse.getPaymentAmount();
 
             String apiProduct = apiResponse.getPaymentProduct();
-            String dbProduct = Integer.toString(dbResponse.getPaymentCoin());
+            String dbProduct = dbResponse.getPaymentProduct();
 
 
             // api와 db의 응답 값 비교 (결제금액, 결제 상품명, 결제요청 고객)
@@ -142,6 +158,65 @@ public class ChargeController {
             // 예외 발생 시 오류 응답 반환
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Exception, 예외 발생 : " + e.getMessage());
         }
+    }
+
+
+    @PostMapping("/payment-cancle")
+    @ResponseBody
+    public ResponseEntity<?> cancledPayment(@RequestBody ChargeRequestDto requestDto){
+        boolean presenceInfo = true;
+        boolean enoughCoin = true;
+        boolean effectiveDate = true;
+
+        String paymentNo = requestDto.getPaymentNo();
+        String userEmail = getCurrentUserEmail();
+
+        ChargeRequestDto requestInfo = chargeService.getRequestPaymentInfo(paymentNo);
+
+
+        // 해당 정보가 있는지
+        if(Objects.isNull(requestInfo) || !requestInfo.getPaymentUserEmail().equals(userEmail)){
+            presenceInfo = false;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("해당 결제 정보의 오류");
+        }
+
+        // 코인은 충분한지
+        int userCoincnt = chargeService.getUserCoin(userEmail);
+        int userProduct = requestInfo.getPaymentAmount() / 100;
+
+        if(userCoincnt < userProduct){
+            enoughCoin = false;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("보유 코인이 부족합니다.");
+        }
+
+        // 날짜는 유효한지
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime paymentDate = LocalDateTime.parse(requestInfo.getPaymentDate(), formatter);
+        Duration duration = Duration.between(paymentDate, now);
+
+        if (Math.abs(duration.toDays()) >= 7) {
+            effectiveDate = false;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("취소 가능 날짜 만료");
+        }
+
+
+        String portOneCancle;
+
+        if(presenceInfo && enoughCoin && effectiveDate){
+            portOneCancle = chargeService.setPortOneRequestCancle(paymentNo);
+
+            if(portOneCancle.equals("SUCCEEDED")){
+                int userUpdate = chargeService.setPaymentWithCoinUpdate(paymentNo, userEmail, userProduct);
+
+                if(userUpdate == 1){
+                    return ResponseEntity.status(HttpStatus.OK).body("결제 취소 완료");
+                }
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 취소 오류");
     }
 
 
