@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.dto.ChargeResponseDto;
 import com.heartlink.charge.model.mapper.ChargeMapper;
+import com.heartlink.member.model.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -48,6 +49,10 @@ public class ChargeService {
             chargeMapper.failPayment(payment.getPaymentNo());
         }
 
+    }
+
+    public MemberDto getUserIndfo(String userEmail){
+        return chargeMapper.getUserIfo(userEmail);
     }
 
     public String getCurrentSequence() {

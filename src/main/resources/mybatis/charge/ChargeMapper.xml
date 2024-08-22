@@ -110,4 +110,11 @@
         WHERE PAYMENT_NO = #{paymentNo}
     </update>
 
+    <select id="getUserIfo" resultType="com.heartlink.member.model.dto.MemberDto">
+        SELECT BASIC_USER_NAME as name,
+               BASIC_USER_TELNUM as phoneNumber
+        FROM BASIC_USER bu
+        WHERE BASIC_USER_EMAIL = #{userEmail}
+    </select>
+
 </mapper>

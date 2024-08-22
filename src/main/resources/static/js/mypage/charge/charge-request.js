@@ -6,6 +6,8 @@ let coinPriceBtnEle = document.getElementsByName('coin-price');
 let resultCoinCnt = "";
 let resultCoinPrice = "";
 let userEmail = document.getElementById('mypage-user-email').value; // 임시
+let userName = document.getElementById('mypage-user-name').value;
+let userTelnum = document.getElementById('mypage-user-telnum').value;
 
 for (const ele of Array.from(coinPriceBtnEle)) {
     ele.addEventListener("click", coinResponseTest);
@@ -59,8 +61,8 @@ async function requestPayment(paymentNo) {
             currency: "KRW",
             payMethod: "CARD",
             customer: {
-                fullName: "johndoe",
-                phoneNumber: "123-456-7890",
+                fullName: userName,
+                phoneNumber: userTelnum,
                 email: userEmail,
             },
         });
