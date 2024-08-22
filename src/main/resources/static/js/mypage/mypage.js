@@ -216,66 +216,207 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    // 닉네임 중복 체크 기능 초기화
+    initializeNicknameCheck();
 
+    // 주소를 두 개의 인풋 박스로 나누어 표시
+    splitAddressIntoTwoFields();
 
-
+    // 폼 제출 시 두 개의 주소 필드를 결합
+    document.querySelector('form').addEventListener('submit', function() {
+        const line1 = document.getElementById('user-address-line1').value;
+        const line2 = document.getElementById('user-address-line2').value;
+        document.getElementById('user-full-address').value = line1 + ' ' + line2;
+    });
 });
 
 
 // 탈퇴 폼 처리
-    const deleteForm = document.querySelector('form[action="/mypage/delete"]');
-    if (deleteForm) {
-        deleteForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+const deleteForm = document.querySelector('form[action="/mypage/delete"]');
+if (deleteForm) {
+    deleteForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            const password = document.getElementById('password').value;
-            const passwordConfirm = document.getElementById('password-confirm').value;
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password-confirm').value;
 
-            if (!password || !passwordConfirm) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '경고',
-                    text: '비밀번호와 비밀번호 확인을 입력해주세요.',
-                });
-                return;
-            }
+        if (!password || !passwordConfirm) {
+            Swal.fire({
+                icon: 'warning',
+                title: '경고',
+                text: '비밀번호와 비밀번호 확인을 입력해주세요.',
+            });
+            return;
+        }
 
-            if (password !== passwordConfirm) {
-                Swal.fire({
-                    icon: 'error',
-                    title: '오류',
-                    text: '비밀번호 확인이 일치하지 않습니다.',
-                });
-                return;
-            }
+        if (password !== passwordConfirm) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류',
+                text: '비밀번호 확인이 일치하지 않습니다.',
+            });
+            return;
+        }
 
-            fetch('/mypage/validatePassword', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ password: password })
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.valid) {
-                      deleteForm.submit();
-                  } else {
-                      Swal.fire({
-                          icon: 'error',
-                          title: '오류',
-                          text: '입력한 비밀번호가 현재 비밀번호와 일치하지 않습니다.',
-                      });
-                  }
+        fetch('/mypage/validatePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: password })
+        }).then(response => response.json())
+          .then(data => {
+              if (data.valid) {
+                  deleteForm.submit();
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: '오류',
+                      text: '입력한 비밀번호가 현재 비밀번호와 일치하지 않습니다.',
+                  });
+              }
+          });
+    });
+}
+
+// MBTI 검사 열기
+function openMbtiTest() {
+    const mbtiWindow = window.open('/matching/mbti', '_blank', 'width=600,height=800');
+
+    window.receiveMbtiResult = function(result) {
+        const sanitizedResult = result.replace(/\s+/g, ''); // 값에서 공백을 제거
+        document.getElementById('user-mbti').value = sanitizedResult;
+    };
+}
+
+// 닉네임 중복 체크
+let isNicknameValid = false;
+let originalNickname = '';
+
+function checkNicknameAvailability() {
+    const nicknameInput = document.getElementById('user-nickname');
+    const nickname = nicknameInput.value.trim();
+
+    if (nickname === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: '경고',
+            text: '닉네임을 입력해주세요.',
+        });
+        return;
+    }
+
+    fetch(`/mypage/checkNickname`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nickname: nickname })
+    }).then(response => response.json())
+      .then(data => {
+          if (data.isUnique) {
+              Swal.fire({
+                  icon: 'success',
+                  title: '확인 완료',
+                  text: '사용 가능한 닉네임입니다.',
               });
+              isNicknameValid = true;
+          } else {
+              Swal.fire({
+                  icon: 'error',
+                  title: '중복 닉네임',
+                  text: '이미 사용 중인 닉네임입니다.',
+              });
+              isNicknameValid = false;
+          }
+      });
+}
+
+function resetNicknameValidity() {
+    const nicknameInput = document.getElementById('user-nickname');
+    isNicknameValid = nicknameInput.value.trim() === originalNickname;
+}
+
+function validateBeforeSubmit(event) {
+    const nicknameInput = document.getElementById('user-nickname');
+
+    if (nicknameInput.value.trim() !== originalNickname && !isNicknameValid) {
+        event.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: '중복 체크 필요',
+            text: '닉네임 중복 체크를 진행해 주세요.',
         });
     }
+}
 
-    // MBTI 검사 열기
-    function openMbtiTest() {
-        const mbtiWindow = window.open('/matching/mbti', '_blank', 'width=600,height=800');
+function initializeNicknameCheck() {
+    const nicknameInput = document.getElementById('user-nickname');
+    const checkNicknameBtn = document.getElementById('check-nickname-btn');
+    const updateBtn = document.getElementById('update-btn');
 
-        window.receiveMbtiResult = function(result) {
-            const sanitizedResult = result.replace(/\s+/g, ''); // 값에서 공백을 제거
-            document.getElementById('user-mbti').value = sanitizedResult;
-        };
+    originalNickname = nicknameInput.value.trim();
+
+    nicknameInput.addEventListener('input', resetNicknameValidity);
+    checkNicknameBtn.addEventListener('click', checkNicknameAvailability);
+    updateBtn.addEventListener('click', validateBeforeSubmit);
+}
+
+// 주소 2개로 나누기
+function splitAddressIntoTwoFields() {
+    const fullAddress = document.getElementById('user-full-address').value;
+
+    if (fullAddress) {
+        const addressParts = fullAddress.split(' ');
+        const line1 = addressParts.slice(0, 3).join(' ');
+        const line2 = addressParts.slice(3).join(' ');
+
+        document.getElementById('user-address-line1').value = line1;
+        document.getElementById('user-address-line2').value = line2;
     }
+}
+
+// 주소 가져오기
+function searchAddress() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            let fullRoadAddress = data.roadAddress; // 도로명 주소
+            let extraAddress = ''; // 참고 항목
+
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+                extraAddress += (extraAddress !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            if (extraAddress !== '') {
+                extraAddress = ' (' + extraAddress + ')';
+            }
+
+            let finalAddress = fullRoadAddress + extraAddress;
+
+            const addressParts = finalAddress.split(' ');
+            const line1 = addressParts.slice(0, 3).join(' ');
+            const line2 = addressParts.slice(3).join(' ');
+
+            document.getElementById('user-address-line1').value = line1;
+            document.getElementById('user-address-line2').value = line2;
+
+            document.getElementById('user-full-address').value = finalAddress;
+
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            var callback = function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    const longitude = document.getElementById('addr-longitude');
+                    const latitude = document.getElementById('addr-latitude');
+
+                    longitude.value = result[0].x;
+                    latitude.value = result[0].y;
+                }
+            };
+
+            geocoder.addressSearch(finalAddress, callback);
+        }
+    }).open();
+}

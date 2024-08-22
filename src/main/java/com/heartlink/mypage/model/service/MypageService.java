@@ -54,4 +54,6 @@ public interface MypageService {
 
     public boolean likeProfile(int userId, int likedUserNo);
 
+    //닉네임체크
+    boolean isNicknameUnique(String nickname);
 }

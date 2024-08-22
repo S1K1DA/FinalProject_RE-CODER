@@ -150,5 +150,10 @@ public class MypageServiceImpl implements MypageService {
     public boolean unlikeProfile(int userId, int likedUserNo) {
         return mypageDao.deleteProfileLike(userId, likedUserNo) > 0;
     }
-    
+
+    //닉네임체크 -> count(*)이 0인지 확인
+    @Override
+    public boolean isNicknameUnique(String nickname) {
+        return mypageDao.countByNickname(nickname) == 0;
+    }
 }

@@ -20,21 +20,45 @@
                         </div>
                         <div class="custom-block-info w-100">
                             <div class="profile-picture profile-picture-editpage">
-                                <!-- 추후 해당 회원 프로필 사진 표시 위치 -->
                                 <img alt="프로필 사진" th:src="@{/image/review/weding-review2.jpg}">
                                 <button class="btn-new-file" type="button">새 파일</button>
                             </div>
-                            <p class="mb-2"><span class="label fw-bold">이메일 :</span>
+                            <p class="mb-2">
+                                <span class="label fw-bold">이메일 :</span>
                                 <input id="user-email" name="email" type="text" th:value="${user.email}" disabled>
                             </p>
-                            <p class="mb-2"><span class="label fw-bold">닉네임 :</span> <input id="user-nickname" name="nickname" type="text" th:value="${user.nickname}"></p>
-                            <p class="mb-2"><span class="label fw-bold">전화번호 :</span> <input id="user-phone" name="phone" type="text" th:value="${user.phone}">
-                            <p class="mb-2"><span class="label fw-bold">주소 :</span> <input id="user-address" name="address" readonly type="text" th:value="${user.address}"> <button class="btn-action" type="button">주소 변경</button></p>
-                            <p class="mb-2"><span class="label fw-bold">MBTI :</span> <input id="user-mbti" name="mbti" readonly type="text" th:value="${user.mbti}"> <button class="btn-action" type="button" onclick="openMbtiTest()">MBTI 검사</button>
+                            <p class="mb-2">
+                                <span class="label fw-bold">닉네임 :</span>
+                                <input id="user-nickname" name="nickname" type="text" th:value="${user.nickname}">
+                                <button id="check-nickname-btn" type="button" class="btn-action">중복 체크</button>
                             </p>
+                            <p class="mb-2">
+                                <span class="label fw-bold">전화번호 :</span>
+                                <input id="user-phone" name="phone" type="text" th:value="${user.phone}">
+                            </p>
+                            <div class="custom-block-row mb-2 d-flex align-items-center">
+                                <span class="label fw-bold me-2">주소 :</span>
+                                <div class="d-flex flex-column address-container">
+                                    <input id="user-address-line1" name="addressLine1" readonly type="text" class="address-input mb-2">
+                                    <input id="user-address-line2" name="addressLine2" readonly type="text" class="address-input">
+                                </div>
+                                <button class="btn-action ms-2" type="button" onclick="searchAddress()">주소 변경</button>
+                            </div>
+
+
+                            <p class="mb-2">
+                                <span class="label fw-bold">MBTI :</span>
+                                <input id="user-mbti" name="mbti" readonly type="text" th:value="${user.mbti}">
+                                <button class="btn-action" type="button" onclick="openMbtiTest()">MBTI 검사</button>
+                            </p>
+                            <!-- 숨겨진 필드에 전체 주소 저장 -->
+                            <input type="hidden" id="user-full-address" name="fullAddress" th:value="${user.fullAddress}">
+                            <!-- 숨겨진 필드에 경도와 위도 저장 -->
+                            <input type="hidden" id="addr-longitude" name="longitude" value="">
+                            <input type="hidden" id="addr-latitude" name="latitude" value="">
                         </div>
                         <div class="form-actions d-flex justify-content-center mt-4">
-                            <button class="btn-submit" type="submit">수정</button>
+                            <button class="btn-submit" id="update-btn" type="submit">수정</button>
                             <button class="btn-cancel" onclick="location.href='/mypage/main'" type="button">취소</button>
                         </div>
                     </form>
@@ -49,6 +73,8 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
+<!-- 다음 우편번호 서비스 및 카카오 지도 API 불러오기 -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </body>
 </html>
