@@ -209,8 +209,6 @@ ul, li{
     background-color: #e9b5c1;
     border-radius: 15px;
     text-align: center;
-    border-top: 1.5px solid #3c3c3c2b;
-    border-bottom: 1.5px solid #3c3c3c2b;
 }
 
 .payment-history-thead{

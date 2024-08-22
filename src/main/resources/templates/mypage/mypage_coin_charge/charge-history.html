@@ -4,6 +4,7 @@
 <body>
 <link rel="stylesheet" th:href="@{/css/charge/charge_main.css}"/>
 <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+<bean id="numberFormatter" class="com.heartlink.format.NumberFormatter"/>
 <nav th:replace="~{fragments/navigation :: navigation}"></nav>
 <section class="charge-main-sec">
     <div class="container charge-out-box">
@@ -25,26 +26,13 @@
                         </tr>
                     </thead>
                     <tbody class="payment-history-tbody">
-                        <tr>
-                            <td>2024.08.02</td>
-                            <td>30개</td>
-                            <td>네이버 페이</td>
-                            <td>3,000원</td>
-                            <td class="payment-cancel">취소가능</td>
-                        </tr>
-                        <tr>
-                            <td>2024.07.11</td>
-                            <td>10개</td>
-                            <td>카카오 페이</td>
-                            <td>1,000원</td>
-                            <td>취소불가</td>
-                        </tr>
-                        <tr>
-                            <td>2024.07.28</td>
-                            <td>100개</td>
-                            <td>토스 페이</td>
-                            <td>10,000원</td>
-                            <td>취소불가</td>
+                        <tr th:each="item : ${userPaymentHistory}">
+                            <td th:text="${item.paymentDate}"></td>
+                            <td th:text="${item.paymentProduct}"></td>
+                            <td th:text="${item.paymentMethod}"></td>
+                            <td th:text="${@numberFormatter.print(item.paymentAmount, locale) + ' 원'}"></td>
+                            <td th:if="${item.paymentState.equals('취소불가')}" th:text="${item.paymentState}"></td>
+                            <td class="payment-cancel" th:if="${item.paymentState.equals('취소가능')}" th:text="${item.paymentState}"></td>
                         </tr>
                     </tbody>
                 </table>

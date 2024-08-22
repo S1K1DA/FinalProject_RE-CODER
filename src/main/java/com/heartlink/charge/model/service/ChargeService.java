@@ -14,8 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class ChargeService {
@@ -64,7 +65,10 @@ public class ChargeService {
     }
 
     public int setPaymentHistory(ChargeRequestDto chargeRequestDto) {
-        return chargeMapper.setPaymentHistory(chargeRequestDto);
+
+        int insertPaymentHistory =  chargeMapper.setPaymentHistory(chargeRequestDto);
+
+        return insertPaymentHistory;
     }
 
     public ChargeRequestDto getPaymentDetails(String paymentNo) {
@@ -110,10 +114,54 @@ public class ChargeService {
     }
 
     public ChargeRequestDto setPaymentDbDetails(String paymentNo) {
-        return chargeMapper.setPaymentDbDetails(paymentNo);
+
+        ChargeRequestDto resultDto = chargeMapper.setPaymentDbDetails(paymentNo);
+        int coinCnt = resultDto.getPaymentAmount() / 100;
+        resultDto.setPaymentCoin(coinCnt);
+
+        return resultDto;
     }
 
     public int setPaymentState(ChargeRequestDto apiResponse) {
         return chargeMapper.setPaymentState(apiResponse);
     }
+
+    public int setUserCoin(ChargeRequestDto dbResponse){
+        return chargeMapper.setUserCoin(dbResponse);
+    }
+
+
+    public List<ChargeRequestDto> getUserPaymentHistory(String userEmail){
+
+        List<ChargeRequestDto> paymentHistoryDto = chargeMapper.getUserPaymentHistory(userEmail);
+
+        int userCoin = chargeMapper.selectUserCoin(userEmail);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        for(ChargeRequestDto item : paymentHistoryDto){
+            int paymentCoin = item.getPaymentAmount() / 100 ;
+
+            if(userCoin >= paymentCoin) {
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime paymentDate = LocalDateTime.parse(item.getPaymentDate(), formatter);
+                Duration duration = Duration.between(paymentDate, now);
+
+                if (Math.abs(duration.toDays()) < 7) {
+                    item.setPaymentState("취소가능");
+                }else{
+                    item.setPaymentState("취소불가");
+                }
+
+            }else{
+                item.setPaymentState("취소불가");
+            }
+
+        }
+
+
+
+        return paymentHistoryDto;
+    }
+
 }

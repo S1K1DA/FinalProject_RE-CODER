@@ -2,16 +2,20 @@ package com.heartlink.charge.contoller;
 
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.service.ChargeService;
+import com.heartlink.member.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,19 +24,39 @@ import java.util.Objects;
 public class ChargeController {
 
     private final ChargeService chargeService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public ChargeController(ChargeService chargeService){
+    public ChargeController(ChargeService chargeService, JwtUtil jwtUtil){
         this.chargeService = chargeService;
+        this.jwtUtil = jwtUtil;
+    }
+
+
+    // SecurityContext에서 userId 가져오기
+    private String getCurrentUserEmail() {
+        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        return jwtUtil.getEmailFromToken(jwt);
     }
 
     @GetMapping("/shop")
-    public String moveMain(){
+    public String moveMain(Model model){
+
+        String userEmail = getCurrentUserEmail();
+
+        model.addAttribute("userEmail",userEmail);
         return "mypage/mypage_coin_charge/charge-main";
     }
 
     @GetMapping("/history")
-    public String cashpage() {
+    public String cashpage(Model model) {
+        String userEmail = getCurrentUserEmail();
+
+        List<ChargeRequestDto> userPaymentHistory = chargeService.getUserPaymentHistory(userEmail);
+
+
+        model.addAttribute("userPaymentHistory", userPaymentHistory);
+
         return "mypage/mypage_coin_charge/charge-history";
     }
 
@@ -42,6 +66,8 @@ public class ChargeController {
     @ResponseBody
     public ResponseEntity<String> getSequence(@RequestBody ChargeRequestDto chargeRequestDto){
         String thisSequence = chargeService.getCurrentSequence();
+        String userEmail = getCurrentUserEmail();
+        chargeRequestDto.setPaymentUserEmail(userEmail);
 
         if(Objects.isNull(thisSequence)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database 조회 실패");
@@ -50,6 +76,7 @@ public class ChargeController {
         chargeRequestDto.setPaymentState("Pending");
         chargeRequestDto.setPaymentMethod("NONE");
         chargeRequestDto.setPaymentNo(thisSequence);
+        chargeRequestDto.setPaymentProduct("하트 코인 "+chargeRequestDto.getPaymentCoin()+ "개");
 
         int setPaymentHistory = chargeService.setPaymentHistory(chargeRequestDto);
 
@@ -86,7 +113,7 @@ public class ChargeController {
             int dbAmount = dbResponse.getPaymentAmount();
 
             String apiProduct = apiResponse.getPaymentProduct();
-            String dbProduct = dbResponse.getPaymentProduct();
+            String dbProduct = Integer.toString(dbResponse.getPaymentCoin());
 
 
             // api와 db의 응답 값 비교 (결제금액, 결제 상품명, 결제요청 고객)
@@ -95,6 +122,8 @@ public class ChargeController {
                apiResponse.setPaymentState("Completed");
                apiResponse.setPaymentReference("Success");
                int updatePaymentState = chargeService.setPaymentState(apiResponse);
+
+               int insertUserCoin = chargeService.setUserCoin(dbResponse);
 
                return ResponseEntity.ok(apiResponse);
 

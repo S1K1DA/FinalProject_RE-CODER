@@ -5,7 +5,7 @@ const CHANNEL_KEY = payment.channelKey;
 let coinPriceBtnEle = document.getElementsByName('coin-price');
 let resultCoinCnt = "";
 let resultCoinPrice = "";
-let userEmail = "john.doe@example.com"; // 임시
+let userEmail = document.getElementById('mypage-user-email').value; // 임시
 
 for (const ele of Array.from(coinPriceBtnEle)) {
     ele.addEventListener("click", coinResponseTest);
@@ -14,7 +14,7 @@ for (const ele of Array.from(coinPriceBtnEle)) {
 async function coinResponseTest(event) {
     event.preventDefault(); // 링크의 기본 동작 막음
 
-    resultCoinCnt = "하트 코인 " + event.target.getAttribute('data-value') + "개";
+    resultCoinCnt = event.target.getAttribute('data-value');
     resultCoinPrice = event.target.getAttribute('data-value') * 100;
 
     try {
@@ -24,7 +24,7 @@ async function coinResponseTest(event) {
             body: JSON.stringify({
                 paymentUserEmail: userEmail,
                 paymentAmount: resultCoinPrice,
-                paymentProduct: resultCoinCnt,
+                paymentCoin: resultCoinCnt,
             }),
         });
 
@@ -95,3 +95,4 @@ async function requestPayment(paymentNo) {
         alert("An error occurred : " + error);
     }
 }
+

@@ -32,6 +32,13 @@
         )
     </insert>
 
+    <update id="setUserCoin">
+        UPDATE BASIC_USER
+        SET
+            BASIC_USER_COIN = BASIC_USER_COIN + #{paymentCoin}
+        WHERE BASIC_USER_EMAIL = #{paymentUserEmail}
+    </update>
+
     <select id="setPaymentDbDetails" resultMap="resultMapCharge">
         SELECT * FROM PAYMENT_HISTORY ph
         WHERE PAYMENT_NO = #{paymentNo}
@@ -46,5 +53,23 @@
         WHERE PAYMENT_NO = #{paymentNo}
 
     </update>
+
+    <select id="getUserPaymentHistory" resultMap="resultMapCharge">
+        SELECT
+            PAYMENT_DATE,
+            PAYMENT_STATE,
+            PAYMENT_METHOD,
+            PAYMENT_AMOUNT,
+            PAYMENT_PRODUCT
+        FROM PAYMENT_HISTORY
+        WHERE
+            PAYMENT_USER_EMAIL = #{userEmail}
+    </select>
+
+    <select id="selectUserCoin" resultType="java.lang.Integer">
+        SELECT BASIC_USER_COIN
+        FROM BASIC_USER
+        WHERE BASIC_USER_EMAIL = #{userEmail}
+    </select>
 
 </mapper>

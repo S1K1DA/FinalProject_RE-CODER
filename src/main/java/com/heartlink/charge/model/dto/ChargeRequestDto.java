@@ -22,5 +22,6 @@ public class ChargeRequestDto {
     private String paymentState;
 
     private String paymentProduct;
+    private int paymentCoin;
     private String paymentReference;
 }
