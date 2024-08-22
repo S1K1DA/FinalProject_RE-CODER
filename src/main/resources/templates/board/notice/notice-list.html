@@ -16,13 +16,14 @@
 <div class="notice-container">
     <h2>공지사항</h2>
     <ul class="notice-list">
-        <li class="notice-item">
-            <a th:href="@{/notices/detail}" class="notice-link">공지사항 제목 1</a>
+        <!-- 고정된 공지사항 항목 -->
+        <li class="notice-item pinned">
+            <a th:href="@{/notices/detail}" class="notice-link">고정된 공지사항 제목</a>
             <div>
-                <span class="notice-author">작성자 3</span>
+                <span class="notice-author">작성자</span>
                 <img th:src="@{/image/member/king_logo.png}" class="admin-logo" alt="Site logo">
             </div>
-            <span class="notice-date">2024-08-01</span>
+            <span class="notice-date">2024-08-20</span>
         </li>
         <li class="notice-item">
             <a th:href="@{/notices/detail}" class="notice-link">공지사항 제목 2</a>
