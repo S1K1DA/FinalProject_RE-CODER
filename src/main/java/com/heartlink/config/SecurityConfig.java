@@ -54,7 +54,7 @@ public class SecurityConfig {
 
                                 // 일부 페이지만 접속 권한 설정 
                                 .requestMatchers("/matching/**").authenticated()    //은식
-                                .requestMatchers("/mypage/**").authenticated()    //아태
+                                .requestMatchers("/mypage/**", "/review/photoenroll", "review/photoedit").authenticated()    //아태
                                 .requestMatchers("/matching/**").authenticated()    //재인
 
                                 // 그 외의 모든 요청은 권한 허용
