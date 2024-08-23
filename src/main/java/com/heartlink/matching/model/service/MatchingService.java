@@ -1,5 +1,6 @@
 package com.heartlink.matching.model.service;
 
+import com.heartlink.matching.model.dto.MatchingAlarmDto;
 import com.heartlink.matching.model.dto.MatchingDto;
 import com.heartlink.matching.model.mapper.MatchingMapper;
 import com.heartlink.member.model.dto.MemberDto;
@@ -61,5 +62,9 @@ public class MatchingService {
         }
 
         return "error";
+    }
+
+    public List<MatchingAlarmDto> getUserAlarm(int userNo){
+        return matchingMapper.getUserAlarm(userNo);
     }
 }

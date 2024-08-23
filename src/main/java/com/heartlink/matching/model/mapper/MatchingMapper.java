@@ -1,5 +1,6 @@
 package com.heartlink.matching.model.mapper;
 
+import com.heartlink.matching.model.dto.MatchingAlarmDto;
 import com.heartlink.matching.model.dto.MatchingDto;
 import com.heartlink.member.model.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,6 @@ public interface MatchingMapper {
     public int setMatchingRequest(int setMatchingNo, int matchingUserNo, int matchedUserNo);
 
     public int setMatchingAlarm(int setMatchingNo, int matchingUserNo, int matchedUserNo, String alarmMsg);
+
+    public List<MatchingAlarmDto> getUserAlarm(int userNo);
 }

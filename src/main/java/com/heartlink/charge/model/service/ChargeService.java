@@ -36,9 +36,9 @@ public class ChargeService {
         this.restTemplate = restTemplate;
     }
 
-    // 자정마다 panding 상태의 결제 데이터 failed 로 변경
-//    @Scheduled(cron = "0 0 0 * * ?")
-    @Scheduled(fixedRate = 600000)  // 10분마다 실행 (밀리초 단위) 600.000
+// 자정마다 panding 상태의 결제 데이터 failed 로 변경
+//    @Scheduled(fixedRate = 600000)  // 10분마다 실행 (밀리초 단위) 600.000
+    @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void markOldPendingPaymentsAsFailed(){
 

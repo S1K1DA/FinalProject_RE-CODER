@@ -10,6 +10,14 @@
         <result property="matchingChattingState" column="matching_chatting_state" />
     </resultMap>
 
+    <resultMap id="resultMatchingAlarm" type="MatchingAlarmDto">
+        <result property="alarmNo" column="alarm_no" />
+        <result property="matchingNo" column="matching_no" />
+        <result property="matchingUserNo" column="matching_user_no" />
+        <result property="alarmMessage" column="alarm_message" />
+        <result property="alarmIndate" column="alarm_indate" />
+    </resultMap>
+
     <select id="getUserInfo" resultType="com.heartlink.member.model.dto.MemberDto">
         SELECT BASIC_USER_NICKNAME AS nickname,
                BASIC_USER_SEX AS gender,
@@ -52,6 +60,15 @@
                )
     </insert>
 
-
+    <select id="getUserAlarm" resultMap="resultMatchingAlarm">
+        SELECT ALARM_NO ,
+               MATCHING_NO ,
+               MATCHED_USER_NO ,
+               ALARM_MESSAGE ,
+               ALARM_INDATE
+        FROM MATCHING_ALARM ma
+        WHERE MATCHED_USER_NO = #{userNo}
+        ORDER BY ALARM_INDATE DESC
+    </select>
 
 </mapper>
