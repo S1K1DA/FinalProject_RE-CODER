@@ -112,7 +112,19 @@
 }
 
 .custom-admin-board .pagination{
+    align-items: center;
     margin-bottom: 30px;
+}
+
+.pagination .btn-action{
+    margin: 0 5px;
+}
+
+.pagination .btn-action:hover{
+    height: 40px !important;
+    align-content: center !important;
+    border-radius: 10px !important;
+    background-color: #efebf7 !important;
 }
 
 .custom-admin-board a{
@@ -366,6 +378,22 @@
 .admin-user-search{
     height: 50px;
     padding: 8px;
+}
+
+.email-check-btn{
+    position: absolute;
+    top: 20%;
+    right: 2%;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    font-size: 12px;
+    color: #ffffff;
+    background: #633fb0;
+}
+
+#admin-email{
+    padding-right: 80px;
 }
 
 @media (max-width: 1285px) {

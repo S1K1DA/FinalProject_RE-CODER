@@ -142,9 +142,11 @@ public class ChargeController {
             String apiProduct = apiResponse.getPaymentProduct();
             String dbProduct = dbResponse.getPaymentProduct();
 
+            String apiUserEmail = apiResponse.getPaymentUserEmail();
+            String dbUsserEmail = dbResponse.getPaymentUserEmail();
 
             // api와 db의 응답 값 비교 (결제금액, 결제 상품명, 결제요청 고객)
-            if(apiAmount == dbAmount && apiProduct.equals(dbProduct)) {
+            if(apiAmount == dbAmount && apiProduct.equals(dbProduct) && apiUserEmail.equals(dbUsserEmail)) {
 
                apiResponse.setPaymentState("Completed");
                apiResponse.setPaymentReference("Success");

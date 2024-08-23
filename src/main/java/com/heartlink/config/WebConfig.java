@@ -48,6 +48,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(paymentInterceptor)
                 .addPathPatterns("/charge/**") // 결제 페이지와 관련된 URL 패턴
                 .excludePathPatterns("/charge/shop", "/charge/history");  // 제외 페이지 경로
+
     }
+
 }
+
+
 

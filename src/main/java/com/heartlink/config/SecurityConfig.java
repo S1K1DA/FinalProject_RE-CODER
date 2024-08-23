@@ -2,6 +2,7 @@ package com.heartlink.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -52,8 +53,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 // 예: 어드민만 접근 가능한 URL 설정
-                                .requestMatchers("/notices/new", "/notices/edit", "/notices/delete", "/notices/delete").hasRole("ADMIN")
-                                // 일부 페이지만 접속 권한 설정
+                                .requestMatchers("/admin/**", "/notices/new", "/notices/edit", "/notices/delete", "/notices/delete").hasRole("ADMIN")
+                                // 일부 페이지만 접속 권한 설정 
                                 .requestMatchers("/matching/mbti").authenticated()    //은식
                                 .requestMatchers("/mypage/**", "/review/photoenroll", "review/photoedit").authenticated()    //아태
                                 .requestMatchers("/matching/**").authenticated()    //재인

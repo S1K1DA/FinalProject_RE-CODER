@@ -40,7 +40,7 @@
                     <option value="작성일" th:selected="${feedArray == '작성일'}">작성일</option>
                     <option value="좋아요 수" th:selected="${feedArray == '좋아요 수'}">좋아요 수</option>
                 </select>
-                <button class="new-feed-btn" onclick="location.href='/feed/write'">New Feed</button>
+                <button class="new-feed-btn" onclick="location.href='/feed/write'" sec:authorize="isAuthenticated()">New Feed</button>
             </div>
             <div class="feed-ele" th:each="feed : ${feedList}">
                 <div class="feed-out-box">

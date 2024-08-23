@@ -24,21 +24,26 @@
                 </a>
               </div>
               <h5 class="my-4 d-flex justify-content-center">관리자 등록을 위한 이메일을 입력해주세요.</h5>
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput2" placeholder="이메일 주소" >
-                <label for="floatingInput2">이메일 주소</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingInput3" placeholder="비밀번호" >
-                <label for="floatingInput3">비밀번호</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingInput3" placeholder="비밀번호 재입력" >
-                <label for="floatingInput3">비밀번호 재입력</label>
-              </div>
-              <div class="d-grid mt-4">
-                <button type="button" class="btn btn-secondary p-2">가입하기</button>
-              </div>
+              <form class="register-form" action="/admin/register/submit" method="post">
+                <div class="form-floating mb-3">
+                  <input type="email" name="adminUserEmail" class="form-control" id="adminEmail" onblur="validateEmail();" placeholder="이메일 주소" >
+                  <label for="floatingInput2">이메일 주소</label><button class="email-check-btn" type="button" onclick="checkEmailDuplicate()">중복 확인</button>
+                  <p id="email-input"></p>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" name="adminUserPwd" class="form-control" id="adminPasswd" onblur="validatePassword();" placeholder="비밀번호" >
+                  <label for="floatingInput3">비밀번호</label>
+                  <p id="password-input"></p>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" name="adminUserPwdConfirm" class="form-control" id="adminPasswdConfirm" onblur="validatePassword();" placeholder="비밀번호 재입력" >
+                  <label for="floatingInput3">비밀번호 재입력</label>
+                  <p id="password-comfirm"></p>
+                </div>
+                <div class="d-grid mt-4">
+                  <button type="submit" class="btn btn-secondary p-2" onclick="registerClick(event)">가입하기</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

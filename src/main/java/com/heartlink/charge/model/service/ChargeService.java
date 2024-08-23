@@ -130,6 +130,7 @@ public class ChargeService {
             responseChargeRequestDto.setPaymentAmount(paymentResponse.getAmount().getTotalAmount());
             responseChargeRequestDto.setPaymentMethod(paymentResponse.getMethod().getProvider());
             responseChargeRequestDto.setPaymentProduct(paymentResponse.getOrderName());
+            responseChargeRequestDto.setPaymentUserEmail(paymentResponse.getCustomer().getEmail());
 
             return responseChargeRequestDto;
         }
@@ -235,8 +236,6 @@ public class ChargeService {
 
             // "status" 필드 추출
             String status = cancellationNode.path("status").asText();
-
-            System.out.println(status);
 
             return status;
 
