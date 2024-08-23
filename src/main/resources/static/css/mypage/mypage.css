@@ -563,11 +563,12 @@ list-style-type: none;
 
 /* 페이지네이션 */
 .custom-block-info .pagination {
-    text-align: center;
-    display: flex;
-    justify-content: center;
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;;
     margin-top: 20px;
     border: none;
+    position:inherit;
 }
 
 /* 공통 버튼 스타일 */
