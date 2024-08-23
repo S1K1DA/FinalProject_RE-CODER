@@ -156,9 +156,7 @@ width:calc(100% - 150px);
 }
 
 .custom-block-info {
-    overflow: hidden;
     padding-bottom: 10px;
-
     height:100%;
 }
 
@@ -248,6 +246,27 @@ width:calc(100% - 150px);
 
 .main-page .form-actions .btn-cancel {
     display: none;
+}
+
+
+/* 프로필 사진 스타일 */
+.profile-coin {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: 300px;
+    height: 20px;
+    padding-right : 30px;
+    background-color: none;
+    display: inline-block;
+    flex-direction: column;
+    text-align:right;
+    color:var(--primary-color);
+}
+
+.profile-coin img{
+width: 30px;
+height: 30px;
 }
 
 /* 프로필 사진 스타일 */
