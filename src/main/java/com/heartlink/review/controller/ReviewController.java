@@ -42,6 +42,8 @@ public class ReviewController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, reviews);
 
         model.addAttribute("reviews", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/review/photomain");
@@ -94,6 +96,8 @@ public class ReviewController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
 
         model.addAttribute("liveReviews", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/review/livemain");

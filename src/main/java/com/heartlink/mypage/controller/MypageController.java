@@ -70,6 +70,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedFeeds);
 
         model.addAttribute("likedFeeds", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/feedlike");
@@ -87,6 +89,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, photoReviews);
 
         model.addAttribute("photoReviews", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/ptreview");
@@ -104,6 +108,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
 
         model.addAttribute("liveReviews", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/lireview");
@@ -113,7 +119,7 @@ public class MypageController {
     }
 
     @GetMapping("/proflike")
-    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page,HttpServletRequest request, Model model) {
         int userId = getCurrentUserId();
         int pageSize = 8;
 
@@ -121,10 +127,13 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
 
         model.addAttribute("likedProfiles", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/proflike");
 
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_proflike/mypage-proflike";
     }
 
@@ -269,7 +278,7 @@ public class MypageController {
         String storedPassword = mypageService.getPasswordByUserId(userId);
         if (storedPassword != null && passwordEncoder.matches(password, storedPassword)) {
             boolean isDeleted = mypageService.deleteUserById(userId);
-            return isDeleted ? "redirect:/login?logout" : "mypage/mypage_delete/mypage-delete";
+            return isDeleted ? "redirect:/member/logout" : "mypage/mypage_delete/mypage-delete";
         } else {
             return "mypage/mypage_delete/mypage-delete";
         }
@@ -325,6 +334,36 @@ public class MypageController {
         boolean isUnliked = mypageService.unlikeProfile(userId, likedUserNo);
 
         return Map.of("success", isUnliked);
+    }
+
+    @PostMapping("/checkNickname")
+    public ResponseEntity<Map<String, Boolean>> checkNickname(@RequestBody Map<String, String> payload) {
+        String nickname = payload.get("nickname");
+        boolean isUnique = mypageService.isNicknameUnique(nickname);
+        return ResponseEntity.ok(Map.of("isUnique", isUnique));
+    }
+
+    @GetMapping("/getFeedContent")
+    @ResponseBody
+    public Map<String, Object> getFeedContent(@RequestParam("feedNo") int feedNo) {
+        MypageDto feed = mypageService.getFeedByNo(feedNo);
+        Map<String, Object> response = new HashMap<>();
+
+        if (feed == null) {
+            response.put("status", "error");
+            response.put("message", "Feed not found");
+            return response;
+        }
+
+        response.put("status", "success");
+        response.put("feedTitle", feed.getFeedTitle());
+        response.put("author", feed.getAuthor());
+        response.put("likeCount", feed.getLikeCount());
+        response.put("feedTag", feed.getFeedTag());
+        response.put("feedIndate", feed.getFeedIndate());
+        response.put("feedContent", feed.getFeedContent());
+
+        return response;
     }
 
 }

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="pagination" class="pagination">
-    <a class="btn-action" th:if="${currentPage > 1}" th:href="@{${paginationUrl}(page=${currentPage - 1})}">&laquo;</a>
-    <span th:each="page : ${#numbers.sequence(1, totalPages)}">
+    <a class="btn-action" th:href="${currentPage > 1} ? @{${paginationUrl}(page=${currentPage - 1})} : '#'">&laquo;</a>
+
+    <span th:each="page : ${#numbers.sequence(startPage, endPage)}">
         <a class="btn-action" th:classappend="${page == currentPage} ? ' active'" th:href="@{${paginationUrl}(page=${page})}"
            th:text="${page}"></a>
     </span>
-    <a class="btn-action" th:if="${currentPage < totalPages}" th:href="@{${paginationUrl}(page=${currentPage + 1})}">&raquo;</a>
-</div>
 
+    <a class="btn-action" th:href="${currentPage < totalPages} ? @{${paginationUrl}(page=${currentPage + 1})} : '#'">&raquo;</a>
+</div>
 </html>
