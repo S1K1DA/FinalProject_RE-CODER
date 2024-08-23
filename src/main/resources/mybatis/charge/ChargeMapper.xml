@@ -106,7 +106,9 @@
 
     <update id="failPayment">
         UPDATE PAYMENT_HISTORY
-        SET PAYMENT_STATE = 'Failed'
+        SET
+            PAYMENT_STATE = 'Failed',
+            PAYMENT_REFERENCE = '스케줄러에 의한 Failed'
         WHERE PAYMENT_NO = #{paymentNo}
     </update>
 

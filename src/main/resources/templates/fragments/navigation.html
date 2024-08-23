@@ -52,11 +52,11 @@
                         </ul>
                     </li>
                     <div class="ms-4 nav-my-btns">
-                        <div class="dropdown-bell">
+                        <div class="dropdown-bell" sec:authorize="isAuthenticated()">
                             <button class="drop-btn nav-bell-icon">
                                 <span class="bi-bell bell-icon"></span>
                             </button>
-                            <div class="dropdown-content" id="bell-dropdown">
+                            <div  class="dropdown-content" id="bell-dropdown">
                                 <div class="alarm-ele">asd님의 새로운 매칭 요청!</div>
                                 <div class="alarm-ele">qwe님께 보낸 매칭 성공!</div>
                             </div>

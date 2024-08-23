@@ -38,9 +38,12 @@ public class ChargeService {
 
     // 자정마다 panding 상태의 결제 데이터 failed 로 변경
 //    @Scheduled(cron = "0 0 0 * * ?")
-    @Scheduled(fixedRate = 600000)  // 10분마다 실행 (밀리초 단위)
+    @Scheduled(fixedRate = 600000)  // 10분마다 실행 (밀리초 단위) 600.000
     @Transactional
     public void markOldPendingPaymentsAsFailed(){
+
+        System.out.println("스케줄러 발생!");
+
         LocalDateTime limitMinute = LocalDateTime.now().minusMinutes(30);
 
         List<ChargeRequestDto> oldPendingPayments = chargeMapper.getOldPendingPayments(limitMinute);
