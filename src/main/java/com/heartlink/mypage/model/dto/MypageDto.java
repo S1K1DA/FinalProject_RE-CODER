@@ -18,6 +18,11 @@ public class MypageDto {
     private String mbti;
     private int coin;
 
+    private double latitude;
+    private double longitude;
+
+    private String consentLocationInfo;
+
     // 성향 관련 필드들
     private int personalNo;
     private String personalName;

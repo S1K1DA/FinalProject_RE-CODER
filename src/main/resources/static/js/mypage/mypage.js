@@ -416,8 +416,8 @@ function handleAddressSearch(data) {
             const longitude = document.getElementById('addr-longitude');
             const latitude = document.getElementById('addr-latitude');
 
-            longitude.value = result[0].x;
-            latitude.value = result[0].y;
+            longitude.value = result[0].y;
+            latitude.value = result[0].x;
         }
     };
 

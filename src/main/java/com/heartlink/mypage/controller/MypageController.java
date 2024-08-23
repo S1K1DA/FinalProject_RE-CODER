@@ -54,10 +54,15 @@ public class MypageController {
     public String editPage(HttpServletRequest request, Model model) {
         int userId = getCurrentUserId();
         MypageDto user = mypageService.getUserInfo(userId);
+        MypageDto userLocation = mypageService.getUserLocation(userId);  // 위도/경도 정보를 가져옴
+
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
+        model.addAttribute("userLocation", userLocation);  // 모델에 위도/경도 정보를 추가
+
         return "mypage/mypage_main/mypage-infoedit";
     }
+
 
     @GetMapping("/feedlike")
     public String feedlikepage(HttpServletRequest request,
@@ -219,6 +224,11 @@ public class MypageController {
     public String updateUserInfo(@ModelAttribute("user") MypageDto user) {
         int userId = getCurrentUserId();
         user.setUserId(userId);
+
+        // 체크박스가 체크되지 않았을 경우, consentLocationInfo가 null이므로 "N"으로 설정
+        if (user.getConsentLocationInfo() == null) {
+            user.setConsentLocationInfo("N");
+        }
 
         int result = mypageService.updateUserInfo(user);
         return result > 0 ? "redirect:/mypage/main" : "mypage/mypage_main/mypage-infoedit";

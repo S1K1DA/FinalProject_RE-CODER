@@ -12,6 +12,7 @@
         <result column="BASIC_USER_TELNUM" property="phone"/>
         <result column="BASIC_USER_MBTI" property="mbti"/>
         <result column="BASIC_USER_COIN" property="coin"/>
+        <result column="CONSENT_LOCATION_INFO" property="consentLocationInfo"/>
     </resultMap>
 
     <resultMap id="feedResultMap" type="MypageDto">
@@ -21,6 +22,11 @@
         <result column="author" property="author"/>
         <result column="feedTag" property="feedTag"/>
         <result column="feedIndate" property="feedIndate"/>
+    </resultMap>
+
+    <resultMap id="userLocationResultMap" type="MypageDto">
+        <result column="LATITUDE" property="latitude"/>
+        <result column="LONGITUDE" property="longitude"/>
     </resultMap>
 
     <!-- 유저 정보 가져오기 -->
@@ -41,7 +47,8 @@
         USER_ADDR = #{fullAddress},
         BASIC_USER_TELNUM = #{phone},
         BASIC_USER_UPDATE = CURRENT_TIMESTAMP,
-        BASIC_USER_MBTI = #{mbti}
+        BASIC_USER_MBTI = #{mbti},
+        CONSENT_LOCATION_INFO = #{consentLocationInfo}
         WHERE BASIC_USER_NO = #{userId}
     </update>
 
@@ -229,4 +236,22 @@
         JOIN BASIC_USER u ON f.AUTHOR_USER_NO = u.BASIC_USER_NO
         WHERE f.FEED_NO = #{feedNo}
     </select>
+
+    <select id="getUserLocation" parameterType="int" resultType="MypageDto">
+        SELECT LATITUDE, LONGITUDE
+        FROM BASIC_USER_LOCATION
+        WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <update id="updateUserLocation" parameterType="map">
+        MERGE INTO BASIC_USER_LOCATION l
+        USING DUAL
+        ON (l.BASIC_USER_NO = #{userId})
+        WHEN MATCHED THEN
+        UPDATE SET LATITUDE = #{latitude}, LONGITUDE = #{longitude}
+        WHEN NOT MATCHED THEN
+        INSERT (BASIC_USER_NO, LATITUDE, LONGITUDE)
+        VALUES (#{userId}, #{latitude}, #{longitude})
+    </update>
+
 </mapper>
