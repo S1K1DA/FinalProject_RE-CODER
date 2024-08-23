@@ -10,7 +10,8 @@
                 <a th:href="@{/mypage/hobby}">성향/취미</a></li>
             <li th:classappend="${currentUrl == '/mypage/ptreview' || currentUrl == '/mypage/lireview'} ? 'active'">
             <a th:href="@{/mypage/ptreview}">내 리뷰</a></li>
-            <li><a th:href="@{/charge/shop}">코인 충전</a></li>
+            <li th:classappend="${currentUrl == '/charge/shop' || currentUrl == 'charge/history'} ? 'active'">
+                <a th:href="@{/charge/shop}">코인 충전</a></li>
             <li th:classappend="${currentUrl == '/mypage/feedlike'} ? 'active'">
                 <a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a>
             </li>
