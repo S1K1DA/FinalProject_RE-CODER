@@ -270,7 +270,7 @@ public class MypageController {
         String storedPassword = mypageService.getPasswordByUserId(userId);
         if (storedPassword != null && passwordEncoder.matches(password, storedPassword)) {
             boolean isDeleted = mypageService.deleteUserById(userId);
-            return isDeleted ? "redirect:/login?logout" : "mypage/mypage_delete/mypage-delete";
+            return isDeleted ? "redirect:/member/logout" : "mypage/mypage_delete/mypage-delete";
         } else {
             return "mypage/mypage_delete/mypage-delete";
         }
@@ -333,6 +333,29 @@ public class MypageController {
         String nickname = payload.get("nickname");
         boolean isUnique = mypageService.isNicknameUnique(nickname);
         return ResponseEntity.ok(Map.of("isUnique", isUnique));
+    }
+
+    @GetMapping("/getFeedContent")
+    @ResponseBody
+    public Map<String, Object> getFeedContent(@RequestParam("feedNo") int feedNo) {
+        MypageDto feed = mypageService.getFeedByNo(feedNo);
+        Map<String, Object> response = new HashMap<>();
+
+        if (feed == null) {
+            response.put("status", "error");
+            response.put("message", "Feed not found");
+            return response;
+        }
+
+        response.put("status", "success");
+        response.put("feedTitle", feed.getFeedTitle());
+        response.put("author", feed.getAuthor());
+        response.put("likeCount", feed.getLikeCount());
+        response.put("feedTag", feed.getFeedTag());
+        response.put("feedIndate", feed.getFeedIndate());
+        response.put("feedContent", feed.getFeedContent());
+
+        return response;
     }
 
 }
