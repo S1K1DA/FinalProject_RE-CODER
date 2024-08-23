@@ -1,6 +1,7 @@
 package com.heartlink.member.model.mapper;
 
 
+import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,6 +26,9 @@ public interface MemberMapper {
 
     // 로그인 메서드 : email로 사용자 조회
     MemberDto findByEmail(@Param("email") String email);
+
+    // 어드민 이메일로 어드민 조회 메서드
+    AdminDto findAdminByEmail(@Param("email") String email);
 
     // 토큰 저장 메서드
     void saveToken(@Param("userNumber") int userNumber, @Param("accessToken") String accessToken, @Param("refreshToken") String refreshToken);

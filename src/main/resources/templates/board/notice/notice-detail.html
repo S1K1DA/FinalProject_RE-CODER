@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="fragments/head :: head"></head>
 <body>
 
@@ -8,20 +8,17 @@
 
 <main class="notice-detail-main">
     <div class="notice-detail-container">
-        <h1>운영정책</h1>
+        <h1 th:text="${notice.noticeTitle}">운영정책</h1>
         <div class="notice-info">
-            <span>작성자 : 은식이</span>
-            <span>2024-08-01</span>
+            <span>관리자</span>
+            <span th:text="${#dates.format(notice.noticeIndate, 'yyyy-MM-dd')}">2024-08-01</span>
         </div>
-        <div class="notice-content">
+        <div class="notice-content" th:utext="${notice.noticeContent}">
             공지사항 내용이 여기에 표시됩니다.
         </div>
         <div class="notice-actions">
-<!--
-    window.location.href='/notices/edit'
--->
-            <button type="button" class="edit-btn" th:onclick="'window.location.href=\'' + @{/notices/edit} + '\''">수정</button>
-            <button type="button" class="delete-btn">삭제</button>
+            <button type="button" class="edit-btn" th:onclick="'window.location.href=\'' + @{/notices/edit(id=${notice.noticeNo})} + '\''" sec:authorize="hasRole('ROLE_ADMIN')">수정</button>
+            <button type="button" class="delete-btn" th:data-id="${notice.noticeNo}" sec:authorize="hasRole('ROLE_ADMIN')">삭제</button>
             <button type="button" class="back-btn" onclick="history.back();">목록으로</button>
         </div>
     </div>

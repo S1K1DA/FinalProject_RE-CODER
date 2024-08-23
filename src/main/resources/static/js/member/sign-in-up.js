@@ -406,6 +406,9 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
         if (result === 'success') {
             Swal.fire('알림', '로그인 완료!', 'success');
             window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
+        } else if(result === 'adminSuccess') {
+            Swal.fire('알림', '관리자 로그인!', 'success');
+            window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
         } else {
             Swal.fire('알림', '이메일 또는 비밀번호 틀렸습니다.', 'error');
             window.location.href = '/member/sign'

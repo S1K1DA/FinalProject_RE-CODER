@@ -94,3 +94,18 @@ body {
 .submit-btn:hover {
   background-color: #218838;
 }
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pin-checkbox-container {
+  margin-bottom: 0; /* 체크박스 아래 여백 제거 */
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* 제목과의 간격 조정 */
+}
+
