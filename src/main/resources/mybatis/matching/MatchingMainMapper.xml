@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartlink.matching.model.mapper.MatchingMapper">
+    <resultMap id="resultMatchingMain" type="MatchingDto">
+        <result property="matchingNo" column="matching_no" />
+        <result property="matchingUserNo" column="matching_user_no" />
+        <result property="matchedUserNo" column="matched_user_no" />
+        <result property="matchingIndate" column="matching_indate" />
+        <result property="matchingState" column="matching_state" />
+        <result property="matchingChattingState" column="matching_chatting_state" />
+    </resultMap>
+
+    <resultMap id="resultMatchingAlarm" type="MatchingAlarmDto">
+        <result property="alarmNo" column="alarm_no" />
+        <result property="matchingNo" column="matching_no" />
+        <result property="matchingUserNo" column="matching_user_no" />
+        <result property="alarmMessage" column="alarm_message" />
+        <result property="alarmIndate" column="alarm_indate" />
+    </resultMap>
+
+    <select id="getUserInfo" resultType="com.heartlink.member.model.dto.MemberDto">
+        SELECT BASIC_USER_NICKNAME AS nickname,
+               BASIC_USER_SEX AS gender,
+               BASIC_USER_EMAIL AS email,
+               BASIC_USER_NO AS userNumber
+        FROM BASIC_USER bu
+        WHERE BASIC_USER_NO = #{matchedUserNo}
+    </select>
+
+    <select id="getMatchingData" resultMap="resultMatchingMain">
+        SELECT *
+        FROM MATCHING_STATE ms
+        WHERE
+            (MATCHING_USER_NO = #{matchingUserNo}
+                 AND MATCHED_USER_NO = #{matchedUserNo})
+           OR
+            (MATCHING_USER_NO = #{matchedUserNo}
+                 AND MATCHED_USER_NO = #{matchingUserNo})
+    </select>
+
+    <insert id="setMatchingRequest">
+        INSERT INTO MATCHING_STATE VALUES(
+            #{setMatchingNo},
+            #{matchingUserNo},
+            #{matchedUserNo},
+            SYSDATE,
+            DEFAULT,
+            DEFAULT
+        )
+    </insert>
+
+    <insert id="setMatchingAlarm">
+        INSERT INTO MATCHING_ALARM
+        VALUES (
+                   ALARM_SEQ.NEXTVAL,
+                   #{setMatchingNo},
+                   #{matchedUserNo},
+                   #{alarmMsg},
+                   SYSDATE
+               )
+    </insert>
+
+    <select id="getUserAlarm" resultMap="resultMatchingAlarm">
+        SELECT ALARM_NO ,
+               MATCHING_NO ,
+               MATCHED_USER_NO ,
+               ALARM_MESSAGE ,
+               ALARM_INDATE
+        FROM MATCHING_ALARM ma
+        WHERE MATCHED_USER_NO = #{userNo}
+        ORDER BY ALARM_INDATE DESC
+    </select>
+
+</mapper>

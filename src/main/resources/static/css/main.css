@@ -1517,6 +1517,12 @@ main {
     }
 }
 
+@media screen and (max-width: 1177px) {
+    .logo-text{
+        display: none;
+    }
+}
+
 @media screen and (max-width: 991px) {
     h1 {
         font-size: 48px;
