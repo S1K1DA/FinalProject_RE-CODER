@@ -70,6 +70,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedFeeds);
 
         model.addAttribute("likedFeeds", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/feedlike");
@@ -87,6 +89,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, photoReviews);
 
         model.addAttribute("photoReviews", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/ptreview");
@@ -104,6 +108,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, liveReviews);
 
         model.addAttribute("liveReviews", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/lireview");
@@ -121,6 +127,8 @@ public class MypageController {
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
 
         model.addAttribute("likedProfiles", paginationData.get("items"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/mypage/proflike");
