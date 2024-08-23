@@ -76,6 +76,8 @@ public class ChargeController {
         model.addAttribute("userPaymentHistory", paginationData.get("items"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("paginationUrl", "/charge/history");
 
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);

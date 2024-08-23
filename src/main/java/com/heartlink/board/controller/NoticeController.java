@@ -57,6 +57,8 @@ public class NoticeController {
             model.addAttribute("endPage", paginationData.get("endPage"));
             model.addAttribute("currentPage", paginationData.get("currentPage"));
             model.addAttribute("totalPages", paginationData.get("totalPages"));
+            model.addAttribute("startPage", paginationData.get("startPage"));
+            model.addAttribute("endPage", paginationData.get("endPage"));
             model.addAttribute("paginationUrl", "/notices/list");
         }
 
