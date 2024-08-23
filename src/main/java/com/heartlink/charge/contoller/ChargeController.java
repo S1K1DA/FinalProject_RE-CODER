@@ -89,7 +89,11 @@ public class ChargeController {
 
     @PostMapping("/payment-order")
     @ResponseBody
-    public ResponseEntity<String> getSequence(@RequestBody ChargeRequestDto chargeRequestDto){
+    public ResponseEntity<String> getSequence(@RequestBody ChargeRequestDto chargeRequestDto, HttpServletRequest request){
+
+        String referer = request.getHeader("Referer");
+        System.out.println("referer: " + referer);
+
         String thisSequence = chargeService.getCurrentSequence();
         String userEmail = getCurrentUserEmail();
         chargeRequestDto.setPaymentUserEmail(userEmail);
@@ -115,8 +119,6 @@ public class ChargeController {
     @PostMapping("/complete")
     @ResponseBody
     public ResponseEntity<?> completePayment(@RequestBody ChargeRequestDto chargeRequestDto, HttpServletRequest request) {
-        String referer = request.getHeader("Referer");
-        System.out.println("referer: " + referer);
         String paymentNo = chargeRequestDto.getPaymentNo();
 
         try {

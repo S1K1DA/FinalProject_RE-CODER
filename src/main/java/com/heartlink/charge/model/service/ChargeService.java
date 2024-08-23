@@ -187,7 +187,7 @@ public class ChargeService {
                     item.setPaymentState("취소불가");
                 }
 
-            }else if(item.getPaymentState().equals("Canceld")){
+            }else if(item.getPaymentState().equals("Canceled")){
                 item.setPaymentState("취소됨");
             }
 
