@@ -56,4 +56,7 @@ public interface MypageService {
 
     //닉네임체크
     boolean isNicknameUnique(String nickname);
+
+    //피드가져오기
+    MypageDto getFeedByNo(int feedNo);
 }

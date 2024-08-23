@@ -156,4 +156,9 @@ public class MypageServiceImpl implements MypageService {
     public boolean isNicknameUnique(String nickname) {
         return mypageDao.countByNickname(nickname) == 0;
     }
+
+    @Override
+    public MypageDto getFeedByNo(int feedNo) {
+        return mypageDao.getFeedByNo(feedNo);
+    }
 }

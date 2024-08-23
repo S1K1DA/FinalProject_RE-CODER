@@ -13,6 +13,15 @@
         <result column="BASIC_USER_MBTI" property="mbti"/>
     </resultMap>
 
+    <resultMap id="feedResultMap" type="MypageDto">
+        <result column="feedNo" property="feedNo"/>
+        <result column="feedTitle" property="feedTitle"/>
+        <result column="feedContent" property="feedContent"/>
+        <result column="author" property="author"/>
+        <result column="feedTag" property="feedTag"/>
+        <result column="feedIndate" property="feedIndate"/>
+    </resultMap>
+
     <!-- 유저 정보 가져오기 -->
     <select id="getUserInfoById" parameterType="int" resultMap="userResultMap">
         SELECT * FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
@@ -205,4 +214,18 @@
         SELECT COUNT(*) FROM BASIC_USER WHERE BASIC_USER_NICKNAME = #{nickname}
     </select>
 
+    <!-- 피드 번호로 피드 가져오기 -->
+    <select id="getFeedByNo" parameterType="int" resultMap="feedResultMap">
+        SELECT
+        f.FEED_NO as feedNo,
+        f.FEED_TITLE as feedTitle,
+        f.FEED_CONTENT as feedContent,
+        u.BASIC_USER_NICKNAME as author,
+        f.FEED_TAG as feedTag,
+        f.FEED_INDATE as feedIndate,
+        (SELECT COUNT(*) FROM FEED_LIKES WHERE FEED_NO = f.FEED_NO) as likeCount
+        FROM FEEDS f
+        JOIN BASIC_USER u ON f.AUTHOR_USER_NO = u.BASIC_USER_NO
+        WHERE f.FEED_NO = #{feedNo}
+    </select>
 </mapper>
