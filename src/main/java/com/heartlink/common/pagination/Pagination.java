@@ -1,4 +1,4 @@
-package com.heartlink.review.common;
+package com.heartlink.common.pagination;
 
 import org.springframework.stereotype.Service;
 
