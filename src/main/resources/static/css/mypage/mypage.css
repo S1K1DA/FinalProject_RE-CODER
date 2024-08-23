@@ -171,9 +171,10 @@ width:calc(100% - 150px);
 
 /* label 클래스 적용 */
 .custom-block-info p .label,
-.custom-block-info div.custom-block-row .label {
+.custom-block-info div.custom-block-row .label
+{
     display: inline-block;
-    width: 150px !important;
+    width: 165px !important;
     text-align: right;
     margin-right: 10px;
     color: var(--primary-color);

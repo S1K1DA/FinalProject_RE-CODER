@@ -45,6 +45,11 @@
                                 <button class="btn-action ms-2" type="button" onclick="searchAddress()">주소 변경</button>
                             </div>
 
+                            <p class="mb-2">
+                                <label for="consent-location-info" class="label fw-bold">주소 공개 여부 :</label>
+                                <input type="checkbox" id="consent-location-info" name="consentLocationInfo"
+                                       th:checked="${user.consentLocationInfo == 'Y'}" value="Y">
+                            </p>
 
                             <p class="mb-2">
                                 <span class="label fw-bold">MBTI :</span>
@@ -54,8 +59,9 @@
                             <!-- 숨겨진 필드에 전체 주소 저장 -->
                             <input type="hidden" id="user-full-address" name="fullAddress" th:value="${user.fullAddress}">
                             <!-- 숨겨진 필드에 경도와 위도 저장 -->
-                            <input type="hidden" id="addr-longitude" name="longitude" value="">
-                            <input type="hidden" id="addr-latitude" name="latitude" value="">
+                            <input type="hidden" id="addr-longitude" name="longitude" th:value="${userLocation != null ? userLocation.longitude : ''}">
+                            <input type="hidden" id="addr-latitude" name="latitude" th:value="${userLocation != null ? userLocation.latitude : ''}">
+
                         </div>
                         <div class="form-actions d-flex justify-content-center mt-4">
                             <button class="btn-submit" id="update-btn" type="submit">수정</button>

@@ -134,4 +134,16 @@ public class MypageDao {
         return sqlSession.selectOne("MypageMapper.getFeedByNo", feedNo);
     }
 
+    public MypageDto getUserLocation(int userId) {
+        return sqlSession.selectOne("MypageMapper.getUserLocation", userId);
+    }
+
+    public int updateUserLocation(int userId, double latitude, double longitude) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("latitude", latitude);
+        params.put("longitude", longitude);
+        return sqlSession.update("MypageMapper.updateUserLocation", params);
+    }
+
 }
