@@ -23,6 +23,11 @@ body {
 }
 
 .notice-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   padding: 30px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -43,6 +48,7 @@ body {
 }
 
 .notice-list {
+  width:100%;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -86,17 +92,8 @@ body {
   text-align: right;
 }
 
-/* 페이지 네비게이션 스타일 */
-.notice-pagination {
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
-  margin-top: 20px;
-  bottom: 0;        /* 화면의 맨 아래에 위치 */
-}
-
 /* 각 페이지 번호 스타일 */
-.notice-pagination a {
+.pagination span {
   margin: 0 10px;  /* 좌우로 10px 간격 추가 */
   padding: 10px 15px;
   text-decoration: none;
@@ -106,13 +103,13 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.notice-pagination a:hover {
+.pagination span:hover {
   background-color: #007bff;
   color: #fff;
 }
 
 /* 현재 페이지 스타일 */
-.notice-pagination a.active {
+.pagination span.active {
   font-weight: bold;
   color: #fff;
   background-color: #007bff;
@@ -137,6 +134,9 @@ body {
 
 /* 글쓰기 버튼 스타일 */
 .write-button-container {
+  position: absolute;
+  bottom: 10%;
+  right: 3%;
   display: flex;
   justify-content: flex-end;
   padding: 10px 0;
