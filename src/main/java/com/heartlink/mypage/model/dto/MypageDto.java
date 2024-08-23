@@ -14,7 +14,7 @@ public class MypageDto {
     private String nickname;
     private String name;
     private String phone;
-    private String address;
+    private String fullAddress;
     private String mbti;
 
     // 성향 관련 필드들
@@ -44,6 +44,11 @@ public class MypageDto {
     private int feedNo;
     private String feedTitle;
     private String author;
+    private String feedContent;
+    private int likeCount;
+    private String feedTag;
+    private Date feedIndate;
+
     private Date likedTime;
 
     // 매칭 관련 필드들 추가

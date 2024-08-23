@@ -84,11 +84,12 @@
 }
 
 .pagination {
-    text-align: center;
-    display: flex;
-    justify-content: center;
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;;
     margin-top: 20px;
     border: none;
+    position:inherit;
 }
 
 .review-line{

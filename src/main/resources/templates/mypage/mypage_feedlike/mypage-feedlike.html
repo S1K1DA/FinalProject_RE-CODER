@@ -23,7 +23,7 @@
 
                         <div class="custom-block-info w-100">
                             <div class="liked-feed-list">
-                                <div th:each="feed : ${likedFeeds}" class="liked-feed-item" th:data-feed-no="${feed.feedNo}" th:onclick="'location.href=\'/feed/' + ${feed.feedNo} + '\''">
+                                <div th:each="feed : ${likedFeeds}" class="liked-feed-item" th:data-feed-no="${feed.feedNo}">
 
                                     <a href="#" class="badge ms-auto feed-heart liked" onclick="event.stopPropagation();">
                                         <i class="bi-heart feed-heart-icon"></i>
@@ -45,13 +45,23 @@
     </section>
 </main>
 
+<!-- 피드 팝업 -->
+<div id="feed-popup" class="feed-popup" style="display:none;">
+    <div class="feed-popup-content">
+        <span class="close-popup">&times;</span>
+        <div id="popup-feed-content"></div>
+    </div>
+</div>
+
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
 
-<script>
 
-</script>
+
+<style>
+
+</style>
 
 </body>
 </html>
