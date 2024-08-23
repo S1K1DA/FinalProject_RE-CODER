@@ -71,6 +71,7 @@
         WHERE
             PAYMENT_USER_EMAIL = #{userEmail}
           AND PAYMENT_STATE != 'Pending'
+          AND PAYMENT_STATE != 'Failed'
         ORDER BY PAYMENT_DATE DESC
     </select>
 
