@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.dto.ChargeResponseDto;
 import com.heartlink.charge.model.mapper.ChargeMapper;
+import com.heartlink.member.model.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -35,11 +36,14 @@ public class ChargeService {
         this.restTemplate = restTemplate;
     }
 
-    // 자정마다 panding 상태의 결제 데이터 failed 로 변경
-//    @Scheduled(cron = "0 0 0 * * ?")
-    @Scheduled(fixedRate = 600000)  // 10분마다 실행 (밀리초 단위)
+// 자정마다 panding 상태의 결제 데이터 failed 로 변경
+//    @Scheduled(fixedRate = 600000)  // 10분마다 실행 (밀리초 단위) 600.000
+    @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void markOldPendingPaymentsAsFailed(){
+
+        System.out.println("스케줄러 발생!");
+
         LocalDateTime limitMinute = LocalDateTime.now().minusMinutes(30);
 
         List<ChargeRequestDto> oldPendingPayments = chargeMapper.getOldPendingPayments(limitMinute);
@@ -48,6 +52,10 @@ public class ChargeService {
             chargeMapper.failPayment(payment.getPaymentNo());
         }
 
+    }
+
+    public MemberDto getUserIndfo(String userEmail){
+        return chargeMapper.getUserIfo(userEmail);
     }
 
     public String getCurrentSequence() {

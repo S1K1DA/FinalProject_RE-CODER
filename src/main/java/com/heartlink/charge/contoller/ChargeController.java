@@ -2,6 +2,7 @@ package com.heartlink.charge.contoller;
 
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.service.ChargeService;
+import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.util.JwtUtil;
 import com.heartlink.review.common.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,7 +53,12 @@ public class ChargeController {
 
         String userEmail = getCurrentUserEmail();
 
+        MemberDto userInfo = chargeService.getUserIndfo(userEmail);
+
         model.addAttribute("userEmail",userEmail);
+        model.addAttribute("userName",userInfo.getName());
+        model.addAttribute("userTelnum",userInfo.getPhoneNumber());
+
         return "mypage/mypage_coin_charge/charge-main";
     }
 

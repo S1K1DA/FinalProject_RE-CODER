@@ -1,6 +1,7 @@
 package com.heartlink.charge.model.mapper;
 
 import com.heartlink.charge.model.dto.ChargeResponseDto;
+import com.heartlink.member.model.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,6 @@ public interface ChargeMapper {
     public List<ChargeRequestDto> getOldPendingPayments(@Param("limitMinute") LocalDateTime limitMinute);
 
     public int failPayment(String paymentNo);
+
+    public MemberDto getUserIfo(String userEmail);
 }

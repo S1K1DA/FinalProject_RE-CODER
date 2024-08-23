@@ -3,10 +3,12 @@ package com.heartlink.feed.controller;
 import com.heartlink.feed.model.dto.FeedCommentDto;
 import com.heartlink.feed.model.dto.FeedDto;
 import com.heartlink.feed.model.service.FeedService;
+import com.heartlink.member.util.JwtUtil;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +22,20 @@ import java.util.Map;
 public class FeedController {
 
     private final FeedService feedService;
+    private final JwtUtil jwtUtil;
 
     private int scrollFeedCnt;
 
     @Autowired
-    public FeedController (FeedService feedService){
+    public FeedController (FeedService feedService, JwtUtil jwtUtil){
         this.feedService = feedService;
+        this.jwtUtil = jwtUtil;
+    }
+
+    // SecurityContext에서 userId 가져오기
+    private int getCurrentUserNo() {
+        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        return jwtUtil.getUserNumberFromToken(jwt);
     }
 
 
@@ -57,7 +67,7 @@ public class FeedController {
     public String setFeedEnroll(FeedDto feedDto){
         String escapeContent = StringEscapeUtils.escapeHtml4(feedDto.getFeedContent());
 
-        feedDto.setAouthorUserNo(9);
+        feedDto.setAouthorUserNo(getCurrentUserNo());
         feedDto.setFeedContent(escapeContent);
 
         int feedEnroll = feedService.setFeedEnroll(feedDto);
@@ -151,7 +161,7 @@ public class FeedController {
 
     @GetMapping("/like")
     public ResponseEntity<?> setLikeFeed(@RequestParam("feedNo")int feedNo){
-        int userNo = 2; // 임시 하드코딩
+        int userNo = getCurrentUserNo();
 
         int userLikeFeed = feedService.setFeedLike(feedNo, userNo);
 
