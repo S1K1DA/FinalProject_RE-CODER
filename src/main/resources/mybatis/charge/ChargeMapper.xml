@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- src/main/resources/mappers/ChargeMapper.xml -->
 <mapper namespace="com.heartlink.charge.model.mapper.ChargeMapper">
 
     <resultMap id="resultMapCharge" type="ChargeRequestDto">
@@ -14,26 +13,40 @@
         <result column="payment_reference" property="paymentReference"/>
     </resultMap>
 
-    <!-- 시퀀스 값을 가져오는 SQL 쿼리 -->
     <select id="getCurrentSequence" resultType="java.lang.Integer">
         SELECT PAYMENT_SEQ.NEXTVAL FROM DUAL
     </select>
 
     <insert id="setPaymentHistory">
-        INSERT INTO PAYMENT_HISTORY VALUES(
-            #{paymentNo},
-            #{paymentUserEmail},
-            SYSDATE,
-            #{paymentAmount},
-            #{paymentMethod},
-            #{paymentState},
-            #{paymentProduct},
-            null
-        )
+        INSERT INTO PAYMENT_HISTORY (
+            PAYMENT_NO,
+            PAYMENT_USER_EMAIL,
+            PAYMENT_DATE,
+            PAYMENT_AMOUNT,
+            PAYMENT_METHOD,
+            PAYMENT_STATE,
+            PAYMENT_PRODUCT,
+            PAYMENT_REFERENCE
+        ) VALUES (
+                     #{paymentNo},
+                     #{paymentUserEmail},
+                     SYSDATE,
+                     #{paymentAmount},
+                     #{paymentMethod},
+                     #{paymentState},
+                     #{paymentProduct},
+                     null
+                 )
     </insert>
 
+    <update id="setUserCoin">
+        UPDATE BASIC_USER
+        SET BASIC_USER_COIN = BASIC_USER_COIN + #{paymentCoin}
+        WHERE BASIC_USER_EMAIL = #{paymentUserEmail}
+    </update>
+
     <select id="setPaymentDbDetails" resultMap="resultMapCharge">
-        SELECT * FROM PAYMENT_HISTORY ph
+        SELECT * FROM PAYMENT_HISTORY
         WHERE PAYMENT_NO = #{paymentNo}
     </select>
 
@@ -44,7 +57,66 @@
             PAYMENT_METHOD = #{paymentMethod},
             PAYMENT_REFERENCE = #{paymentReference}
         WHERE PAYMENT_NO = #{paymentNo}
-
     </update>
+
+    <select id="getUserPaymentHistory" resultMap="resultMapCharge">
+        SELECT
+            PAYMENT_NO,
+            PAYMENT_DATE,
+            PAYMENT_STATE,
+            PAYMENT_METHOD,
+            PAYMENT_AMOUNT,
+            PAYMENT_PRODUCT
+        FROM PAYMENT_HISTORY
+        WHERE
+            PAYMENT_USER_EMAIL = #{userEmail}
+          AND PAYMENT_STATE != 'Pending'
+        ORDER BY PAYMENT_DATE DESC
+    </select>
+
+    <select id="selectUserCoin" resultType="java.lang.Integer">
+        SELECT BASIC_USER_COIN
+        FROM BASIC_USER
+        WHERE BASIC_USER_EMAIL = #{userEmail}
+    </select>
+
+    <select id="getRequestPaymentInfo" resultMap="resultMapCharge">
+        SELECT * FROM PAYMENT_HISTORY
+        WHERE PAYMENT_NO = #{paymentNo}
+    </select>
+
+    <update id="canceledState">
+        UPDATE PAYMENT_HISTORY
+        SET PAYMENT_STATE = 'Canceled'
+        WHERE PAYMENT_NO = #{paymentNo}
+    </update>
+
+    <update id="setCoindeduction">
+        UPDATE BASIC_USER
+        SET BASIC_USER_COIN = BASIC_USER_COIN - #{userProduct}
+        WHERE BASIC_USER_EMAIL = #{userEmail}
+    </update>
+
+    <select id="getOldPendingPayments"  resultMap="resultMapCharge">
+        SELECT *
+        FROM PAYMENT_HISTORY
+        WHERE PAYMENT_STATE = 'Pending'
+        AND PAYMENT_DATE &lt; #{limitMinute}
+    </select>
+
+    <update id="failPayment">
+        UPDATE PAYMENT_HISTORY
+        SET
+            PAYMENT_STATE = 'Failed',
+            PAYMENT_REFERENCE = '스케줄러에 의한 Failed'
+        WHERE PAYMENT_NO = #{paymentNo}
+    </update>
+
+    <select id="getUserIfo" resultType="com.heartlink.member.model.dto.MemberDto">
+        SELECT BASIC_USER_NAME as name,
+               BASIC_USER_TELNUM as phoneNumber
+        FROM BASIC_USER bu
+        WHERE BASIC_USER_EMAIL = #{userEmail}
+    </select>
 
 </mapper>

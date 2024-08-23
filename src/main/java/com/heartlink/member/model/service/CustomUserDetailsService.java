@@ -1,6 +1,7 @@
 package com.heartlink.member.model.service;
 
 import com.heartlink.member.model.dto.MemberDto;
+import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -21,17 +22,21 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.memberMapper = memberMapper;
     }
 
-    // 인증 및 권한
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // 1. 일반 사용자 찾기
         MemberDto member = memberMapper.findByEmail(email);
-
-        if (member == null) {
-            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email);
+        if (member != null) {
+            return new User(member.getEmail(), member.getPassword(), Collections.emptyList());
         }
 
-        // UserDetails 객체 생성하여 반환
-        // 권한 정보가 필요하다면, 두 번째 파라미터에 권한 리스트를 추가할 수 있습니다.
-        return new User(member.getEmail(), member.getPassword(), Collections.emptyList());
+        // 2. 어드민 사용자 찾기
+        AdminDto admin = memberMapper.findAdminByEmail(email);
+        if (admin != null) {
+            return new User(admin.getEmail(), admin.getPassword(), Collections.emptyList());
+        }
+
+        // 3. 사용자 또는 어드민이 없으면 예외 발생
+        throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email);
     }
 }

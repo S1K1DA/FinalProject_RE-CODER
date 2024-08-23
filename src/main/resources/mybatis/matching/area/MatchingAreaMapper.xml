@@ -29,7 +29,7 @@
 
     <select id="selectUserDetails" resultMap="resultMatchingUser">
         SELECT b.BASIC_USER_NO,
-               b.BASIC_USER_NAME,
+               b.BASIC_USER_NICKNAME,
                b.BASIC_USER_BIRTHDATE,
                b.BASIC_USER_MBTI,
                b.CONSENT_LOCATION_INFO,
@@ -61,7 +61,7 @@
                 </when>
             </choose>
         GROUP BY b.BASIC_USER_NO,
-            b.BASIC_USER_NAME,
+            b.BASIC_USER_NICKNAME,
             b.BASIC_USER_BIRTHDATE,
             b.BASIC_USER_MBTI,
             b.CONSENT_LOCATION_INFO,

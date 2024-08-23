@@ -133,7 +133,7 @@
                         <div class="matching-request-box">
                             <img src="/image/user_profile/${responseJson[i].photoOriginName || 'default_image.png'}" class="matching-photo">
                             <a class="matching-request" name="area-mathing-btn" >매칭 신청</a>
-                            <input id="matchingUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
+                            <input id="matchedUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
                         </div>
                         <table class="matching-info">
                         `;
@@ -148,7 +148,7 @@
                     }
                     resultInnerHtml += `
                             <tr>
-                                <td><p class="matching-name">${responseJson[i].basicUserName}</p></td>
+                                <td><p class="matching-name">${responseJson[i].basicUserNickname}</p></td>
                                 <td><p class="matching-age">${calculateAge(responseJson[i].basicUserBirthdate)}세</p></td>
                             </tr>
                             <tr>
@@ -183,16 +183,61 @@
                     let areaMatchingBtn = document.getElementsByName('area-mathing-btn');
 
                     for (const ele of Array.from(areaMatchingBtn)) {
-                        ele.addEventListener("click", function(){
-                            yesOrNo("매칭신청 하시겠습니까?",
-                                    "question",
-                                    "rgb(255 128 135)",
-                                    "rgb(150 150 150)",
-                                    "예",
-                                    "아니요",
-                                    "매칭 완료!",
-                                    "success",
-                                    "");
+                        ele.addEventListener("click", async function(){
+
+                            try {
+
+                                const result = await Swal.fire({
+                                    title: "매칭신청 하시겠습니까?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "rgb(255 128 135)",
+                                    cancelButtonColor: "rgb(150 150 150)",
+                                    confirmButtonText: "예",
+                                    cancelButtonText: "아니요"
+                                })
+
+                                if (result.isConfirmed) {
+
+                                    const matchedUserNo = document.getElementById('matchedUserNo').value;
+
+                                    const response = await fetch("/matching/request", {
+                                        method: "POST",
+                                        headers: {"Content-Type": "application/json"},
+                                        body: JSON.stringify({
+                                            matchedUserNo: matchedUserNo
+                                        }),
+                                    });
+
+                                    if (response.ok) {
+                                        await Swal.fire({
+                                            title: "매칭 완료!",
+                                            icon: "success"
+                                        }).then(() => {
+                                            window.location.reload();
+                                        });
+
+                                    }else {
+                                        const errorText = await response.text(); // 오류 메시지 추출
+                                        await Swal.fire({
+                                            title: "매칭 실패!",
+                                            icon: "error",
+                                            text: errorText
+                                        });
+                                    }
+                                }else{
+                                    return Promise.reject();
+                                }
+
+                            } catch (error) {
+                                    console.error(error);
+                                    await Swal.fire({
+                                        title: "오류 발생",
+                                        text: "매칭 신청 중 오류가 발생했습니다.",
+                                        icon: "error"
+                                    });
+                                }
+
                         });
                     }
 

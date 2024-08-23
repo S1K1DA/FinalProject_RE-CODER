@@ -206,11 +206,9 @@ ul, li{
 .payment-history-table{
     width: 100%;
     padding: 10px;
-    background-color: #e9b5c1;
+    background-color: #e9b5c18f;
     border-radius: 15px;
     text-align: center;
-    border-top: 1.5px solid #3c3c3c2b;
-    border-bottom: 1.5px solid #3c3c3c2b;
 }
 
 .payment-history-thead{
@@ -237,7 +235,7 @@ ul, li{
 }
 
 .payment-history-table td{
-    padding: 34px 0;
+    padding: 30px 0;
 }
 
 .payment-history-pagination{

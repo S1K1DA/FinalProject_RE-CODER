@@ -51,9 +51,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-
+                                // 예: 어드민만 접근 가능한 URL 설정
+                                .requestMatchers("/admin/**", "/notices/new", "/notices/edit", "/notices/delete", "/notices/delete").hasRole("ADMIN")
                                 // 일부 페이지만 접속 권한 설정 
-                                .requestMatchers("/matching/**").authenticated()    //은식
+                                .requestMatchers("/matching/mbti").authenticated()    //은식
                                 .requestMatchers("/mypage/**", "/review/photoenroll", "review/photoedit").authenticated()    //아태
                                 .requestMatchers("/matching/**").authenticated()    //재인
 
@@ -66,7 +67,7 @@ public class SecurityConfig {
                                 .logoutUrl("/member/logout")  // 로그아웃 URL 설정
                                 .logoutSuccessUrl("/member/sign")  // 로그아웃 성공 시 리디렉션할 URL
                                 .invalidateHttpSession(true)  // 세션 무효화
-                                .deleteCookies("token")  // 쿠키 삭제
+                                .deleteCookies("token", "adminToken")
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // JwtFilter를 UsernamePasswordAuthenticationFilter 이전에 추가
         return http.build();

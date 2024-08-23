@@ -1,55 +1,70 @@
 package com.heartlink.board.controller;
 
-import com.heartlink.member.model.dto.MemberDto;
-import com.heartlink.member.model.service.MemberService;
+import com.heartlink.board.model.dto.NoticeDto;
+import com.heartlink.board.model.service.NoticeService;
+import com.heartlink.common.paging.PageInfo;
+import com.heartlink.common.paging.Pagination;
 import com.heartlink.member.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/notices")
 public class NoticeController {
 
-    private final MemberService memberService;
+    private final NoticeService noticeService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public NoticeController(MemberService memberService, JwtUtil jwtUtil) {
-        this.memberService = memberService;
+    public NoticeController(NoticeService noticeService, JwtUtil jwtUtil) {
+        this.noticeService = noticeService;
         this.jwtUtil = jwtUtil;
     }
 
     // 공지사항 리스트 페이지
     @GetMapping("/list")
-    public String getNoticeList(@CookieValue(value = "token", required = false) String token, Model model) {
-        if (token != null) {
-            // JWT 토큰에서 이메일 추출
-            String email = jwtUtil.getEmailFromToken(token);
-            int userNumber = jwtUtil.getUserNumberFromToken(token);
+    public String getNoticeList(Model model,
+                                @RequestParam(value = "cpage", defaultValue = "1") int cpage) {
 
-            // 이메일로 사용자 정보 조회
-            MemberDto member = memberService.findByEmail(email);
+        int listCount = noticeService.getNoticeCount(); // 총 공지사항 수
+        int pageLimit = 3; // 페이지네이션의 최대 페이지 수
+        int boardLimit = 8; // 한 페이지에 보여줄 공지사항 수
 
-            System.out.println("Notice email : " + email);
-            System.out.println("Notice email : " + userNumber);
+        PageInfo pi = Pagination.getPageInfo(listCount, cpage, pageLimit, boardLimit);
 
-            // 사용자 정보를 모델에 추가하여 View로 전달
-            model.addAttribute("member", member);
+        // 고정된 공지사항 가져오기
+        List<NoticeDto> pinnedNotices = noticeService.getPinnedNotices();
+
+        // 일반 공지사항 가져오기
+        List<NoticeDto> list = noticeService.getNoticeList(pi);
+
+        if (pinnedNotices != null) {
+            model.addAttribute("pinnedNotices", pinnedNotices);  // 고정된 공지사항 리스트 추가
+        }
+        if (list != null) {
+            model.addAttribute("pi", pi);
+            model.addAttribute("list", list);  // 일반 공지사항 리스트 추가
         }
 
         return "board/notice/notice-list";
     }
 
-
-
-    // 공지사항 상세보기 페이지
     @GetMapping("/detail")
-    public String getNoticeDetail() {
-        return "board/notice/notice-detail";
+    public String getNoticeDetail(@RequestParam("id") Long noticeNo, Model model) {
+        NoticeDto notice = noticeService.getNoticeById(noticeNo);
+        if (notice != null) {
+            model.addAttribute("notice", notice);
+            return "board/notice/notice-detail";
+        } else {
+            return "error/404";  // 공지사항이 없을 경우 404 페이지로 리다이렉트
+        }
     }
 
     // 공지사항 글쓰기 페이지
@@ -60,7 +75,93 @@ public class NoticeController {
 
     // 공지사항 수정 페이지
     @GetMapping("/edit")
-    public String editNoticeForm() {
+    public String editNoticeForm(@RequestParam("id") Long noticeNo, Model model) {
+        NoticeDto notice = noticeService.getNoticeById(noticeNo);  // 공지사항 정보 불러오기
+        model.addAttribute("notice", notice);
         return "board/notice/notice-edit";
+    }
+
+    // 공지사항 글쓰기 처리
+    @PostMapping("/new")
+    public String createNotice(
+            @RequestParam String title,
+            @RequestParam String content,
+            @RequestParam String noticePriority,
+            @CookieValue(name = "adminToken", required = false) String adminToken,
+            Model model) {
+
+        if (adminToken != null) {
+            int adminUserNo = jwtUtil.getAdminNumberFromToken(adminToken);
+
+            if (adminUserNo > 0) {  // adminUserNo가 0보다 크다면 유효한 admin
+                NoticeDto noticeDto = new NoticeDto();
+                noticeDto.setNoticeTitle(title); // 필드 이름 일치
+                noticeDto.setNoticeContent(content); // 필드 이름 일치
+                noticeDto.setNoticePriority(noticePriority); // 필드 이름 일치
+                noticeDto.setAdminUserNo((long) adminUserNo); // 필드 이름 일치
+
+                try {
+                    noticeService.createNotice(noticeDto);
+                    return "redirect:/notices/list";  // 성공 시 공지사항 목록으로 리다이렉트
+                } catch (IllegalStateException e) {
+                    model.addAttribute("errorMessage", e.getMessage());
+                    return "board/notice/notice-list";  // 리스트로 이동
+                }
+            } else {
+                model.addAttribute("error", "권한이 없습니다.");
+                return "error/403";
+            }
+        } else {
+            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+        }
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteNotice(@CookieValue(name = "adminToken", required = false) String adminToken,
+                                          @RequestParam("id") Long noticeNo) {
+        if (adminToken != null) {
+            int adminUserNo = jwtUtil.getAdminNumberFromToken(adminToken);
+
+            if (adminUserNo > 0) {
+                try {
+                    noticeService.deleteNotice(noticeNo);
+                    return ResponseEntity.ok("공지사항이 삭제되었습니다.");  // 200 OK 응답
+                } catch (Exception e) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("공지사항 삭제 중 문제가 발생했습니다.");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> updateNotice(@RequestParam("id") Long noticeNo,
+                                          @RequestParam("title") String title,
+                                          @RequestParam("content") String content,
+                                          @RequestParam("noticePriority") String noticePriority,
+                                          @CookieValue(name = "adminToken", required = false) String adminToken) {
+        if (adminToken != null) {
+            int adminUserNo = jwtUtil.getAdminNumberFromToken(adminToken);
+
+            if (adminUserNo > 0) {
+                NoticeDto noticeDto = new NoticeDto();
+                noticeDto.setNoticeNo(noticeNo);
+                noticeDto.setNoticeTitle(title);
+                noticeDto.setNoticeContent(content);
+                noticeDto.setNoticePriority(noticePriority);
+                noticeDto.setAdminUserNo((long) adminUserNo);
+                noticeDto.setNoticeUpdate(new Date());  // 업데이트 날짜 추가
+
+                noticeService.updateNotice(noticeDto);
+                return ResponseEntity.ok("공지사항이 수정되었습니다.");  // 200 OK 응답
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.heartlink.member.model.service;
 
+import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.model.mapper.MemberMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -70,6 +71,17 @@ public class MemberService {
         } else {
             return null;
         }
+    }
+
+    // 어드민 로그인 메서드
+    public AdminDto verifyAdminLogin(String email, String password) {
+        AdminDto admin = memberMapper.findAdminByEmail(email);
+
+        if (admin != null && admin.getPassword().equals(password)) {
+            return admin;
+        }
+
+        return null; // 로그인 실패 시 null 반환
     }
 
 

@@ -1,3 +1,4 @@
+/* 기존 스타일 그대로 유지 */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
 
 * {
@@ -45,6 +46,7 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .toolbar-btn {
@@ -71,7 +73,7 @@ body {
 }
 
 .editor-content {
-  min-height: 700px;
+  min-height: 670px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -94,5 +96,29 @@ body {
 
 .submit-btn:hover {
   background-color: #218838;
+}
+
+/* 기존 스타일 그대로 유지 */
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pin-checkbox-container {
+  margin-bottom: 0; /* 체크박스 아래 여백 제거 */
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* 제목과의 간격 조정 */
+}
+
+.editor-title {
+  flex-grow: 1; /* 제목 입력란이 가로로 확장되도록 */
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 0;
 }
 

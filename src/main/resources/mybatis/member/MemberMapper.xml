@@ -75,6 +75,16 @@
         WHERE BASIC_USER_EMAIL = #{email}
     </select>
 
+    <!-- 어드민 이메일로 조회 -->
+    <select id="findAdminByEmail" resultType="com.heartlink.member.model.dto.AdminDto">
+        SELECT
+        ADMIN_USER_NO AS adminUserNo,
+        ADMIN_USER_EMAIL AS email,
+        ADMIN_USER_PWD AS password
+        FROM ADMIN_USER
+        WHERE ADMIN_USER_EMAIL = #{email}
+    </select>
+
     <insert id="saveToken">
         INSERT INTO user_tokens (token_id, user_no, access_token, refresh_token, create_date)
         VALUES (TOKEN_SEQ.NEXTVAL, #{userNumber}, #{accessToken}, #{refreshToken}, CURRENT_TIMESTAMP)
