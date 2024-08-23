@@ -21,6 +21,9 @@
                             <div class="profile-picture">
                                 <img th:src="@{/image/review/weding-review2.jpg}" alt="프로필 사진">
                             </div>
+                            <div class="profile-coin">
+                                <img th:src="@{/image/coin_icon.png}" alt="코인"> : <span th:text="${user.coin}">코인</span> 개
+                            </div>
                             <div class="custom-block-info-box">
                             <p class="mb-2"><span class="label fw-bold">이메일 :</span> <span th:text="${user.email}">abc@gmail.com</span></p>
                             <p class="mb-2"><span class="label fw-bold">닉네임 :</span> <span th:text="${user.nickname}">닉네임</span></p>

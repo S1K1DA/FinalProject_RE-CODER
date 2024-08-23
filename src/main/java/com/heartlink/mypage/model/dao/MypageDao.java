@@ -18,54 +18,54 @@ public class MypageDao {
     }
 
     public MypageDto getUserInfoById(int userId) {
-        return sqlSession.selectOne("mypageMapper.getUserInfoById", userId);
+        return sqlSession.selectOne("MypageMapper.getUserInfoById", userId);
     }
 
     public String getPasswordByUserId(int userId) {
-        return sqlSession.selectOne("mypageMapper.getPasswordByUserId", userId);
+        return sqlSession.selectOne("MypageMapper.getPasswordByUserId", userId);
     }
 
     public int updateUserInfo(MypageDto user) {
-        return sqlSession.update("mypageMapper.updateUserInfo", user);
+        return sqlSession.update("MypageMapper.updateUserInfo", user);
     }
 
     public List<MypageDto> getPersonalCategoriesByType(String type) {
-        return sqlSession.selectList("mypageMapper.getPersonalCategoriesByType", type);
+        return sqlSession.selectList("MypageMapper.getPersonalCategoriesByType", type);
     }
 
     public List<Integer> getUserSelectedCategories(int userId) {
-        return sqlSession.selectList("mypageMapper.getUserSelectedCategories", userId);
+        return sqlSession.selectList("MypageMapper.getUserSelectedCategories", userId);
     }
 
     public void saveUserCategories(int userId, List<Integer> categoryIds) {
-        sqlSession.delete("mypageMapper.deleteUserCategories", userId);
+        sqlSession.delete("MypageMapper.deleteUserCategories", userId);
 
         if (categoryIds != null && !categoryIds.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("userId", userId);
             params.put("categoryIds", categoryIds);
-            sqlSession.insert("mypageMapper.insertUserCategories", params);
+            sqlSession.insert("MypageMapper.insertUserCategories", params);
         }
     }
 
     // 취미 관련 메소드들
     public List<MypageDto> getHobbyCategories() {
-        return sqlSession.selectList("mypageMapper.getHobbyCategories");
+        return sqlSession.selectList("MypageMapper.getHobbyCategories");
     }
 
     public void saveUserHobbies(int userId, List<Integer> hobbyIds) {
-        sqlSession.delete("mypageMapper.deleteUserHobbies", userId);
+        sqlSession.delete("MypageMapper.deleteUserHobbies", userId);
 
         if (hobbyIds != null && !hobbyIds.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("userId", userId);
             params.put("hobbyIds", hobbyIds);
-            sqlSession.insert("mypageMapper.insertUserHobbies", params);
+            sqlSession.insert("MypageMapper.insertUserHobbies", params);
         }
     }
 
     public List<MypageDto> getUserHobbies(int userId) {
-        return sqlSession.selectList("mypageMapper.getUserHobbies", userId);
+        return sqlSession.selectList("MypageMapper.getUserHobbies", userId);
     }
 
     // 리뷰 관련 메소드들 추가
@@ -73,65 +73,65 @@ public class MypageDao {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("reviewType", reviewType);
-        return sqlSession.selectList("mypageMapper.getReviewsByType", params);
+        return sqlSession.selectList("MypageMapper.getReviewsByType", params);
     }
 
     // 유저 상태 변경 -deleted
     public int updateUserStatusToDeleted(int userId) {
-        return sqlSession.update("mypageMapper.updateUserStatusToDeleted", userId);
+        return sqlSession.update("MypageMapper.updateUserStatusToDeleted", userId);
     }
 
     // 좋아요한 피드 목록 가져오기
     public List<MypageDto> getLikedFeeds(int userId) {
-        return sqlSession.selectList("mypageMapper.getLikedFeeds", userId);
+        return sqlSession.selectList("MypageMapper.getLikedFeeds", userId);
     }
 
     public int deleteFeedLike(int userId, int feedNo) {
         Map<String, Integer> params = new HashMap<>();
         params.put("userId", userId);
         params.put("feedNo", feedNo);
-        return sqlSession.delete("mypageMapper.deleteFeedLike", params);
+        return sqlSession.delete("MypageMapper.deleteFeedLike", params);
     }
 
     public int insertFeedLike(int userId, int feedNo) {
         Map<String, Integer> params = new HashMap<>();
         params.put("userId", userId);
         params.put("feedNo", feedNo);
-        return sqlSession.insert("mypageMapper.insertFeedLike", params);
+        return sqlSession.insert("MypageMapper.insertFeedLike", params);
     }
 
     public int insertDeletedUser(int userId) {
-        return sqlSession.insert("mypageMapper.insertDeletedUser", userId);
+        return sqlSession.insert("MypageMapper.insertDeletedUser", userId);
     }
 
     public List<MypageDto> getUserMatchingHistory(int userId) {
-        return sqlSession.selectList("mypageMapper.getUserMatchingHistory", userId);
+        return sqlSession.selectList("MypageMapper.getUserMatchingHistory", userId);
     }
 
     public List<MypageDto> getLikedProfiles(int userId) {
-        return sqlSession.selectList("mypageMapper.getLikedProfiles", userId);
+        return sqlSession.selectList("MypageMapper.getLikedProfiles", userId);
     }
 
     // 프로필 좋아요 추가
     public int insertProfileLike(int userId, int likedUserNo) {
         Map<String, Integer> params = Map.of("userId", userId, "likedUserNo", likedUserNo);
-        return sqlSession.insert("mypageMapper.insertProfileLike", params);
+        return sqlSession.insert("MypageMapper.insertProfileLike", params);
     }
 
     // 프로필 좋아요 해제
     public int deleteProfileLike(int userId, int likedUserNo) {
         Map<String, Integer> params = Map.of("userId", userId, "likedUserNo", likedUserNo);
-        return sqlSession.delete("mypageMapper.deleteProfileLike", params);
+        return sqlSession.delete("MypageMapper.deleteProfileLike", params);
     }
 
     //닉네임체크
     public int countByNickname(String nickname) {
-        return sqlSession.selectOne("mypageMapper.countByNickname", nickname);
+        return sqlSession.selectOne("MypageMapper.countByNickname", nickname);
     }
 
     //피드가져오기
     public MypageDto getFeedByNo(int feedNo) {
-        return sqlSession.selectOne("mypageMapper.getFeedByNo", feedNo);
+        return sqlSession.selectOne("MypageMapper.getFeedByNo", feedNo);
     }
 
 }

@@ -16,6 +16,7 @@ public class MypageDto {
     private String phone;
     private String fullAddress;
     private String mbti;
+    private int coin;
 
     // 성향 관련 필드들
     private int personalNo;
