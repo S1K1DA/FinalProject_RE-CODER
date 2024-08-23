@@ -25,9 +25,19 @@ public class Pagination {
                 Math.min(offset + pageSize, totalItems)
         );
 
+        int maxPageButtons = 5; // 표시할 최대 페이지 버튼 수
+        int startPage = Math.max(1, page - maxPageButtons / 2);
+        int endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+        if (endPage - startPage < maxPageButtons - 1) {
+            startPage = Math.max(1, endPage - maxPageButtons + 1);
+        }
+
         Map<String, Object> paginationData = new HashMap<>();
         paginationData.put("currentPage", page);
         paginationData.put("totalPages", totalPages);
+        paginationData.put("startPage", startPage);
+        paginationData.put("endPage", endPage);
         paginationData.put("items", paginatedList);
 
         return paginationData;
