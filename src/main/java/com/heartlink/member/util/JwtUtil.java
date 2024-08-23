@@ -35,6 +35,15 @@ public class JwtUtil {
         return (int) claims.get("userNumber");
     }
 
+    // 토큰에서 어드민 번호 추출
+    public int getAdminNumberFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
+        return (int) claims.get("adminUserNo");
+    }
+
     // JWT 토큰 생성
     public String generateToken(String email, int userNumber) {
         Date now = new Date();
@@ -43,6 +52,20 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("userNumber", userNumber)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    // JWT 토큰 생성 (어드민)
+    public String generateAdminToken(String email, int adminUserNo) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("adminUserNo", adminUserNo)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, secret)

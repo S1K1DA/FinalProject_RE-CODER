@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import jakarta.servlet.FilterChain;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -31,35 +33,50 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String jwt = getJwtFromCookies(request);
-//        System.out.println("Filter JWT: " + jwt);
+        String userJwt = getJwtFromCookies(request, "token"); // 일반 사용자 토큰
+        String adminJwt = getJwtFromCookies(request, "adminToken"); // 어드민 토큰
 
-        if (StringUtils.hasText(jwt) && jwtUtil.validateToken(jwt)) {
-            String email = jwtUtil.getEmailFromToken(jwt);
-            int userId = jwtUtil.getUserNumberFromToken(jwt); // JWT에서 userId를 추출
-
-//            System.out.println("JWT email: " + email);
-//            System.out.println("JWT userId: " + userId);
-
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, jwt, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-            // SecurityContext에 인증 정보와 userId를 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            request.setAttribute("userId", userId);
-        } else {
-            System.out.println("Invalid JWT");
+        if (StringUtils.hasText(userJwt) && jwtUtil.validateToken(userJwt)) {
+            handleAuthentication(request, userJwt, "user");
+        } else if (StringUtils.hasText(adminJwt) && jwtUtil.validateToken(adminJwt)) {
+            handleAuthentication(request, adminJwt, "admin");
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private String getJwtFromCookies(HttpServletRequest request) {
+    private void handleAuthentication(HttpServletRequest request, String jwt, String userType) {
+        String email = jwtUtil.getEmailFromToken(jwt);
+
+        if ("user".equals(userType)) {
+            int userId = jwtUtil.getUserNumberFromToken(jwt);
+            request.setAttribute("userId", userId);
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, jwt, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+            );
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } else if ("admin".equals(userType)) {
+            int adminNumber = jwtUtil.getAdminNumberFromToken(jwt);
+            request.setAttribute("adminNumber", adminNumber);
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, jwt, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
+            );
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
+
+    private String getJwtFromCookies(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
+                if (cookieName.equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }

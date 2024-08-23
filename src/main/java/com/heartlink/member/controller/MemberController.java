@@ -1,5 +1,6 @@
 package com.heartlink.member.controller;
 
+import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.model.service.MemberService;
 import com.heartlink.member.util.JwtUtil;
@@ -81,10 +82,11 @@ public class MemberController {
     @PostMapping("/login")
     @ResponseBody
     public String loginMember(@RequestParam String email, @RequestParam String password, HttpServletResponse response, Model model) {
+        // 1. 일반 사용자 로그인 처리
         MemberDto member = memberService.verifyLogin(email, password);
 
         if (member != null) {
-            // 로그인 성공 시 JWT 토큰 생성
+            // 로그인 성공 시 JWT 토큰 생성 (일반 사용자)
             String accessToken = jwtUtil.generateToken(member.getEmail(), member.getUserNumber());
             String refreshToken = jwtUtil.generateRefreshToken(member.getEmail(), member.getUserNumber());
 
@@ -100,9 +102,28 @@ public class MemberController {
 
             return "success"; // 로그인 성공 메시지 반환
         } else {
-            return "failure"; // 로그인 실패 메시지 반환
+            // 2. 어드민 로그인 처리
+            AdminDto admin = memberService.verifyAdminLogin(email, password);
+
+            if (admin != null) {
+                // 로그인 성공 시 JWT 토큰 생성 (어드민)
+                String accessToken = jwtUtil.generateAdminToken(admin.getEmail(), admin.getAdminUserNo());
+                String refreshToken = jwtUtil.generateRefreshToken(admin.getEmail(), admin.getAdminUserNo());
+
+                // JWT를 쿠키에 저장
+                Cookie jwtCookie = new Cookie("adminToken", accessToken);
+                jwtCookie.setHttpOnly(true);
+                jwtCookie.setPath("/");
+                jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (예: 1일)
+                response.addCookie(jwtCookie);
+
+                return "adminSuccess"; // 어드민 로그인 성공 메시지 반환
+            }
         }
+
+        return "failure"; // 로그인 실패 메시지 반환
     }
+
 
 //    @PostMapping("/logout")
 //    public String logout(HttpServletRequest request, HttpServletResponse response) {

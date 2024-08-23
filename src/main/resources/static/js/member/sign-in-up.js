@@ -51,12 +51,12 @@ function checkNicknameDuplicate() {
         data: { nickname: nickname },
         success: function(res) {
             if (res === "사용 가능한 닉네임입니다.") {
-                alert("사용 가능한 닉네임입니다.");
+                Swal.fire('알림', '사용 가능한 닉네임입니다.', 'success');
                 nickChecked = true;
                 textNick.innerHTML = "사용 가능한 닉네임입니다.";
                 textNick.style.color = "green";
             } else {
-                alert("중복된 닉네임입니다.");
+                Swal.fire('알림', '중복된 닉네임입니다.', 'error');
                 nickChecked = false;
                 textNick.innerHTML = "중복된 닉네임입니다.";
                 textNick.style.color = "red";
@@ -89,7 +89,7 @@ function validateEmail() {
 // 이메일 중복 확인 함수
 function checkEmailDuplicate() {
     if (!emailFlag) {
-        alert("유효한 이메일 주소를 입력하세요.");
+        Swal.fire('알림', '유효한 이메일 입력하세요.', 'error');
         return;
     }
 
@@ -127,12 +127,12 @@ function sendVerificationEmail() {
         url: "/api/email/send", // 이메일 인증번호 발송 API 엔드포인트
         data: { email: email },
         success: function() {
-            alert("인증번호가 발송되었습니다."); // 인증번호 발송 알림
+            Swal.fire('알림', '인증번호 발송하였습니다.', 'success'); // 인증번호 발송 알림
             document.getElementById('codeContainer').style.display = 'flex'; // 인증 코드 입력 필드를 표시
         },
         error: function(err) {
             console.error('Error:', err);
-            alert("이메일 발송에 실패했습니다."); // 에러 시 알림
+            Swal.fire('알림', '이메일 발송에 실패하셨습니다.', 'error'); // 에러 시 알림
         }
     });
 }
@@ -404,10 +404,13 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
     .then(response => response.text()) // 서버에서 텍스트로 응답을 받음
     .then(result => {
         if (result === 'success') {
-            alert('로그인 성공!');
+            Swal.fire('알림', '로그인 완료!', 'success');
+            window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
+        } else if(result === 'adminSuccess') {
+            Swal.fire('알림', '관리자 로그인!', 'success');
             window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
         } else {
-            alert('로그인 실패. 이메일 또는 비밀번호가 잘못되었습니다.');
+            Swal.fire('알림', '이메일 또는 비밀번호 틀렸습니다.', 'error');
             window.location.href = '/member/sign'
         }
     })
