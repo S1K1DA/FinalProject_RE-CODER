@@ -1,7 +1,7 @@
 package com.heartlink.review.controller;
 
 import com.heartlink.member.util.JwtUtil;
-import com.heartlink.review.common.Pagination;
+import com.heartlink.common.pagination.Pagination;
 import com.heartlink.review.model.dto.ReviewDto;
 import com.heartlink.review.model.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;

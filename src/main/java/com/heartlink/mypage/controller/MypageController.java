@@ -3,7 +3,7 @@ package com.heartlink.mypage.controller;
 import com.heartlink.member.util.JwtUtil;
 import com.heartlink.mypage.model.dto.MypageDto;
 import com.heartlink.mypage.model.service.MypageService;
-import com.heartlink.review.common.Pagination;
+import com.heartlink.common.pagination.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
