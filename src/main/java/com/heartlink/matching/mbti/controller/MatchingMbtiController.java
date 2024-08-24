@@ -6,14 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/matching")
-public class MbtiTestController {
+public class MatchingMbtiController {
 
+    @GetMapping("/mbti")
+    public String mbtiMatching() {
 
-    @GetMapping("/mbti-test")
-    public String mbtiTest() {
-
-        return "matching/mbti/mbti-test";
+        return "matching/mbti/matching-mbti";
     }
-
-
 }
