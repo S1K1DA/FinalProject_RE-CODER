@@ -1,0 +1,271 @@
+body {
+    background-image: url(../../image/background-img.svg);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+ul, li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.matching-main-sec,
+.matching-out-box,
+.matching-main-box,
+.matching-my-tabs {
+    display: flex;
+}
+
+.matching-tab-ico {
+    padding: 13px 20px;
+    background-color: #bed1e791;
+    color: #e43c60;
+    border-radius: 5px 5px 0 0;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    margin-right: 2px;
+}
+
+.not-choice {
+    background-color: #9fa7b05c;
+    color: #e1e1e1;
+}
+
+.not-choice:hover {
+    background-color: #f18ca4;
+    color: #fff;
+}
+
+.matching-main-sec {
+    justify-content: center;
+    margin: 100px 0;
+}
+
+.matching-out-box {
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 60px;
+    position: relative;
+}
+
+.matching-main-box {
+    width: 100%;
+    height: 700px;
+    flex-direction: row;
+    border-radius: 0 15px 15px 15px;
+    background-color: #bed1e791;
+    box-shadow: 5px 6px 9px 0px #79797945;
+    padding: 35px 20px 20px;
+}
+
+/* 프로필 섹션 스타일 */
+.profile-section {
+    display: flex;
+    align-items: center;
+    height: 75%;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.profile-photo img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info {
+    margin-left: 20px;
+}
+
+.profile-nickname {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.profile-mbti {
+    font-size: 18px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.box {
+    border-radius: 0 0 0 15px;
+    width: 60%;
+    height: 100%;
+}
+
+.matching-list-box {
+    padding-left: 20px;
+    border-radius: 0 15px 15px 0;
+    width: 40%;
+    height: 650px;
+    overflow: hidden;
+    color: #fff;
+}
+
+.matching-list-box > p {
+    font-weight: bold;
+    padding: 6px 10px;
+}
+
+.matching-list-box ul {
+    overflow: auto;
+    height: 90%;
+    margin-top: 10px;
+}
+
+.matching-list-box ul::-webkit-scrollbar {
+    width: 5px;
+}
+
+.matching-list-box ul::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.matching-list-box ul::-webkit-scrollbar-thumb {
+    background: #bcb1b8;
+    border-radius: 10px;
+}
+
+.matching-list-box ul::-webkit-scrollbar-thumb:hover {
+    background: #9c8894;
+}
+
+.box-find {
+    background: #de4969;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 2px solid;
+    font-weight: 400;
+    cursor: pointer;
+    position: absolute;
+    left: 4%;
+    z-index: 1;
+}
+
+#random-matching {
+    bottom: 15%;
+}
+
+#love-matching {
+    bottom: 4%;
+}
+
+.box-find:hover {
+    background-color: #fbd2db;
+    color: #de4969;
+}
+
+/* 매칭 리스트 박스 스타일 */
+.matching-list-box {
+    padding-left: 20px;
+    border-radius: 0 15px 15px 0;
+    width: 40%;
+    height: 650px;
+    overflow-y: auto;
+    color: #fff;
+}
+
+.matching-list-box > p {
+    font-weight: bold;
+    padding: 6px 10px;
+}
+
+/* 매칭 리스트 박스 스타일 */
+.matching-list-box {
+    padding-left: 20px;
+    border-radius: 0 15px 15px 0;
+    width: 40%;
+    height: 650px;
+    overflow-y: auto;
+    color: #fff;
+}
+
+.matching-list-box > p {
+    font-weight: bold;
+    padding: 6px 10px;
+}
+
+/* 매칭 리스트 스타일 */
+#matching-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.matching-list-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: #fff3;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    height: 70px;
+    box-sizing: border-box;
+}
+
+.list-profile-photo img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.list-profile-info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.list-profile-nickname {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.list-profile-mbti {
+    font-size: 14px;
+    color: #666;
+    margin-top: 3px;
+}
+
+/* 스크롤바 스타일 */
+#matching-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#matching-list::-webkit-scrollbar-thumb {
+    background-color: #bcb1b8;
+    border-radius: 10px;
+}
+
+#matching-list::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* 매칭 신청 버튼 스타일 */
+.match-button {
+    background-color: #de4969;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.match-button:hover {
+    background-color: #f18ca4;
+    color: #fff;
+}
+
+
