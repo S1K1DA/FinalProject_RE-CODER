@@ -86,9 +86,9 @@
         WHERE PAYMENT_NO = #{paymentNo}
     </select>
 
-    <update id="canceledState">
+    <update id="paymentHistoryStateUpdate">
         UPDATE PAYMENT_HISTORY
-        SET PAYMENT_STATE = 'Canceled'
+        SET PAYMENT_STATE = #{State}
         WHERE PAYMENT_NO = #{paymentNo}
     </update>
 
@@ -105,7 +105,7 @@
         AND PAYMENT_DATE &lt; #{limitMinute}
     </select>
 
-    <update id="failPayment">
+    <update id="failedPayment">
         UPDATE PAYMENT_HISTORY
         SET
             PAYMENT_STATE = 'Failed',
@@ -119,5 +119,14 @@
         FROM BASIC_USER bu
         WHERE BASIC_USER_EMAIL = #{userEmail}
     </select>
+
+    <insert id="setCanceledHistory">
+        INSERT INTO PAYMENT_CANCELED_HISTORY pch VALUES(
+            #{paymentNo} ,
+            SYSDATE,
+            NULL,
+            NULL
+        )
+    </insert>
 
 </mapper>

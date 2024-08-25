@@ -2,7 +2,9 @@ package com.heartlink.admin.controller;
 
 import com.heartlink.admin.model.dto.AdminInfoDto;
 import com.heartlink.admin.model.dto.MemberListDto;
+import com.heartlink.admin.model.dto.PaymentHistoryDto;
 import com.heartlink.admin.model.service.AdminMemberService;
+import com.heartlink.admin.model.service.AdminPaymentService;
 import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.service.MemberService;
 import com.heartlink.member.util.JwtUtil;
@@ -28,17 +30,20 @@ public class AdminController {
     private final Pagination pagination;
     private final AdminMemberService adminMemberService;
     private final MemberService memberService;
+    private final AdminPaymentService adminPaymentService;
     private final JwtUtil jwtUtil;
 
     @Autowired
     public AdminController(Pagination pagination,
                            AdminMemberService adminMemberService,
                            MemberService memberService,
-                           JwtUtil jwtUtil){
+                           JwtUtil jwtUtil,
+                           AdminPaymentService adminPaymentService) {
         this.pagination = pagination;
         this.adminMemberService = adminMemberService;
         this.memberService = memberService;
         this.jwtUtil = jwtUtil;
+        this.adminPaymentService = adminPaymentService;
     }
 
 
@@ -174,7 +179,46 @@ public class AdminController {
     }
 
     @GetMapping("/refunds")
-    public String moveRefundsPage(){
+    public String moveRefundsPage(Model model,
+                                  @RequestParam(name="page", defaultValue = "1") int page){
+
+        int pageSize = 9;
+
+        List<PaymentHistoryDto> refundHistory = adminPaymentService.getRefundHistory();
+
+        System.out.println(refundHistory.stream().toList());
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, refundHistory);
+
+        model.addAttribute("refundHistory", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
+        model.addAttribute("paginationUrl", "/admin/refunds");
         return "admin/pages/admin-refunds";
+    }
+
+    @PostMapping("/payment/cancel")
+    public ResponseEntity<?> isPaymentResponseCancel(@RequestBody Map<String, String> data){
+        String paymentNo = data.get("paymentNo");
+
+        String portOneRequest = adminPaymentService.setPortOneRequestCancle(paymentNo);
+
+        if(portOneRequest.equals("SUCCEEDED")){
+            int userUpdate = adminPaymentService.updateCanceledPaymentHistory(paymentNo, "cancel");
+
+            if(userUpdate == 1){
+                return ResponseEntity.status(HttpStatus.OK).body("결제 취소 완료");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @PostMapping("/payment/denied")
+    public ResponseEntity<?> isPaymentResponseDenied(){
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

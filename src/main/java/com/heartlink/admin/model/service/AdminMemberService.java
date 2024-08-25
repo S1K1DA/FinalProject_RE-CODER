@@ -1,12 +1,19 @@
 package com.heartlink.admin.model.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heartlink.admin.model.dto.AdminInfoDto;
 import com.heartlink.admin.model.dto.MemberListDto;
 import com.heartlink.admin.model.mapper.AdminMemberMapper;
 import com.heartlink.member.model.dto.AdminDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +25,9 @@ public class AdminMemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminMemberService (AdminMemberMapper adminMemberMapper, BCryptPasswordEncoder passwordEncoder){
+    public AdminMemberService (AdminMemberMapper adminMemberMapper,
+                               BCryptPasswordEncoder passwordEncoder,
+                               RestTemplate restTemplate){
         this.adminMemberMapper = adminMemberMapper;
         this.passwordEncoder = passwordEncoder;
     }
@@ -73,4 +82,5 @@ public class AdminMemberService {
 
         return null; // 로그인 실패 시 null 반환
     }
+
 }

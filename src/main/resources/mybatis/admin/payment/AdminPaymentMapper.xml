@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartlink.admin.model.mapper.AdminPaymentMapper">
+    <resultMap id="adminPaymentResultMap" type="PaymentHistoryDto">
+        <result property="paymentNo" column="payment_no"/>
+        <result property="paymentUserEmail" column="payment_user_email"/>
+        <result property="paymentDate" column="payment_date"/>
+        <result property="paymentAmount" column="payment_amount"/>
+        <result property="paymentMethod" column="payment_method"/>
+        <result property="paymentState" column="payment_state"/>
+        <result property="paymentProduct" column="payment_product"/>
+        <result property="cancelRequestIndate" column="cancel_request_indate"/>
+        <result property="cancelResponse" column="cancel_response"/>
+        <result property="cancelResponseIndate" column="cancel_response_indate"/>
+    </resultMap>
+
+    <select id="getRefundHistory" resultMap="adminPaymentResultMap">
+        SELECT ph.PAYMENT_NO ,
+               ph.PAYMENT_USER_EMAIL ,
+               ph.PAYMENT_DATE ,
+               ph.PAYMENT_AMOUNT ,
+               ph.PAYMENT_METHOD ,
+               pch.CANCEL_REQUEST_INDATE,
+               pch.CANCEL_RESPONSE,
+               pch.CANCEL_RESPONSE_INDATE
+        FROM PAYMENT_HISTORY ph
+                 JOIN PAYMENT_CANCELED_HISTORY pch
+                      ON ph.PAYMENT_NO = pch.PAYMENT_NO
+        ORDER BY ph.PAYMENT_DATE DESC
+    </select>
+
+    <update id="updateCanceledPaymentHistory">
+        UPDATE PAYMENT_CANCELED_HISTORY
+        SET
+        <choose>
+            <when test='state.equals("cancel")'>
+                CANCEL_RESPONSE = 'Y',
+            </when>
+            <when test='state.equals("denied")'>
+                CANCEL_RESPONSE = 'N',
+            </when>
+        </choose>
+            CANCEL_RESPONSE_INDATE = SYSDATE
+        WHERE PAYMENT_NO = #{paymentNo}
+    </update>
+
+    <update id="updatePaymentHistory">
+        UPDATE PAYMENT_HISTORY
+        SET
+        <choose>
+            <when test='state.equals("cancel")'>
+                PAYMENT_STATE = 'Canceled'
+            </when>
+            <when test='state.equals("denied")'>
+                PAYMENT_STATE = 'Cancel Denied'
+            </when>
+        </choose>
+        WHERE PAYMENT_NO = #{paymentNo}
+    </update>
+</mapper>

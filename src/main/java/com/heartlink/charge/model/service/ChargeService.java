@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ChargeService {
@@ -49,7 +50,7 @@ public class ChargeService {
         List<ChargeRequestDto> oldPendingPayments = chargeMapper.getOldPendingPayments(limitMinute);
 
         for (ChargeRequestDto payment : oldPendingPayments) {
-            chargeMapper.failPayment(payment.getPaymentNo());
+            chargeMapper.failedPayment(payment.getPaymentNo());
         }
 
     }
@@ -188,8 +189,6 @@ public class ChargeService {
                     item.setPaymentState("취소불가");
                 }
 
-            }else if(item.getPaymentState().equals("Canceled")){
-                item.setPaymentState("취소됨");
             }
 
         }
@@ -201,72 +200,64 @@ public class ChargeService {
         return chargeMapper.getRequestPaymentInfo(paymentNo);
     }
 
+    public ChargeRequestDto setCancelQualificationVerifit(String userEmail, ChargeRequestDto requestInfo){
+        ChargeRequestDto result = new ChargeRequestDto();
 
 
-    public String setPortOneRequestCancle(String paymentNo) {
-        // 요청 보낼 API URL
-        String url = "https://api.portone.io/payments/" + paymentNo + "/cancel";
 
-        // 요청의 Header
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "PortOne " + portoneApiSecret);
-        headers.setContentType(MediaType.APPLICATION_JSON);  // JSON 형식으로 지정
-
-        // 요청 본문
-        String body = "{\"reason\": \"고객의 요청에 따라 취소됨\"}";
-
-        // 본문이 있는 요청
-        HttpEntity<String> entity = new HttpEntity<>(body, headers);
-
-        // 포트원 API 호출
-        try {
-            ResponseEntity<String> responseEntity = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,  // POST 메서드를 사용
-                    entity,
-                    String.class
-            );
-
-            String responseBody = responseEntity.getBody();
-
-            // JSON 파싱
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(responseBody);
-            JsonNode cancellationNode = rootNode.path("cancellation");
-
-            // "status" 필드 추출
-            String status = cancellationNode.path("status").asText();
-
-            return status;
-
-        } catch (HttpClientErrorException e) {
-            // HTTP 오류 처리 및 로그 출력
-            System.err.println("HTTP Error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
-        } catch (JsonProcessingException e) {
-            // JSON 파싱 오류 처리
-            System.err.println("JSON Processing Error: " + e.getMessage());
-        } catch (Exception e) {
-            // 기타 예외 처리
-            System.err.println("Error: " + e.getMessage());
+        // 해당 정보가 있는지
+        if(Objects.isNull(requestInfo) || !requestInfo.getPaymentUserEmail().equals(userEmail)){
+            result.setPaymentState("해당 결제 정보의 오류.");
+            return result;
         }
 
-        return null;
+        // 코인은 충분한지
+        int userCoincnt = getUserCoin(userEmail);
+        int userProductCoin = requestInfo.getPaymentAmount() / 100;
+
+        if(userCoincnt < userProductCoin){
+            result.setPaymentState("보유 코인이 부족합니다.");
+            return result;
+        }
+
+        // 날짜는 유효한지
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime paymentDate = LocalDateTime.parse(requestInfo.getPaymentDate(), formatter);
+        Duration duration = Duration.between(paymentDate, now);
+
+        if (Math.abs(duration.toDays()) >= 7) {
+            result.setPaymentState("취소 가능 날짜 만료");
+            return result;
+        }
+
+
+        result.setPaymentUserEmail(userEmail);
+        result.setPaymentCoin(userProductCoin);
+        result.setPaymentState("취소 가능");
+
+        return result;
     }
 
-    public int setPaymentWithCoinUpdate(String paymentNo, String userEmail, int userProduct){
 
-        // canceled update
-        int cancelState = chargeMapper.canceledState(paymentNo);
+    public String setCancelRequest(String paymentNo, ChargeRequestDto requestDto){
 
-        if(cancelState == 1){
-            int coindeduction = chargeMapper.setCoindeduction(userEmail, userProduct);
+        // 상태 업데이트
+        int cancelRequestState = chargeMapper.paymentHistoryStateUpdate(paymentNo, "Cancel Requested");
 
-            if(coindeduction == 1){
-                return coindeduction;
-            }
+        // 코인 갯수 업데이트
+        int coindeduction = chargeMapper.setCoindeduction(requestDto.getPaymentUserEmail(), requestDto.getPaymentCoin());
+
+        // 결제 취소 테이블 insert
+        int cancelHistoryTable = chargeMapper.setCanceledHistory(paymentNo);
+
+        if(cancelRequestState != 1 || coindeduction != 1){
+            return null;
         }
 
-        return 0;
+        return "update complete";
+
     }
 
 }

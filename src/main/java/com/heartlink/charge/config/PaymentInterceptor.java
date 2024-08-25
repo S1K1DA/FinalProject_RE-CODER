@@ -17,7 +17,7 @@ public class PaymentInterceptor implements HandlerInterceptor {
     private static final Map<String, String> pathMapping = new HashMap<>();
 
     static {
-        pathMapping.put("/charge/payment-cancle", "/charge/history");
+        pathMapping.put("/charge/payment-cancel", "/charge/history");
         pathMapping.put("/charge/payment-order", "/charge/shop");
         pathMapping.put("/charge/complete", "/charge/shop");
     }

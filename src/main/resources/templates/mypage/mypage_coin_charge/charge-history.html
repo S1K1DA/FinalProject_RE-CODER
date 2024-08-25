@@ -34,8 +34,12 @@
                             <td th:if="${item.paymentState.equals('취소불가')}"
                                 th:text="${item.paymentState}"
                                 style="color:red"></td>
-                            <td th:if="${item.paymentState.equals('취소됨')}"
-                                th:text="${item.paymentState}"
+                            <td th:if="${item.paymentState.equals('Cancel Requested')}">
+                                취소 요청됨</td>
+                            <td th:if="${item.paymentState.equals('Cancel Denied')}">
+                                취소 거부됨</td>
+                            <td th:if="${item.paymentState.equals('Canceled')}"
+                                th:text="취소됨"
                                 style="text-decoration: line-through;"></td>
                             <td class="payment-cancel"
                                 th:if="${item.paymentState.equals('취소가능')}"

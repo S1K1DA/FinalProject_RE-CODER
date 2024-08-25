@@ -174,62 +174,29 @@ public class ChargeController {
     }
 
 
-    @PostMapping("/payment-cancle")
+    @PostMapping("/payment-cancel")
     @ResponseBody
-    public ResponseEntity<?> cancledPayment(@RequestBody ChargeRequestDto requestDto){
-        boolean presenceInfo = true;
-        boolean enoughCoin = true;
-        boolean effectiveDate = true;
+    public ResponseEntity<?> canceledPayment(@RequestBody ChargeRequestDto requestDto){
+
 
         String paymentNo = requestDto.getPaymentNo();
         String userEmail = getCurrentUserEmail();
 
         ChargeRequestDto requestInfo = chargeService.getRequestPaymentInfo(paymentNo);
 
+        ChargeRequestDto cancelVerifit = chargeService.setCancelQualificationVerifit(userEmail, requestInfo);
 
-        // 해당 정보가 있는지
-        if(Objects.isNull(requestInfo) || !requestInfo.getPaymentUserEmail().equals(userEmail)){
-            presenceInfo = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("해당 결제 정보의 오류");
-        }
+        String result = cancelVerifit.getPaymentState();
 
-        // 코인은 충분한지
-        int userCoincnt = chargeService.getUserCoin(userEmail);
-        int userProduct = requestInfo.getPaymentAmount() / 100;
+        if(result.equals("취소 가능")){
+            String cancelRequset = chargeService.setCancelRequest(paymentNo, cancelVerifit);
 
-        if(userCoincnt < userProduct){
-            enoughCoin = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("보유 코인이 부족합니다.");
-        }
-
-        // 날짜는 유효한지
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime paymentDate = LocalDateTime.parse(requestInfo.getPaymentDate(), formatter);
-        Duration duration = Duration.between(paymentDate, now);
-
-        if (Math.abs(duration.toDays()) >= 7) {
-            effectiveDate = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("취소 가능 날짜 만료");
-        }
-
-
-        String portOneCancle;
-
-        if(presenceInfo && enoughCoin && effectiveDate){
-            portOneCancle = chargeService.setPortOneRequestCancle(paymentNo);
-
-            if(portOneCancle.equals("SUCCEEDED")){
-                int userUpdate = chargeService.setPaymentWithCoinUpdate(paymentNo, userEmail, userProduct);
-
-                if(userUpdate == 1){
-                    return ResponseEntity.status(HttpStatus.OK).body("결제 취소 완료");
-                }
+            if(cancelRequset.equals("update complete")){
+                return ResponseEntity.status(HttpStatus.OK).body(result);
             }
         }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 취소 오류");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
     }
 
 
