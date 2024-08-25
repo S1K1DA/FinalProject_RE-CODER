@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/matching")
@@ -25,16 +28,37 @@ public class MatchingMbtiController {
 
     @GetMapping("/mbti")
     public String mbtiMatching(@CookieValue("token") String jwtToken, Model model) {
-        // JWT 토큰에서 사용자 번호 추출
         int userNumber = jwtUtil.getUserNumberFromToken(jwtToken);
 
-        // 사용자 번호로 프로필 데이터를 가져옴
+        // 사용자 프로필 가져오기
         MatchingMbtiDto userProfile = matchingMbtiService.getUserProfile(userNumber);
-
-        // 프로필 데이터를 모델에 추가
         model.addAttribute("profile", userProfile);
+
+        // 천생연분 리스트 가져오기
+        List<MatchingMbtiDto> soulmateUsers = matchingMbtiService.getRandomSoulmates(userNumber);
+        model.addAttribute("soulmateUsers", soulmateUsers);
 
         // 매칭 페이지로 이동
         return "matching/mbti/matching-mbti";
     }
+
+
+    // 천생연분 매칭을 위한 API
+    @GetMapping("/soulmates")
+    @ResponseBody
+    public List<MatchingMbtiDto> getSoulmates(@CookieValue("token") String jwtToken) {
+        // JWT 토큰에서 사용자 번호 추출
+        int userNumber = jwtUtil.getUserNumberFromToken(jwtToken);
+
+        // 천생연분 매칭 결과 가져오기
+        return matchingMbtiService.getRandomSoulmates(userNumber);
+    }
+
+//    @GetMapping("/soulmates/random")
+//    @ResponseBody
+//    public List<MatchingMbtiDto> getRandomSoulmates(@CookieValue("token") String jwtToken) {
+//        int userNumber = jwtUtil.getUserNumberFromToken(jwtToken);
+//        return matchingMbtiService.getRandomSoulmates(userNumber);
+//    }
+
 }

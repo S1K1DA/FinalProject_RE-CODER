@@ -52,139 +52,36 @@
             <div class="matching-list-box">
                 <p>매칭 가능 리스트</p>
                 <ul id="matching-list">
-                    <!-- 예시 리스트 아이템 -->
-                    <li class="matching-list-item">
+                    <li th:each="user : ${soulmateUsers}" class="matching-list-item">
                         <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
+<!--                            <img th:src="${user.profilePhoto}" alt="Profile Photo">-->
+                            <img th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="Profile Photo">
                         </div>
                         <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
+                            <p class="list-profile-nickname">닉네임: <span th:text="${user.nickname}"></span></p>
                             <p class="list-profile-mbti">
                                 <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
+                                MBTI: <span th:text="${user.mbti}"></span>
                             </p>
                         </div>
                         <button class="match-button">매칭 신청</button>
                     </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <li class="matching-list-item">
-                        <div class="list-profile-photo">
-                            <img th:src="@{/image/team_member/team_member_jongsun.jpg}" alt="Profile Photo">
-                        </div>
-                        <div class="list-profile-info">
-                            <p class="list-profile-nickname">닉네임: 안양카리나</p>
-                            <p class="list-profile-mbti">
-                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">
-                                MBTI: ESTP
-                            </p>
-                        </div>
-                        <button class="match-button">매칭 신청</button>
-                    </li>
-                    <!-- 추가 리스트 아이템들... -->
                 </ul>
+                <!-- 예시 리스트 아이템 -->
+<!--                    <li class="matching-list-item">-->
+<!--                        <div class="list-profile-photo">-->
+<!--                            <img th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="Profile Photo">-->
+<!--                        </div>-->
+<!--                        <div class="list-profile-info">-->
+<!--                            <p class="list-profile-nickname">닉네임: 안양카리나</p>-->
+<!--                            <p class="list-profile-mbti">-->
+<!--                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">-->
+<!--                                MBTI: ESTP-->
+<!--                            </p>-->
+<!--                        </div>-->
+<!--                        <button class="match-button">매칭 신청</button>-->
+<!--                    </li>-->
+                    <!-- 추가 리스트 아이템들... -->
             </div>
         </div>
     </div>
