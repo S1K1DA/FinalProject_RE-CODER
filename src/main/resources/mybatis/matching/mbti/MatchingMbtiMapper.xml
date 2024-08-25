@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heartlink.matching.mbti.model.mapper.MatchingMbtiMapper">
+
+    <select id="getUserProfileById" parameterType="int" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">
+        SELECT
+        bu.BASIC_USER_NICKNAME AS nickname,
+        bu.BASIC_USER_MBTI AS mbti,
+        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp
+        ON
+        bu.BASIC_USER_NO = bp.BASIC_USER_NO
+        WHERE
+        bu.BASIC_USER_NO = #{userNumber}
+        AND
+        bu.BASIC_USER_STATUS = 'ACTIVE'
+    </select>
+
+</mapper>

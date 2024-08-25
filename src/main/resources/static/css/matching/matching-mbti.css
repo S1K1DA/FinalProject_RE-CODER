@@ -70,26 +70,47 @@ ul, li {
 }
 
 .profile-photo img {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
 }
 
 .profile-info {
+    margin-top: 20%;
     margin-left: 20px;
+    text-align: left;
+    color: #4a4a4a;
 }
 
 .profile-nickname {
-    font-size: 24px;
-    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;  /* Montserrat 폰트 적용 */
+    font-size: 2em;  /* 닉네임 크기 설정 */
+    font-weight: 700;  /* 굵은 글씨 */
+    color: #333;  /* 진한 회색으로 텍스트 색상 설정 */
     margin: 0;
 }
 
+.profile-nickname span {
+    margin-left: 10px; /* 닉네임과 아이콘 간격 */
+}
 .profile-mbti {
-    font-size: 18px;
-    color: #666;
-    margin-top: 5px;
+    font-family: 'Montserrat', sans-serif;  /* Montserrat 폰트 적용 */
+    font-size: 1.5em;  /* MBTI 크기 설정 */
+    font-weight: 500;  /* 중간 굵기의 글씨 */
+    color: #555;  /* 중간 회색으로 텍스트 색상 설정 */
+    margin-top: 10px;  /* 닉네임과의 간격 설정 */
+}
+
+.profile-mbti span {
+    margin-left: 10px; /* MBTI와 아이콘 간격 */
+}
+
+.mbti-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    vertical-align: middle;
 }
 
 .box {
@@ -150,7 +171,7 @@ ul, li {
 }
 
 #random-matching {
-    bottom: 15%;
+    bottom: 10%;
 }
 
 #love-matching {
@@ -268,4 +289,79 @@ ul, li {
     color: #fff;
 }
 
+/* 천생연분 MBTI 표시 */
+.soulmate-info {
+    font-family: 'Montserrat', sans-serif;
+    padding: 25px;
+    background: linear-gradient(135deg, #f9a8d4 0%, #fbcfe8 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    color: #4a4a4a;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.soulmate-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.soulmate-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.soulmate-header h3 {
+    font-size: 1.8em;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    margin: 0;
+}
+
+.soulmate-type {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.soulmate-reason {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #ffffff;
+    padding: 0 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    .soulmate-info {
+        padding: 20px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .soulmate-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .soulmate-header h3 {
+        font-size: 1.5em;
+    }
+
+    .soulmate-type {
+        font-size: 2em;
+    }
+
+    .soulmate-reason {
+        font-size: 1em;
+    }
+}
 
