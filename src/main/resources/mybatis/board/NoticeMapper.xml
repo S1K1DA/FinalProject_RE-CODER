@@ -58,6 +58,7 @@
         FROM
         NOTICE_BOARD
         WHERE NOTICE_DELETE = 'N'
+        ORDER BY NOTICE_INDATE DESC
         )
     </select>
 

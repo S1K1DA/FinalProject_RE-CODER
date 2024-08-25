@@ -3,10 +3,12 @@
 
 <mapper namespace="com.heartlink.matching.mbti.model.mapper.MatchingMbtiMapper">
 
+    <!-- 로그인한 사용자 프로필 정보 가져오기 -->
     <select id="getUserProfileById" parameterType="int" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">
         SELECT
         bu.BASIC_USER_NICKNAME AS nickname,
         bu.BASIC_USER_MBTI AS mbti,
+        bu.BASIC_USER_SEX AS userSex,  <!-- 성별 정보 추가 -->
         bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
         FROM
         BASIC_USER bu
@@ -19,5 +21,50 @@
         AND
         bu.BASIC_USER_STATUS = 'ACTIVE'
     </select>
+
+
+    <!-- 천생연분 MBTI를 가진 이성과의 사용자 리스트 가져오기 -->
+<!--    <select id="getUsersByMbti" parameterType="map" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">-->
+<!--        SELECT-->
+<!--        bu.BASIC_USER_NICKNAME AS nickname,-->
+<!--        bu.BASIC_USER_MBTI AS mbti,-->
+<!--        bu.BASIC_USER_SEX AS userSex,-->
+<!--        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto-->
+<!--        FROM-->
+<!--        BASIC_USER bu-->
+<!--        LEFT JOIN-->
+<!--        BASIC_USER_PHOTO bp-->
+<!--        ON-->
+<!--        bu.BASIC_USER_NO = bp.BASIC_USER_NO-->
+<!--        WHERE-->
+<!--        bu.BASIC_USER_MBTI = #{mbti}-->
+<!--        AND-->
+<!--        bu.BASIC_USER_STATUS = 'ACTIVE'-->
+<!--        AND-->
+<!--        bu.BASIC_USER_SEX != #{userSex}  &lt;!&ndash; 성별 필터링 &ndash;&gt;-->
+<!--        ORDER BY-->
+<!--        dbms_random.value-->
+<!--        FETCH FIRST 10 ROWS ONLY-->
+<!--    </select>-->
+
+    <select id="getUsersByMbti" parameterType="map" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">
+        SELECT
+        bu.BASIC_USER_NICKNAME AS nickname,
+        bu.BASIC_USER_MBTI AS mbti,
+        bu.BASIC_USER_SEX AS userSex,
+        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp ON bu.BASIC_USER_NO = bp.BASIC_USER_NO
+        WHERE
+        bu.BASIC_USER_MBTI = #{mbti}
+        AND bu.BASIC_USER_STATUS = 'ACTIVE'
+        AND bu.BASIC_USER_SEX != #{userSex, jdbcType=VARCHAR} <!-- jdbcType 명시 -->
+        ORDER BY dbms_random.value
+        FETCH FIRST 10 ROWS ONLY
+    </select>
+
+
 
 </mapper>
