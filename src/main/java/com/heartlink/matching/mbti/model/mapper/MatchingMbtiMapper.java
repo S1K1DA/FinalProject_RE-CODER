@@ -10,9 +10,13 @@ import java.util.List;
 public interface MatchingMbtiMapper {
 
     MatchingMbtiDto getUserProfileById(@Param("userNumber") int userNumber);
-
+    
+    // 유저 정보 가져오기
     String getUserMbtiById(@Param("userNumber") int userNumber);
 
-    // 성별 필터링을 추가한 getUsersByMbti 메서드
+    // 천생연분 MBTI 사용자 매칭
     List<MatchingMbtiDto> getUsersByMbti(@Param("mbti") String mbti, @Param("userSex") String userSex);
+
+    // 상위권 MBTI 사용자 매칭
+    List<MatchingMbtiDto> getUsersByTopMbtis(@Param("mbtiList") List<String> mbtiList, @Param("userSex") String userSex);
 }
