@@ -11,4 +11,5 @@ public class MatchingMbtiDto {
     private String nickname;      // 사용자 닉네임
     private String mbti;          // 사용자 MBTI
     private String userSex;       // 사용자 성별 (추가된 필드)
+    private int userNumber;
 }

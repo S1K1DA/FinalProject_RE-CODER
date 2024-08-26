@@ -51,6 +51,24 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => console.error("천생연분 매칭 데이터 가져오기 오류:", error));
     });
 
+    // 상위 랜덤 매칭 버튼 클릭 이벤트 핸들러
+        document.getElementById("top-matching").addEventListener("click", function() {
+            console.log("상위 랜덤 매칭 버튼 클릭됨");
+
+            fetch("/matching/top-matches")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("네트워크 응답이 올바르지 않습니다: " + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("상위 매칭 데이터 수신됨:", data);
+                    updateMatchingList(data);
+                })
+                .catch(error => console.error("상위 매칭 데이터 가져오기 오류:", error));
+        });
+
     // 리스트를 업데이트하는 함수
     function updateMatchingList(data) {
         const matchingList = document.getElementById("matching-list");
@@ -71,10 +89,38 @@ document.addEventListener("DOMContentLoaded", function() {
                         MBTI: ${user.mbti}
                     </p>
                 </div>
-                <button class="match-button">매칭 신청</button>
+                <button class="match-button" data-user-number="${user.userNumber}">매칭 신청</button> <!-- userNumber 속성 추가 -->
             `;
 
             matchingList.appendChild(listItem);
         });
+
+        // 매칭 신청 버튼 클릭 이벤트 핸들러 추가
+        document.querySelectorAll(".match-button").forEach(button => {
+            button.addEventListener("click", async function() {
+                const userNumber = this.dataset.userNumber;  // 매칭하려는 사용자 번호 가져오기
+                try {
+                    const response = await fetch("/matching/request", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            matchedUserNo: userNumber
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert("매칭 요청이 성공적으로 전송되었습니다.");
+                    } else {
+                        const errorMessage = await response.text();
+                        alert("매칭 요청 중 오류가 발생했습니다: " + errorMessage);
+                    }
+                } catch (error) {
+                    console.error("매칭 요청 중 오류 발생:", error);
+                }
+            });
+        });
     }
 });
+

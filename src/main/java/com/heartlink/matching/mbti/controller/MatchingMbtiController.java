@@ -34,9 +34,9 @@ public class MatchingMbtiController {
         MatchingMbtiDto userProfile = matchingMbtiService.getUserProfile(userNumber);
         model.addAttribute("profile", userProfile);
 
-        // 천생연분 리스트 가져오기
-        List<MatchingMbtiDto> soulmateUsers = matchingMbtiService.getRandomSoulmates(userNumber);
-        model.addAttribute("soulmateUsers", soulmateUsers);
+//        // 천생연분 리스트 가져오기
+//        List<MatchingMbtiDto> soulmateUsers = matchingMbtiService.getRandomSoulmates(userNumber);
+//        model.addAttribute("soulmateUsers", soulmateUsers);
 
         // 매칭 페이지로 이동
         return "matching/mbti/matching-mbti";
@@ -54,11 +54,11 @@ public class MatchingMbtiController {
         return matchingMbtiService.getRandomSoulmates(userNumber);
     }
 
-//    @GetMapping("/soulmates/random")
-//    @ResponseBody
-//    public List<MatchingMbtiDto> getRandomSoulmates(@CookieValue("token") String jwtToken) {
-//        int userNumber = jwtUtil.getUserNumberFromToken(jwtToken);
-//        return matchingMbtiService.getRandomSoulmates(userNumber);
-//    }
-
+    // 상위 매칭을 위한 API
+    @GetMapping("/top-matches")
+    @ResponseBody
+    public List<MatchingMbtiDto> getTopMatches(@CookieValue("token") String jwtToken) {
+        int userNumber = jwtUtil.getUserNumberFromToken(jwtToken);
+        return matchingMbtiService.getTopMatches(userNumber);
+    }
 }
