@@ -298,7 +298,13 @@
     flex-direction: column;
 }
 
-.date-ban-box,
+.date-ban-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
 .permanen-ban-box,
 .punish-none-box{
     display: flex;
@@ -316,6 +322,15 @@
 
 .punish-date{
     margin-right: 10px;
+    width: 60px;
+}
+
+.date-btn{
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
+    margin-left: 5px;
+    background-color: #d3eafd;
 }
 
 .permanen-ban,

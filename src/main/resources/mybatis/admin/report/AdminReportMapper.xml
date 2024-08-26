@@ -20,4 +20,51 @@
         FROM REPORT_CATEGORY
     </select>
 
+    <select id="setReportList" resultMap="reportResultMap">
+        SELECT REPORT_NO ,
+               REPORTER_USER_NO ,
+               REPORTED_USER_NO ,
+               REPORT_INDATE ,
+               rc.REPORT_CATEGORY_NAME ,
+               REPORT_TYPE ,
+               REPORT_TYPE_NO ,
+               REPORT_CONTENT
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_CATEGORY rc
+                      ON rb.REPORT_CATEGORY_NO = rc.REPORT_CATEGORY_NO
+        WHERE REPORT_RESPONSE_STATUS = 'N'
+        ORDER BY REPORT_INDATE DESC
+    </select>
+
+    <insert id="setAdminResolution">
+        INSERT INTO REPORT_RESOLUTION rr VALUES(
+            #{reportNo} ,
+            #{adminUserNo},
+            SYSDATE,
+            #{reportResolutionContent},
+            #{reportRsolutionPunish},
+            <choose>
+                <when test="punishmentResult != null">
+                    TO_DATE(#{punishmentResult}, 'YYYY-MM-DD')
+                </when>
+                <otherwise>
+                    null
+                </otherwise>
+            </choose>
+        )
+    </insert>
+
+    <update id="updateResolution">
+        UPDATE REPORT_BOARD
+        SET
+            REPORT_RESPONSE_STATUS = 'Y'
+        WHERE REPORT_NO = #{reportNo}
+    </update>
+
+    <update id="updateUserState">
+        UPDATE BASIC_USER
+        SET
+            BASIC_USER_STATUS = #{state}
+        WHERE BASIC_USER_NO = #{reportedUserNo}
+    </update>
 </mapper>

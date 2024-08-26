@@ -1,10 +1,12 @@
 package com.heartlink.admin.controller;
 
 import com.heartlink.admin.model.dto.AdminInfoDto;
+import com.heartlink.admin.model.dto.AdminReportDto;
 import com.heartlink.admin.model.dto.MemberListDto;
 import com.heartlink.admin.model.dto.PaymentHistoryDto;
 import com.heartlink.admin.model.service.AdminMemberService;
 import com.heartlink.admin.model.service.AdminPaymentService;
+import com.heartlink.admin.model.service.AdminReportService;
 import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.service.MemberService;
 import com.heartlink.member.util.JwtUtil;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,18 +37,26 @@ public class AdminController {
     private final MemberService memberService;
     private final AdminPaymentService adminPaymentService;
     private final JwtUtil jwtUtil;
+    private final AdminReportService adminReportService;
 
     @Autowired
     public AdminController(Pagination pagination,
                            AdminMemberService adminMemberService,
                            MemberService memberService,
                            JwtUtil jwtUtil,
-                           AdminPaymentService adminPaymentService) {
+                           AdminPaymentService adminPaymentService,
+                           AdminReportService adminReportService) {
         this.pagination = pagination;
         this.adminMemberService = adminMemberService;
         this.memberService = memberService;
         this.jwtUtil = jwtUtil;
         this.adminPaymentService = adminPaymentService;
+        this.adminReportService = adminReportService;
+    }
+
+    private int getCurrentAdminNo() {
+        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        return jwtUtil.getAdminNumberFromToken(jwt);
     }
 
 
@@ -147,8 +158,39 @@ public class AdminController {
     }
 
     @GetMapping("/report/action")
-    public String moveReportActionPage(){
+    public String moveReportActionPage(Model model,
+                                       @RequestParam(name="page", defaultValue = "1") int page){
+
+        int pageSize = 9;
+
+        List<AdminReportDto> reportList = adminReportService.setReportList();
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, reportList);
+
+        model.addAttribute("reportList", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
+        model.addAttribute("paginationUrl", "/admin/report/action");
+
         return "admin/pages/admin-report-action";
+    }
+
+    @PostMapping("/report/response")
+    public ResponseEntity<?> isAdminReportResolution(AdminReportDto reportDto){
+
+        int adminNo = getCurrentAdminNo();
+        reportDto.setAdminUserNo(adminNo);
+
+        String result = adminReportService.setAdminResolution(reportDto);
+
+        if(result.equals("SUCCESS")){
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
     }
 
     @GetMapping("/user/search")

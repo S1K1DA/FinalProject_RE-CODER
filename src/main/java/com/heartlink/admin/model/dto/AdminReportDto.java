@@ -20,4 +20,13 @@ public class AdminReportDto {
     private String reportResponseStatus;
     private String reportType;
     private int reportTypeNo;
+
+    private int adminUserNo;
+    private String reportResolutionDate;
+    private String reportResolutionContent;
+    private String reportRsolutionPunish;   // 영구, 정지, 없음
+    private String punishmentResult;    //date
+
+    private boolean permanentBan;
+    private boolean punisNone;
 }
