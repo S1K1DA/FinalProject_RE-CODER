@@ -19,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -174,28 +176,78 @@ public class AdminController {
     }
 
     @GetMapping("/payments")
-    public String movePaymentsPage(){
+    public String movePaymentsPage(Model model,
+                                   @RequestParam(name="page", defaultValue = "1") int page,
+                                   @RequestParam(value = "startDate", required = false) String startDate,
+                                   @RequestParam(value = "endDate", required = false) String endDate){
+
+        int pageSize = 9;
+
+        LocalDate today = LocalDate.now();
+
+        if (startDate == null || endDate == null) {
+            if (startDate == null) {
+                startDate = today.minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+            if (endDate == null) {
+                endDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+        }
+
+        List<PaymentHistoryDto> paymentHistoryList = adminPaymentService.getAllPaymentHistory(startDate, endDate);
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, paymentHistoryList);
+
+        String pageUrl = "/admin/payments?startDate=" + startDate + "&endDate=" + endDate;
+
+        model.addAttribute("paymentsHistory", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
+        model.addAttribute("paginationUrl", pageUrl);
+
+        model.addAttribute("startDate", startDate); // 사용자가 선택한 시작 날짜를 전달
+        model.addAttribute("endDate", endDate);
+
         return "admin/pages/admin-payments";
     }
 
     @GetMapping("/refunds")
     public String moveRefundsPage(Model model,
-                                  @RequestParam(name="page", defaultValue = "1") int page){
+                                  @RequestParam(name="page", defaultValue = "1") int page,
+                                  @RequestParam(value = "startDate", required = false) String startDate,
+                                  @RequestParam(value = "endDate", required = false) String endDate){
 
         int pageSize = 9;
 
-        List<PaymentHistoryDto> refundHistory = adminPaymentService.getRefundHistory();
+        LocalDate today = LocalDate.now();
 
-        System.out.println(refundHistory.stream().toList());
+        if (startDate == null || endDate == null) {
+            if (startDate == null) {
+                startDate = today.minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+            if (endDate == null) {
+                endDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+        }
+
+        List<PaymentHistoryDto> refundHistory = adminPaymentService.getRefundHistory(startDate, endDate);
 
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, refundHistory);
+
+        String pageUrl = "/admin/refunds?startDate=" + startDate + "&endDate=" + endDate;
 
         model.addAttribute("refundHistory", paginationData.get("items"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("startPage", paginationData.get("startPage"));
         model.addAttribute("endPage", paginationData.get("endPage"));
-        model.addAttribute("paginationUrl", "/admin/refunds");
+        model.addAttribute("paginationUrl", pageUrl);
+
+        model.addAttribute("startDate", startDate); // 사용자가 선택한 시작 날짜를 전달
+        model.addAttribute("endDate", endDate);
+
         return "admin/pages/admin-refunds";
     }
 
@@ -217,7 +269,14 @@ public class AdminController {
     }
 
     @PostMapping("/payment/denied")
-    public ResponseEntity<?> isPaymentResponseDenied(){
+    public ResponseEntity<?> isPaymentResponseDenied(@RequestBody Map<String, String> data){
+        String paymentNo = data.get("paymentNo");
+
+        int cancelDenied = adminPaymentService.updateCanceledPaymentHistory(paymentNo, "denied");
+
+        if(cancelDenied != 1){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

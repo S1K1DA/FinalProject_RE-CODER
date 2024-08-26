@@ -30,8 +30,12 @@ public class AdminPaymentService {
         this.restTemplate = restTemplate;
     }
 
-    public List<PaymentHistoryDto> getRefundHistory(){
-        return adminPaymentMapper.getRefundHistory();
+    public List<PaymentHistoryDto> getRefundHistory(String startDate, String endDate){
+        return adminPaymentMapper.getRefundHistory(startDate, endDate);
+    }
+
+    public List<PaymentHistoryDto> getAllPaymentHistory(String startDate, String endDate){
+        return adminPaymentMapper.getAllPaymentHistory(startDate, endDate);
     }
 
     // 결제 취소
@@ -96,4 +100,5 @@ public class AdminPaymentService {
 
         return 1;
     }
+
 }

@@ -19,29 +19,44 @@
     <div class="pc-content">
         <div class="page-header">
             <h5 class="m-b-10">결제 내역</h5>
+            <form action="/admin/payments" method="GET" class="date-container">
+                <div class="start-date-box">
+                    <label for="start-date">시작 날짜:</label>
+                    <input type="date" id="start-date" name="startDate" th:value="${startDate}">
+                </div>
+                <div class="end-date-box">
+                    <label for="end-date">종료 날짜:</label>
+                    <input type="date" id="end-date" name="endDate" th:value="${endDate}">
+                </div>
+                <button type="submit">적용</button>
+            </form>
         </div>
 
         <div class="row custom-admin-board">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
+                        <table class="admin-management-table">
+                            <thead>
+                            <tr>
+                                <td>결제 번호</td> <td>ID 이메일</td> <td>결제 일시</td><td>결제 상품</td> <td>결제 금액</td> <td>결제 방식</td><td>결제 상태</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="history : ${paymentsHistory}">
+                                <td th:text="${history.paymentNo}" id="paymentNo"></td>
+                                <td th:text="${history.paymentUserEmail}"></td>
+                                <td th:text="${history.paymentDate}"></td>
+                                <td th:text="${history.paymentProduct}"></td>
+                                <td th:text="${@numberFormatter.print(history.paymentAmount, locale) + ' 원'}"></td>
+                                <td th:text="${history.paymentMethod}"></td>
+                                <td th:text="${history.paymentState}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <nav class="custom-navigation" aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div th:replace="~{fragments/pagination :: pagination}"></div>
                     </nav>
                 </div>
             </div>

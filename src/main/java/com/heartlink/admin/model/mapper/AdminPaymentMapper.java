@@ -8,9 +8,12 @@ import java.util.List;
 @Mapper
 public interface AdminPaymentMapper {
 
-    public List<PaymentHistoryDto> getRefundHistory();
+    public List<PaymentHistoryDto> getRefundHistory(String startDate, String endDate);
+
+    public List<PaymentHistoryDto> getAllPaymentHistory(String startDate, String endDate);
 
     public int updateCanceledPaymentHistory(String paymentNo, String state);
 
     public int updatePaymentHistory(String paymentNo, String state);
+
 }

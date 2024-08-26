@@ -26,6 +26,22 @@
         FROM PAYMENT_HISTORY ph
                  JOIN PAYMENT_CANCELED_HISTORY pch
                       ON ph.PAYMENT_NO = pch.PAYMENT_NO
+        WHERE ph.PAYMENT_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+                  AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+        ORDER BY ph.PAYMENT_DATE DESC
+    </select>
+
+    <select id="getAllPaymentHistory" resultMap="adminPaymentResultMap">
+        SELECT ph.PAYMENT_NO ,
+               ph.PAYMENT_USER_EMAIL ,
+               ph.PAYMENT_DATE ,
+               ph.PAYMENT_AMOUNT ,
+               ph.PAYMENT_METHOD ,
+               ph.PAYMENT_STATE,
+               ph.PAYMENT_PRODUCT
+        FROM PAYMENT_HISTORY ph
+        WHERE ph.PAYMENT_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+                  AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
         ORDER BY ph.PAYMENT_DATE DESC
     </select>
 
@@ -57,4 +73,5 @@
         </choose>
         WHERE PAYMENT_NO = #{paymentNo}
     </update>
+
 </mapper>

@@ -3,7 +3,7 @@
 <mapper namespace="com.heartlink.feed.model.mapper.FeedMapper">
     <resultMap id="resultMapFeed" type="FeedDto">
         <result column="feed_no" property="feedNo" />
-        <result column="aouthor_user_no" property="aouthorUserNo" />
+        <result column="author_user_no" property="authorUserNo" />
         <result column="feed_title" property="feedTitle" />
         <result column="feed_content" property="feedContent" />
         <result column="feed_indate" property="feedIndate" />
@@ -27,43 +27,45 @@
     <select id="getFeedList" resultMap="resultMapFeed">
         SELECT *
         FROM (
-        SELECT bu.BASIC_USER_NICKNAME,
-        FEED_TITLE,
-        FEED_CONTENT,
-        FEED_INDATE,
-        FEED_UPDATED_DATE,
-        FEED_TAG,
-        FEED_NO,
-        ROW_NUMBER() OVER (
-        <choose>
-            <when test="feedArray.equals('작성일')">
-                ORDER BY f.FEED_INDATE DESC
-            </when>
-            <when test="feedArray.equals('좋아요 수')">
-                ORDER BY (SELECT COUNT(*) FROM FEED_LIKES WHERE FEED_NO = f.FEED_NO) DESC
-            </when>
-            <otherwise>
-                ORDER BY f.FEED_INDATE DESC
-            </otherwise>
-        </choose>
-        ) AS row_num
-        FROM FEEDS f
-        JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
-        WHERE FEED_STATE = 'N'
-        <choose>
-            <when test="feedTag.equals('전체')">
-                <!-- 모든 태그 포함 -->
-            </when>
-            <when test="feedTag.equals('매칭 후기')">
-                AND FEED_TAG = '매칭 후기'
-            </when>
-            <when test="feedTag.equals('자유 보드')">
-                AND FEED_TAG = '자유 보드'
-            </when>
-            <when test="feedTag.equals('연애 조언')">
-                AND FEED_TAG = '연애 조언'
-            </when>
-        </choose>
+        SELECT
+            bu.BASIC_USER_NICKNAME,
+            AUTHOR_USER_NO,
+            FEED_TITLE,
+            FEED_CONTENT,
+            FEED_INDATE,
+            FEED_UPDATED_DATE,
+            FEED_TAG,
+            FEED_NO,
+            ROW_NUMBER() OVER (
+            <choose>
+                <when test="feedArray.equals('작성일')">
+                    ORDER BY f.FEED_INDATE DESC
+                </when>
+                <when test="feedArray.equals('좋아요 수')">
+                    ORDER BY (SELECT COUNT(*) FROM FEED_LIKES WHERE FEED_NO = f.FEED_NO) DESC
+                </when>
+                <otherwise>
+                    ORDER BY f.FEED_INDATE DESC
+                </otherwise>
+            </choose>
+            ) AS row_num
+            FROM FEEDS f
+            JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
+            WHERE FEED_STATE = 'N'
+            <choose>
+                <when test="feedTag.equals('전체')">
+                    <!-- 모든 태그 포함 -->
+                </when>
+                <when test="feedTag.equals('매칭 후기')">
+                    AND FEED_TAG = '매칭 후기'
+                </when>
+                <when test="feedTag.equals('자유 보드')">
+                    AND FEED_TAG = '자유 보드'
+                </when>
+                <when test="feedTag.equals('연애 조언')">
+                    AND FEED_TAG = '연애 조언'
+                </when>
+            </choose>
         )
         WHERE row_num BETWEEN #{start} AND #{end}
     </select>

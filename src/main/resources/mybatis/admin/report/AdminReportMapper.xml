@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartlink.admin.model.mapper.AdminReportMapper">
+    <resultMap id="reportResultMap" type="AdminReportDto">
+        <result property="reportNo" column="report_no"/>
+        <result property="reportCategoryNo" column="report_category_no"/>
+        <result property="reportCategoryName" column="report_category_name"/>
+        <result property="reportedUserNo" column="reported_user_no"/>
+        <result property="reporterUserNo" column="reporter_user_no"/>
+        <result property="reportIndate" column="report_indate"/>
+        <result property="reportContent" column="report_content"/>
+        <result property="reportResponseStatus" column="report_response_status"/>
+        <result property="reportType" column="report_type"/>
+        <result property="reportTypeNo" column="report_type_no"/>
+    </resultMap>
+
+    <select id="getReportCategory" resultMap="reportResultMap">
+        SELECT REPORT_CATEGORY_NO ,
+               REPORT_CATEGORY_NAME
+        FROM REPORT_CATEGORY
+    </select>
+
+</mapper>

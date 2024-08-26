@@ -5,6 +5,37 @@
 <link rel="stylesheet" th:href="@{/css/feed/feed_main.css}">
 <nav th:replace="fragments/navigation :: navigation"></nav>
 <section class="feed-sec">
+    <div id="reportOverlay" class="report-overlay">
+        <div class="report-popup">
+            <h2>신고하기</h2>
+            <form id="reportForm" action="/report/request" method="POST" class="report-action-box">
+                <div>
+                    <ul>
+                        <li>
+                            <p>신고 유형 : <span>Feed</span></p>
+                        </li>
+                        <li>
+                            <p>신고 대상 : <spen id="reportedUser"></spen></p>
+                            <input type="hidden" id="reportedUserNo" name="reportedUserNo">
+                            <input type="hidden" id="feedNo" name="reportTypeNo">
+                            <input type="hidden" name="reportType" value="Feed">
+                        </li>
+                    </ul>
+                </div>
+                <select class="select-category" name="reportCategoryNo">
+                    <option disabled selected>==신고 카테고리 선택==</option>
+                    <option th:each="category : ${reportCategory}"
+                            th:value="${category.reportCategoryNo}"
+                            th:text="${category.reportCategoryName}"></option>
+                </select>
+                <textarea placeholder="상세 사유를 작성해 주세요." name="reportContent"></textarea>
+                <div class="action-bnts">
+                    <button type="submit" id="actionComplate" class="action-complate">완료</button>
+                    <button type="button" id="actionCloses" class="action-close">닫기</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="container feed-box">
         <div class="feed-side-bar">
             <form action="#" method="get" id="filterForm">
@@ -47,6 +78,7 @@
                     <div class="feed-head-box">
                         <div class="feed-title-box">
                             <p class="feed-title" th:text="${feed.feedTitle}"></p>
+                            <input type="hidden" id="feedNo" th:value="${feed.feedNo}">
                             <div class="feed-icons">
                                 <a class="badge ms-auto feed-heart" id="like-heart" onclick="feedLikeBtn(this)">
                                     <i class="bi-heart feed-heart-icon"></i>
@@ -57,7 +89,7 @@
                                     </a>
                                     <div class="more-dropdown-content">
                                         <input type="hidden" th:value="${feed.feedNo}">
-                                        <div class="more-ele">신고하기</div>
+                                        <div class="more-ele" id="reportBtn">신고하기</div>
                                         <div class="more-ele" onclick="deleteFeed(this)">삭제</div>
                                         <div class="more-ele" th:attr="onclick='location.href=\'feed/modify?feedNo='+${feed.feedNo}+'\''">수정</div>
                                     </div>
@@ -67,6 +99,7 @@
                         <div class="feed-icon-box">
                             <p class="feed-nickname" th:text="${feed.basicUserNickname}"></p>
                             <p class="feed-like-cnt" th:text="${feed.likeCount}"></p>
+                            <input type="hidden" id="userNo" th:value="${feed.authorUserNo}">
                         </div>
                         <div class="feed-remark">
                             <p class="feed-indate"  th:if="${feed.feedTag != 'none' }" th:text="${feed.feedTag}"></p>

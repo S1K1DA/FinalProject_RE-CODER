@@ -112,8 +112,9 @@
 }
 
 .custom-admin-board .pagination{
+    padding-top: 30px !important;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .pagination .btn-action{
@@ -394,6 +395,31 @@
 
 #admin-email{
     padding-right: 80px;
+}
+
+.date-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.date-container button{
+    background-color: #2689E2;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    width: 60px;
+    height: 35px;
+    font-weight: bold;
+}
+
+.date-container button:hover{
+    background-color: #89bae6;
+}
+
+.start-date-box,
+.end-date-box{
+    margin-right: 20px;
 }
 
 @media (max-width: 1285px) {
