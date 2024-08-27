@@ -7,10 +7,9 @@ import com.heartlink.admin.model.dto.PaymentHistoryDto;
 import com.heartlink.admin.model.service.AdminMemberService;
 import com.heartlink.admin.model.service.AdminPaymentService;
 import com.heartlink.admin.model.service.AdminReportService;
-import com.heartlink.member.model.dto.AdminDto;
+import com.heartlink.common.pagination.Pagination;
 import com.heartlink.member.model.service.MemberService;
 import com.heartlink.member.util.JwtUtil;
-import com.heartlink.common.pagination.Pagination;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +121,7 @@ public class AdminController {
         }
 
         model.addAttribute("message", "회원가입이 성공적으로 완료되었습니다.");
-        return "redirect:/member/login"; // 회원가입 후 로그인 페이지로 리디렉션
+        return "redirect:/admin/login"; // 회원가입 후 로그인 페이지로 리디렉션
 
     }
 
