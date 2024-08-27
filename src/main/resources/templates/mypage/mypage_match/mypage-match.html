@@ -14,18 +14,6 @@
 
                 <div class="mypage-box-container d-flex">
                     <div th:replace="mypage/mypage_nav :: mypagenav"></div>
-<!--                    <div class="sidebar-menu">-->
-<!--                        <ul class="menu-list">-->
-<!--                            <li><a th:href="@{/mypage/main}">내 정보</a></li>-->
-<!--                            <li><a th:href="@{/mypage/hobby}">성향/취미</a></li>-->
-<!--                            <li><a th:href="@{/mypage/review}">내 후기</a></li>-->
-<!--                            <li><a th:href="@{/mypage/feedlike}">피드 좋아요 목록</a></li>-->
-<!--                            <li><a th:href="@{/mypage/proflike}">프로필 좋아요 목록</a></li>-->
-<!--                            <li><a th:href="@{/mypage/cash}">결제 내역</a></li>-->
-<!--                            <li class="active"><a th:href="@{#}">매칭 내역</a></li>-->
-<!--                            <li><a th:href="@{/mypage/delete}">회원 탈퇴</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
                     <div class="custom-block d-flex flex-column align-items-start text-left p-4">
 
                         <div class="text-center mb-5 pb-2 w-100">
@@ -49,7 +37,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="match : ${matchingHistory}" th:class="${match.matchingUserNo != userId} ? 'clickable-row' : ''">
+                                    <tr th:each="match : ${matchingHistory}">
                                         <td>
                                             <span th:text="${#dates.format(match.matchingIndate, 'yyyy-MM-dd')}"></span>
                                             <span th:if="${match.matchingUserNo != userId}" th:text="'(받은)'" style="color: blue;"></span>
@@ -57,9 +45,18 @@
                                         </td>
                                         <td th:text="${match.partnerName}"></td>
                                         <td>
-                                            <span th:text="${match.matchingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingState == 'Y' ? 'text-success' : 'text-danger'}" style="position: relative;"></span>
-                                            <button th:if="${match.matchingUserNo != userId}" style="margin-left: 10px; background-color: blue; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer; display: inline-block;">수락</button>
-                                            <button th:if="${match.matchingUserNo != userId}" style="margin-left: 5px; background-color: red; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer; display: inline-block;">거절</button>
+                                            <span id="match-state-[[${match.matchingNo}]]" th:text="${match.matchingState == 'Y' ? 'Y' : 'N'}"
+                                                  th:classappend="${match.matchingState == 'Y' ? 'text-success' : 'text-danger'}"></span>
+                                            <div id="match-actions-[[${match.matchingNo}]]" th:if="${match.matchingUserNo != userId && match.matchingState == 'N'}" style="display:inline-block;">
+                                                <button th:onclick="'acceptMatch(' + ${match.matchingNo} + ')'"
+                                                        style="margin-left: 10px; background-color: blue; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer;">
+                                                    수락
+                                                </button>
+                                                <button th:onclick="'rejectMatch(' + ${match.matchingNo} + ')'"
+                                                        style="margin-left: 5px; background-color: red; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer;">
+                                                    거절
+                                                </button>
+                                            </div>
                                         </td>
                                         <td th:text="${match.matchingChattingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingChattingState == 'Y' ? 'text-success' : 'text-danger'}"></td>
                                     </tr>
@@ -81,11 +78,40 @@
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
 <script>
-    // 수락 버튼 클릭 시 처리할 함수
-    function acceptMatch() {
-        // 여기에 수락 처리를 위한 로직을 추가하세요.
-        alert('매칭이 수락되었습니다!');
+    function acceptMatch(matchingNo) {
+        updateMatchingState(matchingNo, 'Y');
     }
+
+    function rejectMatch(matchingNo) {
+        updateMatchingState(matchingNo, 'N');
+    }
+
+    function updateMatchingState(matchingNo, state) {
+        fetch('/mypage/updateMatchingState', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ matchingNo: matchingNo, state: state })
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data === '매칭 상태 업데이트 성공') {
+                // 해당 매칭 항목에서 버튼 숨기기
+                document.getElementById(`match-actions-${matchingNo}`).style.display = 'none';
+                // 매칭 상태 텍스트 업데이트
+                document.getElementById(`match-state-${matchingNo}`).textContent = state === 'Y' ? 'Y' : 'N';
+                document.getElementById(`match-state-${matchingNo}`).className = state === 'Y' ? 'text-success' : 'text-danger';
+            } else {
+                alert('매칭 상태 업데이트에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('매칭 상태 업데이트 중 오류가 발생했습니다.');
+        });
+    }
+
 </script>
 
 </body>

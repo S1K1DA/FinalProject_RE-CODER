@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mypageMapper">
+<mapper namespace="MypageMapper">
 
     <!-- 기존 유저 정보 관련 resultMap -->
     <resultMap id="userResultMap" type="MypageDto">
@@ -11,6 +11,8 @@
         <result column="USER_ADDR" property="fullAddress"/>
         <result column="BASIC_USER_TELNUM" property="phone"/>
         <result column="BASIC_USER_MBTI" property="mbti"/>
+        <result column="BASIC_USER_COIN" property="coin"/>
+        <result column="CONSENT_LOCATION_INFO" property="consentLocationInfo"/>
     </resultMap>
 
     <resultMap id="feedResultMap" type="MypageDto">
@@ -22,10 +24,32 @@
         <result column="feedIndate" property="feedIndate"/>
     </resultMap>
 
+    <resultMap id="userLocationResultMap" type="MypageDto">
+        <result column="LATITUDE" property="latitude"/>
+        <result column="LONGITUDE" property="longitude"/>
+    </resultMap>
+
     <!-- 유저 정보 가져오기 -->
     <select id="getUserInfoById" parameterType="int" resultMap="userResultMap">
-        SELECT * FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
+        SELECT
+        bu.BASIC_USER_NO,
+        bu.BASIC_USER_EMAIL,
+        bu.BASIC_USER_NICKNAME,
+        bu.BASIC_USER_NAME,
+        bu.USER_ADDR,
+        bu.BASIC_USER_TELNUM,
+        bu.BASIC_USER_MBTI,
+        bu.BASIC_USER_COIN,
+        bu.CONSENT_LOCATION_INFO,
+        bp.PHOTO_PATH AS profilePicturePath  <!-- 프로필 사진 경로 추가 -->
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp ON bu.BASIC_USER_NO = bp.BASIC_USER_NO  <!-- LEFT JOIN으로 사진 테이블과 연결 -->
+        WHERE
+        bu.BASIC_USER_NO = #{userId}
     </select>
+
 
     <!-- 비밀번호 가져오기 -->
     <select id="getPasswordByUserId" parameterType="int" resultType="string">
@@ -40,7 +64,8 @@
         USER_ADDR = #{fullAddress},
         BASIC_USER_TELNUM = #{phone},
         BASIC_USER_UPDATE = CURRENT_TIMESTAMP,
-        BASIC_USER_MBTI = #{mbti}
+        BASIC_USER_MBTI = #{mbti},
+        CONSENT_LOCATION_INFO = #{consentLocationInfo}
         WHERE BASIC_USER_NO = #{userId}
     </update>
 
@@ -228,4 +253,54 @@
         JOIN BASIC_USER u ON f.AUTHOR_USER_NO = u.BASIC_USER_NO
         WHERE f.FEED_NO = #{feedNo}
     </select>
+
+    <select id="getUserLocation" parameterType="int" resultType="MypageDto">
+        SELECT LATITUDE, LONGITUDE
+        FROM BASIC_USER_LOCATION
+        WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <update id="updateUserLocation" parameterType="map">
+        MERGE INTO BASIC_USER_LOCATION l
+        USING DUAL
+        ON (l.BASIC_USER_NO = #{userId})
+        WHEN MATCHED THEN
+        UPDATE SET LATITUDE = #{latitude}, LONGITUDE = #{longitude}
+        WHEN NOT MATCHED THEN
+        INSERT (BASIC_USER_NO, LATITUDE, LONGITUDE)
+        VALUES (#{userId}, #{latitude}, #{longitude})
+    </update>
+
+    <!-- 유저 프로필 사진 삽입 -->
+    <insert id="insertUserProfilePhoto" parameterType="MypageDto">
+        INSERT INTO BASIC_USER_PHOTO (BASIC_USER_NO, PHOTO_ORIGIN_NAME, PHOTO_NAME, PHOTO_PATH)
+        VALUES (#{userId}, #{profilePictureOriginalName}, #{profilePicturePath}, #{profilePicturePath})
+    </insert>
+
+    <!-- 유저 프로필 사진이 존재하는지 확인 -->
+    <select id="countUserProfilePhoto" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM BASIC_USER_PHOTO WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 유저 프로필 사진 업데이트 -->
+    <update id="updateUserProfilePhoto" parameterType="MypageDto">
+        UPDATE BASIC_USER_PHOTO
+        SET PHOTO_ORIGIN_NAME = #{profilePictureOriginalName},
+        PHOTO_NAME = #{profilePicturePath},
+        PHOTO_PATH = #{profilePicturePath},
+        PHOTO_INDATE = default
+        WHERE BASIC_USER_NO = #{userId}
+    </update>
+
+    <update id="updateMatchingState" parameterType="map">
+        UPDATE MATCHING_STATE
+        SET MATCHING_STATE = #{state}
+        WHERE MATCHING_NO = #{matchingNo}
+        AND MATCHED_USER_NO = #{userId}
+        AND MATCHING_STATE = 'N'
+    </update>
+
+
+
+
 </mapper>

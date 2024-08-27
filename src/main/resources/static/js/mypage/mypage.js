@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // 팝업 처리
     setupPopup();
 
-
     // 주소 나누기 및 결합 처리 (특정 페이지에서만 실행)
     if (document.getElementById('user-address-line1')) {
         splitAddressIntoTwoFields();
@@ -25,11 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // 탈퇴 폼 처리
     setupDeleteForm();
 
-        // MBTI 검사 열기
-        const mbtiTestButton = document.getElementById('openMbtiTest');
-        if (mbtiTestButton) {
-            mbtiTestButton.addEventListener('click', openMbtiTest);
-        }
+    // MBTI 검사 열기
+    const mbtiTestButton = document.getElementById('openMbtiTest');
+    if (mbtiTestButton) {
+        mbtiTestButton.addEventListener('click', openMbtiTest);
+    }
 
     // 닉네임 중복 체크 초기화 (특정 페이지에서만 실행)
     if (document.getElementById('user-nickname')) {
@@ -42,7 +41,50 @@ document.addEventListener('DOMContentLoaded', function () {
         initializeFeedItemPopup();
         setupPopupCloseHandlers();
     }
+
+    // 프로필 사진 업로드 처리
+    setupProfileImageUpload();
 });
+
+
+// 프로필 사진 업로드 처리 함수
+function setupProfileImageUpload() {
+    const newFileButton = document.querySelector('.btn-new-file');
+    if (newFileButton) {
+        newFileButton.addEventListener('click', function () {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.querySelector('.profile-picture img').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+
+                    // 업로드할 파일을 서버에 전송
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    fetch('/mypage/profile-image-upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        // 서버에서 반환된 이미지 URL을 hidden 필드에 저장
+                        document.querySelector('input[name="profilePicturePath"]').value = data;
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            };
+            fileInput.click();
+        });
+    }
+}
+
 
 // 체크박스 선택 처리 함수
 function handleCheckboxSelection(selector, maxSelections, warningText) {
@@ -416,8 +458,8 @@ function handleAddressSearch(data) {
             const longitude = document.getElementById('addr-longitude');
             const latitude = document.getElementById('addr-latitude');
 
-            longitude.value = result[0].x;
-            latitude.value = result[0].y;
+            longitude.value = result[0].y;
+            latitude.value = result[0].x;
         }
     };
 
@@ -521,4 +563,3 @@ function setupPopupCloseHandlers() {
 function closeFeedPopup(feedPopup) {
     feedPopup.style.display = 'none';
 }
-

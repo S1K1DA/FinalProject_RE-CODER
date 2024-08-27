@@ -28,6 +28,9 @@ public class WebConfig implements WebMvcConfigurer {
         // /image/review/** URL로 요청된 파일들을 로컬 경로로 매핑
         registry.addResourceHandler("/image/review/**")
                 .addResourceLocations("file:" + Paths.get("").toAbsolutePath().toString() + "/src/main/resources/static/image/review/");
+
+        registry.addResourceHandler("/image/user_profile/**")
+                .addResourceLocations("file:" + Paths.get("").toAbsolutePath().toString() + "/src/main/resources/static/image/user_profile/");
     }
 }
 
