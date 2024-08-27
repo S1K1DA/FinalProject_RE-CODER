@@ -32,9 +32,9 @@ public class AdminMemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<MemberListDto> getAllUser(){
+    public List<MemberListDto> getAllUser(String filter, String category,String search){
 
-        List<MemberListDto> resultUserList = adminMemberMapper.getAllUser();
+        List<MemberListDto> resultUserList = adminMemberMapper.getAllUser(filter,category,search);
 
         for(MemberListDto item : resultUserList){
 
@@ -53,6 +53,34 @@ public class AdminMemberService {
 
         return resultUserList;
     }
+
+    public List<MemberListDto> getAllUserState(String filter, String category,String search){
+
+        List<MemberListDto> resultUserList = adminMemberMapper.getAllUserState(filter,category,search);
+
+        for(MemberListDto item : resultUserList){
+
+            if(item.getBasicUserSex().equals("F")){
+                item.setBasicUserSex("여성");
+            }else if(item.getBasicUserSex().equals("M")){
+                item.setBasicUserSex("남성");
+            }
+        }
+
+        return resultUserList;
+    }
+
+    public String setChangeUserState(MemberListDto memberListDto){
+
+        int changeResult = adminMemberMapper.setChangeUserState(memberListDto);
+
+        if(changeResult != 1){
+            return "데이터 업데이트 실패";
+        }
+        
+        return "SUCCESS";
+    }
+
 
     public boolean checkEmailVerifit(String adminEmail){
         return adminMemberMapper.checkEmailVerifit(adminEmail) > 0;

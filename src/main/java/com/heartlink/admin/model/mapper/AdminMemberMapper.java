@@ -9,7 +9,11 @@ import java.util.List;
 @Mapper
 public interface AdminMemberMapper {
 
-    public List<MemberListDto> getAllUser();
+    public List<MemberListDto> getAllUser(String filter,String category,String search);
+
+    public List<MemberListDto> getAllUserState(String filter,String category,String search);
+
+    public int setChangeUserState(MemberListDto memberListDto);
 
     public int checkEmailVerifit (String adminEmail);
 

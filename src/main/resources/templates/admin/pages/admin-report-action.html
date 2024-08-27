@@ -61,6 +61,17 @@
     <div class="pc-content">
         <div class="page-header">
             <h5 class="m-b-10">신고 내역 확인</h5>
+            <form action="/admin/report/action" method="GET" class="date-container">
+                <div class="start-date-box">
+                    <label for="start-date">시작 날짜:</label>
+                    <input type="date" id="start-date" name="startDate" th:value="${startDate}">
+                </div>
+                <div class="end-date-box">
+                    <label for="end-date">종료 날짜:</label>
+                    <input type="date" id="end-date" name="endDate" th:value="${endDate}">
+                </div>
+                <button type="submit">적용</button>
+            </form>
         </div>
 
         <div class="row custom-admin-board">

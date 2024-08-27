@@ -27,6 +27,8 @@ public class AdminReportDto {
     private String reportRsolutionPunish;   // 영구, 정지, 없음
     private String punishmentResult;    //date
 
+    private int accruePunishment;
+
     private boolean permanentBan;
     private boolean punisNone;
 }

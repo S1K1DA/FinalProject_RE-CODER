@@ -21,24 +21,26 @@
             <div class="page-header-title">
                 <h5 class="m-b-10">사용자 검색</h5>
             </div>
-            <div class="user-select-box">
+            <div th:action="@{/admin/user/search}" method="GET" class="user-select-box">
                 <div class="user-select-filter">
                     <select class="choses-tag" name="filter" id="userFilter">
-                        <option value="none">회원 상태</option>
-                        <option value="Active">Active</option>
-                        <option value="Dormant">Dormant</option>
-                        <option value="ban">ban</option>
+                        <option value="none" disabled selected>회원 상태</option>
+                        <option value="ALL" th:selected="${filter == 'ALL'}">ALL</option>
+                        <option value="Active" th:selected="${filter == 'Active'}">Active</option>
+                        <option value="Dormant" th:selected="${filter == 'Dormant'}">Dormant</option>
+                        <option value="Ban" th:selected="${filter == 'Ban'}">Ban</option>
+                        <option value="Deleted" th:selected="${filter == 'Deleted'}">Deleted</option>
                     </select>
                 </div>
-                <nav class="navbar navbar-light admin-user-search">
+                <form id="searchForm" class="navbar navbar-light admin-user-search">
                     <select class="user-search-select" id="inputGroupSelect02" name="category">
                         <option value="user_id" selected>ID 이메일</option>
                         <option value="user_num">회원 번호</option>
                     </select>
-                    <input type="text" class="user-search-control" name="searchText"
+                    <input type="text" class="user-search-control" name="search"
                            aria-label="Recipient's username" aria-describedby="button-addon2">
                     <button class="btn btn-outline-secondary user-search-btn" type="submit" id="button-addon2">검색</button>
-                </nav>
+                </form>
             </div>
         </div>
 
@@ -72,9 +74,7 @@
         </div>
     </div>
 </div>
-
-
-<!-- 스크립트 모듈 -->
+<script th:src="@{/js/admin/filter-search.js}"/>
 <script th:replace="~{admin/fragments/admin-script::admin_script}"></script>
 </body>
 </html>

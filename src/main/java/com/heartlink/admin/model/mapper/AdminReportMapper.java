@@ -12,7 +12,11 @@ public interface AdminReportMapper {
 
     public List<AdminReportDto> getReportCategory();
 
-    public List<AdminReportDto> setReportList();
+    public List<AdminReportDto> setResolutionReportList(String startDate, String endDate);
+
+    public int getAccruePunishment();
+
+    public List<AdminReportDto> setReportList(String startDate, String endDate);
 
     public int setAdminResolution(AdminReportDto reportDto);
 

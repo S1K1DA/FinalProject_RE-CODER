@@ -12,6 +12,11 @@
         <result property="reportResponseStatus" column="report_response_status"/>
         <result property="reportType" column="report_type"/>
         <result property="reportTypeNo" column="report_type_no"/>
+        <result property="reportRsolutionPunish" column="report_resolution_punish"/>
+        <result property="punishmentResult" column="punishment_result"/>
+        <result property="reportResolutionContent" column="report_resolution_content"/>
+        <result property="adminUserNo" column="admin_user_no"/>
+        <result property="reportResolutionDate" column="report_resolution_date"/>
     </resultMap>
 
     <select id="getReportCategory" resultMap="reportResultMap">
@@ -22,8 +27,8 @@
 
     <select id="setReportList" resultMap="reportResultMap">
         SELECT REPORT_NO ,
-               REPORTER_USER_NO ,
                REPORTED_USER_NO ,
+               REPORTER_USER_NO ,
                REPORT_INDATE ,
                rc.REPORT_CATEGORY_NAME ,
                REPORT_TYPE ,
@@ -32,7 +37,9 @@
         FROM REPORT_BOARD rb
                  JOIN REPORT_CATEGORY rc
                       ON rb.REPORT_CATEGORY_NO = rc.REPORT_CATEGORY_NO
-        WHERE REPORT_RESPONSE_STATUS = 'N'
+        WHERE rb.REPORT_INDATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+            AND REPORT_RESPONSE_STATUS = 'N'
         ORDER BY REPORT_INDATE DESC
     </select>
 
@@ -67,4 +74,35 @@
             BASIC_USER_STATUS = #{state}
         WHERE BASIC_USER_NO = #{reportedUserNo}
     </update>
+
+    <select id="setResolutionReportList" resultMap="reportResultMap">
+        SELECT rb.REPORT_NO ,
+               rb.REPORTER_USER_NO ,
+               rb.REPORTED_USER_NO ,
+               rb.REPORT_INDATE ,
+               rc.REPORT_CATEGORY_NAME ,
+               rr.REPORT_RESOLUTION_DATE ,
+               rr.REPORT_RESOLUTION_PUNISH ,
+               rr.PUNISHMENT_RESULT ,
+               rr.REPORT_RESOLUTION_CONTENT,
+               rr.ADMIN_USER_NO ,
+               rb.REPORT_TYPE
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_CATEGORY rc
+                      ON rb.REPORT_CATEGORY_NO = rc.REPORT_CATEGORY_NO
+                 JOIN REPORT_RESOLUTION rr
+                      ON rb.REPORT_NO = rr.REPORT_NO
+        WHERE rb.REPORT_INDATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+            AND rb.REPORT_RESPONSE_STATUS = 'Y'
+        ORDER BY REPORT_RESOLUTION_DATE DESC
+    </select>
+
+    <select id="getAccruePunishment" resultType="java.lang.Integer">
+        SELECT COUNT(REPORTED_USER_NO)
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_RESOLUTION rr
+                      ON rb.REPORT_NO = rr.REPORT_NO
+        WHERE rr.PUNISHMENT_RESULT IS NOT NULL
+    </select>
 </mapper>

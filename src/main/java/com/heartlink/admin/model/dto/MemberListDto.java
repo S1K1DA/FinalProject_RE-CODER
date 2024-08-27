@@ -20,4 +20,7 @@ public class MemberListDto {
     private int basicUserCoin;
     private String consentLocationInfo;
 
+    private String category;
+    private String search;
+
 }

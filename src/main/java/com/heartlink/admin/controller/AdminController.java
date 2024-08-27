@@ -153,17 +153,60 @@ public class AdminController {
     }
 
     @GetMapping("/reports")
-    public String moveReportPage(){
+    public String moveReportPage(Model model,
+                                 @RequestParam(name="page", defaultValue = "1") int page,
+                                 @RequestParam(value = "startDate", required = false) String startDate,
+                                 @RequestParam(value = "endDate", required = false) String endDate){
+        int pageSize = 9;
+
+        LocalDate today = LocalDate.now();
+
+        if (startDate == null || endDate == null) {
+            if (startDate == null) {
+                startDate = today.minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+            if (endDate == null) {
+                endDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+        }
+
+        List<AdminReportDto> resolutionReportList = adminReportService.setResolutionReportList(startDate, endDate);
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, resolutionReportList);
+
+        model.addAttribute("resolutionList", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
+        model.addAttribute("paginationUrl", "/admin/reports");
+
+        model.addAttribute("startDate", startDate); // 사용자가 선택한 시작 날짜를 전달
+        model.addAttribute("endDate", endDate);
+
         return "admin/pages/admin-reports";
     }
 
     @GetMapping("/report/action")
     public String moveReportActionPage(Model model,
-                                       @RequestParam(name="page", defaultValue = "1") int page){
+                                       @RequestParam(name="page", defaultValue = "1") int page,
+                                       @RequestParam(value = "startDate", required = false) String startDate,
+                                       @RequestParam(value = "endDate", required = false) String endDate){
 
         int pageSize = 9;
 
-        List<AdminReportDto> reportList = adminReportService.setReportList();
+        LocalDate today = LocalDate.now();
+
+        if (startDate == null || endDate == null) {
+            if (startDate == null) {
+                startDate = today.minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+            if (endDate == null) {
+                endDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+        }
+
+        List<AdminReportDto> reportList = adminReportService.setReportList(startDate, endDate);
 
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, reportList);
 
@@ -173,6 +216,9 @@ public class AdminController {
         model.addAttribute("startPage", paginationData.get("startPage"));
         model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("paginationUrl", "/admin/report/action");
+
+        model.addAttribute("startDate", startDate); // 사용자가 선택한 시작 날짜를 전달
+        model.addAttribute("endDate", endDate);
 
         return "admin/pages/admin-report-action";
     }
@@ -195,10 +241,13 @@ public class AdminController {
 
     @GetMapping("/user/search")
     public String moveUserSearchPage(Model model,
-                                     @RequestParam(name="page", defaultValue = "1") int page){
+                                     @RequestParam(value = "filter", defaultValue = "ALL")String filter ,
+                                     @RequestParam(name="page", defaultValue = "1") int page,
+                                     @RequestParam(name="category", defaultValue = "") String category,
+                                     @RequestParam(name="search", defaultValue = "") String search){
 
         int pageSize = 9;
-        List<MemberListDto> userList = adminMemberService.getAllUser();
+        List<MemberListDto> userList = adminMemberService.getAllUser(filter,category,search);
 
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, userList);
 
@@ -213,8 +262,38 @@ public class AdminController {
     }
 
     @GetMapping("/user/status")
-    public String moveUserStatusPage(){
+    public String moveUserStatusPage(Model model,
+                                     @RequestParam(value = "filter", defaultValue = "ALL")String filter ,
+                                     @RequestParam(name="page", defaultValue = "1") int page,
+                                     @RequestParam(name="category", defaultValue = "") String category,
+                                     @RequestParam(name="search", defaultValue = "") String search){
+
+        int pageSize = 9;
+
+        List<MemberListDto> userStateList = adminMemberService.getAllUserState(filter,category,search);
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, userStateList);
+
+        model.addAttribute("stateList", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
+        model.addAttribute("paginationUrl", "/admin/user/search");
+
         return "admin/pages/admin-user-status";
+    }
+
+    @PostMapping("/user/status/change")
+    public ResponseEntity<?> changeUserState(@RequestBody MemberListDto memberListDto){
+
+        String userStateResult = adminMemberService.setChangeUserState(memberListDto);
+
+        if(userStateResult.equals("SUCCESS")){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userStateResult);
     }
 
     @GetMapping("/payments")
