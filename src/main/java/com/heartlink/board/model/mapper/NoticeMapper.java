@@ -1,7 +1,6 @@
 package com.heartlink.board.model.mapper;
 
 import com.heartlink.board.model.dto.NoticeDto;
-import com.heartlink.common.paging.PageInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public interface NoticeMapper {
     int selectNoticeCount();
 
     // 공지사항 목록 조회 (페이징 처리)
-    List<NoticeDto> selectNoticeList(PageInfo pi);
+    List<NoticeDto> selectNoticeList();
 
     // 고정된 공지사항 항목 조회
     List<NoticeDto> selectPinnedNotices();

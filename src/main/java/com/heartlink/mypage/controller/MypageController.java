@@ -139,10 +139,11 @@ public class MypageController {
 
     @GetMapping("/match")
     public String matchPage(HttpServletRequest request, Model model) {
-        int userId = getCurrentUserId();
+        int userId = getCurrentUserId();  // 현재 사용자의 ID 가져오기
         List<MypageDto> matchingHistory = mypageService.getUserMatchingHistory(userId);
 
         model.addAttribute("matchingHistory", matchingHistory);
+        model.addAttribute("userId", userId);  // 모델에 userId 추가
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
 
         return "mypage/mypage_match/mypage-match";

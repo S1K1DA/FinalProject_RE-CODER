@@ -2,8 +2,8 @@ package com.heartlink.board.controller;
 
 import com.heartlink.board.model.dto.NoticeDto;
 import com.heartlink.board.model.service.NoticeService;
-import com.heartlink.common.paging.PageInfo;
-import com.heartlink.common.paging.Pagination;
+//import com.heartlink.common.paging.PageInfo;
+//import com.heartlink.common.paging.Pagination;
 import com.heartlink.member.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.heartlink.review.common.Pagination;
+
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/notices")
@@ -21,36 +24,43 @@ public class NoticeController {
 
     private final NoticeService noticeService;
     private final JwtUtil jwtUtil;
+    private final Pagination pagination;
 
     @Autowired
-    public NoticeController(NoticeService noticeService, JwtUtil jwtUtil) {
+    public NoticeController(NoticeService noticeService, JwtUtil jwtUtil, Pagination pagination) {
         this.noticeService = noticeService;
         this.jwtUtil = jwtUtil;
+        this.pagination = pagination;
     }
 
     // 공지사항 리스트 페이지
     @GetMapping("/list")
     public String getNoticeList(Model model,
-                                @RequestParam(value = "cpage", defaultValue = "1") int cpage) {
+                                @RequestParam(value = "page", defaultValue = "1") int page) {
 
         int listCount = noticeService.getNoticeCount(); // 총 공지사항 수
-        int pageLimit = 3; // 페이지네이션의 최대 페이지 수
-        int boardLimit = 8; // 한 페이지에 보여줄 공지사항 수
-
-        PageInfo pi = Pagination.getPageInfo(listCount, cpage, pageLimit, boardLimit);
+        int pageSize = 8; // 페이지네이션의 최대 페이지 수
+//        int boardLimit = 8; // 한 페이지에 보여줄 공지사항 수
 
         // 고정된 공지사항 가져오기
         List<NoticeDto> pinnedNotices = noticeService.getPinnedNotices();
 
         // 일반 공지사항 가져오기
-        List<NoticeDto> list = noticeService.getNoticeList(pi);
+        List<NoticeDto> list = noticeService.getNoticeList();
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, list);
 
         if (pinnedNotices != null) {
             model.addAttribute("pinnedNotices", pinnedNotices);  // 고정된 공지사항 리스트 추가
         }
         if (list != null) {
-            model.addAttribute("pi", pi);
-            model.addAttribute("list", list);  // 일반 공지사항 리스트 추가
+//            model.addAttribute("pi", pi);
+            model.addAttribute("list", paginationData.get("items"));  // 일반 공지사항 리스트 추가
+            model.addAttribute("startPage", paginationData.get("startPage"));
+            model.addAttribute("endPage", paginationData.get("endPage"));
+            model.addAttribute("currentPage", paginationData.get("currentPage"));
+            model.addAttribute("totalPages", paginationData.get("totalPages"));
+            model.addAttribute("paginationUrl", "/notices/list");
         }
 
         return "board/notice/notice-list";
