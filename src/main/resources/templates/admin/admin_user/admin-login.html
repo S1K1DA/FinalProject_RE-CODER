@@ -22,17 +22,19 @@
                 </a>
               </div>
               <h5 class="my-4 d-flex justify-content-center">이메일 주소로 로그인해주세요.</h5>
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="이메일 주소" >
-                <label for="floatingInput">이메일 주소</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput1" placeholder="비밀번호" >
-                <label for="floatingInput1">비밀번호</label>
-              </div>
-              <div class="d-grid mt-4">
-                <button type="button" class="btn btn-secondary">로그인</button>
-              </div>
+              <form class="login-form">
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" name="adminUserEmail" placeholder="이메일 주소" >
+                  <label for="floatingInput">이메일 주소</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" name="adminUserPwd" placeholder="비밀번호" >
+                  <label for="floatingInput1">비밀번호</label>
+                </div>
+                <div class="d-grid mt-4">
+                  <button type="submit" class="btn btn-secondary">로그인</button>
+                </div>
+              </form>
               <hr >
               <h5 class="d-flex justify-content-center">
                 <a th:href="@{/admin/register}">
@@ -44,6 +46,7 @@
         </div>
       </div>
     </div>
+    <script th:src="@{/js/admin/register-verifit.js}"></script>
     <script th:replace="~{admin/fragments/admin-script::admin_script}"></script>
   </body>
   <!-- [Body] end -->

@@ -76,6 +76,7 @@ public class MemberService {
 
     // 어드민 로그인 메서드
     public AdminDto verifyAdminLogin(String email, String password) {
+
         AdminDto admin = memberMapper.findAdminByEmail(email);
 
         if (admin != null && admin.getPassword().equals(password)) {
@@ -84,8 +85,6 @@ public class MemberService {
 
         return null; // 로그인 실패 시 null 반환
     }
-
-
 
     // 로그인한 사용자 정보를 반환하는 메서드
     public MemberDto getLoggedInUser() {

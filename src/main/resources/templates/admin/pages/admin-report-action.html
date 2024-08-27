@@ -20,14 +20,23 @@
     <div id="reportOverlay" class="report-overlay">
         <div class="report-popup">
             <h2>신고 처리</h2>
-            <div class="report-action-box">
+            <form action="/admin/report/response" method="POST" class="report-action-box" id="reportActionBox">
                 <p>처리응답</p>
-                <textarea class="report-action-textarea"></textarea>
+                <input type="hidden" name="reportNo" id="reportNum">
+                <input type="hidden" id="punishmentResultInput" name="punishmentResult">
+                <input type="hidden" id="reportedUserNoInput" name="reportedUserNo">
+                <p style="font-size: 14px;">조치 대상 회원 번호 : <span id="reportedUserNo"></span></p>
+                <textarea class="report-action-textarea" name="reportResolutionContent"></textarea>
                 <div class="punish-result">
                     <div class="date-ban-box">
-                        <span>활동 정지일</span>
-                        <input type="date" id="punishDate" class="punish-date">
-                        <span class="punish-date-result"></span>
+                        <div>
+                            <span>활동 정지</span>
+                            <span><input type="text" id="punishDate" class="punish-date">일 <button type="button" onclick="dateCalc()" class="date-btn">입력</button></span>
+                        </div>
+                        <div>
+                            <span>예상 해제일 : </span>
+                            <span class="punish-date-result" id="resultDate" name="punishmentResult"></span>
+                        </div>
                     </div>
                     <div class="result-checkbox">
                         <div class="permanen-ban-box">
@@ -41,10 +50,10 @@
                     </div>
                 </div>
                 <div class="action-bnts">
-                    <button id="actionComplate" class="action-complate">완료</button>
-                    <button id="actionCloses" class="action-close">닫기</button>
+                    <button type="submit" id="actionComplate" class="action-complate">완료</button>
+                    <button type="button" id="actionCloses" class="action-close">닫기</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <!--  popup end  -->
@@ -52,6 +61,17 @@
     <div class="pc-content">
         <div class="page-header">
             <h5 class="m-b-10">신고 내역 확인</h5>
+            <form action="/admin/report/action" method="GET" class="date-container">
+                <div class="start-date-box">
+                    <label for="start-date">시작 날짜:</label>
+                    <input type="date" id="start-date" name="startDate" th:value="${startDate}">
+                </div>
+                <div class="end-date-box">
+                    <label for="end-date">종료 날짜:</label>
+                    <input type="date" id="end-date" name="endDate" th:value="${endDate}">
+                </div>
+                <button type="submit">적용</button>
+            </form>
         </div>
 
         <div class="row custom-admin-board">
@@ -66,34 +86,33 @@
                                 <th class="reported-num">피신고자 번호</th>
                                 <th class="action-date">신고 접수일</th>
                                 <th class="action-category">신고 카테고리</th>
-                                <th class="action-type">신고 유형</th>
-                                <th class="action-type-num">신고 유형 번호</th>
+                                <th class="action-type">유형</th>
+                                <th class="action-type-num">유형의 번호</th>
+                                <th class="action-type-num">신고 내용</th>
                                 <th class="action-btn"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>7</td> <td>1</td> <td>7</td> <td>2024.07.29</td> <td>욕설 및 비방</td> <td>피드 댓글</td> <td>4</td> <td><button id="reportActionBtn">처리하기</button></td>
+                            <tr th:each="report : ${reportList}">
+                                <td th:text="${report.reportNo}"></td>
+                                <td th:text="${report.reporterUserNo}"></td>
+                                <td th:text="${report.reportedUserNo}"></td>
+                                <td th:text="${report.reportIndate}"></td>
+                                <td th:text="${report.reportCategoryName}"></td>
+                                <td th:text="${report.reportType}"></td>
+                                <td th:text="${report.reportTypeNo}"></td>
+                                <td th:text="${report.reportContent}"></td>
+                                <td>
+                                    <button id="reportActionBtn"
+                                            th:data-reported-user-no="${report.reportedUserNo}"
+                                            th:data-report-no="${report.reportNo}">처리하기</button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     <nav class="custom-navigation" aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div th:replace="~{fragments/pagination :: pagination}"></div>
                     </nav>
                 </div>
             </div>

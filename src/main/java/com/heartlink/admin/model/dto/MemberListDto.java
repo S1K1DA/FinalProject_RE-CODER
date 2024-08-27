@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor // 기본 생성자 생성
 @AllArgsConstructor // 모든 변수가 있는 생성자 .
 @ToString
-public class AdminMemberDto {
+public class MemberListDto {
 
     private int basicUserNo;
     private String basicUserEmail;
@@ -19,5 +19,8 @@ public class AdminMemberDto {
     private String lastLoginDate;
     private int basicUserCoin;
     private String consentLocationInfo;
+
+    private String category;
+    private String search;
 
 }

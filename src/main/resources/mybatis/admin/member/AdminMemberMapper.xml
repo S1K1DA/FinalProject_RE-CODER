@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.heartlink.admin.model.mapper.AdminMemberMapper">
-    <resultMap id="adminMemeberResultMap" type="AdminMemberDto">
+    <resultMap id="adminMemeberResultMap" type="MemberListDto">
         <result property="basicUserNo" column="basic_user_no"/>
         <result property="basicUserEmail" column="basic_user_email"/>
         <result property="basicUserTelnum" column="basic_user_telnum"/>
@@ -14,8 +14,102 @@
         <result property="consentLocationInfo" column="consent_location_info"/>
     </resultMap>
 
+    <resultMap id="adminMemeberInfoResultMap" type="AdminInfoDto">
+        <result property="adminUserNo" column="admin_user_no"/>
+        <result property="adminUserPwd" column="admin_user_pwd"/>
+        <result property="adminUserEmail" column="admin_user_email"/>
+        <result property="adminConsent" column="admin_consent"/>
+    </resultMap>
+
     <select id="getAllUser" resultMap="adminMemeberResultMap">
         SELECT * FROM BASIC_USER
+        <choose>
+            <when test="filter.equals('Active')">
+                WHERE BASIC_USER_STATUS = 'ACTIVE'
+            </when>
+            <when test="filter.equals('Dormant')">
+                WHERE BASIC_USER_STATUS = 'DORMANT'
+            </when>
+            <when test="filter.equals('Ban')">
+                WHERE BASIC_USER_STATUS = 'BAN'
+            </when>
+            <when test="filter.equals('Deleted')">
+                WHERE BASIC_USER_STATUS = 'DELETED'
+            </when>
+            <otherwise>
+                WHERE BASIC_USER_STATUS IS NOT NULL
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="category.equals('user_id')">
+                AND LOWER(BASIC_USER_EMAIL) LIKE LOWER('%' || #{search} || '%')
+            </when>
+            <when test="category.equals('user_num')">
+                AND LOWER(BASIC_USER_NO) LIKE LOWER('%' || #{search} || '%')
+            </when>
+        </choose>
     </select>
 
+    <select id="getAllUserState" resultMap="adminMemeberResultMap">
+        SELECT * FROM BASIC_USER
+        <choose>
+            <when test="filter.equals('Active')">
+                WHERE BASIC_USER_STATUS = 'ACTIVE'
+            </when>
+            <when test="filter.equals('Dormant')">
+                WHERE BASIC_USER_STATUS = 'DORMANT'
+            </when>
+            <when test="filter.equals('Ban')">
+                WHERE BASIC_USER_STATUS = 'BAN'
+            </when>
+            <when test="filter.equals('Deleted')">
+                WHERE BASIC_USER_STATUS = 'DELETED'
+            </when>
+            <otherwise>
+                WHERE BASIC_USER_STATUS IS NOT NULL
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="category.equals('user_id')">
+                AND LOWER(BASIC_USER_EMAIL) LIKE LOWER('%' || #{search} || '%')
+            </when>
+            <when test="category.equals('user_num')">
+                AND LOWER(BASIC_USER_NO) LIKE LOWER('%' || #{search} || '%')
+            </when>
+        </choose>
+    </select>
+
+    <!-- 이메일 중복 체크: 주어진 이메일로 USER 테이블에서 COUNT(*)를 수행 -->
+    <select id="checkEmailVerifit" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ADMIN_USER
+        WHERE ADMIN_USER_EMAIL = #{adminEmail}
+    </select>
+
+    <insert id="setAdminMember">
+        INSERT INTO ADMIN_USER au VALUES(
+            ADMIN_USER_SEQ.NEXTVAL,
+            #{adminUserPwd},
+            #{adminUserEmail},
+            DEFAULT
+        )
+    </insert>
+
+    <select id="findAdminByEmail" resultMap="adminMemeberInfoResultMap">
+        SELECT
+            ADMIN_USER_NO,
+            ADMIN_USER_EMAIL,
+            ADMIN_USER_PWD,
+            ADMIN_CONSENT
+        FROM ADMIN_USER
+        WHERE ADMIN_USER_EMAIL = #{adminUserEmail}
+    </select>
+
+    <update id="setChangeUserState">
+        UPDATE BASIC_USER
+        SET
+            BASIC_USER_STATUS = #{basicUserStatus}
+        WHERE BASIC_USER_NO = #{basicUserNo}
+    </update>
+    
 </mapper>

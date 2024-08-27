@@ -3,8 +3,9 @@ async function requestPaymentCancel(cancelPaymentNo) {
     try {
         // 사용자에게 확인 메시지 표시
         const result = await Swal.fire({
-            title: "결제를 취소하시겠습니까?",
+            title: "결제 취소 요청하시겠습니까?",
             icon: "question",
+            text: "요청시 코인은 바로 차감됩니다.",
             showCancelButton: true,
             confirmButtonColor: "rgb(255 128 135)",
             cancelButtonColor: "rgb(150 150 150)",
@@ -15,7 +16,7 @@ async function requestPaymentCancel(cancelPaymentNo) {
         // 사용자가 확인 버튼을 클릭했는지 확인
         if (result.isConfirmed) {
             // 결제 취소 요청 서버에 전송
-            const response = await fetch("/charge/payment-cancle", {
+            const response = await fetch("/charge/payment-cancel", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ paymentNo: cancelPaymentNo }),
@@ -27,7 +28,8 @@ async function requestPaymentCancel(cancelPaymentNo) {
             // 취소 완료 메시지 표시
             if (response.ok) {
                 await Swal.fire({
-                    title: "취소 완료",
+                    title: "취소 요청 완료",
+                    text: "관리자의 응답을 기다려주세요.",
                     icon: "success"
                 }).then(() => {
                     window.location.reload();
