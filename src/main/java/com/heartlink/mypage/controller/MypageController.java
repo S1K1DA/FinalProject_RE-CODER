@@ -228,7 +228,9 @@ public class MypageController {
     }
 
     @PostMapping("/update")
-    public String updateUserInfo(@ModelAttribute("user") MypageDto user) {
+    public String updateUserInfo(@ModelAttribute("user") MypageDto user,
+                                 @RequestParam("latitude") double latitude,
+                                 @RequestParam("longitude") double longitude) {
         int userId = getCurrentUserId();
         user.setUserId(userId);
 
@@ -242,6 +244,8 @@ public class MypageController {
         if (profilePicturePath != null && !profilePicturePath.isEmpty()) {
             user.setProfilePicturePath(profilePicturePath);
         }
+
+        mypageService.updateUserLocation(userId, latitude, longitude);
 
         int result = mypageService.updateUserInfo(user);
         return result > 0 ? "redirect:/mypage/main" : "mypage/mypage_main/mypage-infoedit";
