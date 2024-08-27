@@ -59,4 +59,14 @@ public interface MypageService {
 
     //피드가져오기
     MypageDto getFeedByNo(int feedNo);
+
+    MypageDto getUserLocation(int userId);
+
+    int updateUserLocation(int userId, double latitude, double longitude);
+
+    void saveUserProfilePhoto(MypageDto userPhoto);
+
+    boolean updateMatchingState(int matchingNo, int userId, String state);
+
+
 }

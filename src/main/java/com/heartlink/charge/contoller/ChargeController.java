@@ -4,7 +4,7 @@ import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.service.ChargeService;
 import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.util.JwtUtil;
-import com.heartlink.review.common.Pagination;
+import com.heartlink.common.pagination.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,7 +47,7 @@ public class ChargeController {
     }
 
     @GetMapping("/shop")
-    public String moveMain(Model model){
+    public String moveMain(Model model, HttpServletRequest request){
 
         String userEmail = getCurrentUserEmail();
 
@@ -59,12 +57,13 @@ public class ChargeController {
         model.addAttribute("userName",userInfo.getName());
         model.addAttribute("userTelnum",userInfo.getPhoneNumber());
 
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_coin_charge/charge-main";
     }
 
     @GetMapping("/history")
     public String cashpage(@RequestParam(name="page", defaultValue = "1") int page,
-                           Model model) {
+                           Model model, HttpServletRequest request) {
 
         int pageSize = 5;
 
@@ -78,6 +77,8 @@ public class ChargeController {
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
         model.addAttribute("paginationUrl", "/charge/history");
+
+        model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
 
         return "mypage/mypage_coin_charge/charge-history";
     }

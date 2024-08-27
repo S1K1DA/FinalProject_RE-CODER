@@ -18,21 +18,26 @@
                             <hr class="mypage-line">
                         </div>
                         <div class="custom-block-info w-100 position-relative">
-                            <div class="profile-picture">
-                                <img th:src="@{/image/review/weding-review2.jpg}" alt="프로필 사진">
+                            <div class="profile-picture main-prof-set">
+                                <img alt="프로필 사진" th:src="${user.profilePicturePath}">
+                            </div>
+
+
+                            <div class="profile-coin">
+                                <img th:src="@{/image/coin_icon.png}" alt="코인"> : <span th:text="${user.coin}">코인</span> 개
                             </div>
                             <div class="custom-block-info-box">
-                            <p class="mb-2"><span class="label fw-bold">이메일 :</span> <span th:text="${user.email}">abc@gmail.com</span></p>
-                            <p class="mb-2"><span class="label fw-bold">닉네임 :</span> <span th:text="${user.nickname}">닉네임</span></p>
-                            <p class="mb-2"><span class="label fw-bold">이름 :</span> <span th:text="${user.name}">이름</span></p>
-                            <p class="mb-2"><span class="label fw-bold">전화번호 :</span> <span th:text="${user.phone}">전화번호</span></p>
-                            <p class="mb-2"><span class="label fw-bold">주소 :</span> <span th:text="${user.fullAddress}">주소</span></p>
-                            <p class="mb-2"><span class="label fw-bold">MBTI :</span> <span th:text="${user.mbti}">MBTI</span></p>
+                                <p class="mb-2"><span class="label fw-bold">이메일 :</span> <span th:text="${user.email}">abc@gmail.com</span></p>
+                                <p class="mb-2"><span class="label fw-bold">닉네임 :</span> <span th:text="${user.nickname}">닉네임</span></p>
+                                <p class="mb-2"><span class="label fw-bold">이름 :</span> <span th:text="${user.name}">이름</span></p>
+                                <p class="mb-2"><span class="label fw-bold">전화번호 :</span> <span th:text="${user.phone}">전화번호</span></p>
+                                <p class="mb-2"><span class="label fw-bold">MBTI :</span> <span th:text="${user.mbti}">MBTI</span></p>
+                                <p class="mb-2"><span class="label fw-bold">주소 :</span> <span th:text="${user.fullAddress}">주소</span></p>
+                                <p class="mb-2"><span class="label fw-bold">주소 공개 여부 :</span> <span th:text="${user.consentLocationInfo == 'Y' ? '공개' : '비공개'}"></span></p>
                             </div>
                         </div>
                         <div class="form-actions d-flex justify-content-center mt-4 w-100">
                             <button type="button" class="btn-submit btn-edit-trigger">수정하기</button>
-
                         </div>
                     </div>
                 </div>

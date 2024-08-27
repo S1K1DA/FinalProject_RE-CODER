@@ -161,4 +161,26 @@ public class MypageServiceImpl implements MypageService {
     public MypageDto getFeedByNo(int feedNo) {
         return mypageDao.getFeedByNo(feedNo);
     }
+
+    @Override
+    public MypageDto getUserLocation(int userId) {
+        return mypageDao.getUserLocation(userId);
+    }
+
+    @Override
+    public int updateUserLocation(int userId, double latitude, double longitude) {
+        return mypageDao.updateUserLocation(userId, latitude, longitude);
+    }
+
+    @Override
+    public void saveUserProfilePhoto(MypageDto userPhoto) {
+        mypageDao.saveUserProfilePhoto(userPhoto);
+    }
+
+    @Override
+    public boolean updateMatchingState(int matchingNo, int userId, String state) {
+        return mypageDao.updateMatchingState(matchingNo, userId, state) > 0;
+    }
+
+
 }
