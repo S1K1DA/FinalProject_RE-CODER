@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartlink.admin.model.mapper.AdminStatsMapper">
+    <resultMap id="statsResultMap" type="MainStatsDto">
+        <result property="toDaySales" column="today_sales"/>
+        <result property="toMonthSales" column="tomonth_sales"/>
+        <result property="toYearSales" column="toyear_sales"/>
+        <result property="toDayInquiryCnt" column="today_inqriy_cnt"/>
+        <result property="unprocessedReportCnt" column="unprocessed_report_cnt"/>
+    </resultMap>
+
+    <select id="getToDayInquiry" resultType="java.lang.Integer">
+        SELECT COUNT(CHATBOT_CHATTING_NO)
+        FROM CHATBOT_INQUIRIES ci
+        WHERE ci.CHATBOT_CHATTING_INDATE BETWEEN TO_DATE(#{today}, 'YYYY-MM-DD')
+                  AND TO_DATE(#{today}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+    </select>
+
+    <select id="getUnprocessedReport" resultType="java.lang.Integer">
+        SELECT COUNT(rb.REPORT_NO)
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_RESOLUTION rr
+                      ON rb.REPORT_NO = rr.REPORT_NO
+        WHERE rr.REPORT_RESOLUTION_PUNISH IS NULL
+    </select>
+
+    <select id="getSalesAll" resultMap="statsResultMap">
+        SELECT
+            SUM(CASE WHEN period = 'Day' THEN total_amount ELSE 0 END) AS today_sales,
+            SUM(CASE WHEN period = 'Month' THEN total_amount ELSE 0 END) AS tomonth_sales,
+            SUM(CASE WHEN period = 'Year' THEN total_amount ELSE 0 END) AS toyear_sales
+        FROM (
+                 SELECT
+                     'Day' AS period,
+                     SUM(PAYMENT_AMOUNT) AS total_amount
+                 FROM
+                     PAYMENT_HISTORY ph
+                 WHERE
+                     ph.PAYMENT_DATE BETWEEN TO_DATE(#{today}, 'YYYY-MM-DD')
+                         AND TO_DATE(#{today}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested')
+                 GROUP BY
+                     'Day'
+                 UNION ALL
+                 SELECT
+                     'Month' AS period,
+                     SUM(PAYMENT_AMOUNT) AS total_amount
+                 FROM
+                     PAYMENT_HISTORY ph
+                 WHERE
+                     ph.PAYMENT_DATE BETWEEN TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM')
+                         AND TO_DATE(#{today}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested')
+                 GROUP BY
+                     'Month'
+                 UNION ALL
+                 SELECT
+                     'Year' AS period,
+                     SUM(PAYMENT_AMOUNT) AS total_amount
+                 FROM
+                     PAYMENT_HISTORY ph
+                 WHERE
+                     ph.PAYMENT_DATE BETWEEN TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'YYYY')
+                         AND LAST_DAY(TO_DATE(#{today}, 'YYYY-MM-DD'))
+                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested')
+                 GROUP BY
+                     'Year'
+             ) periods
+    </select>
+
+</mapper>

@@ -33,7 +33,7 @@
                 </div>
               </div>
             </div>
-            <span class="text-white d-block f-34 f-w-500 my-2">421,000<i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+            <span class="text-white d-block f-34 f-w-500 my-2" th:text="${@numberFormatter.print(stats.toDaySales, locale)}">421,000<i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
             <p class="mb-0 opacity-50">일간 매출</p>
           </div>
         </div>
@@ -82,23 +82,17 @@
               <div class="tab-pane show active" id="chart-tab-home" role="tabpanel" aria-labelledby="chart-tab-home-tab" tabindex="0">
                 <div class="row">
                   <div class="col-6">
-                    <span class="text-white d-block f-34 f-w-500 my-2 m-y-total-profit">12,560,000<i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+                    <span class="text-white d-block f-34 f-w-500 my-2 m-y-total-profit" th:text="${@numberFormatter.print(stats.toMonthSales, locale)}">12,560,000<i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
                     <p class="mb-0 opacity-50">총 수익</p>
                   </div>
-<!--                  <div class="col-6">-->
-<!--                    <div id="tab-chart-1"></div>-->
-<!--                  </div>-->
                 </div>
               </div>
               <div class="tab-pane" id="chart-tab-profile" role="tabpanel" aria-labelledby="chart-tab-profile-tab" tabindex="0">
                 <div class="row">
                   <div class="col-6">
-                    <span class="text-white d-block f-34 f-w-500 my-2 m-y-total-profit">150,720,000 <i class="ti ti-arrow-down-right-circle opacity-50"></i></span>
+                    <span class="text-white d-block f-34 f-w-500 my-2 m-y-total-profit" th:text="${@numberFormatter.print(stats.toYearSales, locale)}">150,720,000 <i class="ti ti-arrow-down-right-circle opacity-50"></i></span>
                     <p class="mb-0 opacity-50">총 수익</p>
                   </div>
-<!--                  <div class="col-6">-->
-<!--                    <div id="tab-chart-2"></div>-->
-<!--                  </div>-->
                 </div>
               </div>
             </div>
@@ -115,7 +109,7 @@
                 <i class="text-white ti ti-send"></i>
               </div>
               <div class="ms-2 detail-title-box ">
-                <h4 class=" mb-1 detail-title">102 개 <a class="detail-admin" th:href="@{/admin/inquiries}"><i class="ti ti-search opacity-20"></i></a></h4>
+                <h4 class=" mb-1 detail-title" th:text="${stats.toDayInquiryCnt}">102 개 <a class="detail-admin" th:href="@{/admin/inquiries}"><i class="ti ti-search opacity-20"></i></a></h4>
                 <p class="mb-0 opacity-50 text-sm">toDay 문의 수</p>
               </div>
             </div>
@@ -130,7 +124,7 @@
                 <i class="text-warning ti ti-message-report"></i>
               </div>
               <div class="ms-2 detail-title-box">
-                <h4 class="mb-1 detail-title">54 개 <a class="detail-admin" th:href="@{/admin/report/action}"><i class="ti ti-search opacity-20"></i></a></h4>
+                <h4 class="mb-1 detail-title" th:text="${stats.unprocessedReportCnt}">54 개 <a class="detail-admin" th:href="@{/admin/report/action}"><i class="ti ti-search opacity-20"></i></a></h4>
                 <p class="mb-0 opacity-50 text-sm">미처리 신고 수</p>
               </div>
             </div>
@@ -142,19 +136,26 @@
         <div class="card">
           <div class="card-body">
             <div class="row mb-3 align-items-center">
-              <div class="col">
-                <small>총 성장세</small>
-                <h3>$2,324.00</h3>
-              </div>
               <div class="col-auto">
-                <select class="form-select p-r-35">
-                  <option>오늘</option>
-                  <option selected>이번 달</option>
-                  <option>이번 년</option>
+                <select class="form-select p-r-35" id="chart-type-select">
+                  <option value="weekly">이번 달</option>
+                  <option value="monthly" selected>이번 년</option>
                 </select>
               </div>
             </div>
             <div id="growthchart"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-12 col-md-12" id="weekly-container" style="display: none">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3 align-items-center">
+              <div class="col">
+                <small>주간 매출</small>
+              </div>
+            </div>
+            <div id="weeklychart"></div>
           </div>
         </div>
       </div>
