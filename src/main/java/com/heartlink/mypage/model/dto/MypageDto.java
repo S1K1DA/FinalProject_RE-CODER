@@ -59,6 +59,8 @@ public class MypageDto {
 
     // 매칭 관련 필드들 추가
     private int matchingNo;
+    private int matchingUserNo;        // 매칭 요청을 보낸 유저 번호
+    private int matchedUserNo;         // 매칭 요청을 받은 유저 번호
     private Date matchingIndate;
     private String partnerName;        // 매칭 상대 이름
     private String matchingState;      // 매칭 성공 여부

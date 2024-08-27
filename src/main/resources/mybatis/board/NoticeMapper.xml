@@ -43,7 +43,7 @@
     </select>
 
     <!-- 공지사항 목록 조회 (페이징 처리) -->
-    <select id="selectNoticeList" resultType="com.heartlink.board.model.dto.NoticeDto" parameterType="com.heartlink.common.paging.PageInfo">
+    <select id="selectNoticeList" resultType="com.heartlink.board.model.dto.NoticeDto">
         SELECT
         NOTICE_NO AS noticeNo,
         ADMIN_USER_NO AS adminUserNo,
@@ -58,8 +58,8 @@
         FROM
         NOTICE_BOARD
         WHERE NOTICE_DELETE = 'N'
+        ORDER BY NOTICE_INDATE DESC
         )
-        WHERE RN BETWEEN #{startRow} AND #{endRow}
     </select>
 
     <!--  게시판 디테일 조회  -->

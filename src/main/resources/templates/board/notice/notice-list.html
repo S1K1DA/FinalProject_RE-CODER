@@ -43,14 +43,15 @@
         </div>
 
         <!-- 페이지 네비게이션 추가 -->
-        <div class="notice-pagination">
-            <a th:href="@{/notices/list(cpage=${pi.startPage - 1})}" th:if="${pi.startPage > 1}">&laquo;</a>
-            <a th:each="i : ${#numbers.sequence(pi.startPage, pi.endPage)}"
-               th:href="@{/notices/list(cpage=${i})}"
-               th:text="${i}"
-               th:classappend="${pi.currentPage == i} ? 'active' : ''"></a>
-            <a th:href="@{/notices/list(cpage=${pi.endPage + 1})}" th:if="${pi.endPage < pi.maxPage}">&raquo;</a>
-        </div>
+<!--        <div class="notice-pagination">-->
+<!--            <a th:href="@{/notices/list(cpage=${pi.startPage - 1})}" th:if="${pi.startPage > 1}">&laquo;</a>-->
+<!--            <a th:each="i : ${#numbers.sequence(pi.startPage, pi.endPage)}"-->
+<!--               th:href="@{/notices/list(cpage=${i})}"-->
+<!--               th:text="${i}"-->
+<!--               th:classappend="${pi.currentPage == i} ? 'active' : ''"></a>-->
+<!--            <a th:href="@{/notices/list(cpage=${pi.endPage + 1})}" th:if="${pi.endPage < pi.maxPage}">&raquo;</a>-->
+<!--        </div>-->
+        <div th:replace="fragments/pagination :: pagination"></div>
 
     </div> <!-- .notice-container 닫힘 -->
 </main>

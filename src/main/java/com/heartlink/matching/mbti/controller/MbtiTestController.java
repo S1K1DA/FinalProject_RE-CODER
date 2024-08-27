@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MbtiTestController {
 
 
-    @GetMapping("/mbti")
+    @GetMapping("/mbti-test")
     public String mbtiTest() {
-        return "matching/mbti-test";
+
+        return "matching/mbti/mbti-test";
     }
 
 

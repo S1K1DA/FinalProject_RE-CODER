@@ -2,7 +2,6 @@ package com.heartlink.board.model.service;
 
 import com.heartlink.board.model.dto.NoticeDto;
 import com.heartlink.board.model.mapper.NoticeMapper;
-import com.heartlink.common.paging.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +33,8 @@ public class NoticeService {
         return noticeMapper.selectNoticeCount();
     }
 
-    public List<NoticeDto> getNoticeList(PageInfo pi) {
-        return noticeMapper.selectNoticeList(pi);
+    public List<NoticeDto> getNoticeList() {
+        return noticeMapper.selectNoticeList();
     }
 
     public List<NoticeDto> getPinnedNotices() {

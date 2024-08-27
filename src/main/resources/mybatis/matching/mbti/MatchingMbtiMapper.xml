@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heartlink.matching.mbti.model.mapper.MatchingMbtiMapper">
+
+    <!-- 로그인한 사용자 프로필 정보 가져오기 -->
+    <select id="getUserProfileById" parameterType="int" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">
+        SELECT
+        bu.BASIC_USER_NO AS userNumber,
+        bu.BASIC_USER_NICKNAME AS nickname,
+        bu.BASIC_USER_MBTI AS mbti,
+        bu.BASIC_USER_SEX AS userSex,  <!-- 성별 정보 추가 -->
+        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp
+        ON
+        bu.BASIC_USER_NO = bp.BASIC_USER_NO
+        WHERE
+        bu.BASIC_USER_NO = #{userNumber}
+        AND
+        bu.BASIC_USER_STATUS = 'ACTIVE'
+    </select>
+
+    <!--  천생연분 매칭  -->
+    <select id="getUsersByMbti" parameterType="map" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">
+        SELECT
+        bu.BASIC_USER_NO AS userNumber,
+        bu.BASIC_USER_NICKNAME AS nickname,
+        bu.BASIC_USER_MBTI AS mbti,
+        bu.BASIC_USER_SEX AS userSex,
+        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp ON bu.BASIC_USER_NO = bp.BASIC_USER_NO
+        WHERE
+        bu.BASIC_USER_MBTI = #{mbti}
+        AND bu.BASIC_USER_STATUS = 'ACTIVE'
+        AND bu.BASIC_USER_SEX != #{userSex} <!-- jdbcType 명시 -->
+        ORDER BY dbms_random.value
+        FETCH FIRST 10 ROWS ONLY
+    </select>
+
+    <!--  상위권 매칭  -->
+    <select id="getUsersByTopMbtis" parameterType="map" resultType="com.heartlink.matching.mbti.model.dto.MatchingMbtiDto">
+        SELECT
+        bu.BASIC_USER_NO AS userNumber,
+        bu.BASIC_USER_NICKNAME AS nickname,
+        bu.BASIC_USER_MBTI AS mbti,
+        bu.BASIC_USER_SEX AS userSex,
+        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp
+        ON
+        bu.BASIC_USER_NO = bp.BASIC_USER_NO
+        WHERE
+        bu.BASIC_USER_MBTI IN
+        <foreach item="mbti" collection="mbtiList" open="(" separator="," close=")">
+            #{mbti}
+        </foreach>
+        AND bu.BASIC_USER_STATUS = 'ACTIVE'
+        AND bu.BASIC_USER_SEX != #{userSex}
+        ORDER BY
+        dbms_random.value
+        FETCH FIRST 10 ROWS ONLY
+    </select>
+
+
+
+
+</mapper>
