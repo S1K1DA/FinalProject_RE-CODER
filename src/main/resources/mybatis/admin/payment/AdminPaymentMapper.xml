@@ -41,7 +41,8 @@
                ph.PAYMENT_PRODUCT
         FROM PAYMENT_HISTORY ph
         WHERE ph.PAYMENT_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
-                  AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+            AND PAYMENT_STATE != 'Pending'
         ORDER BY ph.PAYMENT_DATE DESC
     </select>
 

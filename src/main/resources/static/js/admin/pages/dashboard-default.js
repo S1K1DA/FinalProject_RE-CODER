@@ -5,192 +5,107 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function floatchart() {
-    (function () {
-        var options = {
-            chart: {
-                type: 'line',
-                height: 90,
-                sparkline: {
-                    enabled: true
-                }
-            },
-            dataLabels: {
+    // 주간 매출 차트 설정
+    var weeklyOptions = {
+        chart: {
+            type: 'line',
+            height: 300,
+            sparkline: {
                 enabled: false
             },
-            colors: ['#FFF'],
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            series: [
-                {
-                    name: 'series1',
-                    data: [45, 66, 41, 89, 25, 44, 9, 54]
-                }
-            ],
-            yaxis: {
-                min: 5,
-                max: 95
-            },
-            tooltip: {
-                theme: 'dark',
-                fixed: {
-                    enabled: false
-                },
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function (seriesName) {
-                            return 'Total Earning';
-                        }
-                    }
-                },
-                marker: {
-                    show: false
-                }
+            toolbar: {
+                show: false
             }
-        };
-        var chart = new ApexCharts(document.querySelector('#tab-chart-1'), options);
-        chart.render();
-    })();
-    (function () {
-        var options = {
-            chart: {
-                type: 'line',
-                height: 90,
-                sparkline: {
-                    enabled: true
-                }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors: ['#2196f3', '#ff5722'], // Adjust colors for your needs
+        stroke: {
+            curve: 'smooth',
+            width: 3
+        },
+        series: [
+            {
+                name: '결제 완료',
+                data: [120, 150, 80, 200, 180, 220, 150] // Example data
             },
-            dataLabels: {
-                enabled: false
-            },
-            colors: ['#FFF'],
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            series: [
-                {
-                    name: 'series1',
-                    data: [35, 44, 9, 54, 45, 66, 41, 69]
-                }
-            ],
-            yaxis: {
-                min: 5,
-                max: 95
-            },
-            tooltip: {
-                theme: 'dark',
-                fixed: {
-                    enabled: false
-                },
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function (seriesName) {
-                            return 'Total Earning';
-                        }
-                    }
-                },
-                marker: {
-                    show: false
-                }
+            {
+                name: '취소',
+                data: [20, 30, 15, 40, 30, 25, 35] // Example data
             }
-        };
-        var chart = new ApexCharts(document.querySelector('#tab-chart-2'), options);
-        chart.render();
-    })();
-    (function () {
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 480,
-                stacked: true,
-                toolbar: {
-                    show: false
-                }
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '50%'
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            colors: ['#d3eafd', '#2196f3', '#673ab7', '#e1d8f1'],
-            series: [
-                {
-                    name: 'Investment',
-                    data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
-                },
-                {
-                    name: 'Loss',
-                    data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
-                },
-                {
-                    name: 'Profit',
-                    data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
-                },
-                {
-                    name: 'Maintenance',
-                    data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
-                }
-            ],
-            responsive: [
-                {
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: 'bottom',
-                            offsetX: -10,
-                            offsetY: 0
-                        }
-                    }
-                }
-            ],
-            xaxis: {
-                type: 'category',
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            },
-            grid: {
-                strokeDashArray: 4
-            },
-            tooltip: {
-                theme: 'dark'
+        ],
+        xaxis: {
+            type: 'category',
+            categories: ['1주차', '2주차', '3주차', '4주차', '5주차', '6주차', '7주차'] // Example categories
+        },
+        grid: {
+            strokeDashArray: 4
+        },
+        tooltip: {
+            theme: 'dark'
+        }
+    };
+
+    // 월간 매출 차트 설정
+    var monthlyOptions = {
+        chart: {
+            type: 'bar',
+            height: 480,
+            stacked: true,
+            toolbar: {
+                show: false
             }
-        };
-        var chart = new ApexCharts(document.querySelector('#growthchart'), options);
-        chart.render();
-    })();
-    (function () {
-        var options = {
-            chart: {
-                type: 'area',
-                height: 95,
-                stacked: true,
-                sparkline: {
-                    enabled: true
-                }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '50%'
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors: ['#d3eafd', '#2196f3'], // Adjust colors for your needs
+        series: [
+            {
+                name: '결제 완료',
+                data: [50, 75, 60, 90, 100, 80, 70, 60, 85, 90, 70, 80] // Example data
             },
-            colors: ['#673ab7'],
-            stroke: {
-                curve: 'smooth',
-                width: 1
-            },
-            series: [
-                {
-                    data: [0, 15, 10, 50, 30, 40, 25]
-                }
-            ]
-        };
-        var chart = new ApexCharts(document.querySelector('#bajajchart'), options);
-        chart.render();
-    })();
+            {
+                name: '취소',
+                data: [20, 15, 25, 10, 15, 20, 25, 20, 15, 25, 30, 10] // Example data
+            }
+        ],
+        xaxis: {
+            type: 'category',
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        grid: {
+            strokeDashArray: 4
+        },
+        tooltip: {
+            theme: 'dark'
+        }
+    };
+
+    var weeklyChart = new ApexCharts(document.querySelector('#weeklychart'), weeklyOptions);
+    var monthlyChart = new ApexCharts(document.querySelector('#growthchart'), monthlyOptions);
+
+    // Render both charts initially
+    weeklyChart.render();
+    monthlyChart.render();
+
+    // Update the chart based on the selected option
+    document.getElementById('chart-type-select').addEventListener('change', function(event) {
+        var selectedValue = event.target.value;
+
+        if (selectedValue === 'weekly') {
+            document.getElementById('growthchart').style.display = 'none';
+            document.getElementById('weekly-container').style.display = 'block';
+        } else if (selectedValue === 'monthly') {
+            document.getElementById('growthchart').style.display = 'block';
+            document.getElementById('weekly-container').style.display = 'none';
+        }
+    });
 }

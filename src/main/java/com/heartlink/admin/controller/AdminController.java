@@ -1,12 +1,10 @@
 package com.heartlink.admin.controller;
 
-import com.heartlink.admin.model.dto.AdminInfoDto;
-import com.heartlink.admin.model.dto.AdminReportDto;
-import com.heartlink.admin.model.dto.MemberListDto;
-import com.heartlink.admin.model.dto.PaymentHistoryDto;
+import com.heartlink.admin.model.dto.*;
 import com.heartlink.admin.model.service.AdminMemberService;
 import com.heartlink.admin.model.service.AdminPaymentService;
 import com.heartlink.admin.model.service.AdminReportService;
+import com.heartlink.admin.model.service.AdminStatsService;
 import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.service.MemberService;
 import com.heartlink.member.util.JwtUtil;
@@ -38,6 +36,7 @@ public class AdminController {
     private final AdminPaymentService adminPaymentService;
     private final JwtUtil jwtUtil;
     private final AdminReportService adminReportService;
+    private final AdminStatsService adminStatsService;
 
     @Autowired
     public AdminController(Pagination pagination,
@@ -45,13 +44,15 @@ public class AdminController {
                            MemberService memberService,
                            JwtUtil jwtUtil,
                            AdminPaymentService adminPaymentService,
-                           AdminReportService adminReportService) {
+                           AdminReportService adminReportService,
+                           AdminStatsService adminStatsService) {
         this.pagination = pagination;
         this.adminMemberService = adminMemberService;
         this.memberService = memberService;
         this.jwtUtil = jwtUtil;
         this.adminPaymentService = adminPaymentService;
         this.adminReportService = adminReportService;
+        this.adminStatsService = adminStatsService;
     }
 
     private int getCurrentAdminNo() {
@@ -138,7 +139,12 @@ public class AdminController {
     }
 
     @GetMapping("/main")
-    public String moveMain(){
+    public String moveMain(Model model){
+
+        MainStatsDto mainStats = adminStatsService.getMainStatsResult();
+
+
+        model.addAttribute("stats", mainStats);
         return "admin/dashboard/admin-main";
     }
 
