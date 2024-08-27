@@ -168,17 +168,4 @@ public class MypageDao {
         return sqlSession.update("MypageMapper.updateMatchingState", params);
     }
 
-    //닉네임체크
-    public int countByNickname(String nickname) {
-        return sqlSession.selectOne("mypageMapper.countByNickname", nickname);
-    }
-
-    //피드가져오기
-    public MypageDto getFeedByNo(int feedNo) {
-        return sqlSession.selectOne("mypageMapper.getFeedByNo", feedNo);
-    }
-
-
-
-
 }

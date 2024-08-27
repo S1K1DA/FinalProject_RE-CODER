@@ -90,7 +90,7 @@
     <insert id="setFeedEnroll">
         INSERT INTO FEEDS f VALUES(
             FEEDS_SEQ.NEXTVAL,
-            #{aouthorUserNo},
+            #{authorUserNo},
             #{feedTitle},
             #{feedContent},
             SYSDATE,
