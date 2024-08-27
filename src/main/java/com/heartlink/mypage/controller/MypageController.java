@@ -434,4 +434,23 @@ public class MypageController {
         }
     }
 
+    @PostMapping("/updateMatchingState")
+    @ResponseBody
+    public ResponseEntity<String> updateMatchingState(@RequestBody Map<String, Object> payload) {
+        int matchingNo = (int) payload.get("matchingNo");
+        String state = (String) payload.get("state");
+        int userId = getCurrentUserId();
+
+        boolean success = mypageService.updateMatchingState(matchingNo, userId, state);
+
+        if (success) {
+            return ResponseEntity.ok("매칭 상태 업데이트 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("매칭 상태 업데이트 실패");
+        }
+    }
+
+
+
+
 }

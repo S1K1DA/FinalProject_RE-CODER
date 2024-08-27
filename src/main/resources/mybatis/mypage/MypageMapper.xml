@@ -292,5 +292,15 @@
         WHERE BASIC_USER_NO = #{userId}
     </update>
 
+    <update id="updateMatchingState" parameterType="map">
+        UPDATE MATCHING_STATE
+        SET MATCHING_STATE = #{state}
+        WHERE MATCHING_NO = #{matchingNo}
+        AND MATCHED_USER_NO = #{userId}
+        AND MATCHING_STATE = 'N'
+    </update>
+
+
+
 
 </mapper>
