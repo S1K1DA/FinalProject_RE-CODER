@@ -160,6 +160,16 @@ public class MypageDao {
         }
     }
 
+    public int updateMatchingState(int matchingNo, int userId, String state) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("matchingNo", matchingNo);
+        params.put("state", state);
+        params.put("userId", userId);
+        return sqlSession.update("MypageMapper.updateMatchingState", params);
+    }
+
+
+
 
 
 }

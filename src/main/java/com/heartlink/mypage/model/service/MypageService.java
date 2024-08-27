@@ -66,4 +66,7 @@ public interface MypageService {
 
     void saveUserProfilePhoto(MypageDto userPhoto);
 
+    boolean updateMatchingState(int matchingNo, int userId, String state);
+
+
 }

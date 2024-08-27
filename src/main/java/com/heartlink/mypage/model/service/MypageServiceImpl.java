@@ -176,4 +176,11 @@ public class MypageServiceImpl implements MypageService {
     public void saveUserProfilePhoto(MypageDto userPhoto) {
         mypageDao.saveUserProfilePhoto(userPhoto);
     }
+
+    @Override
+    public boolean updateMatchingState(int matchingNo, int userId, String state) {
+        return mypageDao.updateMatchingState(matchingNo, userId, state) > 0;
+    }
+
+
 }
