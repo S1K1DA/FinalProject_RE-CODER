@@ -130,7 +130,7 @@ public class ChargeService {
             responseChargeRequestDto.setPaymentNo(paymentResponse.getId());
             responseChargeRequestDto.setPaymentAmount(paymentResponse.getAmount().getTotalAmount());
             responseChargeRequestDto.setPaymentMethod(paymentResponse.getMethod().getProvider());
-            responseChargeRequestDto.setPaymentProduct(paymentResponse.getOrderName());
+            responseChargeRequestDto.setOrderName(paymentResponse.getOrderName());
             responseChargeRequestDto.setPaymentUserEmail(paymentResponse.getCustomer().getEmail());
 
             return responseChargeRequestDto;
@@ -141,12 +141,7 @@ public class ChargeService {
     }
 
     public ChargeRequestDto setPaymentDbDetails(String paymentNo) {
-
-        ChargeRequestDto resultDto = chargeMapper.setPaymentDbDetails(paymentNo);
-        int coinCnt = resultDto.getPaymentAmount() / 100;
-        resultDto.setPaymentCoin(coinCnt);
-
-        return resultDto;
+        return chargeMapper.setPaymentDbDetails(paymentNo);
     }
 
     public int setPaymentState(ChargeRequestDto apiResponse) {
@@ -203,8 +198,6 @@ public class ChargeService {
     public ChargeRequestDto setCancelQualificationVerifit(String userEmail, ChargeRequestDto requestInfo){
         ChargeRequestDto result = new ChargeRequestDto();
 
-
-
         // 해당 정보가 있는지
         if(Objects.isNull(requestInfo) || !requestInfo.getPaymentUserEmail().equals(userEmail)){
             result.setPaymentState("해당 결제 정보의 오류.");
@@ -213,7 +206,7 @@ public class ChargeService {
 
         // 코인은 충분한지
         int userCoincnt = getUserCoin(userEmail);
-        int userProductCoin = requestInfo.getPaymentAmount() / 100;
+        int userProductCoin = requestInfo.getPaymentProduct();
 
         if(userCoincnt < userProductCoin){
             result.setPaymentState("보유 코인이 부족합니다.");
@@ -234,7 +227,7 @@ public class ChargeService {
 
 
         result.setPaymentUserEmail(userEmail);
-        result.setPaymentCoin(userProductCoin);
+        result.setPaymentProduct(userProductCoin);
         result.setPaymentState("취소 가능");
 
         return result;
@@ -247,7 +240,7 @@ public class ChargeService {
         int cancelRequestState = chargeMapper.paymentHistoryStateUpdate(paymentNo, "Cancel Requested");
 
         // 코인 갯수 업데이트
-        int coindeduction = chargeMapper.setCoindeduction(requestDto.getPaymentUserEmail(), requestDto.getPaymentCoin());
+        int coindeduction = chargeMapper.setCoindeduction(requestDto.getPaymentUserEmail(), requestDto.getPaymentProduct());
 
         // 결제 취소 테이블 insert
         int cancelHistoryTable = chargeMapper.setCanceledHistory(paymentNo);

@@ -105,7 +105,6 @@ public class ChargeController {
         chargeRequestDto.setPaymentState("Pending");
         chargeRequestDto.setPaymentMethod("NONE");
         chargeRequestDto.setPaymentNo(thisSequence);
-        chargeRequestDto.setPaymentProduct("하트 코인 "+chargeRequestDto.getPaymentCoin()+ "개");
 
         int setPaymentHistory = chargeService.setPaymentHistory(chargeRequestDto);
 
@@ -139,14 +138,14 @@ public class ChargeController {
             int apiAmount = apiResponse.getPaymentAmount();
             int dbAmount = dbResponse.getPaymentAmount();
 
-            String apiProduct = apiResponse.getPaymentProduct();
-            String dbProduct = dbResponse.getPaymentProduct();
+            String apiOrderName = apiResponse.getOrderName();
+            String dbOrderName = "하트 코인 "+Integer.toString(dbResponse.getPaymentProduct())+ "개";
 
             String apiUserEmail = apiResponse.getPaymentUserEmail();
             String dbUsserEmail = dbResponse.getPaymentUserEmail();
 
             // api와 db의 응답 값 비교 (결제금액, 결제 상품명, 결제요청 고객)
-            if(apiAmount == dbAmount && apiProduct.equals(dbProduct) && apiUserEmail.equals(dbUsserEmail)) {
+            if(apiAmount == dbAmount && apiOrderName.equals(dbOrderName) && apiUserEmail.equals(dbUsserEmail)) {
 
                apiResponse.setPaymentState("Completed");
                apiResponse.setPaymentReference("Success");

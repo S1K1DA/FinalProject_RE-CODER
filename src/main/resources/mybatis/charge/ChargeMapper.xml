@@ -41,7 +41,7 @@
 
     <update id="setUserCoin">
         UPDATE BASIC_USER
-        SET BASIC_USER_COIN = BASIC_USER_COIN + #{paymentCoin}
+        SET BASIC_USER_COIN = BASIC_USER_COIN + #{paymentProduct}
         WHERE BASIC_USER_EMAIL = #{paymentUserEmail}
     </update>
 

@@ -26,7 +26,7 @@ async function coinResponseTest(event) {
             body: JSON.stringify({
                 paymentUserEmail: userEmail,
                 paymentAmount: resultCoinPrice,
-                paymentCoin: resultCoinCnt,
+                paymentProduct: resultCoinCnt,
             }),
         });
 
