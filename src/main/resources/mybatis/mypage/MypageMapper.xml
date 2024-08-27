@@ -31,8 +31,25 @@
 
     <!-- 유저 정보 가져오기 -->
     <select id="getUserInfoById" parameterType="int" resultMap="userResultMap">
-        SELECT * FROM BASIC_USER WHERE BASIC_USER_NO = #{userId}
+        SELECT
+        bu.BASIC_USER_NO,
+        bu.BASIC_USER_EMAIL,
+        bu.BASIC_USER_NICKNAME,
+        bu.BASIC_USER_NAME,
+        bu.USER_ADDR,
+        bu.BASIC_USER_TELNUM,
+        bu.BASIC_USER_MBTI,
+        bu.BASIC_USER_COIN,
+        bu.CONSENT_LOCATION_INFO,
+        bp.PHOTO_PATH AS profilePicturePath  <!-- 프로필 사진 경로 추가 -->
+        FROM
+        BASIC_USER bu
+        LEFT JOIN
+        BASIC_USER_PHOTO bp ON bu.BASIC_USER_NO = bp.BASIC_USER_NO  <!-- LEFT JOIN으로 사진 테이블과 연결 -->
+        WHERE
+        bu.BASIC_USER_NO = #{userId}
     </select>
+
 
     <!-- 비밀번호 가져오기 -->
     <select id="getPasswordByUserId" parameterType="int" resultType="string">
@@ -253,5 +270,27 @@
         INSERT (BASIC_USER_NO, LATITUDE, LONGITUDE)
         VALUES (#{userId}, #{latitude}, #{longitude})
     </update>
+
+    <!-- 유저 프로필 사진 삽입 -->
+    <insert id="insertUserProfilePhoto" parameterType="MypageDto">
+        INSERT INTO BASIC_USER_PHOTO (BASIC_USER_NO, PHOTO_ORIGIN_NAME, PHOTO_NAME, PHOTO_PATH)
+        VALUES (#{userId}, #{profilePictureOriginalName}, #{profilePicturePath}, #{profilePicturePath})
+    </insert>
+
+    <!-- 유저 프로필 사진이 존재하는지 확인 -->
+    <select id="countUserProfilePhoto" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM BASIC_USER_PHOTO WHERE BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 유저 프로필 사진 업데이트 -->
+    <update id="updateUserProfilePhoto" parameterType="MypageDto">
+        UPDATE BASIC_USER_PHOTO
+        SET PHOTO_ORIGIN_NAME = #{profilePictureOriginalName},
+        PHOTO_NAME = #{profilePicturePath},
+        PHOTO_PATH = #{profilePicturePath},
+        PHOTO_INDATE = default
+        WHERE BASIC_USER_NO = #{userId}
+    </update>
+
 
 </mapper>

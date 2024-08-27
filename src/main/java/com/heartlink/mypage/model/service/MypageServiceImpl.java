@@ -171,4 +171,9 @@ public class MypageServiceImpl implements MypageService {
     public int updateUserLocation(int userId, double latitude, double longitude) {
         return mypageDao.updateUserLocation(userId, latitude, longitude);
     }
+
+    @Override
+    public void saveUserProfilePhoto(MypageDto userPhoto) {
+        mypageDao.saveUserProfilePhoto(userPhoto);
+    }
 }

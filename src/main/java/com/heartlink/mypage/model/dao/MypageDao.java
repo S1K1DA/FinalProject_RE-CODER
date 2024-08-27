@@ -146,4 +146,20 @@ public class MypageDao {
         return sqlSession.update("MypageMapper.updateUserLocation", params);
     }
 
+    // 프로필 사진 정보 저장
+    public int saveUserProfilePhoto(MypageDto userPhoto) {
+        // 이미 존재하는 프로필 사진이 있는지 확인
+        int existingPhotoCount = sqlSession.selectOne("MypageMapper.countUserProfilePhoto", userPhoto.getUserId());
+
+        if (existingPhotoCount > 0) {
+            // 프로필 사진이 이미 존재하면 업데이트
+            return sqlSession.update("MypageMapper.updateUserProfilePhoto", userPhoto);
+        } else {
+            // 프로필 사진이 존재하지 않으면 삽입
+            return sqlSession.insert("MypageMapper.insertUserProfilePhoto", userPhoto);
+        }
+    }
+
+
+
 }

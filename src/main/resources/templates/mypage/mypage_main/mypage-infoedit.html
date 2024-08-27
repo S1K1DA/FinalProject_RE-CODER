@@ -11,63 +11,70 @@
         <div class="container d-flex justify-content-center align-items-center">
             <div class="row d-flex justify-content-center align-items-center mypage-box">
 
-                <div class="mypage-box-container col-12 mb-4 mb-lg-0">
+                <div class="mypage-box-container col-12 mb-4 mb-lg-0 d-flex">
 
-                    <form action="/mypage/update" class="custom-block-edit d-flex flex-column text-left p-4" method="post">
-                        <div class="text-center mb-5 pb-2">
-                            <h3 class="text-white">마이페이지 수정</h3>
-                            <hr class="mypage-line">
+                    <!-- 왼쪽 박스: 프로필 사진 수정 -->
+                    <div class="profile-edit-box col-md-4 d-flex flex-column align-items-center">
+                        <h3 class="text-white">프로필 사진</h3>
+                        <div class="profile-picture profile-picture-editpage">
+                            <img alt="프로필 사진" th:src="${profilePicturePath != null ? profilePicturePath : '/image/user_profile/default_image.png'}">
+                            <button class="btn-new-file mt-3" type="button">새 파일</button>
                         </div>
-                        <div class="custom-block-info w-100">
-                            <div class="profile-picture profile-picture-editpage">
-                                <img alt="프로필 사진" th:src="@{/image/review/weding-review2.jpg}">
-                                <button class="btn-new-file" type="button">새 파일</button>
+                    </div>
+
+                    <!-- 오른쪽 박스: 사용자 정보 수정 -->
+                    <div class="user-info-edit-box col-md-8">
+                        <form action="/mypage/update" class="custom-block-edit d-flex flex-column text-left p-4" method="post">
+                            <div class="text-center mb-5 pb-2">
+                                <h3 class="text-white">마이페이지 수정</h3>
+                                <hr class="mypage-line">
                             </div>
-                            <p class="mb-2">
-                                <span class="label fw-bold">이메일 :</span>
-                                <input id="user-email" name="email" type="text" th:value="${user.email}" disabled>
-                            </p>
-                            <p class="mb-2">
-                                <span class="label fw-bold">닉네임 :</span>
-                                <input id="user-nickname" name="nickname" type="text" th:value="${user.nickname}">
-                                <button id="check-nickname-btn" type="button" class="btn-action">중복 체크</button>
-                            </p>
-                            <p class="mb-2">
-                                <span class="label fw-bold">전화번호 :</span>
-                                <input id="user-phone" name="phone" type="text" th:value="${user.phone}">
-                            </p>
-                            <div class="custom-block-row mb-2 d-flex align-items-center">
-                                <span class="label fw-bold me-2">주소 :</span>
-                                <div class="d-flex flex-column address-container">
-                                    <input id="user-address-line1" name="addressLine1" readonly type="text" class="address-input mb-2">
-                                    <input id="user-address-line2" name="addressLine2" readonly type="text" class="address-input">
+                            <div class="custom-block-info w-100">
+                                <p class="mb-2">
+                                    <span class="label fw-bold">이메일 :</span>
+                                    <input id="user-email" name="email" type="text" th:value="${user.email}" disabled>
+                                </p>
+                                <p class="mb-2">
+                                    <span class="label fw-bold">닉네임 :</span>
+                                    <input id="user-nickname" name="nickname" type="text" th:value="${user.nickname}">
+                                    <button id="check-nickname-btn" type="button" class="btn-action">중복 체크</button>
+                                </p>
+                                <p class="mb-2">
+                                    <span class="label fw-bold">전화번호 :</span>
+                                    <input id="user-phone" name="phone" type="text" th:value="${user.phone}">
+                                </p>
+                                <p class="mb-2">
+                                    <span class="label fw-bold">MBTI :</span>
+                                    <input id="user-mbti" name="mbti" readonly type="text" th:value="${user.mbti}">
+                                    <button class="btn-action" type="button" onclick="openMbtiTest()">MBTI 검사</button>
+                                </p>
+                                <div class="custom-block-row mb-2 d-flex align-items-center">
+                                    <span class="label fw-bold me-2">주소 :</span>
+                                    <div class="d-flex flex-column address-container">
+                                        <input id="user-address-line1" name="addressLine1" readonly type="text" class="address-input mb-2">
+                                        <input id="user-address-line2" name="addressLine2" readonly type="text" class="address-input">
+                                    </div>
+                                    <button class="btn-action ms-2" type="button" onclick="searchAddress()">주소 변경</button>
                                 </div>
-                                <button class="btn-action ms-2" type="button" onclick="searchAddress()">주소 변경</button>
+                                <p class="mb-2">
+                                    <label for="consent-location-info" class="label fw-bold">주소 공개 여부 :</label>
+                                    <input type="checkbox" id="consent-location-info" name="consentLocationInfo"
+                                           th:checked="${user.consentLocationInfo == 'Y'}" value="Y">
+                                </p>
+                                <!-- 숨겨진 필드에 전체 주소 저장 -->
+                                <input type="hidden" id="user-full-address" name="fullAddress" th:value="${user.fullAddress}">
+                                <!-- 숨겨진 필드에 경도와 위도 저장 -->
+                                <input type="hidden" id="addr-longitude" name="longitude" th:value="${userLocation != null ? userLocation.longitude : ''}">
+                                <input type="hidden" id="addr-latitude" name="latitude" th:value="${userLocation != null ? userLocation.latitude : ''}">
+                                <!-- 프로필 사진 저장 경로 -->
+                                <input type="hidden" name="profilePicturePath" th:value="${profilePicturePath}">
                             </div>
-
-                            <p class="mb-2">
-                                <label for="consent-location-info" class="label fw-bold">주소 공개 여부 :</label>
-                                <input type="checkbox" id="consent-location-info" name="consentLocationInfo"
-                                       th:checked="${user.consentLocationInfo == 'Y'}" value="Y">
-                            </p>
-
-                            <p class="mb-2">
-                                <span class="label fw-bold">MBTI :</span>
-                                <input id="user-mbti" name="mbti" readonly type="text" th:value="${user.mbti}">
-                                <button class="btn-action" type="button" onclick="openMbtiTest()">MBTI 검사</button>
-                            </p>
-                            <!-- 숨겨진 필드에 전체 주소 저장 -->
-                            <input type="hidden" id="user-full-address" name="fullAddress" th:value="${user.fullAddress}">
-                            <!-- 숨겨진 필드에 경도와 위도 저장 -->
-                            <input type="hidden" id="addr-longitude" name="longitude" th:value="${userLocation != null ? userLocation.longitude : ''}">
-                            <input type="hidden" id="addr-latitude" name="latitude" th:value="${userLocation != null ? userLocation.latitude : ''}">
-
-                        </div>
-                        <div class="form-actions d-flex justify-content-center mt-4">
-                            <button class="btn-submit" id="update-btn" type="submit">수정</button>
-                            <button class="btn-cancel" onclick="location.href='/mypage/main'" type="button">취소</button>
-                        </div>
-                    </form>
+                            <div class="form-actions d-flex justify-content-center mt-4">
+                                <button class="btn-submit" id="update-btn" type="submit">수정</button>
+                                <button class="btn-cancel" onclick="location.href='/mypage/main'" type="button">취소</button>
+                            </div>
+                        </form>
+                    </div>
 
                 </div>
 

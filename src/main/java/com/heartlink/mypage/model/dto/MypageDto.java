@@ -68,4 +68,14 @@ public class MypageDto {
     private int likedUserNo;           // 좋아요 받은 유저 번호
     private String likedUserNickname;  // 좋아요 받은 유저 닉네임
     private Date likeIndate;           // 좋아요 등록 시간
+
+    private String profilePicturePath; // 프로필 사진 경로
+    private String profilePictureOriginalName; // 원본 파일명
+
+    // 프로필 사진 관련 필드
+    private int photoNo;
+    private String photoOriginName;
+    private String photoName;
+    private String photoPath;
+    private Date photoIndate;
 }
