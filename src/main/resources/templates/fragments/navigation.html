@@ -56,7 +56,7 @@
                             <button class="drop-btn nav-bell-icon">
                                 <span class="bi-bell bell-icon"></span>
                             </button>
-                            <div  class="dropdown-content" id="bell-dropdown" th:each="item : ${alarmList}">
+                            <div  class="dropdown-content" id="bell-dropdown"th:each="item : ${alarmList}">
                                 <div class="alarm-ele" th:text="${item.alarmMessage}"></div>
                             </div>
                         </div>

@@ -51,7 +51,7 @@ public class NoticeController {
             model.addAttribute("pinnedNotices", pinnedNotices);  // 고정된 공지사항 리스트 추가
         }
         if (list != null) {
-//            model.addAttribute("pi", pi);
+          
             model.addAttribute("list", paginationData.get("items"));  // 일반 공지사항 리스트 추가
             model.addAttribute("startPage", paginationData.get("startPage"));
             model.addAttribute("endPage", paginationData.get("endPage"));

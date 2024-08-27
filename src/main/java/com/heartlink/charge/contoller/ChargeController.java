@@ -76,6 +76,8 @@ public class ChargeController {
         model.addAttribute("userPaymentHistory", paginationData.get("items"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
         model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("paginationUrl", "/charge/history");
 
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
@@ -87,7 +89,11 @@ public class ChargeController {
 
     @PostMapping("/payment-order")
     @ResponseBody
-    public ResponseEntity<String> getSequence(@RequestBody ChargeRequestDto chargeRequestDto){
+    public ResponseEntity<String> getSequence(@RequestBody ChargeRequestDto chargeRequestDto, HttpServletRequest request){
+
+        String referer = request.getHeader("Referer");
+        System.out.println("referer: " + referer);
+
         String thisSequence = chargeService.getCurrentSequence();
         String userEmail = getCurrentUserEmail();
         chargeRequestDto.setPaymentUserEmail(userEmail);
@@ -99,7 +105,6 @@ public class ChargeController {
         chargeRequestDto.setPaymentState("Pending");
         chargeRequestDto.setPaymentMethod("NONE");
         chargeRequestDto.setPaymentNo(thisSequence);
-        chargeRequestDto.setPaymentProduct("하트 코인 "+chargeRequestDto.getPaymentCoin()+ "개");
 
         int setPaymentHistory = chargeService.setPaymentHistory(chargeRequestDto);
 
@@ -113,8 +118,6 @@ public class ChargeController {
     @PostMapping("/complete")
     @ResponseBody
     public ResponseEntity<?> completePayment(@RequestBody ChargeRequestDto chargeRequestDto, HttpServletRequest request) {
-        String referer = request.getHeader("Referer");
-        System.out.println("referer: " + referer);
         String paymentNo = chargeRequestDto.getPaymentNo();
 
         try {
@@ -135,12 +138,14 @@ public class ChargeController {
             int apiAmount = apiResponse.getPaymentAmount();
             int dbAmount = dbResponse.getPaymentAmount();
 
-            String apiProduct = apiResponse.getPaymentProduct();
-            String dbProduct = dbResponse.getPaymentProduct();
+            String apiOrderName = apiResponse.getOrderName();
+            String dbOrderName = "하트 코인 "+Integer.toString(dbResponse.getPaymentProduct())+ "개";
 
+            String apiUserEmail = apiResponse.getPaymentUserEmail();
+            String dbUsserEmail = dbResponse.getPaymentUserEmail();
 
             // api와 db의 응답 값 비교 (결제금액, 결제 상품명, 결제요청 고객)
-            if(apiAmount == dbAmount && apiProduct.equals(dbProduct)) {
+            if(apiAmount == dbAmount && apiOrderName.equals(dbOrderName) && apiUserEmail.equals(dbUsserEmail)) {
 
                apiResponse.setPaymentState("Completed");
                apiResponse.setPaymentReference("Success");
@@ -168,62 +173,29 @@ public class ChargeController {
     }
 
 
-    @PostMapping("/payment-cancle")
+    @PostMapping("/payment-cancel")
     @ResponseBody
-    public ResponseEntity<?> cancledPayment(@RequestBody ChargeRequestDto requestDto){
-        boolean presenceInfo = true;
-        boolean enoughCoin = true;
-        boolean effectiveDate = true;
+    public ResponseEntity<?> canceledPayment(@RequestBody ChargeRequestDto requestDto){
+
 
         String paymentNo = requestDto.getPaymentNo();
         String userEmail = getCurrentUserEmail();
 
         ChargeRequestDto requestInfo = chargeService.getRequestPaymentInfo(paymentNo);
 
+        ChargeRequestDto cancelVerifit = chargeService.setCancelQualificationVerifit(userEmail, requestInfo);
 
-        // 해당 정보가 있는지
-        if(Objects.isNull(requestInfo) || !requestInfo.getPaymentUserEmail().equals(userEmail)){
-            presenceInfo = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("해당 결제 정보의 오류");
-        }
+        String result = cancelVerifit.getPaymentState();
 
-        // 코인은 충분한지
-        int userCoincnt = chargeService.getUserCoin(userEmail);
-        int userProduct = requestInfo.getPaymentAmount() / 100;
+        if(result.equals("취소 가능")){
+            String cancelRequset = chargeService.setCancelRequest(paymentNo, cancelVerifit);
 
-        if(userCoincnt < userProduct){
-            enoughCoin = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("보유 코인이 부족합니다.");
-        }
-
-        // 날짜는 유효한지
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime paymentDate = LocalDateTime.parse(requestInfo.getPaymentDate(), formatter);
-        Duration duration = Duration.between(paymentDate, now);
-
-        if (Math.abs(duration.toDays()) >= 7) {
-            effectiveDate = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("취소 가능 날짜 만료");
-        }
-
-
-        String portOneCancle;
-
-        if(presenceInfo && enoughCoin && effectiveDate){
-            portOneCancle = chargeService.setPortOneRequestCancle(paymentNo);
-
-            if(portOneCancle.equals("SUCCEEDED")){
-                int userUpdate = chargeService.setPaymentWithCoinUpdate(paymentNo, userEmail, userProduct);
-
-                if(userUpdate == 1){
-                    return ResponseEntity.status(HttpStatus.OK).body("결제 취소 완료");
-                }
+            if(cancelRequset.equals("update complete")){
+                return ResponseEntity.status(HttpStatus.OK).body(result);
             }
         }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 취소 오류");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
     }
 
 

@@ -65,9 +65,10 @@ public class FeedController {
 
     @PostMapping("/enroll")
     public String setFeedEnroll(FeedDto feedDto){
-        String escapeContent = StringEscapeUtils.escapeHtml4(feedDto.getFeedContent());
+        int userNo = getCurrentUserNo();
+        feedDto.setAuthorUserNo(userNo);
 
-        feedDto.setAouthorUserNo(getCurrentUserNo());
+        String escapeContent = StringEscapeUtils.escapeHtml4(feedDto.getFeedContent());
         feedDto.setFeedContent(escapeContent);
 
         int feedEnroll = feedService.setFeedEnroll(feedDto);

@@ -158,4 +158,88 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+
+    document.querySelectorAll('.more-ele#reportBtn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // 클릭된 버튼의 부모 요소를 찾음
+            const feedElement = this.closest('.feed-ele');
+
+            // 피드 정보 가져오기
+            const feedNo = feedElement.querySelector('input[type="hidden"][id="feedNo"]').value;
+            const reportedUserNo = feedElement.querySelector('#userNo').value;
+            const reportedUser = feedElement.querySelector('.feed-nickname').textContent;
+
+            // 신고하기 창의 입력값 설정
+            document.getElementById('feedNo').value = feedNo;
+            document.getElementById('reportedUserNo').value = reportedUserNo;
+            document.getElementById('reportedUser').textContent = reportedUser;
+
+            // 신고하기 창 표시
+            document.getElementById('reportOverlay').style.display = 'flex';
+        });
+    });
+
+    document.getElementById('actionCloses').addEventListener('click', function() {
+        document.getElementById('reportOverlay').style.display = 'none';
+    });
+
+
+    document.getElementById('reportForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // 기본 제출 동작을 막습니다
+
+        // 폼 데이터 가져오기
+        const formData = new FormData(this);
+
+
+        try {
+            // 사용자에게 확인 메시지 표시
+            const result = await Swal.fire({
+                title: "신고하시겠습니까?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "rgb(255 128 135)",
+                cancelButtonColor: "rgb(150 150 150)",
+                confirmButtonText: "예",
+                cancelButtonText: "아니요"
+            });
+
+
+            // 사용자가 확인 버튼을 클릭했는지 확인
+            if (result.isConfirmed) {
+                // 결제 취소 요청 서버에 전송
+                // fetch를 사용하여 데이터를 비동기적으로 제출합니다
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log(response.text());
+                console.log(response.status);
+
+                // 취소 완료 메시지 표시
+                if (response.ok) {
+                    await Swal.fire({
+                        title: "신고 완료",
+                        icon: "success"
+                    }).then(() => {
+                        window.location.reload();
+                    });
+
+                }else{
+                    return Promise.reject();
+                }
+            }
+        } catch (error) {
+            // 에러가 발생한 경우 에러 메시지 표시
+            console.error(error);
+            await Swal.fire({
+                title: "오류 발생",
+                text: "신고 처리 중 오류가 발생했습니다.",
+                icon: "error"
+            });
+        }
+
+    });
+
+
 });
