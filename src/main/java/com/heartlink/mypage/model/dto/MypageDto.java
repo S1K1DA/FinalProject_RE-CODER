@@ -73,11 +73,19 @@ public class MypageDto {
 
     private String profilePicturePath; // 프로필 사진 경로
     private String profilePictureOriginalName; // 원본 파일명
+    private String profilePictureName;
+
+    public String getFullProfilePictureUrl() {
+        return profilePicturePath + profilePictureName;
+    }
 
     // 프로필 사진 관련 필드
     private int photoNo;
     private String photoOriginName;
     private String photoName;
     private String photoPath;
+
     private Date photoIndate;
+
+    private String decisionHistory;
 }

@@ -32,8 +32,8 @@
                                     <tr>
                                         <th>매칭 생성일</th>
                                         <th>상대방 이름</th>
-                                        <th>매칭 성공 여부</th>
-                                        <th>종료 여부</th>
+                                        <th>매칭 상태</th>
+                                        <th>채팅 종료 여부</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -45,9 +45,14 @@
                                         </td>
                                         <td th:text="${match.partnerName}"></td>
                                         <td>
-                                            <span id="match-state-[[${match.matchingNo}]]" th:text="${match.matchingState == 'Y' ? 'Y' : 'N'}"
-                                                  th:classappend="${match.matchingState == 'Y' ? 'text-success' : 'text-danger'}"></span>
-                                            <div id="match-actions-[[${match.matchingNo}]]" th:if="${match.matchingUserNo != userId && match.matchingState == 'N'}" style="display:inline-block;">
+                                            <span id="match-state-[[${match.matchingNo}]]"
+                                                  th:text="${match.matchingState == 'Y' ? '진행중' :
+                                                           (match.decisionHistory == 'N' ? '대기중' : '거절됨/종료됨')}"
+                                                  th:classappend="${match.matchingState == 'Y' ? 'text-success' :
+                                                                  (match.decisionHistory == 'N' ? 'text-warning' : 'text-danger')}"></span>
+                                            <div id="match-actions-[[${match.matchingNo}]]"
+                                                 th:if="${match.matchingUserNo != userId && match.matchingState == 'N' && match.decisionHistory == 'N'}"
+                                                 style="display:inline-block;">
                                                 <button th:onclick="'acceptMatch(' + ${match.matchingNo} + ')'"
                                                         style="margin-left: 10px; background-color: blue; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer;">
                                                     수락
@@ -57,6 +62,7 @@
                                                     거절
                                                 </button>
                                             </div>
+
                                         </td>
                                         <td th:text="${match.matchingChattingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingChattingState == 'Y' ? 'text-success' : 'text-danger'}"></td>
                                     </tr>
@@ -77,42 +83,6 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
-<script>
-    function acceptMatch(matchingNo) {
-        updateMatchingState(matchingNo, 'Y');
-    }
-
-    function rejectMatch(matchingNo) {
-        updateMatchingState(matchingNo, 'N');
-    }
-
-    function updateMatchingState(matchingNo, state) {
-        fetch('/mypage/updateMatchingState', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ matchingNo: matchingNo, state: state })
-        })
-        .then(response => response.text())
-        .then(data => {
-            if (data === '매칭 상태 업데이트 성공') {
-                // 해당 매칭 항목에서 버튼 숨기기
-                document.getElementById(`match-actions-${matchingNo}`).style.display = 'none';
-                // 매칭 상태 텍스트 업데이트
-                document.getElementById(`match-state-${matchingNo}`).textContent = state === 'Y' ? 'Y' : 'N';
-                document.getElementById(`match-state-${matchingNo}`).className = state === 'Y' ? 'text-success' : 'text-danger';
-            } else {
-                alert('매칭 상태 업데이트에 실패했습니다.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('매칭 상태 업데이트 중 오류가 발생했습니다.');
-        });
-    }
-
-</script>
 
 </body>
 </html>

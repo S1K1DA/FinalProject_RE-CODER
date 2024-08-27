@@ -48,8 +48,9 @@ public class MypageController {
         MypageDto user = mypageService.getUserInfo(userId);
 
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
-        model.addAttribute("profilePicturePath", user.getProfilePicturePath());
         model.addAttribute("user", user);
+        model.addAttribute("profilePicturePath", user.getFullProfilePictureUrl());
+        System.out.println("aaa" + user.getFullProfilePictureUrl());
         return "mypage/mypage_main/mypage-main";
     }
 
@@ -64,7 +65,8 @@ public class MypageController {
         model.addAttribute("user", user);
         model.addAttribute("userLocation", userLocation);  // 모델에 위도/경도 정보를 추가
 
-        model.addAttribute("profilePicturePath", user.getProfilePicturePath());
+        model.addAttribute("profilePicturePath", user.getFullProfilePictureUrl());
+        System.out.println("aaa" + user.getFullProfilePictureUrl());
 
         return "mypage/mypage_main/mypage-infoedit";
     }
@@ -416,23 +418,26 @@ public class MypageController {
             File destinationFile = new File(uploadDirectory, uuidFileName);
             file.transferTo(destinationFile);
 
-            // 이미지 파일의 URL
-            String fileUrl = "/image/user_profile/" + uuidFileName;
+            // 이미지 파일의 URL 및 파일명/경로 분리
+            String filePath = "/image/user_profile/"; // 경로 부분
+            String fileName = uuidFileName; // 파일 이름 부분
 
             // 이미지 정보를 데이터베이스에 저장
             int userId = getCurrentUserId();
             MypageDto userPhoto = new MypageDto();
             userPhoto.setUserId(userId);
-            userPhoto.setProfilePicturePath(fileUrl);
+            userPhoto.setProfilePicturePath(filePath); // 경로만 저장
+            userPhoto.setProfilePictureName(fileName); // 파일 이름만 저장
             userPhoto.setProfilePictureOriginalName(originalFileName);
             mypageService.saveUserProfilePhoto(userPhoto);
 
-            return ResponseEntity.ok(fileUrl);
+            return ResponseEntity.ok(filePath + fileName);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("이미지 업로드 실패");
         }
     }
+
 
     @PostMapping("/updateMatchingState")
     @ResponseBody
@@ -444,11 +449,14 @@ public class MypageController {
         boolean success = mypageService.updateMatchingState(matchingNo, userId, state);
 
         if (success) {
+            // DECISION_HISTORY 컬럼 업데이트
+            mypageService.updateDecisionHistory(matchingNo, userId);
             return ResponseEntity.ok("매칭 상태 업데이트 성공");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("매칭 상태 업데이트 실패");
         }
     }
+
 
 
 
