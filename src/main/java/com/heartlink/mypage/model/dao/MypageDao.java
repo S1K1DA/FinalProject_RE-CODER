@@ -132,6 +132,7 @@ public class MypageDao {
     //피드가져오기
     public MypageDto getFeedByNo(int feedNo) {
         return sqlSession.selectOne("MypageMapper.getFeedByNo", feedNo);
+
     }
 
     public MypageDto getUserLocation(int userId) {
@@ -167,5 +168,9 @@ public class MypageDao {
         params.put("userId", userId);
         return sqlSession.update("MypageMapper.updateMatchingState", params);
     }
+
+
+
+
 
 }
