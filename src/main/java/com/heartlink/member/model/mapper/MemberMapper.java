@@ -35,4 +35,7 @@ public interface MemberMapper {
 
     // 사용자의 토큰 조회 메서드
     String findTokenByUserNumber(@Param("userNumber") int userNumber);
+
+    // 로그인 시 LAST_LOGIN_DATE 업데이트 메서드
+    void updateLastLoginDate(@Param("email") String email);
 }

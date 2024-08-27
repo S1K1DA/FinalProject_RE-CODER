@@ -67,6 +67,7 @@ public class MemberService {
         MemberDto member = memberMapper.findByEmail(email);
 
         if (member != null && passwordEncoder.matches(password, member.getPassword())) {
+            memberMapper.updateLastLoginDate(email);
             return member;
         } else {
             return null;

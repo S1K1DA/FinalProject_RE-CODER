@@ -97,5 +97,11 @@
         AND delete_date IS NULL
     </select>
 
+    <update id="updateLastLoginDate" parameterType="String">
+        UPDATE BASIC_USER
+        SET LAST_LOGIN_DATE = CURRENT_TIMESTAMP
+        WHERE BASIC_USER_EMAIL = #{email}
+    </update>
+
 
 </mapper>
