@@ -72,6 +72,7 @@ public class MatchingMbtiService {
         MatchingMbtiDto userProfile = matchingMbtiMapper.getUserProfileById(userNumber);
         String userMbti = userProfile.getMbti();
         String userSex = userProfile.getUserSex();
+        String userImg = userProfile.getProfilePhoto();
 
         // 천생연분 MBTI 가져오기
         String soulmateMbti = mbtiSoulmates.get(userMbti);
@@ -79,6 +80,7 @@ public class MatchingMbtiService {
         System.out.println("사용자 MBTI: " + userMbti);
         System.out.println("천생연분 MBTI: " + soulmateMbti);
         System.out.println("사용자 성별: " + userSex);
+        System.out.println("사용자 성별: " + userImg);
 
         if (soulmateMbti != null) {
             // 천생연분 MBTI에 해당하는 이성 유저 리스트 가져오기

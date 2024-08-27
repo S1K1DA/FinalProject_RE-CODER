@@ -1,44 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const messageContainer = document.getElementById('messageContainer');
-    const chatForm = document.getElementById('chatForm');
-    const messageInput = document.getElementById('messageInput');
+    const chatListContainer = document.querySelector('.chat-list');
 
-    chatForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const message = messageInput.value;
-        if (message) {
-            displayMessage(message, 'self');
-            messageInput.value = '';
-        }
-    });
+    // 채팅 중인 사용자 목록을 가져오는 함수
+    function fetchActiveChats() {
+        fetch('/chat/activeChats')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(chat => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('chat-list-item');
 
-    function displayMessage(message, sender) {
-        const messageElement = document.createElement('li');
-        messageElement.textContent = message;
+                    // 프로필 이미지
+                    const profileImage = document.createElement('img');
+                    profileImage.src = chat.photoPath;  // 서버에서 가져온 프로필 이미지 경로
+                    profileImage.alt = "profile";
+                    profileImage.classList.add('profile');
 
-        if (sender === 'self') {
-            const selfChatDiv = document.createElement('div');
-            selfChatDiv.classList.add('self-chat');
+                    // 채팅 정보
+                    const chatInfo = document.createElement('div');
+                    chatInfo.classList.add('chat-info');
 
-            const profileImage = document.createElement('img');
-            profileImage.src = "/image/team_member/team_member_eunsik.jpg"; // 프로필 이미지 경로
-            profileImage.alt = "self profile";
-            profileImage.classList.add('profile');
+                    const nicknameSpan = document.createElement('span');
+                    nicknameSpan.classList.add('nik-name');
+                    nicknameSpan.textContent = chat.nickname;  // 서버에서 가져온 닉네임
 
-            const nicknameSpan = document.createElement('span');
-            nicknameSpan.textContent = "멋쟁이식이";
-            nicknameSpan.classList.add('nik-name');
+                    const lastMessageSpan = document.createElement('span');
+                    lastMessageSpan.classList.add('last-message');
+                    lastMessageSpan.textContent = chat.lastMessage;  // 서버에서 가져온 마지막 메시지
 
-            selfChatDiv.appendChild(messageElement);
-            selfChatDiv.appendChild(nicknameSpan);
-            selfChatDiv.appendChild(profileImage);
+                    chatInfo.appendChild(nicknameSpan);
+                    chatInfo.appendChild(lastMessageSpan);
 
-            messageContainer.appendChild(selfChatDiv);
-        } else {
-            messageElement.classList.add('other');
-            messageContainer.appendChild(messageElement);
-        }
+                    listItem.appendChild(profileImage);
+                    listItem.appendChild(chatInfo);
 
-        messageContainer.scrollTop = messageContainer.scrollHeight;
+                    chatListContainer.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching active chats:', error));
     }
+
+    // 페이지 로드 시 채팅 목록 불러오기
+    fetchActiveChats();
 });

@@ -7,72 +7,23 @@
 <nav th:replace="fragments/navigation :: navigation"></nav>
 
 <main class="chatting-page">
-<div class="chat-list-container">
-    <ul class="chat-list">
-        <li class="chat-list-item">
-            <img src="/image/team_member/team_member_jongsun.jpg" class="profile" alt="profile">
-            <div class="chat-info">
-                <span class="nik-name">킹왕짱썬</span>
-                <span class="last-message">오늘 날씨 어떠신가요?</span>
-            </div>
-            <span class="notification">
-                    <i class="fa fa-envelope"></i>
-            </span>
-        </li>
-        <li class="chat-list-item">
-            <img src="/image/team_member/team_member_ahtae.jpg" class="profile" alt="profile">
-            <div class="chat-info">
-                <span class="nik-name">그러면아태</span>
-                <span class="last-message">다음에 봐요!</span>
-            </div>
-            <span class="notification">
-                    <i class="fa fa-envelope"></i>
-            </span>
-        </li>
-        <li class="chat-list-item">
-            <img src="/image/team_member/team_member_jaein.jpg" class="profile" alt="profile">
-            <div class="chat-info">
-                <span class="nik-name">죄인재인</span>
-                <span class="last-message">수고</span>
-            </div>
-            <span class="notification">
-                    <i class="fa fa-envelope"></i>
-            </span>
-        </li>
+    <div class="chat-list-container">
+        <ul class="chat-list">
+            <!-- 서버에서 가져온 데이터로 채워지는 채팅 상대방 목록 -->
+        </ul>
+    </div>
 
-        <!-- 더 많은 채팅 상대방 목록을 추가할 수 있습니다 -->
-    </ul>
-</div>
-
-<div class="chat-main">
-    <ul class="chat-thread" id="messageContainer">
-        <div class="other-chat">
-            <img src="/image/team_member/team_member_jongsun.jpg" class="profile" alt="other profile">
-            <span class="nik-name">킹왕짱썬</span>
-            <li class="other">오늘 날씨 어떠신가요?</li>
-        </div>
-        <div class="self-chat">
-            <li class="self">남자신가요?</li>
-            <span class="nik-name">멋쟁이식이</span>
-            <img src="/image/team_member/team_member_eunsik.jpg" class="profile" alt="self profile">
-        </div>
-        <div class="other-chat">
-            <img src="/image/team_member/team_member_jongsun.jpg" class="profile" alt="other profile">
-            <span class="nik-name">킹왕짱썬</span>
-            <li class="other">어...네 맞아요..</li>
-        </div>
-        <div class="self-chat">
-            <li class="self">좋은 하루 보내세요...ㅋ</li>
-            <span class="nik-name">멋쟁이식이</span>
-            <img src="/image/team_member/team_member_eunsik.jpg" class="profile" alt="self profile">
-        </div>
-    </ul>
-    <form class="chat-window" id="chatForm">
-        <input class="chat-window-message" id="messageInput" name="chat-window-message" type="text" autocomplete="off" autofocus />
-        <button type="submit">Send</button>
-    </form>
-</div>
+    <div class="chat-main">
+        <ul class="chat-thread" id="messageContainer">
+            <!-- 서버에서 가져온 데이터로 채워지는 채팅 내용 -->
+        </ul>
+        <form class="chat-window" id="chatForm">
+            <input class="chat-window-message" id="messageInput" name="chat-window-message" type="text" autocomplete="off" autofocus />
+            <button type="submit">Send</button>
+        </form>
+    </div>
 </main>
+
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js}"></script>
 <script th:src="@{/js/chat/chat-page.js}"></script>
