@@ -2,8 +2,7 @@ package com.heartlink.board.controller;
 
 import com.heartlink.board.model.dto.NoticeDto;
 import com.heartlink.board.model.service.NoticeService;
-//import com.heartlink.common.paging.PageInfo;
-//import com.heartlink.common.paging.Pagination;
+import com.heartlink.common.pagination.Pagination;
 import com.heartlink.member.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.heartlink.review.common.Pagination;
-
 
 import java.util.Date;
 import java.util.List;
