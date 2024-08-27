@@ -64,4 +64,6 @@ public interface MypageService {
 
     int updateUserLocation(int userId, double latitude, double longitude);
 
+    void saveUserProfilePhoto(MypageDto userPhoto);
+
 }

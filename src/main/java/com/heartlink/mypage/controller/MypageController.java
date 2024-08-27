@@ -12,11 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,7 +46,9 @@ public class MypageController {
     public String mainpage(HttpServletRequest request, Model model) {
         int userId = getCurrentUserId();
         MypageDto user = mypageService.getUserInfo(userId);
+
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
+        model.addAttribute("profilePicturePath", user.getProfilePicturePath());
         model.addAttribute("user", user);
         return "mypage/mypage_main/mypage-main";
     }
@@ -54,11 +57,14 @@ public class MypageController {
     public String editPage(HttpServletRequest request, Model model) {
         int userId = getCurrentUserId();
         MypageDto user = mypageService.getUserInfo(userId);
+
         MypageDto userLocation = mypageService.getUserLocation(userId);  // 위도/경도 정보를 가져옴
 
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
         model.addAttribute("userLocation", userLocation);  // 모델에 위도/경도 정보를 추가
+
+        model.addAttribute("profilePicturePath", user.getProfilePicturePath());
 
         return "mypage/mypage_main/mypage-infoedit";
     }
@@ -230,9 +236,16 @@ public class MypageController {
             user.setConsentLocationInfo("N");
         }
 
+        // 프로필 사진이 업로드된 경우 그 경로를 반영
+        String profilePicturePath = user.getProfilePicturePath();
+        if (profilePicturePath != null && !profilePicturePath.isEmpty()) {
+            user.setProfilePicturePath(profilePicturePath);
+        }
+
         int result = mypageService.updateUserInfo(user);
         return result > 0 ? "redirect:/mypage/main" : "mypage/mypage_main/mypage-infoedit";
     }
+
 
     @PostMapping("/updateMbti")
     @ResponseBody
@@ -374,6 +387,46 @@ public class MypageController {
         response.put("feedContent", feed.getFeedContent());
 
         return response;
+    }
+
+    @PostMapping("/profile-image-upload")
+    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file) {
+        try {
+            // 로컬 경로 설정
+            String projectDirectory = Paths.get("").toAbsolutePath().toString();
+            String uploadDirectory = projectDirectory + "/src/main/resources/static/image/user_profile";
+
+            // 파일 이름 생성 (UUID 사용)
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String uuidFileName = UUID.randomUUID().toString() + fileExtension;
+
+            // 디렉토리 생성
+            File directory = new File(uploadDirectory);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // 파일 저장
+            File destinationFile = new File(uploadDirectory, uuidFileName);
+            file.transferTo(destinationFile);
+
+            // 이미지 파일의 URL
+            String fileUrl = "/image/user_profile/" + uuidFileName;
+
+            // 이미지 정보를 데이터베이스에 저장
+            int userId = getCurrentUserId();
+            MypageDto userPhoto = new MypageDto();
+            userPhoto.setUserId(userId);
+            userPhoto.setProfilePicturePath(fileUrl);
+            userPhoto.setProfilePictureOriginalName(originalFileName);
+            mypageService.saveUserProfilePhoto(userPhoto);
+
+            return ResponseEntity.ok(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("이미지 업로드 실패");
+        }
     }
 
 }
