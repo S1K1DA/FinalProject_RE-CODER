@@ -112,7 +112,20 @@
 }
 
 .custom-admin-board .pagination{
-    margin-bottom: 30px;
+    padding-top: 30px !important;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.pagination .btn-action{
+    margin: 0 5px;
+}
+
+.pagination .btn-action:hover{
+    height: 40px !important;
+    align-content: center !important;
+    border-radius: 10px !important;
+    background-color: #efebf7 !important;
 }
 
 .custom-admin-board a{
@@ -285,7 +298,13 @@
     flex-direction: column;
 }
 
-.date-ban-box,
+.date-ban-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
 .permanen-ban-box,
 .punish-none-box{
     display: flex;
@@ -303,6 +322,15 @@
 
 .punish-date{
     margin-right: 10px;
+    width: 60px;
+}
+
+.date-btn{
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
+    margin-left: 5px;
+    background-color: #d3eafd;
 }
 
 .permanen-ban,
@@ -366,6 +394,47 @@
 .admin-user-search{
     height: 50px;
     padding: 8px;
+}
+
+.email-check-btn{
+    position: absolute;
+    top: 20%;
+    right: 2%;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    font-size: 12px;
+    color: #ffffff;
+    background: #633fb0;
+}
+
+#admin-email{
+    padding-right: 80px;
+}
+
+.date-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.date-container button{
+    background-color: #2689E2;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    width: 60px;
+    height: 35px;
+    font-weight: bold;
+}
+
+.date-container button:hover{
+    background-color: #89bae6;
+}
+
+.start-date-box,
+.end-date-box{
+    margin-right: 20px;
 }
 
 @media (max-width: 1285px) {

@@ -30,16 +30,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
 
-        try{
-            int userNo = getCurrentUserNo();
-            List<MatchingAlarmDto> userAlarmList = matchingService.getUserAlarm(userNo);
 
-
-            model.addAttribute("alarmList", userAlarmList);
-
-        }catch (Exception e){
-            System.out.println(e);
-        }
 
 
         return "index";  // "index"는 src/main/resources/templates/admin-main.html

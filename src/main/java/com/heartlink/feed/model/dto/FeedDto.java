@@ -12,8 +12,9 @@ import java.util.List;
 public class FeedDto {
 
     private int feedNo;
-    private int aouthorUserNo;
+    private int authorUserNo;
     private String basicUserNickname;
+
 
     private String feedTitle;
     private String feedContent;

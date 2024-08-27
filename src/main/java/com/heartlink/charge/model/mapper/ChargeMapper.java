@@ -28,13 +28,15 @@ public interface ChargeMapper {
 
     public ChargeRequestDto getRequestPaymentInfo(String paymentNo);
 
-    public int canceledState(String paymentNo);
+    public int paymentHistoryStateUpdate(String paymentNo, String State);
 
     public int setCoindeduction(String userEmail, int userProduct);
 
+    public int setCanceledHistory(String paymentNo);
+
     public List<ChargeRequestDto> getOldPendingPayments(@Param("limitMinute") LocalDateTime limitMinute);
 
-    public int failPayment(String paymentNo);
+    public int failedPayment(String paymentNo);
 
     public MemberDto getUserIfo(String userEmail);
 }

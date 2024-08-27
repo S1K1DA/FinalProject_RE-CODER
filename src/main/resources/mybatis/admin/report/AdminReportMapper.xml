@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartlink.admin.model.mapper.AdminReportMapper">
+    <resultMap id="reportResultMap" type="AdminReportDto">
+        <result property="reportNo" column="report_no"/>
+        <result property="reportCategoryNo" column="report_category_no"/>
+        <result property="reportCategoryName" column="report_category_name"/>
+        <result property="reportedUserNo" column="reported_user_no"/>
+        <result property="reporterUserNo" column="reporter_user_no"/>
+        <result property="reportIndate" column="report_indate"/>
+        <result property="reportContent" column="report_content"/>
+        <result property="reportResponseStatus" column="report_response_status"/>
+        <result property="reportType" column="report_type"/>
+        <result property="reportTypeNo" column="report_type_no"/>
+        <result property="reportRsolutionPunish" column="report_resolution_punish"/>
+        <result property="punishmentResult" column="punishment_result"/>
+        <result property="reportResolutionContent" column="report_resolution_content"/>
+        <result property="adminUserNo" column="admin_user_no"/>
+        <result property="reportResolutionDate" column="report_resolution_date"/>
+    </resultMap>
+
+    <select id="getReportCategory" resultMap="reportResultMap">
+        SELECT REPORT_CATEGORY_NO ,
+               REPORT_CATEGORY_NAME
+        FROM REPORT_CATEGORY
+    </select>
+
+    <select id="setReportList" resultMap="reportResultMap">
+        SELECT REPORT_NO ,
+               REPORTED_USER_NO ,
+               REPORTER_USER_NO ,
+               REPORT_INDATE ,
+               rc.REPORT_CATEGORY_NAME ,
+               REPORT_TYPE ,
+               REPORT_TYPE_NO ,
+               REPORT_CONTENT
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_CATEGORY rc
+                      ON rb.REPORT_CATEGORY_NO = rc.REPORT_CATEGORY_NO
+        WHERE rb.REPORT_INDATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+            AND REPORT_RESPONSE_STATUS = 'N'
+        ORDER BY REPORT_INDATE DESC
+    </select>
+
+    <insert id="setAdminResolution">
+        INSERT INTO REPORT_RESOLUTION rr VALUES(
+            #{reportNo} ,
+            #{adminUserNo},
+            SYSDATE,
+            #{reportResolutionContent},
+            #{reportRsolutionPunish},
+            <choose>
+                <when test="punishmentResult != null">
+                    TO_DATE(#{punishmentResult}, 'YYYY-MM-DD')
+                </when>
+                <otherwise>
+                    null
+                </otherwise>
+            </choose>
+        )
+    </insert>
+
+    <update id="updateResolution">
+        UPDATE REPORT_BOARD
+        SET
+            REPORT_RESPONSE_STATUS = 'Y'
+        WHERE REPORT_NO = #{reportNo}
+    </update>
+
+    <update id="updateUserState">
+        UPDATE BASIC_USER
+        SET
+            BASIC_USER_STATUS = #{state}
+        WHERE BASIC_USER_NO = #{reportedUserNo}
+    </update>
+
+    <select id="setResolutionReportList" resultMap="reportResultMap">
+        SELECT rb.REPORT_NO ,
+               rb.REPORTER_USER_NO ,
+               rb.REPORTED_USER_NO ,
+               rb.REPORT_INDATE ,
+               rc.REPORT_CATEGORY_NAME ,
+               rr.REPORT_RESOLUTION_DATE ,
+               rr.REPORT_RESOLUTION_PUNISH ,
+               rr.PUNISHMENT_RESULT ,
+               rr.REPORT_RESOLUTION_CONTENT,
+               rr.ADMIN_USER_NO ,
+               rb.REPORT_TYPE
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_CATEGORY rc
+                      ON rb.REPORT_CATEGORY_NO = rc.REPORT_CATEGORY_NO
+                 JOIN REPORT_RESOLUTION rr
+                      ON rb.REPORT_NO = rr.REPORT_NO
+        WHERE rb.REPORT_INDATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
+            AND rb.REPORT_RESPONSE_STATUS = 'Y'
+        ORDER BY REPORT_RESOLUTION_DATE DESC
+    </select>
+
+    <select id="getAccruePunishment" resultType="java.lang.Integer">
+        SELECT COUNT(REPORTED_USER_NO)
+        FROM REPORT_BOARD rb
+                 JOIN REPORT_RESOLUTION rr
+                      ON rb.REPORT_NO = rr.REPORT_NO
+        WHERE rr.PUNISHMENT_RESULT IS NOT NULL
+    </select>
+</mapper>
