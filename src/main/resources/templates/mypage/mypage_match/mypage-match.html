@@ -49,10 +49,18 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="match : ${matchingHistory}">
-                                        <td th:text="${#dates.format(match.matchingIndate, 'yyyy-MM-dd')}"></td>
+                                    <tr th:each="match : ${matchingHistory}" th:class="${match.matchingUserNo != userId} ? 'clickable-row' : ''">
+                                        <td>
+                                            <span th:text="${#dates.format(match.matchingIndate, 'yyyy-MM-dd')}"></span>
+                                            <span th:if="${match.matchingUserNo != userId}" th:text="'(받은)'" style="color: blue;"></span>
+                                            <span th:if="${match.matchingUserNo == userId}" th:text="'(보낸)'" style="color: red;"></span>
+                                        </td>
                                         <td th:text="${match.partnerName}"></td>
-                                        <td th:text="${match.matchingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingState == 'Y' ? 'text-success' : 'text-danger'}"></td>
+                                        <td>
+                                            <span th:text="${match.matchingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingState == 'Y' ? 'text-success' : 'text-danger'}" style="position: relative;"></span>
+                                            <button th:if="${match.matchingUserNo != userId}" style="margin-left: 10px; background-color: blue; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer; display: inline-block;">수락</button>
+                                            <button th:if="${match.matchingUserNo != userId}" style="margin-left: 5px; background-color: red; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer; display: inline-block;">거절</button>
+                                        </td>
                                         <td th:text="${match.matchingChattingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingChattingState == 'Y' ? 'text-success' : 'text-danger'}"></td>
                                     </tr>
                                     </tbody>
@@ -72,6 +80,13 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/mypage/mypage.js}"></script>
+<script>
+    // 수락 버튼 클릭 시 처리할 함수
+    function acceptMatch() {
+        // 여기에 수락 처리를 위한 로직을 추가하세요.
+        alert('매칭이 수락되었습니다!');
+    }
+</script>
 
 </body>
 </html>
