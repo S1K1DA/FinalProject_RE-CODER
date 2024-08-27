@@ -16,19 +16,19 @@ import org.springframework.web.filter.CorsFilter;
 public class AdminSecurityConfig{
 
     private final JwtFilter jwtFilter;
-//    private final CorsFilter corsFilter;
+    private final CorsFilter corsFilter;
 
     @Autowired
     public AdminSecurityConfig(JwtFilter jwtFilter, CorsFilter corsFilter){
         this.jwtFilter = jwtFilter;
-//        this.corsFilter = corsFilter;
+        this.corsFilter = corsFilter;
     }
 
     @Bean
     public SecurityFilterChain adminSecurityFilterChain (HttpSecurity http) throws Exception{
         http
                 .csrf(csrf -> csrf.disable())
-//                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .securityMatcher("/admin/**") // /admin/** 경로에 대해서만 이 보안 설정 적용
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/admin/register/**", "/admin/login/**").permitAll()

@@ -36,8 +36,9 @@ public class NoticeController {
                                 @RequestParam(value = "page", defaultValue = "1") int page) {
 
         int listCount = noticeService.getNoticeCount(); // 총 공지사항 수
-        int pageSize = 8; // 페이지네이션의 최대 페이지 수
-//        int boardLimit = 8; // 한 페이지에 보여줄 공지사항 수
+
+        int pageSize = 8; // 한 페이지에 보여줄 공지사항 수
+
 
         // 고정된 공지사항 가져오기
         List<NoticeDto> pinnedNotices = noticeService.getPinnedNotices();
@@ -51,10 +52,7 @@ public class NoticeController {
             model.addAttribute("pinnedNotices", pinnedNotices);  // 고정된 공지사항 리스트 추가
         }
         if (list != null) {
-//            model.addAttribute("pi", pi);
-            model.addAttribute("list", paginationData.get("items"));  // 일반 공지사항 리스트 추가
-            model.addAttribute("startPage", paginationData.get("startPage"));
-            model.addAttribute("endPage", paginationData.get("endPage"));
+            model.addAttribute("list", paginationData.get("items"));
             model.addAttribute("currentPage", paginationData.get("currentPage"));
             model.addAttribute("totalPages", paginationData.get("totalPages"));
             model.addAttribute("startPage", paginationData.get("startPage"));

@@ -122,7 +122,7 @@ public class AdminController {
         }
 
         model.addAttribute("message", "회원가입이 성공적으로 완료되었습니다.");
-        return "redirect:/member/login"; // 회원가입 후 로그인 페이지로 리디렉션
+        return "redirect:/admin/login"; // 회원가입 후 로그인 페이지로 리디렉션
 
     }
 
