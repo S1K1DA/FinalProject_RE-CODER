@@ -13,6 +13,7 @@
         <result column="BASIC_USER_MBTI" property="mbti"/>
         <result column="BASIC_USER_COIN" property="coin"/>
         <result column="CONSENT_LOCATION_INFO" property="consentLocationInfo"/>
+
     </resultMap>
 
     <resultMap id="feedResultMap" type="MypageDto">
@@ -41,14 +42,16 @@
         bu.BASIC_USER_MBTI,
         bu.BASIC_USER_COIN,
         bu.CONSENT_LOCATION_INFO,
-        bp.PHOTO_PATH AS profilePicturePath  <!-- 프로필 사진 경로 추가 -->
+        bp.PHOTO_PATH AS profilePicturePath,  <!-- 프로필 사진 경로 -->
+        bp.PHOTO_NAME AS profilePictureName   <!-- 프로필 사진 이름 -->
         FROM
         BASIC_USER bu
         LEFT JOIN
-        BASIC_USER_PHOTO bp ON bu.BASIC_USER_NO = bp.BASIC_USER_NO  <!-- LEFT JOIN으로 사진 테이블과 연결 -->
+        BASIC_USER_PHOTO bp ON bu.BASIC_USER_NO = bp.BASIC_USER_NO  <!-- 사진 테이블과 LEFT JOIN -->
         WHERE
         bu.BASIC_USER_NO = #{userId}
     </select>
+
 
 
     <!-- 비밀번호 가져오기 -->
@@ -196,7 +199,8 @@
         ELSE u1.BASIC_USER_NICKNAME
         END as partnerName,
         m.MATCHING_STATE as matchingState,
-        m.MATCHING_CHATTING_STATE as matchingChattingState
+        m.MATCHING_CHATTING_STATE as matchingChattingState,
+        m.DECISION_HISTORY as decisionHistory  <!-- 여기에 필드 추가 -->
         FROM
         MATCHING_STATE m
         JOIN BASIC_USER u1 ON m.MATCHING_USER_NO = u1.BASIC_USER_NO
@@ -208,6 +212,7 @@
         m.MATCHING_INDATE DESC
         FETCH FIRST 10 ROWS ONLY
     </select>
+
 
     <!-- 프로필 좋아요 목록 가져오기 -->
     <select id="getLikedProfiles" parameterType="int" resultType="MypageDto">
@@ -286,11 +291,12 @@
     <update id="updateUserProfilePhoto" parameterType="MypageDto">
         UPDATE BASIC_USER_PHOTO
         SET PHOTO_ORIGIN_NAME = #{profilePictureOriginalName},
-        PHOTO_NAME = #{profilePicturePath},
-        PHOTO_PATH = #{profilePicturePath},
+        PHOTO_NAME = #{profilePictureName},  <!-- 파일 이름 -->
+        PHOTO_PATH = #{profilePicturePath},  <!-- 경로 -->
         PHOTO_INDATE = default
         WHERE BASIC_USER_NO = #{userId}
     </update>
+
 
     <update id="updateMatchingState" parameterType="map">
         UPDATE MATCHING_STATE
@@ -299,6 +305,16 @@
         AND MATCHED_USER_NO = #{userId}
         AND MATCHING_STATE = 'N'
     </update>
+
+    <update id="updateDecisionHistory">
+        UPDATE MATCHING_STATE
+        SET DECISION_HISTORY = 'Y'
+        WHERE MATCHING_NO = #{matchingNo}
+        AND MATCHED_USER_NO = #{matchedUserNo}
+    </update>
+
+
+
 
 
 
