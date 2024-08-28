@@ -50,7 +50,6 @@ public class MypageController {
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
         model.addAttribute("profilePicturePath", user.getFullProfilePictureUrl());
-        System.out.println("aaa" + user.getFullProfilePictureUrl());
         return "mypage/mypage_main/mypage-main";
     }
 
@@ -66,7 +65,6 @@ public class MypageController {
         model.addAttribute("userLocation", userLocation);  // 모델에 위도/경도 정보를 추가
 
         model.addAttribute("profilePicturePath", user.getFullProfilePictureUrl());
-        System.out.println("aaa" + user.getFullProfilePictureUrl());
 
         return "mypage/mypage_main/mypage-infoedit";
     }
