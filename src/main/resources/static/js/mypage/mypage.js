@@ -548,6 +548,16 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
+                // 서버에서 받은 날짜 문자열을 Date 객체로 변환
+                const feedIndate = new Date(data.feedIndate);
+
+                // 원하는 형식으로 날짜를 변환
+                const formattedDate = feedIndate.getFullYear() + '.' +
+                    String(feedIndate.getMonth() + 1).padStart(2, '0') + '.' +
+                    String(feedIndate.getDate()).padStart(2, '0') + ' ' +
+                    String(feedIndate.getHours()).padStart(2, '0') + ':' +
+                    String(feedIndate.getMinutes()).padStart(2, '0');
+
                 // 피드 내용을 동적으로 생성
                 popupContent.innerHTML = `
                     <div class='feed-out-box'>
@@ -564,7 +574,7 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
                             <div class='feed-remark'>
                                 <div class='feed-meta'>
                                     <p class='feed-tag'>${data.feedTag}</p>
-                                    <p class='feed-indate'>${data.feedIndate}</p>
+                                    <p class='feed-indate'>${formattedDate}</p>
                                 </div>
                             </div>
                         </div>
@@ -586,6 +596,7 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
             feedPopup.style.display = 'block';
         });
 }
+
 
 
 function decodeHtml(html) {
