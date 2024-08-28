@@ -18,8 +18,8 @@ public class UserManagementScheduler {
         this.memberService = memberService;
     }
 
-//    @Scheduled(cron = "0 0 0 * * ?")
-    @Scheduled(cron = "0 */3 * * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
+//    @Scheduled(cron = "0 */3 * * * ?")
     public void performScheduledTasks() {
 
         LocalDate todayLocal = LocalDate.now();
