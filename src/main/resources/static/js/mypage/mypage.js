@@ -566,12 +566,12 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
                     <div class='feed-out-box'>
                         <div class='feed-head-box'>
                             <div class='feed-title-box'>
-                                <p class='feed-title' style='font-size:24px;'>${data.feedTitle}</p>
+                                <p class='feed-title' >${data.feedTitle}</p>
                             </div>
                             <div class='feed-icon-box'>
                                 <div class='feed-meta'>
                                     <p class='feed-nickname'>${data.author}</p>
-                                    <p class='feed-like-cnt'>${data.likeCount} Likes</p>
+                                    <p class='feed-like-cnt'>좋아요 수 : ${data.likeCount}</p>
                                 </div>
                             </div>
                             <div class='feed-remark'>
