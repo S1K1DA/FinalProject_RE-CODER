@@ -143,7 +143,6 @@ public class AdminController {
 
         MainStatsDto mainStats = adminStatsService.getMainStatsResult();
 
-
         model.addAttribute("stats", mainStats);
         return "admin/dashboard/admin-main";
     }

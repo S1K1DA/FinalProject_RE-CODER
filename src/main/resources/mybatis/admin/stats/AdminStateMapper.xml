@@ -38,7 +38,7 @@
                  WHERE
                      ph.PAYMENT_DATE BETWEEN TO_DATE(#{today}, 'YYYY-MM-DD')
                          AND TO_DATE(#{today}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
-                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested')
+                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested' OR PAYMENT_STATE = 'Cancel Denied')
                  GROUP BY
                      'Day'
                  UNION ALL
@@ -50,7 +50,7 @@
                  WHERE
                      ph.PAYMENT_DATE BETWEEN TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'MM')
                          AND TO_DATE(#{today}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
-                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested')
+                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested' OR PAYMENT_STATE = 'Cancel Denied')
                  GROUP BY
                      'Month'
                  UNION ALL
@@ -115,10 +115,8 @@
 
     <select id="getThisMonthCanceledSales" resultType="java.lang.Integer">
         WITH weeks AS (
-        SELECT
-        LEVEL AS week_of_month
-        FROM
-        DUAL
+        SELECT LEVEL AS week_of_month
+        FROM DUAL
         CONNECT BY LEVEL &lt;= 8
         )
         SELECT
@@ -127,7 +125,7 @@
         weeks W
         LEFT JOIN PAYMENT_HISTORY PH
         ON W.week_of_month = TO_CHAR(PH.PAYMENT_DATE, 'WW') - TO_CHAR(TRUNC(PH.PAYMENT_DATE, 'MM'), 'WW') + 1
-        AND PH.PAYMENT_DATE BETWEEN TO_DATE(#{firstDayOfMonth}, 'YYYY-MM-DD') AND TO_DATE(#{today}, 'YYYY-MM-DD')
+        AND PH.PAYMENT_DATE BETWEEN TO_DATE(#{firstDayOfMonth}, 'YYYY-MM-DD') AND TO_DATE(#{today}, 'YYYY-MM-DD') + INTERVAL '1' DAY - INTERVAL '1' SECOND
         AND PAYMENT_STATE = 'Canceled'
         GROUP BY
         W.week_of_month
