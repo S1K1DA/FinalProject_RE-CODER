@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class AdminStatsService {
@@ -21,8 +22,15 @@ public class AdminStatsService {
     public MainStatsDto getMainStatsResult(){
 
         LocalDate todayLocal = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String today = todayLocal.format(formatter);
+        // 오늘
+        String today = todayLocal.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // 오늘 기준 이번 달 1일
+        LocalDate firstDayOfMonthLocl = todayLocal.withDayOfMonth(1);
+        String firstDayOfMonth = firstDayOfMonthLocl.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // 이번년
+        String thisYear = todayLocal.format(DateTimeFormatter.ofPattern("yyyy"));
 
         // 일 월 연 매출
         MainStatsDto result = adminStatsMapper.getSalesAll(today);
@@ -34,6 +42,20 @@ public class AdminStatsService {
         // 미처리 신고수
         int unprocessedReport = adminStatsMapper.getUnprocessedReport();
         result.setUnprocessedReportCnt(unprocessedReport);
+
+        // 이번 달
+        List<Integer> thisMonthSales = adminStatsMapper.getThisMonthSales(today, firstDayOfMonth);
+        List<Integer> thisMonthCanceledSales = adminStatsMapper.getThisMonthCanceledSales(today, firstDayOfMonth);
+
+        result.setThisMonthSales(thisMonthSales);
+        result.setThisMonthSalesCanceled(thisMonthCanceledSales);
+
+        // 이번 년
+        List<Integer> thisYearSales = adminStatsMapper.getThisYearSales(thisYear);
+        List<Integer> thisYearCanceledSales = adminStatsMapper.getThisYearCanceledSales(thisYear);
+
+        result.setThisYaerSales(thisYearSales);
+        result.setThisYaerSalesCanceled(thisYearCanceledSales);
 
         return result;
 
