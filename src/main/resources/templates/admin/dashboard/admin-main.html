@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{admin/fragments/admin-head :: admin_head}"></head>
 <body>
-
   <div class="loader-bg">
     <div class="loader-track">
       <div class="loader-fill"></div>
@@ -18,9 +17,7 @@
 
 <div class="pc-container">
   <div class="pc-content">
-    <!-- [ Main Content ] start -->
     <div class="row">
-      <!-- [ sample-page ] start -->
       <div class="col-xl-4 col-md-6">
         <div class="card bg-secondary-dark dashnum-card text-white overflow-hidden">
           <span class="round small"></span>
@@ -143,32 +140,33 @@
                 </select>
               </div>
             </div>
-            <div id="growthchart"></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-12 col-md-12" id="weekly-container" style="display: none">
-        <div class="card">
-          <div class="card-body">
-            <div class="row mb-3 align-items-center">
-              <div class="col">
-                <small>주간 매출</small>
-              </div>
+            <div>
+              <div id="growthchart"></div>
             </div>
-            <div id="weeklychart"></div>
+            <div>
+              <div id="weeklychart"></div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- [ sample-page ] end -->
     </div>
-    <!-- [ Main Content ] end -->
   </div>
 </div>
-<!-- [ Main Content ] end -->
+  <script>
+    var weeklySales = [[${stats.thisMonthSales}]];
+    var weeklyCanceledSales = [[${stats.thisMonthSalesCanceled}]];
+    var monthlySales = [[${stats.thisYaerSales}]];
+    var monthlyCanceledSales = [[${stats.thisYaerSalesCanceled}]];
 
-<!-- 스크립트 모듈 -->
-  <script th:src="@{/js/admin/plugins/apexcharts.min.js}"></script>
-  <script th:src="@{/js/admin/pages/dashboard-default.js}"></script>
-  <script th:replace="~{admin/fragments/admin-script::admin_script}"></script>
+    console.log('주 매출 : ' + weeklySales);
+    console.log('주 취소된 매출 : ' + weeklyCanceledSales);
+
+    console.log('달 매출 : ' + monthlySales);
+    console.log('달 취소된 매출 : ' + monthlyCanceledSales);
+
+  </script>
+<script th:src="@{/js/admin/plugins/apexcharts.min.js}"></script>
+<script th:src="@{/js/admin/pages/dashboard-default.js}"></script>
+<script th:replace="~{admin/fragments/admin-script::admin_script}"></script>
 </body>
 </html>

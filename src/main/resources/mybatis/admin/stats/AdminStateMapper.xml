@@ -5,7 +5,7 @@
         <result property="toDaySales" column="today_sales"/>
         <result property="toMonthSales" column="tomonth_sales"/>
         <result property="toYearSales" column="toyear_sales"/>
-        <result property="toDayInquiryCnt" column="today_inqriy_cnt"/>
+        <result property="toDayInquiryCnt" column="today_inquriy_cnt"/>
         <result property="unprocessedReportCnt" column="unprocessed_report_cnt"/>
     </resultMap>
 
@@ -62,10 +62,101 @@
                  WHERE
                      ph.PAYMENT_DATE BETWEEN TRUNC(TO_DATE(#{today}, 'YYYY-MM-DD'), 'YYYY')
                          AND LAST_DAY(TO_DATE(#{today}, 'YYYY-MM-DD'))
-                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested')
+                   AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested' OR PAYMENT_STATE = 'Cancel Denied')
                  GROUP BY
                      'Year'
              ) periods
     </select>
+
+    <select id="getThisMonthSales" resultType="java.lang.Integer">
+        WITH weeks AS (
+        SELECT
+        LEVEL AS week_of_month
+        FROM
+        DUAL
+        CONNECT BY LEVEL &lt;= 8
+        )
+        SELECT
+        NVL(SUM(PH.PAYMENT_AMOUNT), 0) AS thisMonthSales
+        FROM
+        weeks W
+        LEFT JOIN PAYMENT_HISTORY PH
+        ON W.week_of_month = TO_CHAR(PH.PAYMENT_DATE, 'WW') - TO_CHAR(TRUNC(PH.PAYMENT_DATE, 'MM'), 'WW') + 1
+        AND PH.PAYMENT_DATE BETWEEN TO_DATE(#{firstDayOfMonth}, 'YYYY-MM-DD') AND TO_DATE(#{today}, 'YYYY-MM-DD')
+        AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested' OR PAYMENT_STATE = 'Cancel Denied')
+        GROUP BY
+        W.week_of_month
+        ORDER BY
+        week_of_month ASC
+    </select>
+
+    <select id="getThisYearSales" resultType="java.lang.Integer">
+        WITH months AS (
+        SELECT
+        LEVEL AS month
+        FROM
+        DUAL
+        CONNECT BY LEVEL &lt;= 12
+        )
+        SELECT
+        NVL(SUM(PH.PAYMENT_AMOUNT), 0) AS thisYearSales
+        FROM
+        months M
+        LEFT JOIN PAYMENT_HISTORY PH
+        ON M.month = TO_NUMBER(TO_CHAR(PH.PAYMENT_DATE, 'MM'))
+        AND TO_CHAR(PH.PAYMENT_DATE, 'YYYY') = #{thisYear}
+        AND (PAYMENT_STATE = 'Completed' OR PAYMENT_STATE = 'Cancel Requested' OR PAYMENT_STATE = 'Cancel Denied')
+        GROUP BY
+        TO_CHAR(PH.PAYMENT_DATE, 'YYYY'),
+        M.month
+        ORDER BY
+        M.MONTH ASC
+    </select>
+
+    <select id="getThisMonthCanceledSales" resultType="java.lang.Integer">
+        WITH weeks AS (
+        SELECT
+        LEVEL AS week_of_month
+        FROM
+        DUAL
+        CONNECT BY LEVEL &lt;= 8
+        )
+        SELECT
+        NVL(SUM(PH.PAYMENT_AMOUNT), 0) AS thisMonthSales
+        FROM
+        weeks W
+        LEFT JOIN PAYMENT_HISTORY PH
+        ON W.week_of_month = TO_CHAR(PH.PAYMENT_DATE, 'WW') - TO_CHAR(TRUNC(PH.PAYMENT_DATE, 'MM'), 'WW') + 1
+        AND PH.PAYMENT_DATE BETWEEN TO_DATE(#{firstDayOfMonth}, 'YYYY-MM-DD') AND TO_DATE(#{today}, 'YYYY-MM-DD')
+        AND PAYMENT_STATE = 'Canceled'
+        GROUP BY
+        W.week_of_month
+        ORDER BY
+        week_of_month ASC
+    </select>
+
+    <select id="getThisYearCanceledSales" resultType="java.lang.Integer">
+        WITH months AS (
+        SELECT
+        LEVEL AS month
+        FROM
+        DUAL
+        CONNECT BY LEVEL &lt;= 12
+        )
+        SELECT
+        NVL(SUM(PH.PAYMENT_AMOUNT), 0) AS thisYaerSales
+        FROM
+        months M
+        LEFT JOIN PAYMENT_HISTORY PH
+        ON M.month = TO_NUMBER(TO_CHAR(PH.PAYMENT_DATE, 'MM'))
+        AND TO_CHAR(PH.PAYMENT_DATE, 'YYYY') = #{thisYear}
+        AND PAYMENT_STATE = 'Canceled'
+        GROUP BY
+        TO_CHAR(PH.PAYMENT_DATE, 'YYYY'),
+        M.month
+        ORDER BY
+        M.MONTH ASC
+    </select>
+
 
 </mapper>

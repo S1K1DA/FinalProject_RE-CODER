@@ -4,12 +4,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 500);
 });
 
+function getMaxValue(array) {
+    return Math.max.apply(null, array);
+}
+
+// Define chart variables globally
+var weeklyChart, monthlyChart;
+document.getElementById('weeklychart').style.display = 'none';
+
 function floatchart() {
+    // 주간 데이터에서 최대값 찾기
+    var maxWeeklyValue = Math.max(getMaxValue(weeklySales), getMaxValue(weeklyCanceledSales));
+
+    // 월간 데이터에서 최대값 찾기
+    var maxMonthlyValue = Math.max(getMaxValue(monthlySales), getMaxValue(monthlyCanceledSales));
+
+    // 차트 높이 설정, 최대 510px로 제한
+    var weeklyChartHeight = Math.min(maxWeeklyValue + 50, 510);
+    var monthlyChartHeight = Math.min(maxMonthlyValue + 50, 510);
+
     // 주간 매출 차트 설정
     var weeklyOptions = {
         chart: {
             type: 'line',
-            height: 300,
+            height: weeklyChartHeight, // 제한된 높이 사용
             sparkline: {
                 enabled: false
             },
@@ -28,11 +46,11 @@ function floatchart() {
         series: [
             {
                 name: '결제 완료',
-                data: [120, 150, 80, 200, 180, 220, 150] // Example data
+                data: weeklySales // 주간 매출 데이터
             },
             {
                 name: '취소',
-                data: [20, 30, 15, 40, 30, 25, 35] // Example data
+                data: weeklyCanceledSales // 주간 취소된 매출 데이터
             }
         ],
         xaxis: {
@@ -51,7 +69,7 @@ function floatchart() {
     var monthlyOptions = {
         chart: {
             type: 'bar',
-            height: 480,
+            height: monthlyChartHeight, // 제한된 높이 사용
             stacked: true,
             toolbar: {
                 show: false
@@ -70,11 +88,11 @@ function floatchart() {
         series: [
             {
                 name: '결제 완료',
-                data: [50, 75, 60, 90, 100, 80, 70, 60, 85, 90, 70, 80] // Example data
+                data: monthlySales // 월간 매출 데이터
             },
             {
                 name: '취소',
-                data: [20, 15, 25, 10, 15, 20, 25, 20, 15, 25, 30, 10] // Example data
+                data: monthlyCanceledSales // 월간 취소된 매출 데이터
             }
         ],
         xaxis: {
@@ -89,23 +107,24 @@ function floatchart() {
         }
     };
 
-    var weeklyChart = new ApexCharts(document.querySelector('#weeklychart'), weeklyOptions);
-    var monthlyChart = new ApexCharts(document.querySelector('#growthchart'), monthlyOptions);
+    // Initialize charts
+    weeklyChart = new ApexCharts(document.querySelector('#weeklychart'), weeklyOptions);
+    monthlyChart = new ApexCharts(document.querySelector('#growthchart'), monthlyOptions);
 
-    // Render both charts initially
+    // Render charts initially
     weeklyChart.render();
     monthlyChart.render();
 
-    // Update the chart based on the selected option
+    // Event listener for the chart type select element
     document.getElementById('chart-type-select').addEventListener('change', function(event) {
         var selectedValue = event.target.value;
 
         if (selectedValue === 'weekly') {
             document.getElementById('growthchart').style.display = 'none';
-            document.getElementById('weekly-container').style.display = 'block';
+            document.getElementById('weeklychart').style.display = 'block';
         } else if (selectedValue === 'monthly') {
             document.getElementById('growthchart').style.display = 'block';
-            document.getElementById('weekly-container').style.display = 'none';
+            document.getElementById('weeklychart').style.display = 'none';
         }
     });
 }
