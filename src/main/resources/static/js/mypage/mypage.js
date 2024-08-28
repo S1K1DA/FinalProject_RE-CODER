@@ -46,6 +46,58 @@ document.addEventListener('DOMContentLoaded', function () {
     setupProfileImageUpload();
 });
 
+// 매칭 수락 및 거절 관련 함수들 추가
+function acceptMatch(matchingNo) {
+    updateMatchingState(matchingNo, 'Y');
+}
+
+function rejectMatch(matchingNo) {
+    updateMatchingState(matchingNo, 'N');
+}
+
+function updateMatchingState(matchingNo, state) {
+    fetch('/mypage/updateMatchingState', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ matchingNo: matchingNo, state: state })
+    })
+    .then(response => response.text())
+    .then(data => {
+        if (data === '매칭 상태 업데이트 성공') {
+            // SweetAlert을 사용해 성공 메시지 표시
+            Swal.fire({
+                title: 'Success!',
+                text: '매칭 상태가 성공적으로 업데이트되었습니다.',
+                icon: 'success',
+                confirmButtonText: '확인'
+            }).then(() => {
+                // 페이지 새로고침
+                location.reload();
+            });
+        } else {
+            // SweetAlert을 사용해 오류 메시지 표시
+            Swal.fire({
+                title: 'Error!',
+                text: '매칭 상태 업데이트에 실패했습니다.',
+                icon: 'error',
+                confirmButtonText: '확인'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // SweetAlert을 사용해 네트워크 오류 메시지 표시
+        Swal.fire({
+            title: 'Error!',
+            text: '매칭 상태 업데이트 중 오류가 발생했습니다.',
+            icon: 'error',
+            confirmButtonText: '확인'
+        });
+    });
+}
+
 
 // 프로필 사진 업로드 처리 함수
 function setupProfileImageUpload() {

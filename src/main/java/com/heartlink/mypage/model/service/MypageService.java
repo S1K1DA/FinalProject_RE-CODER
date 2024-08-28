@@ -68,5 +68,6 @@ public interface MypageService {
 
     boolean updateMatchingState(int matchingNo, int userId, String state);
 
+    void updateDecisionHistory(int matchingNo, int userId);
 
 }
