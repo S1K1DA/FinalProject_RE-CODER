@@ -70,4 +70,6 @@ public interface MypageService {
 
     void updateDecisionHistory(int matchingNo, int userId);
 
+    int getLikeCountByUserId(int userId);
+
 }

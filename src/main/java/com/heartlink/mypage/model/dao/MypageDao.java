@@ -176,4 +176,14 @@ public class MypageDao {
         return sqlSession.update("updateDecisionHistory", params);
     }
 
+    public List<MypageDto> getPersonalCategoriesByTypeAndUser(Map<String, Object> params) {
+        return sqlSession.selectList("MypageMapper.getPersonalCategoriesByTypeAndUser", params);
+    }
+
+    public int getLikeCountByUserId(int userId) {
+        return sqlSession.selectOne("MypageMapper.getLikeCountByUserId", userId);
+    }
+
+
+
 }

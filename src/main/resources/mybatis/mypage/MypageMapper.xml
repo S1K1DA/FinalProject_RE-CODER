@@ -217,14 +217,18 @@
     <!-- 프로필 좋아요 목록 가져오기 -->
     <select id="getLikedProfiles" parameterType="int" resultType="MypageDto">
         SELECT
-        u.BASIC_USER_NO as likedUserNo,
-        u.BASIC_USER_NICKNAME as likedUserNickname,
-        l.LIKE_INDATE as likeIndate
+        u.BASIC_USER_NO AS likedUserNo,
+        u.BASIC_USER_NICKNAME AS likedUserNickname,
+        l.LIKE_INDATE AS likeIndate,
+        bp.PHOTO_PATH AS profilePicturePath,  <!-- 프로필 사진 경로 -->
+        bp.PHOTO_NAME AS profilePictureName   <!-- 프로필 사진 이름 -->
         FROM USER_LIKES l
         JOIN BASIC_USER u ON l.LIKED_USER_NO = u.BASIC_USER_NO
+        LEFT JOIN BASIC_USER_PHOTO bp ON u.BASIC_USER_NO = bp.BASIC_USER_NO  <!-- 사진 테이블과 LEFT JOIN -->
         WHERE l.LIKER_USER_NO = #{userId}
         ORDER BY l.LIKE_INDATE DESC
     </select>
+
 
     <!-- 프로필 좋아요 추가 -->
     <insert id="insertProfileLike" parameterType="map">
@@ -312,6 +316,19 @@
         WHERE MATCHING_NO = #{matchingNo}
         AND MATCHED_USER_NO = #{matchedUserNo}
     </update>
+
+    <!-- 특정 유저의 성향을 타입별로 가져오기 -->
+    <select id="getPersonalCategoriesByTypeAndUser" parameterType="map" resultType="MypageDto">
+        SELECT PERSONAL_NO as personalNo, PERSONAL_NAME as personalName, PERSONAL_TYPE as personalType
+        FROM PERSONAL_CATEGORY pc
+        JOIN BASIC_USER_PERSONAL bu ON pc.PERSONAL_NO = bu.PERSONAL_NO
+        WHERE pc.PERSONAL_TYPE = #{type} AND bu.BASIC_USER_NO = #{userId}
+    </select>
+
+    <!-- 특정 유저의 좋아요 수 가져오기 -->
+    <select id="getLikeCountByUserId" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM USER_LIKES WHERE LIKED_USER_NO = #{userId}
+    </select>
 
 
 

@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 프로필 사진 업로드 처리
     setupProfileImageUpload();
+
+    // 프로필 아이템 클릭 시 팝업 열기 초기화
+    initializeProfileItemPopup();
 });
 
 // 매칭 수락 및 거절 관련 함수들 추가
@@ -598,7 +601,6 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
 }
 
 
-
 function decodeHtml(html) {
     const txt = document.createElement("textarea");
     txt.innerHTML = html;
@@ -626,3 +628,106 @@ function setupPopupCloseHandlers() {
 function closeFeedPopup(feedPopup) {
     feedPopup.style.display = 'none';
 }
+
+// 프로필 아이템 클릭 시 팝업 열기 기능 초기화
+function initializeProfileItemPopup() {
+    const profileItems = document.querySelectorAll('.liked-prof-item');
+    const profilePopup = document.getElementById('profile-popup');
+    const popupContent = document.querySelector('.popup-content');
+
+    profileItems.forEach(item => {
+        item.addEventListener('click', function () {
+            const likedUserNo = this.getAttribute('data-liked-user-no');
+            openProfilePopup(likedUserNo, profilePopup, popupContent);
+        });
+    });
+}
+
+
+function openProfilePopup(likedUserNo, profilePopup, popupContent) {
+    fetch(`/mypage/getProfileContent?likedUserNo=${likedUserNo}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                // 좋아하는 카테고리와 싫어하는 카테고리 필터링
+                let selectedLikeCategories = data.likeCategories.filter(category => data.userSelectedCategories.includes(category.personalNo));
+                let selectedDislikeCategories = data.dislikeCategories.filter(category => data.userSelectedCategories.includes(category.personalNo));
+
+                let likeCategories = selectedLikeCategories.map(item => item.personalName).join(', ');
+                let dislikeCategories = selectedDislikeCategories.map(item => item.personalName).join(', ');
+                let hobbies = data.hobbies.map(item => item.hobbyName).join(', ');
+
+                // 프로필 사진 URL
+                let profileImageUrl = data.profilePicturePath;
+
+                // 주소 정보 공개 여부에 따라 주소를 결정
+                let address = data.consentLocationInfo === 'Y' ? data.address : '미공개';
+
+                popupContent.innerHTML = `
+                    <div style="display: flex;">
+                        <div style="flex: 1;">
+                            <img src="${profileImageUrl}" alt="프로필 사진" style="max-width: 250px;">
+                        </div>
+                        <div style="flex: 2; padding-left: 20px;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">닉네임:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${data.nickname}</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">주소:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${address}</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">MBTI:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${data.mbti}</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">좋아하는 것:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${likeCategories}</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">싫어하는 것:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${dislikeCategories}</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">취미:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${hobbies}</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="width: 25%; text-align: right; font-weight: bold;">좋아요 수:</p>
+                                <p style="width: 75%; margin-left: 10px; text-align: left;">${data.likeCount}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                popupContent.innerHTML = `<p>프로필 정보를 불러오는데 실패했습니다.</p>`;
+            }
+            profilePopup.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching profile content:', error);
+            popupContent.innerHTML = `<p>프로필 정보를 불러오는데 실패했습니다.</p>`;
+            profilePopup.style.display = 'block';
+        });
+}
+
+
+
+
+
+// 프로필 팝업 닫기 및 외부 클릭 시 팝업 닫기 기능 설정
+document.addEventListener('DOMContentLoaded', function () {
+    const profilePopup = document.getElementById('profile-popup');
+    const closePopupButton = document.querySelector('.close-popup');
+
+    closePopupButton.addEventListener('click', function () {
+        profilePopup.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target == profilePopup) {
+            profilePopup.style.display = 'none';
+        }
+    });
+});

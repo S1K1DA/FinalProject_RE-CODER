@@ -187,5 +187,9 @@ public class MypageServiceImpl implements MypageService {
         mypageDao.updateDecisionHistory(matchingNo, userId);
     }
 
+    @Override
+    public int getLikeCountByUserId(int userId) {
+        return mypageDao.getLikeCountByUserId(userId);
+    }
 
 }
