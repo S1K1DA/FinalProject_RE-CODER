@@ -17,14 +17,21 @@
                         <!-- 삭제하기 버튼 -->
                         <div onclick="submitDeleteForm(this);" th:if="${review.reviewerUserId} == ${userId}">
                             <form action="/review/delete" method="post" style="display:inline;">
-                                <input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
+                                <!-- reviewNo와 reportedUserNo 필드 추가 -->
+                                <input type="hidden" name="reviewNo" th:value="${review.reviewNo}" id="reviewNo">
+                                <input type="hidden" name="reportedUserNo" th:value="${review.reviewerUserId}" id="reportedUserNo">
                                 <button class="btn-action color-sec" type="button">삭제하기</button>
                             </form>
                         </div>
 
-                        <!-- 수정하기 버튼  -->
+                        <!-- 수정하기 버튼 -->
                         <a class="btn-action color-pri" th:href="@{'/review/photoedit?reviewNo=' + ${review.reviewNo}}"
                            th:if="${review.reviewerUserId} == ${userId}">수정하기</a>
+
+                        <!-- 신고하기 버튼 -->
+                        <button class="btn-action color-sec" type="button" onclick="openReportPopup(this)" th:if="${review.reviewerUserId} != ${userId}">
+                            신고하기
+                        </button>
 
                         <!-- 목록으로 버튼 -->
                         <a class="btn-action" th:href="@{'/review/photomain'}">목록으로</a>
@@ -45,7 +52,7 @@
                     </section>
 
                     <section>
-                        <!-- 리뷰 내용  -->
+                        <!-- 리뷰 내용 -->
                         <div class="ptreview-con" th:utext="${review.reviewContent}">리뷰 내용</div>
                     </section>
 
@@ -55,9 +62,43 @@
     </section>
 </main>
 
+<!-- 신고하기 팝업 -->
+<div id="reportOverlay" class="report-overlay">
+    <div class="report-popup">
+        <h2>신고하기</h2>
+        <form id="reportForm" action="/report/request" method="POST" class="report-action-box">
+            <div>
+                <ul>
+                    <li>
+                        <p>신고 유형 : <span>Review</span></p>
+                    </li>
+                    <li>
+                        <p>신고 대상 : <span id="reportedUser"></span></p>
+                        <input type="hidden" name="reviewNo" th:value="${review.reviewNo}" id="reviewNo">
+                        <input type="hidden" name="reportedUserNo" th:value="${review.reviewerUserId}" id="reportedUserNo">
+                        <input type="hidden" name="reportType" value="Review">
+                        <input type="hidden" name="reportTypeNo" th:value="${review.reviewNo}" id="reportTypeNo">
+                    </li>
+                </ul>
+            </div>
+            <select class="select-category" name="reportCategoryNo">
+                <option disabled selected>==신고 카테고리 선택==</option>
+                <option th:each="category : ${reportCategory}"
+                        th:value="${category.reportCategoryNo}"
+                        th:text="${category.reportCategoryName}"></option>
+            </select>
+            <textarea placeholder="상세 사유를 작성해 주세요." name="reportContent"></textarea>
+            <div class="action-btns">
+                <button type="submit" id="actionComplate" class="action-complate">완료</button>
+                <button type="button" id="actionCloses" class="action-close">닫기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <footer th:replace="fragments/footer :: footer"></footer>
 
-<script th:src="@{/js/review/review.js}"></script>
+<script th:src="@{/js/review/photo-review.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

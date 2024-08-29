@@ -9,16 +9,15 @@
 
     <section class="hero-section d-flex">
         <div class="container d-flex">
-            <div class="row d-flex justify-content-center align-items-start ">
+            <div class="row d-flex justify-content-center align-items-start">
                 <div class="text-center mb-5 pb-2 w-100">
                     <h2 class="text-white">실시간 리뷰</h2>
                     <hr class="review-line">
                 </div>
                 <div class="review-info">
-                    <p>모든 실시간 리뷰는 익명으로 작성됩니다. </p>
+                    <p>모든 실시간 리뷰는 익명으로 작성됩니다.</p>
                 </div>
 
-                <!-- 서버에서 전달된 메시지를 처리하기 위한 블록 -->
                 <div th:if="${message}" class="alert" th:text="${message}" style="display:none;"></div>
 
                 <form action="/review/submitLiveReview" id="liveReviewForm" method="POST">
@@ -45,7 +44,10 @@
 
                 <div class="review-section">
                     <div class="live-review-box" th:each="review : ${liveReviews}">
-                        <div class="live-review-item" id="review-item" th:id="'review-item-' + ${review.reviewNo}">
+                        <div class="live-review-item" id="review-item"
+                             th:data-review-no="${review.reviewNo}"
+                             th:data-reviewer-id="${review.reviewerUserId}"
+                             th:data-reviewer-nickname="${review.reviewerNickname}">
                             <div class="review-header">
                                 <div class="review-rating" th:text="${review.starRating}">
                                     ★★★★★
@@ -56,10 +58,13 @@
                                             <img alt="More" class="more-icon-image" th:src="@{/image/icon_more.png}"/>
                                         </a>
                                         <div class="more-dropdown-content">
-                                            <div class="more-ele">신고하기</div>
+                                            <div class="more-ele" onclick="openLiveReviewReportPopup(this)">
+                                                신고하기
+                                            </div>
+
                                             <div class="more-ele" onclick="submitDeleteForm(this)">
                                                 <form action="/review/deleteLiveReview" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
-                                                    <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
+                                                    <input name="reviewNo" th:value="${review.reviewNo}" type="hidden"/>
                                                     <button class="live-review-delete-button" type="submit" style="display:none;">삭제</button>
                                                 </form>
                                                 삭제
@@ -79,14 +84,47 @@
     </section>
 </main>
 
+<!-- 신고하기 팝업 -->
+<div id="reportOverlay" class="report-overlay">
+    <div class="report-popup">
+        <h2>신고하기</h2>
+        <form id="reportForm" action="/report/request" method="POST" class="report-action-box">
+            <div>
+                <ul>
+                    <li>
+                        <p>신고 유형 : <span>Review</span></p>
+                    </li>
+                    <li>
+                        <p>신고 대상 : <span id="reportedUser"></span></p>
+                        <input type="hidden" name="reviewNo" id="reviewNo">
+                        <input type="hidden" name="reportedUserNo" id="reportedUserNo">
+                        <input type="hidden" name="reportType" value="Review">
+                        <input type="hidden" name="reportTypeNo" id="reportTypeNo">
+                    </li>
+                </ul>
+            </div>
+            <select class="select-category" name="reportCategoryNo">
+                <option disabled selected>==신고 카테고리 선택==</option>
+                <option th:each="category : ${reportCategory}"
+                        th:value="${category.reportCategoryNo}"
+                        th:text="${category.reportCategoryName}"></option>
+            </select>
+            <textarea placeholder="상세 사유를 작성해 주세요." name="reportContent" id="reportContent"></textarea>
+            <div class="action-btns">
+                <button type="submit" id="actionComplate" class="action-complate">완료</button>
+                <button type="button" id="actionCloses" class="action-close">닫기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/js/reference_js/jquery.js}"></script>
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/custom.js}"></script>
-<script th:src="@{/js/review/review.js}"></script>
-
+<script th:src="@{/js/review/live-review.js}"></script>
 
 </body>
 </html>
