@@ -32,7 +32,6 @@
                                                 <img alt="More" class="more-icon-image" th:src="@{/image/icon_more.png}"/>
                                             </a>
                                             <div class="more-dropdown-content">
-                                                <div class="more-ele">신고하기</div>
                                                 <div class="more-ele" onclick="submitDeleteForm(this)">
                                                     <form action="/review/deleteLiveReview" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
                                                         <input name="reviewNo" th:value="${review.reviewNo}" type="hidden" />
@@ -61,7 +60,7 @@
 <script th:src="@{/js/reference_js/jquery.min.js}"></script>
 <script th:src="@{/js/reference_js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/reference_js/custom.js}"></script>
-<script th:src="@{/js/review/review.js}"></script>
+<script th:src="@{/js/mypage/mypage.js}"></script>
 
 </body>
 </html>

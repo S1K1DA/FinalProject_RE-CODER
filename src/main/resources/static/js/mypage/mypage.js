@@ -712,6 +712,27 @@ function openProfilePopup(likedUserNo, profilePopup, popupContent) {
         });
 }
 
+// 리뷰 삭제 확인을 SweetAlert2로 변경
+function submitDeleteForm(element) {
+    Swal.fire({
+        title: '정말로 이 리뷰를 삭제하시겠습니까?',
+        text: "이 작업은 되돌릴 수 없습니다!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네, 삭제하겠습니다',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var form = element.querySelector('form');
+            if (form) {
+                form.submit();
+            }
+        }
+    });
+}
+
 
 
 
