@@ -182,10 +182,6 @@ public class MypageServiceImpl implements MypageService {
         return mypageDao.updateMatchingState(matchingNo, userId, state) > 0;
     }
 
-    @Override
-    public void updateDecisionHistory(int matchingNo, int userId) {
-        mypageDao.updateDecisionHistory(matchingNo, userId);
-    }
 
     @Override
     public int getLikeCountByUserId(int userId) {

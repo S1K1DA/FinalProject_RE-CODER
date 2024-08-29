@@ -45,19 +45,22 @@
                                         </td>
                                         <td th:text="${match.partnerName}"></td>
                                         <td>
-                                            <span id="match-state-[[${match.matchingNo}]]"
-                                                  th:text="${match.matchingState == 'Y' ? '진행중' :
-                                                           (match.decisionHistory == 'N' ? '대기중' : '거절됨/종료됨')}"
-                                                  th:classappend="${match.matchingState == 'Y' ? 'text-success' :
-                                                                  (match.decisionHistory == 'N' ? 'text-warning' : 'text-danger')}"></span>
+                <span id="match-state-[[${match.matchingNo}]]"
+                      th:text="${match.matchingState == 'Y' ? '진행중' :
+                               (match.matchingState == 'N' ? '거절됨' :
+                               (match.matchingState == 'E' ? '종료됨' : '대기중'))}"
+                      th:classappend="${match.matchingState == 'Y' ? 'text-success' :
+                                      (match.matchingState == 'N' ? 'text-danger' :
+                                      (match.matchingState == 'E' ? 'text-muted' : 'text-warning'))}"></span>
+                                            <!-- 받은 매칭인 경우에만 수락/거절 버튼 표시 -->
                                             <div id="match-actions-[[${match.matchingNo}]]"
-                                                 th:if="${match.matchingUserNo != userId && match.matchingState == 'N' && match.decisionHistory == 'N'}"
+                                                 th:if="${match.matchingUserNo != userId} and ${match.matchingState == 'W'}"
                                                  style="display:inline-block;">
-                                                <button th:onclick="'acceptMatch(' + ${match.matchingNo} + ')'"
+                                                <button onclick="acceptMatch([[${match.matchingNo}]])"
                                                         style="margin-left: 10px; background-color: blue; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer;">
                                                     수락
                                                 </button>
-                                                <button th:onclick="'rejectMatch(' + ${match.matchingNo} + ')'"
+                                                <button onclick="rejectMatch([[${match.matchingNo}]])"
                                                         style="margin-left: 5px; background-color: red; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer;">
                                                     거절
                                                 </button>
@@ -69,6 +72,7 @@
                                     </tbody>
                                 </table>
                             </div>
+
 
                         </div>
 

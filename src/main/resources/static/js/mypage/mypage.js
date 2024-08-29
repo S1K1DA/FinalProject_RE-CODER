@@ -721,13 +721,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const profilePopup = document.getElementById('profile-popup');
     const closePopupButton = document.querySelector('.close-popup');
 
-    closePopupButton.addEventListener('click', function () {
-        profilePopup.style.display = 'none';
-    });
-
-    window.addEventListener('click', function (event) {
-        if (event.target == profilePopup) {
+    if (profilePopup && closePopupButton) {
+        closePopupButton.addEventListener('click', function () {
             profilePopup.style.display = 'none';
-        }
-    });
+        });
+
+        window.addEventListener('click', function (event) {
+            if (event.target == profilePopup) {
+                profilePopup.style.display = 'none';
+            }
+        });
+    }
 });
+

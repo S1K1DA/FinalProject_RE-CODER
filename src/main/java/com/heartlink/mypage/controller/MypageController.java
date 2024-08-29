@@ -447,7 +447,6 @@ public class MypageController {
         boolean success = mypageService.updateMatchingState(matchingNo, userId, state);
 
         if (success) {
-            mypageService.updateDecisionHistory(matchingNo, userId);
             return ResponseEntity.ok("매칭 상태 업데이트 성공");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("매칭 상태 업데이트 실패");

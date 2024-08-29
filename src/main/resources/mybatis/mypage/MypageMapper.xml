@@ -199,8 +199,7 @@
         ELSE u1.BASIC_USER_NICKNAME
         END as partnerName,
         m.MATCHING_STATE as matchingState,
-        m.MATCHING_CHATTING_STATE as matchingChattingState,
-        m.DECISION_HISTORY as decisionHistory  <!-- 여기에 필드 추가 -->
+        m.MATCHING_CHATTING_STATE as matchingChattingState
         FROM
         MATCHING_STATE m
         JOIN BASIC_USER u1 ON m.MATCHING_USER_NO = u1.BASIC_USER_NO
@@ -212,6 +211,15 @@
         m.MATCHING_INDATE DESC
         FETCH FIRST 10 ROWS ONLY
     </select>
+
+
+    <update id="updateMatchingState" parameterType="map">
+        UPDATE MATCHING_STATE
+        SET MATCHING_STATE = #{state}
+        WHERE MATCHING_NO = #{matchingNo}
+        AND MATCHED_USER_NO = #{userId}
+        AND MATCHING_STATE = 'W'
+    </update>
 
 
     <!-- 프로필 좋아요 목록 가져오기 -->
@@ -302,20 +310,6 @@
     </update>
 
 
-    <update id="updateMatchingState" parameterType="map">
-        UPDATE MATCHING_STATE
-        SET MATCHING_STATE = #{state}
-        WHERE MATCHING_NO = #{matchingNo}
-        AND MATCHED_USER_NO = #{userId}
-        AND MATCHING_STATE = 'N'
-    </update>
-
-    <update id="updateDecisionHistory">
-        UPDATE MATCHING_STATE
-        SET DECISION_HISTORY = 'Y'
-        WHERE MATCHING_NO = #{matchingNo}
-        AND MATCHED_USER_NO = #{matchedUserNo}
-    </update>
 
     <!-- 특정 유저의 성향을 타입별로 가져오기 -->
     <select id="getPersonalCategoriesByTypeAndUser" parameterType="map" resultType="MypageDto">
