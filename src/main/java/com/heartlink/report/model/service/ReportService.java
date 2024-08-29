@@ -28,6 +28,8 @@ public class ReportService {
             verifit = setTypeChatting(reportDto);
         }else if (reportType.equals("Profile")){
             verifit = setTypeProfile(reportDto);
+        }else if (reportType.equals("Review")){
+            verifit = setTypeReview(reportDto);
         }
 
         if(verifit.equals("verified")){
@@ -61,7 +63,29 @@ public class ReportService {
         }
         return "verified";
     }
-    
+
+
+    // Review 검증 메서드 추가
+    private String setTypeReview(ReportDto reportDto){
+        // 존재하는 review 인가?
+        int reviewNoCheck = reportMapper.searchReviewNo(reportDto.getReportTypeNo());
+
+        // 존재하는 카테고리인가?
+        int categoryNoCheck = reportMapper.searchCategoryNo(reportDto.getReportCategoryNo());
+
+        // 신고대상자가 유효한가?
+        int reportedUserCheck = reportMapper.searchReportedUserNo(reportDto.getReportedUserNo());
+
+        // 신고자가 유효한가?
+        int reporterUserCheck = reportMapper.searchReporterUserNo(reportDto.getReporterUserNo());
+
+        if(reviewNoCheck != 1 || categoryNoCheck != 1 ||
+                reportedUserCheck != 1 || reporterUserCheck != 1){
+            return "failed";
+        }
+        return "verified";
+    }
+
 
     // 채팅 검증 메서드
     private String setTypeChatting(ReportDto reportDto){
