@@ -35,7 +35,7 @@ public class ReviewController {
     }
 
     @GetMapping("/photomain")
-    public String photoMain(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
+    public String photoMain(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
         int pageSize = 10;
         List<ReviewDto> reviews = reviewService.getAllReviews(); // 모든 리뷰를 가져옴
 
@@ -68,7 +68,7 @@ public class ReviewController {
     }
 
     @GetMapping("/photoedit")
-    public String photoEdit(@RequestParam("reviewNo") int reviewNo, Model model) {
+    public String photoEdit(@RequestParam("reviewNo") int reviewNo, Model model, RedirectAttributes redirectAttributes) {
         ReviewDto review = reviewService.getReviewDetail(reviewNo); // 조회수 증가 없음
         int currentUserId = getCurrentUserId();
 
@@ -76,7 +76,7 @@ public class ReviewController {
             model.addAttribute("review", review);
             return "review/review_photo/photo-edit";
         } else {
-            model.addAttribute("message", "작성자만 글을 수정할 수 있습니다.");
+            redirectAttributes.addFlashAttribute("message", "작성자만 글을 수정할 수 있습니다.");
             return "redirect:/review/photodetail?reviewNo=" + reviewNo;
         }
     }
@@ -89,7 +89,7 @@ public class ReviewController {
     }
 
     @GetMapping("/livemain")
-    public String liveMain(@RequestParam(name="page",defaultValue = "1") int page, Model model) {
+    public String liveMain(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
         int pageSize = 10;
         List<ReviewDto> liveReviews = reviewService.getLiveReviews();
 
@@ -108,7 +108,7 @@ public class ReviewController {
     @PostMapping("/submit")
     public String submitPhotoEnroll(@RequestParam("title") String title,
                                     @RequestParam("content") String content,
-                                    Model model) {
+                                    RedirectAttributes redirectAttributes) {
         try {
             int userId = getCurrentUserId();
             ReviewDto review = new ReviewDto();
@@ -119,16 +119,16 @@ public class ReviewController {
             boolean isSaved = reviewService.savePhotoReview(review, null);
 
             if (isSaved) {
-                model.addAttribute("message", "글이 성공적으로 작성되었습니다.");
+                redirectAttributes.addFlashAttribute("message", "글이 성공적으로 작성되었습니다.");
                 return "redirect:/review/photomain";
             } else {
-                model.addAttribute("message", "글 작성에 실패했습니다.");
-                return "review/review_photo/photo-enroll";
+                redirectAttributes.addFlashAttribute("message", "글 작성에 실패했습니다.");
+                return "redirect:/review/photoenroll";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
-            return "review/review_photo/photo-enroll";
+            redirectAttributes.addFlashAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/review/photoenroll";
         }
     }
 
@@ -136,7 +136,7 @@ public class ReviewController {
     public String updatePhotoReview(@RequestParam("reviewNo") int reviewNo,
                                     @RequestParam("reviewTitle") String title,
                                     @RequestParam("reviewContent") String content,
-                                    Model model) {
+                                    RedirectAttributes redirectAttributes) {
         try {
             int currentUserId = getCurrentUserId();
             ReviewDto review = reviewService.getReviewDetail(reviewNo);
@@ -149,20 +149,20 @@ public class ReviewController {
                 boolean isUpdated = reviewService.updatePhotoReview(review);
 
                 if (isUpdated) {
-                    model.addAttribute("message", "글이 성공적으로 수정되었습니다.");
+                    redirectAttributes.addFlashAttribute("message", "글이 성공적으로 수정되었습니다.");
                     return "redirect:/review/photodetail?reviewNo=" + reviewNo;
                 } else {
-                    model.addAttribute("message", "글 수정에 실패했습니다.");
-                    return "review/review_photo/photo-edit";
+                    redirectAttributes.addFlashAttribute("message", "글 수정에 실패했습니다.");
+                    return "redirect:/review/photoedit?reviewNo=" + reviewNo;
                 }
             } else {
-                model.addAttribute("message", "작성자만 글을 수정할 수 있습니다.");
+                redirectAttributes.addFlashAttribute("message", "작성자만 글을 수정할 수 있습니다.");
                 return "redirect:/review/photodetail?reviewNo=" + reviewNo;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
-            return "review/review_photo/photo-edit";
+            redirectAttributes.addFlashAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/review/photoedit?reviewNo=" + reviewNo;
         }
     }
 
@@ -194,7 +194,7 @@ public class ReviewController {
     @PostMapping("/submitLiveReview")
     public String submitLiveReview(@RequestParam("review_content") String content,
                                    @RequestParam("rating") int rating,
-                                   Model model) {
+                                   RedirectAttributes redirectAttributes) {
         try {
             int userId = getCurrentUserId();
             ReviewDto review = new ReviewDto();
@@ -205,15 +205,16 @@ public class ReviewController {
             boolean isSaved = reviewService.saveLiveReview(review);
 
             if (isSaved) {
+                redirectAttributes.addFlashAttribute("message", "리뷰가 성공적으로 작성되었습니다.");
                 return "redirect:/review/livemain";
             } else {
-                model.addAttribute("message", "리뷰 작성에 실패했습니다.");
-                return "review/live-main";
+                redirectAttributes.addFlashAttribute("message", "리뷰 작성에 실패했습니다.");
+                return "redirect:/review/livemain";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "오류가 발생했습니다: " + e.getMessage());
-            return "review/live-main";
+            redirectAttributes.addFlashAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/review/livemain";
         }
     }
 

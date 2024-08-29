@@ -1,35 +1,13 @@
-// 이미지 업로더 기능
-function imageUploader(file, el) {
-    var formData = new FormData();
-    formData.append('file', file);
-
-    $.ajax({
-        data: formData,
-        type: "POST",
-        url: '/post/image-upload',
-        contentType: false,
-        processData: false,
-        enctype: 'multipart/form-data',
-        success: function(data) {
-            $(el).summernote('insertImage', data, function($image) {
-                $image.css({
-                    'width': '100%',
-                    'max-width': '600px'
-                });
-            });
-            console.log("Uploaded image URL: " + data);
-        },
-        error: function() {
-            console.log("이미지 업로드 실패");
-        }
-    });
-}
-
-// 페이지 로드 시 서버에서 전달된 메시지를 확인하고 알림창을 표시
+// 페이지 로드 시 서버에서 전달된 메시지를 SweetAlert2로 표시
 window.onload = function() {
     var message = document.querySelector('.alert')?.textContent;
     if (message) {
-        alert(message);
+        Swal.fire({
+            title: '알림',
+            text: message,
+            icon: 'info',
+            confirmButtonText: '확인'
+        });
     }
 };
 
