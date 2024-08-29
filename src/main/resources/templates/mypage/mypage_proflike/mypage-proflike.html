@@ -4,36 +4,6 @@
 <head th:replace="fragments/head :: head"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
-<style>
-    .popup {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        padding-top: 100px;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .popup-content {
-        background-color: var(--primary-color);
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        left:0;
-        top:20%;
-        width: 80%;
-        max-width: 800px;
-        border-radius: 10px;
-        position: relative;
-    }
-
-    .popup-content p{
-    color:white;
-</style>
 
 <main>
     <nav th:replace="fragments/navigation :: navigation"></nav>
