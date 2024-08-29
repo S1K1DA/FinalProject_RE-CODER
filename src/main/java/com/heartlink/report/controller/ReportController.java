@@ -31,10 +31,18 @@ public class ReportController {
 
     @PostMapping("/request")
     public ResponseEntity<?> setReportRequest(ReportDto reportDto){
-        // 신고 유형은 Feed, Profile, chatting 세가지
+        // 신고 유형은 Feed, Profile, chatting, Review 네가지
 
         int reporterNo = getCurrentUserNo();
         reportDto.setReporterUserNo(reporterNo);
+
+        // 입력된 값들 로그로 확인
+//        System.out.println("reportCategoryNo: " + reportDto.getReportCategoryNo());
+//        System.out.println("reportedUserNo: " + reportDto.getReportedUserNo());
+//        System.out.println("reporterUserNo: " + reportDto.getReporterUserNo());
+//        System.out.println("reportContent: " + reportDto.getReportContent());
+//        System.out.println("reportType: " + reportDto.getReportType());
+//        System.out.println("reportTypeNo: " + reportDto.getReportTypeNo());
 
         String resultRequest = reportService.setReportRequest(reportDto);
 
