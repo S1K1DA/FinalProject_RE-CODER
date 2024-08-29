@@ -515,4 +515,79 @@ cursor:pointer;
         font-weight: bold !important; /* 활성화된 페이지의 글자 두께 */
         border: 1px solid var(--primary-color) !important; /* 활성화된 페이지의 테두리 */
         pointer-events: none !important; /* 활성화된 페이지의 클릭 방지 */
-    }
+}
+
+/* 신고 팝업 스타일 */
+.report-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.report-popup {
+    width: 450px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    position: relative;
+}
+
+.report-popup h2 {
+    margin: 12px;
+    font-size: 30px;
+    text-align: left;
+}
+
+.report-action-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.report-action-box ul {
+    padding: 0;
+    margin: 10px 0;
+}
+
+.report-action-box p {
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+}
+
+.report-action-box textarea {
+    width: 100%;
+    height: 180px;
+    margin: 20px 0;
+    resize: none;
+}
+
+.report-action-box button {
+    padding: 7px 10px;
+    border-radius: 15px;
+    border: none;
+    background-color: #e9899e;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.select-category {
+    border-radius: 10px;
+    padding: 5px 9px;
+    font-size: 15px;
+    position: relative;
+    color: #4e4f50;
+    margin-top: 20px;
+}
