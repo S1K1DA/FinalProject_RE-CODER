@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heartlink.charge.model.dto.ChargeRequestDto;
 import com.heartlink.charge.model.dto.ChargeResponseDto;
 import com.heartlink.charge.model.mapper.ChargeMapper;
+import com.heartlink.common.exception.CustomException;
 import com.heartlink.member.model.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -233,23 +234,28 @@ public class ChargeService {
         return result;
     }
 
-
+    @Transactional(rollbackFor = DataAccessException.class)
     public String setCancelRequest(String paymentNo, ChargeRequestDto requestDto){
 
-        // 상태 업데이트
-        int cancelRequestState = chargeMapper.paymentHistoryStateUpdate(paymentNo, "Cancel Requested");
+        try {
+            // 상태 업데이트
+            int cancelRequestState = chargeMapper.paymentHistoryStateUpdate(paymentNo, "Cancel Requested");
 
-        // 코인 갯수 업데이트
-        int coindeduction = chargeMapper.setCoindeduction(requestDto.getPaymentUserEmail(), requestDto.getPaymentProduct());
+            // 코인 갯수 업데이트
+            int coindeduction = chargeMapper.setCoindeduction(requestDto.getPaymentUserEmail(), requestDto.getPaymentProduct());
 
-        // 결제 취소 테이블 insert
-        int cancelHistoryTable = chargeMapper.setCanceledHistory(paymentNo);
+            // 결제 취소 테이블 insert
+            int cancelHistoryTable = chargeMapper.setCanceledHistory(paymentNo);
 
-        if(cancelRequestState != 1 || coindeduction != 1){
-            return null;
+            if(cancelRequestState != 1 || coindeduction != 1){
+                return "업데이트 실패";
+            }
+
+            return "update complete";
+
+        }catch (Exception e){
+            throw new CustomException("오류 발생 : " + e, e);
         }
-
-        return "update complete";
 
     }
 

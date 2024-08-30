@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heartlink.member.model.mapper.MemberManagementMapper">
+
+    <select id="getDormantUserList" resultType="java.lang.Integer">
+        SELECT bu.BASIC_USER_NO
+        FROM BASIC_USER bu
+        WHERE bu.LAST_LOGIN_DATE &lt; ADD_MONTHS(TO_DATE(#{today}, 'YYYY-MM-DD'), -6)
+    </select>
+
+    <update id="setDormantUserUpdate">
+        UPDATE BASIC_USER
+        SET
+            BASIC_USER_STATUS = 'DORMANT'
+        WHERE BASIC_USER_NO = #{userNo}
+    </update>
+
+    <select id="getBandedUserList" resultType="java.lang.Integer">
+        SELECT rb.REPORTED_USER_NO
+        FROM REPORT_RESOLUTION rr
+        JOIN REPORT_BOARD rb
+        ON rr.REPORT_NO = rb.REPORT_NO
+        WHERE rr.PUNISHMENT_RESULT &lt; TO_DATE(#{today}, 'YYYY-MM-DD')
+    </select>
+
+    <update id="setActiveUserUpdate">
+        UPDATE BASIC_USER
+        SET
+            BASIC_USER_STATUS = 'ACTIVE'
+        WHERE BASIC_USER_NO = #{userNo}
+    </update>
+
+    <select id="getDeletedUserList" resultType="java.lang.Integer">
+        SELECT bu.BASIC_USER_NO
+        FROM BASIC_USER bu
+        WHERE bu.BASIC_USER_STATUS = 'DELETED'
+            AND bu.LAST_LOGIN_DATE &lt;= ADD_MONTHS(TO_DATE(#{today}, 'YYYY-MM-DD'), -12)
+    </select>
+
+    <delete id="setUserDelete">
+        DELETE FROM BASIC_USER bu
+        WHERE BASIC_USER_NO = #{userNo}
+    </delete>
+
+</mapper>

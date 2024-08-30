@@ -2,11 +2,16 @@ package com.heartlink.member.model.service;
 
 import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.dto.MemberDto;
+import com.heartlink.member.model.mapper.MemberManagementMapper;
 import com.heartlink.member.model.mapper.MemberMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -14,10 +19,14 @@ public class MemberService {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final MemberMapper memberMapper;
+    private final MemberManagementMapper managementMapper;
 
-    public MemberService(BCryptPasswordEncoder passwordEncoder, MemberMapper memberMapper) {
+    public MemberService(BCryptPasswordEncoder passwordEncoder,
+                         MemberMapper memberMapper,
+                         MemberManagementMapper managementMapper) {
         this.passwordEncoder = passwordEncoder;
         this.memberMapper = memberMapper;
+        this.managementMapper = managementMapper;
     }
 
     // 이메일로 사용자 정보 조회
@@ -25,6 +34,7 @@ public class MemberService {
         return memberMapper.findByEmail(email);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void registerMember(MemberDto memberDto) {
         // 이메일 중복 체크
         if (isEmailDuplicate(memberDto.getEmail())) {
@@ -96,6 +106,74 @@ public class MemberService {
     // DB에 토큰 저장하는 메서드
     public void saveToken(int userNumber, String accessToken, String refreshToken) {
         memberMapper.saveToken(userNumber, accessToken, refreshToken);
+    }
+
+
+
+    // 스케줄러 서비스
+    public String deactivateInactiveUsers(String today){
+
+        List<Integer> dormantUserList = managementMapper.getDormantUserList(today);
+        int dormantUserCnt = dormantUserList.size();    // 리스트 사이즈 (인원 수)
+
+        int resultNum = 0;  // 몇명이 업데이트 성공했는지
+
+        if(!Objects.isNull(dormantUserList)){
+            for(int userNo : dormantUserList){
+                resultNum += managementMapper.setDormantUserUpdate(userNo);
+            }
+
+            return "스캔된 휴면 계정 " +
+                    dormantUserCnt +
+                    "명, 최종 " +
+                    resultNum +
+                    "명 휴면 상태 업데이트 성공";
+        }else{
+            return "휴면계정 없음";
+        }
+    }
+
+    public String reactivateExpiredBannedUsers(String today){
+
+        List<Integer> bandedUserList = managementMapper.getBandedUserList(today);
+        int bandedUserCnt = bandedUserList.size();    // 리스트 사이즈 (인원 수)
+
+        int resultNum = 0;  // 몇명이 업데이트 성공했는지
+
+        if(!Objects.isNull(bandedUserList)){
+            for(int userNo : bandedUserList){
+                resultNum += managementMapper.setActiveUserUpdate(userNo);
+            }
+
+            return "활동 정지 종료된 계정 " +
+                    bandedUserCnt +
+                    "명, 최종 " +
+                    resultNum +
+                    "명 활성화 상태 업데이트 성공";
+        }else{
+            return "활동 정지 종료된 계정 없음";
+        }
+    }
+
+    public String deleteUsersMarkedAsDeleted(String today){
+        List<Integer> deletedUserList = managementMapper.getDeletedUserList(today);
+        int deletedUserCnt = deletedUserList.size();    // 리스트 사이즈 (인원 수)
+
+        int resultNum = 0;  // 몇명이 업데이트 성공했는지
+
+        if(!Objects.isNull(deletedUserList)){
+            for(int userNo : deletedUserList){
+                resultNum += managementMapper.setUserDelete(userNo);
+            }
+
+            return "삭제 예정 계정 " +
+                    deletedUserCnt +
+                    "명, 최종 " +
+                    resultNum +
+                    "명 삭제 성공";
+        }else{
+            return "삭제된 계정 없음";
+        }
     }
 
 }

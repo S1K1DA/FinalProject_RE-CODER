@@ -1,4 +1,4 @@
-package com.heartlink.format;
+package com.heartlink.common.format;
 
 
 import org.springframework.format.Formatter;

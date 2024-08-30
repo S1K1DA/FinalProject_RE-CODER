@@ -1,7 +1,7 @@
 package com.heartlink.config;
 
 import com.heartlink.charge.config.PaymentInterceptor;
-import com.heartlink.format.NumberFormatter;
+import com.heartlink.common.format.NumberFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

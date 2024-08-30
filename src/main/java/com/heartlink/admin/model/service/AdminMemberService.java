@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -70,14 +71,14 @@ public class AdminMemberService {
         return resultUserList;
     }
 
-    public String setChangeUserState(MemberListDto memberListDto){
-
+    @Transactional(rollbackFor = Exception.class)  // 트랜잭션 적용
+    public String setChangeUserState(MemberListDto memberListDto) {
         int changeResult = adminMemberMapper.setChangeUserState(memberListDto);
 
-        if(changeResult != 1){
-            return "데이터 업데이트 실패";
+        if (changeResult != 1) {
+            throw new IllegalStateException("데이터 업데이트 실패");
         }
-        
+
         return "SUCCESS";
     }
 
@@ -98,6 +99,7 @@ public class AdminMemberService {
         return adminMemberMapper.setAdminMember(adminInfoDto);
     }
 
+    @Transactional(readOnly = true)
     public AdminInfoDto verifyAdminLogin(AdminInfoDto adminInfoDto) {
 
         AdminInfoDto admin = adminMemberMapper.findAdminByEmail(adminInfoDto);
