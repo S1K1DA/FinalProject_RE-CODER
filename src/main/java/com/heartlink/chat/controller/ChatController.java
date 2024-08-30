@@ -94,11 +94,13 @@ public class ChatController {
     @MessageMapping("/message")
     public void sendMessage(ChatMessageDto message) {
         chatService.saveChatMessage(message);
-        System.out.println(message.getSender());
-        System.out.println(message.getContent());
-        System.out.println("sibal"); // 확인용 로그
+        // 메시지 전송
         messagingTemplate.convertAndSend("/Chat-topic/messages/" + message.getMatchingNo(), message);
+
+        // 해당 유저의 채팅 목록을 새로 가져옴
+        List<ChatDto> updatedChats = chatService.getActiveChatList(message.getBasicUserNo().intValue());
+
+        // lastMessage 업데이트를 전송
+        messagingTemplate.convertAndSend("/Chat-topic/lastMessage", updatedChats);
     }
-
-
 }

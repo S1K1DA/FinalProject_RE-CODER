@@ -8,8 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const matchingNo = document.getElementById('matchingNo').value;
     const messageContainer = document.getElementById('messageContainer');
 
+    // 페이지 로드 시 채팅창을 맨 아래로 스크롤
+    scrollToBottom();
+
+    // WebSocket 연결 설정 및 구독 설정
     stompClient.connect({}, () => {
         console.log("Connected to WebSocket");
+
+        // 채팅 메시지 수신 처리
         stompClient.subscribe(`/Chat-topic/messages/${matchingNo}`, (message) => {
             console.log("Received message: ", message.body);
             try {
@@ -26,10 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Error processing received message: ", error);
             }
         });
+
+        // lastMessage 업데이트 수신 처리
+        stompClient.subscribe("/Chat-topic/lastMessage", (updatedChatsMessage) => {
+            console.log("Received updated chats: ", updatedChatsMessage.body);
+            const updatedChats = JSON.parse(updatedChatsMessage.body);
+            updateChatListUI(updatedChats);
+        });
+
     }, (error) => {
         console.error("WebSocket connection error: ", error);
     });
 
+    // 메시지 전송 처리
     chatForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const messageContent = messageInput.value.trim();
@@ -47,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 수신된 메시지를 채팅 창에 표시
     function displayMessage(content, sender, nickname, fullPhotoPath) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('chat-list-item2');
@@ -98,6 +114,33 @@ document.addEventListener('DOMContentLoaded', () => {
             messageContainer.appendChild(otherChatDiv);
         }
 
+        // 새 메시지가 도착했을 때 스크롤을 맨 아래로 이동
+        scrollToBottom();
+    }
+
+    // 채팅 목록 UI 업데이트 (lastMessage 업데이트 반영)
+    function updateChatListUI(updatedChats) {
+        const chatListItems = document.querySelectorAll('.chat-list-item');
+        updatedChats.forEach(updatedChat => {
+            chatListItems.forEach(item => {
+                const matchingNo = item.getAttribute('data-matchingNo');
+                if (parseInt(matchingNo) === updatedChat.matchingNo) {
+                    const lastMessageSpan = item.querySelector('.last-message');
+
+                    // lastMessage 길이 체크 후 업데이트
+                    let displayMessage = updatedChat.lastMessage;
+                    if (displayMessage.length > 6) {
+                        displayMessage = displayMessage.substring(0, 6) + '...';
+                    }
+
+                    lastMessageSpan.textContent = displayMessage;
+                }
+            });
+        });
+    }
+
+    // 채팅창을 맨 아래로 스크롤하는 함수
+    function scrollToBottom() {
         messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 });
