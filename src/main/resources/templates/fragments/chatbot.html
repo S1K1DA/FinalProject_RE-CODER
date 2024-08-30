@@ -23,6 +23,7 @@
                 <!-- 고정 메뉴 버튼 -->
             </div>
             <div class="chatbot-input-container">
+                <input type="hidden" id="user-id" th:value="${userId}" /> <!-- hidden 필드에 userId 추가 -->
                 <input class="chatbot-input" id="chatbot-input" placeholder="메시지를 입력하세요..." type="text">
                 <button class="send-message" id="send-message">전송</button>
             </div>

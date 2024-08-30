@@ -1,5 +1,8 @@
 package com.heartlink.chatbot.Controller;
 
+import com.heartlink.chatbot.model.dto.ChatbotDto;
+import com.heartlink.chatbot.model.service.ChatbotService;
+import com.heartlink.member.util.JwtUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -7,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.crypto.Mac;
@@ -23,6 +27,18 @@ public class ChatbotController {
     private static String apiUrl;
     private static String secretKey;
 
+    private final JwtUtil jwtUtil;
+    private final ChatbotService chatbotService;
+
+    public ChatbotController(JwtUtil jwtUtil, ChatbotService chatbotService) {
+        this.jwtUtil = jwtUtil;
+        this.chatbotService = chatbotService;
+    }
+
+
+
+
+
     static {
         try {
             Properties properties = new Properties();
@@ -36,24 +52,45 @@ public class ChatbotController {
         }
     }
 
+    // SecurityContext에서 userId 가져오기
+    private int getCurrentUserNo() {
+        try {
+            String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            return jwtUtil.getUserNumberFromToken(jwt);
+        } catch (Exception e) {
+            return 0;  // 로그인하지 않은 경우 0 반환
+        }
+    }
+
     @MessageMapping("/sendMessage")
     @SendTo("/topic/public")
     public String sendMessage(@Payload String chatMessage) throws IOException {
         JSONParser jsonParser = new JSONParser();
         JSONObject messageJson = null;
         boolean isPostback = false;
+        int userId = getCurrentUserNo();
 
         try {
             messageJson = (JSONObject) jsonParser.parse(chatMessage);
+            if (messageJson.containsKey("userId")) {
+                userId = ((Long) messageJson.get("userId")).intValue(); // 메시지에서 userId 가져오기
+            }
             isPostback = messageJson.containsKey("postback");
         } catch (Exception e) {
             System.out.println("Error parsing received message: " + e.getMessage());
         }
 
-        String messageToSend = isPostback ? (String) messageJson.get("postback") : chatMessage;
+        // ChatbotInquiryDto 생성 및 저장
+//        ChatbotDto inquiryDto = new ChatbotDto();
+//        inquiryDto.setUserId(userId);  // userId 설정 (로그인하지 않은 경우 0)
+//        inquiryDto.setChatbotInquiryTag("someTag");  // 태그는 적절히 설정
+//
+//        chatbotService.saveChatbotInquiry(inquiryDto);
+
+        String messageToSend = isPostback ? (String) messageJson.get("postback") : (String) messageJson.get("content");
 
         URL url = new URL(apiUrl);
-        String message = getReqMessage(messageToSend);
+        String message = getReqMessage(messageToSend, userId);  // userId 포함
         String encodeBase64String = makeSignature(message, secretKey);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -117,13 +154,15 @@ public class ChatbotController {
         return chatResponse;
     }
 
-    @MessageMapping("/getPersistentMenu")
-    @SendTo("/topic/persistentMenu")
-    public String getPersistentMenu() throws IOException {
-        // 고정 메뉴로 사용할 폼 요청하기
-        String persistentMenuMessage = "#{기본 문의}"; // 고정 메뉴의 폼 이름
-        return sendMessage(persistentMenuMessage);
-    }
+
+
+//    @MessageMapping("/getPersistentMenu")
+//    @SendTo("/topic/persistentMenu")
+//    public String getPersistentMenu() throws IOException {
+//        // 고정 메뉴로 사용할 폼 요청하기
+//        String persistentMenuMessage = "#{기본 문의}"; // 고정 메뉴의 폼 이름
+//        return sendMessage(persistentMenuMessage);
+//    }
 
     private String handleV1Form(JSONObject bubbles) {
         JSONObject data = (JSONObject) bubbles.get("data");
@@ -171,13 +210,24 @@ public class ChatbotController {
         return encodeBase64String;
     }
 
-    public static String getReqMessage(String messageContent) {
+    public String getReqMessage(String messageContent, int userId) {
         String requestBody = "";
         try {
+            // ChatbotDto 객체 생성 및 데이터 저장
+            ChatbotDto inquiryDto = new ChatbotDto();
+            inquiryDto.setUserId(userId);  // userId 설정 (로그인하지 않은 경우 0)
+            inquiryDto.setChatbotInquiryTag("someTag");  // 태그는 적절히 설정
+            System.out.println("aaa" +userId);
+            System.out.println("bbb" + inquiryDto.getChatbotInquiryTag());
+
+            // 이 부분에서 ChatbotService를 사용하여 데이터베이스에 저장할 수 있습니다.
+            chatbotService.saveChatbotInquiry(inquiryDto);
+
+            // JSON 객체 생성 및 메시지 구성
             JSONObject obj = new JSONObject();
             long timestamp = new Date().getTime();
             obj.put("version", "v2");
-            obj.put("userId", "abc@gmail.com");
+            obj.put("userId", userId);
             obj.put("timestamp", timestamp);
 
             JSONObject bubbles_obj = new JSONObject();
@@ -194,12 +244,11 @@ public class ChatbotController {
             obj.put("event", "send");
 
             requestBody = obj.toString();
-//            System.out.println("Request Body: " + requestBody);
-
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("## Exception : " + e);
         }
 
         return requestBody;
     }
+
 }

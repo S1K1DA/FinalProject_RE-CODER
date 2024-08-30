@@ -33,11 +33,16 @@ public class GlobalController {
         this.jwtUtil = jwtUtil;
     }
 
-    // SecurityContext에서 userNo 가져오기
+    // SecurityContext에서 userId 가져오기
     private int getCurrentUserNo() {
-        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        return jwtUtil.getUserNumberFromToken(jwt);
+        try {
+            String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            return jwtUtil.getUserNumberFromToken(jwt);
+        } catch (Exception e) {
+            return 0;  // 로그인하지 않은 경우 0 반환
+        }
     }
+
 
     @ModelAttribute("member")
     public MemberDto addMemberToModel() {
