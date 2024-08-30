@@ -4,193 +4,127 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 500);
 });
 
+function getMaxValue(array) {
+    return Math.max.apply(null, array);
+}
+
+// Define chart variables globally
+var weeklyChart, monthlyChart;
+document.getElementById('weeklychart').style.display = 'none';
+
 function floatchart() {
-    (function () {
-        var options = {
-            chart: {
-                type: 'line',
-                height: 90,
-                sparkline: {
-                    enabled: true
-                }
-            },
-            dataLabels: {
+    // 주간 데이터에서 최대값 찾기
+    var maxWeeklyValue = Math.max(getMaxValue(weeklySales), getMaxValue(weeklyCanceledSales));
+
+    // 월간 데이터에서 최대값 찾기
+    var maxMonthlyValue = Math.max(getMaxValue(monthlySales), getMaxValue(monthlyCanceledSales));
+
+    // 차트 높이 설정, 최대 510px로 제한
+    var weeklyChartHeight = Math.min(maxWeeklyValue + 50, 510);
+    var monthlyChartHeight = Math.min(maxMonthlyValue + 50, 510);
+
+    // 주간 매출 차트 설정
+    var weeklyOptions = {
+        chart: {
+            type: 'line',
+            height: weeklyChartHeight, // 제한된 높이 사용
+            sparkline: {
                 enabled: false
             },
-            colors: ['#FFF'],
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            series: [
-                {
-                    name: 'series1',
-                    data: [45, 66, 41, 89, 25, 44, 9, 54]
-                }
-            ],
-            yaxis: {
-                min: 5,
-                max: 95
-            },
-            tooltip: {
-                theme: 'dark',
-                fixed: {
-                    enabled: false
-                },
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function (seriesName) {
-                            return 'Total Earning';
-                        }
-                    }
-                },
-                marker: {
-                    show: false
-                }
+            toolbar: {
+                show: false
             }
-        };
-        var chart = new ApexCharts(document.querySelector('#tab-chart-1'), options);
-        chart.render();
-    })();
-    (function () {
-        var options = {
-            chart: {
-                type: 'line',
-                height: 90,
-                sparkline: {
-                    enabled: true
-                }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors: ['#2196f3', '#ff5722'], // Adjust colors for your needs
+        stroke: {
+            curve: 'smooth',
+            width: 3
+        },
+        series: [
+            {
+                name: '결제 완료',
+                data: weeklySales // 주간 매출 데이터
             },
-            dataLabels: {
-                enabled: false
-            },
-            colors: ['#FFF'],
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            series: [
-                {
-                    name: 'series1',
-                    data: [35, 44, 9, 54, 45, 66, 41, 69]
-                }
-            ],
-            yaxis: {
-                min: 5,
-                max: 95
-            },
-            tooltip: {
-                theme: 'dark',
-                fixed: {
-                    enabled: false
-                },
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function (seriesName) {
-                            return 'Total Earning';
-                        }
-                    }
-                },
-                marker: {
-                    show: false
-                }
+            {
+                name: '취소',
+                data: weeklyCanceledSales // 주간 취소된 매출 데이터
             }
-        };
-        var chart = new ApexCharts(document.querySelector('#tab-chart-2'), options);
-        chart.render();
-    })();
-    (function () {
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 480,
-                stacked: true,
-                toolbar: {
-                    show: false
-                }
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '50%'
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            colors: ['#d3eafd', '#2196f3', '#673ab7', '#e1d8f1'],
-            series: [
-                {
-                    name: 'Investment',
-                    data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
-                },
-                {
-                    name: 'Loss',
-                    data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
-                },
-                {
-                    name: 'Profit',
-                    data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
-                },
-                {
-                    name: 'Maintenance',
-                    data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
-                }
-            ],
-            responsive: [
-                {
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: 'bottom',
-                            offsetX: -10,
-                            offsetY: 0
-                        }
-                    }
-                }
-            ],
-            xaxis: {
-                type: 'category',
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            },
-            grid: {
-                strokeDashArray: 4
-            },
-            tooltip: {
-                theme: 'dark'
+        ],
+        xaxis: {
+            type: 'category',
+            categories: ['1주차', '2주차', '3주차', '4주차', '5주차', '6주차', '7주차'] // Example categories
+        },
+        grid: {
+            strokeDashArray: 4
+        },
+        tooltip: {
+            theme: 'dark'
+        }
+    };
+
+    // 월간 매출 차트 설정
+    var monthlyOptions = {
+        chart: {
+            type: 'bar',
+            height: monthlyChartHeight, // 제한된 높이 사용
+            stacked: true,
+            toolbar: {
+                show: false
             }
-        };
-        var chart = new ApexCharts(document.querySelector('#growthchart'), options);
-        chart.render();
-    })();
-    (function () {
-        var options = {
-            chart: {
-                type: 'area',
-                height: 95,
-                stacked: true,
-                sparkline: {
-                    enabled: true
-                }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '50%'
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors: ['#d3eafd', '#2196f3'], // Adjust colors for your needs
+        series: [
+            {
+                name: '결제 완료',
+                data: monthlySales // 월간 매출 데이터
             },
-            colors: ['#673ab7'],
-            stroke: {
-                curve: 'smooth',
-                width: 1
-            },
-            series: [
-                {
-                    data: [0, 15, 10, 50, 30, 40, 25]
-                }
-            ]
-        };
-        var chart = new ApexCharts(document.querySelector('#bajajchart'), options);
-        chart.render();
-    })();
+            {
+                name: '취소',
+                data: monthlyCanceledSales // 월간 취소된 매출 데이터
+            }
+        ],
+        xaxis: {
+            type: 'category',
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        grid: {
+            strokeDashArray: 4
+        },
+        tooltip: {
+            theme: 'dark'
+        }
+    };
+
+    // Initialize charts
+    weeklyChart = new ApexCharts(document.querySelector('#weeklychart'), weeklyOptions);
+    monthlyChart = new ApexCharts(document.querySelector('#growthchart'), monthlyOptions);
+
+    // Render charts initially
+    weeklyChart.render();
+    monthlyChart.render();
+
+    // Event listener for the chart type select element
+    document.getElementById('chart-type-select').addEventListener('change', function(event) {
+        var selectedValue = event.target.value;
+
+        if (selectedValue === 'weekly') {
+            document.getElementById('growthchart').style.display = 'none';
+            document.getElementById('weeklychart').style.display = 'block';
+        } else if (selectedValue === 'monthly') {
+            document.getElementById('growthchart').style.display = 'block';
+            document.getElementById('weeklychart').style.display = 'none';
+        }
+    });
 }
