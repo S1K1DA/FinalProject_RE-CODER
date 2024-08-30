@@ -66,5 +66,15 @@ public class GlobalController {
         }
     }
 
+    @ModelAttribute("userId")
+    public Integer addUserIdToModel() {
+        try {
+            return getCurrentUserNo();  // getCurrentUserNo()를 사용하여 userNo를 모델에 추가
+        } catch (Exception e) {
+            System.out.println("Error fetching user ID: " + e.getMessage());
+            return null; // 오류가 발생하면 null 반환
+        }
+    }
+
 
 }
