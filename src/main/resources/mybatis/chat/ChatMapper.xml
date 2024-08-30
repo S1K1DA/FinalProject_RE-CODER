@@ -46,10 +46,8 @@
         WHERE
         (s.MATCHING_USER_NO = #{userNo} OR s.MATCHED_USER_NO = #{userNo})
         AND s.MATCHING_STATE = 'Y'
+        AND s.MATCHING_CHATTING_STATE = 'N' <!-- 채팅이 활성화된 상태만 표시 -->
     </select>
-
-
-
 
     <!-- 특정 매칭의 채팅 로그 조회 -->
     <select id="getChatLogs" parameterType="long" resultType="com.heartlink.chat.model.dto.ChatDto">
@@ -94,8 +92,9 @@
     <!-- 매칭 상태 업데이트 (채팅 종료) -->
     <update id="updateChatStatus">
         UPDATE MATCHING_STATE
-        SET MATCHING_CHATTING_STATE = #{status}
+        SET MATCHING_CHATTING_STATE = 'Y'
         WHERE MATCHING_NO = #{matchingNo}
+        AND (MATCHING_USER_NO = #{userNo} OR MATCHED_USER_NO = #{userNo})
     </update>
 
 </mapper>

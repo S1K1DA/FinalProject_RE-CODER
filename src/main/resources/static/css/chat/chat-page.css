@@ -206,3 +206,21 @@ body {
 .nik-name {
     font-weight: bold;
 }
+
+/* 나가기 버튼 스타일 */
+.exit-chat {
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #d9534f; /* 나가기 버튼 색상 */
+}
+
+.exit-chat:hover {
+    opacity: 0.8;
+}
+
+/* 나가기 버튼과 알림 아이콘 사이에 간격 추가 */
+.notification {
+    margin-right: 10px;
+}
+

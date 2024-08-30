@@ -20,5 +20,5 @@ public interface ChatMapper {
     void insertChatLog(ChatMessageDto chatMessage);
 
     // 매칭 상태 업데이트 (채팅 종료)
-    void updateChatStatus(@Param("matchingNo") Long matchingNo, @Param("status") String status);
+    void updateChatStatus(@Param("matchingNo") Long matchingNo, @Param("userNo") Long userNo);
 }

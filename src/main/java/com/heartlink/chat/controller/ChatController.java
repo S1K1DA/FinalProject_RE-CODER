@@ -5,6 +5,7 @@ import com.heartlink.chat.model.dto.ChatMessageDto;
 import com.heartlink.chat.model.service.ChatService;
 import com.heartlink.member.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/chat")
@@ -51,29 +53,29 @@ public class ChatController {
         // 채팅 로그 가져오기
         List<ChatDto> chatLogs = chatService.getChatLogs(matchingNo);
 
-        for (ChatDto item : chatLogs) {
-            System.out.println(item.getNickname() + " chat getNickname");
-            System.out.println(item.getContent() + " chat getContent");
-            System.out.println(item.getBasicUserNo() + " chat getBasicUserNo");
-            System.out.println(item.getMatchingNo() + " chat getMatchingNo");
-        }
+//        for (ChatDto item : chatLogs) {
+//            System.out.println(item.getNickname() + " chat getNickname");
+//            System.out.println(item.getContent() + " chat getContent");
+//            System.out.println(item.getBasicUserNo() + " chat getBasicUserNo");
+//            System.out.println(item.getMatchingNo() + " chat getMatchingNo");
+//        }
 
         model.addAttribute("chatLogs", chatLogs);
 
         System.out.println(activeChats + " : activeChats");
         System.out.println(chatLogs + " : chatLogs");
 
-        if (chatLogs == null || chatLogs.isEmpty()) {
-            System.out.println("chatLogs is null or empty!");
-        } else {
-            for (ChatDto chat : chatLogs) {
-                if (chat == null) {
-                    System.out.println("Null message found in chatLogs!");
-                } else {
-                    System.out.println("Chat log: " + chat.getContent());
-                }
-            }
-        }
+//        if (chatLogs == null || chatLogs.isEmpty()) {
+//            System.out.println("chatLogs is null or empty!");
+//        } else {
+//            for (ChatDto chat : chatLogs) {
+//                if (chat == null) {
+//                    System.out.println("Null message found in chatLogs!");
+//                } else {
+//                    System.out.println("Chat log: " + chat.getContent());
+//                }
+//            }
+//        }
 
         // 사용자 번호를 템플릿에 전달
         System.out.println(userNumber + ": userNumber");
@@ -102,5 +104,16 @@ public class ChatController {
 
         // lastMessage 업데이트를 전송
         messagingTemplate.convertAndSend("/Chat-topic/lastMessage", updatedChats);
+    }
+
+    // 채팅방 나가기 요청 처리
+    @PostMapping("/exit")
+    public ResponseEntity<Void> exitChat(@RequestBody Map<String, Object> request, @CookieValue("token") String jwtToken) {
+        Long matchingNo = Long.valueOf(request.get("matchingNo").toString());
+        int userNo = jwtUtil.getUserNumberFromToken(jwtToken);
+
+        chatService.updateChatStatus(matchingNo, (long) userNo);
+
+        return ResponseEntity.ok().build();
     }
 }

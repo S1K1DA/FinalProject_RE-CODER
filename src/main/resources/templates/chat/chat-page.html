@@ -25,6 +25,10 @@
                 <span class="notification">
                     <i class="fa fa-envelope"></i>
                 </span>
+                <!-- 나가기 버튼 추가 -->
+                <span class="exit-chat" th:onclick="'event.stopPropagation(); exitChat(' + ${chat.matchingNo} + ');'">
+                🚪
+                </span>
             </li>
         </ul>
     </div>
@@ -52,9 +56,43 @@
         </form>
     </div>
 </main>
-
 <script th:inline="javascript">
     const profiles = /*[[${profiles}]]*/ [];
+
+    // 채팅 나가기
+function exitChat(matchingNo) {
+    if (confirm("채팅방에서 나가시겠습니까?")) {
+        fetch('/chat/exit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ matchingNo: matchingNo }),
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("채팅방에서 나갔습니다.");
+
+                // 웹소켓 연결 종료
+                if (stompClient && stompClient.connected) {
+                    stompClient.disconnect(() => {
+                        console.log("WebSocket connection closed.");
+                        window.location.href = '/chat/chatting';
+                    });
+                } else {
+                    window.location.href = '/chat/chatting';
+                }
+            } else {
+                alert("나가기에 실패했습니다. 다시 시도해주세요.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("오류가 발생했습니다. 다시 시도해주세요.");
+        });
+    }
+}
+
 </script>
 
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js}"></script>

@@ -34,7 +34,7 @@ public class ChatService {
     }
 
     // 채팅 상태를 업데이트하는 메서드
-    public void updateChatStatus(Long matchingNo, String status) {
-        chatMapper.updateChatStatus(matchingNo, status);
+    public void updateChatStatus(Long matchingNo,Long userNo) {
+        chatMapper.updateChatStatus(matchingNo,userNo);
     }
 }

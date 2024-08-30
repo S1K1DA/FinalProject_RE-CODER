@@ -19,6 +19,7 @@ public class ChatDto {
     private String timestamp;  // 채팅 입력 시간
     private String lastMessage;
     private Long basicUserNo;
+    private String status;
 
     public void setLastMessage(String lastMessage) {
         System.out.println("Setting lastMessage: " + lastMessage); // 디버깅 로그 추가
