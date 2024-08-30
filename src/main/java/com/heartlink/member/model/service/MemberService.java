@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,7 @@ public class MemberService {
         return memberMapper.findByEmail(email);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void registerMember(MemberDto memberDto) {
         // 이메일 중복 체크
         if (isEmailDuplicate(memberDto.getEmail())) {

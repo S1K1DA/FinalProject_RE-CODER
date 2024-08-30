@@ -45,3 +45,6 @@ apikeys.js
 # 사진 리뷰 사진들 업로드되지 않도록 예외 처리
 src/main/resources/static/image/review
 src/main/resources/static/image/user_profile
+
+# 로그파일 업로드 무시
+*.log

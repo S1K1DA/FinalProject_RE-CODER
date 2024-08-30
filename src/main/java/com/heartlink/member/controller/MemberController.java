@@ -7,8 +7,11 @@ import com.heartlink.member.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
 
+    private static final Logger logger = LogManager.getLogger(MemberController.class);
     private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
@@ -50,6 +54,9 @@ public class MemberController {
         try {
             memberService.registerMember(memberDto);
             model.addAttribute("message", "회원가입이 성공적으로 완료되었습니다.");
+
+            logger.info("새로운 회원 userNo : " + memberDto.getUserNumber());
+
             return "redirect:/member/sign"; // 회원가입 후 로그인 페이지로 리디렉션
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -100,6 +107,8 @@ public class MemberController {
             // DB에 토큰 저장
             memberService.saveToken(member.getUserNumber(), accessToken, refreshToken);
 
+            logger.info("로그인한 사용자 : " + member.getUserNumber());
+
             return "success"; // 로그인 성공 메시지 반환
         } else {
             // 2. 어드민 로그인 처리
@@ -117,28 +126,14 @@ public class MemberController {
                 jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (예: 1일)
                 response.addCookie(jwtCookie);
 
+                logger.info("로그인한 관리자 : " + admin.getAdminUserNo());
+
                 return "adminSuccess"; // 어드민 로그인 성공 메시지 반환
             }
         }
 
         return "failure"; // 로그인 실패 메시지 반환
     }
-
-
-//    @PostMapping("/logout")
-//    public String logout(HttpServletRequest request, HttpServletResponse response) {
-//        // 쿠키 삭제
-//        Cookie jwtCookie = new Cookie("token", null);
-//        jwtCookie.setHttpOnly(true);
-//        jwtCookie.setMaxAge(0);
-//        jwtCookie.setPath("/");
-//        response.addCookie(jwtCookie);
-//
-//        // SecurityContext 클리어
-//        SecurityContextHolder.clearContext();
-//
-//        return "redirect:/"; // 메인 페이지로 리다이렉트
-//    }
 
 }
 

@@ -5,6 +5,7 @@ import com.heartlink.matching.model.dto.MatchingDto;
 import com.heartlink.matching.model.mapper.MatchingMapper;
 import com.heartlink.member.model.dto.MemberDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +19,8 @@ public class MatchingService {
         this.matchingMapper = matchingMapper;
     }
 
+
+    @Transactional(rollbackFor = Exception.class)
     public String setMatchingRequest(int matchingUserNo, int matchedUserNo){
 
         boolean verifit = true;
