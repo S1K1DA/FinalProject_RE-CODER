@@ -86,6 +86,12 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // Jackson 필요 시
+
+    // S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
+    // 이미지 리사이징
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
 }
 
 
