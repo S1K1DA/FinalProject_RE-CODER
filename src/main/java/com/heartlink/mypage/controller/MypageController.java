@@ -1,5 +1,7 @@
 package com.heartlink.mypage.controller;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.heartlink.common.s3.S3Uploader;
 import com.heartlink.member.util.JwtUtil;
 import com.heartlink.mypage.model.dto.MypageDto;
 import com.heartlink.mypage.model.service.MypageService;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,12 +31,20 @@ public class MypageController {
     private final Pagination pagination;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final S3Uploader s3Uploader;
+    private final AmazonS3 s3Client;
 
-    public MypageController(MypageService mypageService, Pagination pagination, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+    public MypageController(MypageService mypageService,
+                            Pagination pagination,
+                            JwtUtil jwtUtil, PasswordEncoder passwordEncoder,
+                            S3Uploader s3Uploader,
+                            AmazonS3 s3Client) {
         this.mypageService = mypageService;
         this.pagination = pagination;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
+        this.s3Uploader = s3Uploader;
+        this.s3Client = s3Client;
     }
 
     // SecurityContext에서 userId 가져오기
@@ -47,9 +58,13 @@ public class MypageController {
         int userId = getCurrentUserId();
         MypageDto user = mypageService.getUserInfo(userId);
 
+        String s3Url = user.getProfilePicturePath() + user.getProfilePictureName();
+        URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+        String txtUrl = "" + url;
+
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
-        model.addAttribute("profilePicturePath", user.getFullProfilePictureUrl());
+        model.addAttribute("profilePicturePath", txtUrl);
         System.out.println("aaa" + user.getFullProfilePictureUrl());
         return "mypage/mypage_main/mypage-main";
     }
@@ -61,11 +76,15 @@ public class MypageController {
 
         MypageDto userLocation = mypageService.getUserLocation(userId);  // 위도/경도 정보를 가져옴
 
+        String s3Url = user.getProfilePicturePath() + user.getProfilePictureName();
+        URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+        String txtUrl = "" + url;
+
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         model.addAttribute("user", user);
         model.addAttribute("userLocation", userLocation);  // 모델에 위도/경도 정보를 추가
 
-        model.addAttribute("profilePicturePath", user.getFullProfilePictureUrl());
+        model.addAttribute("profilePicturePath", txtUrl);
         System.out.println("aaa" + user.getFullProfilePictureUrl());
 
         return "mypage/mypage_main/mypage-infoedit";
@@ -399,40 +418,26 @@ public class MypageController {
     @PostMapping("/profile-image-upload")
     public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file) {
         try {
-            // 로컬 경로 설정
-            String projectDirectory = Paths.get("").toAbsolutePath().toString();
-            String uploadDirectory = projectDirectory + "/src/main/resources/static/image/user_profile";
 
             // 파일 이름 생성 (UUID 사용)
             String originalFileName = file.getOriginalFilename();
             String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
             String uuidFileName = UUID.randomUUID().toString() + fileExtension;
 
-            // 디렉토리 생성
-            File directory = new File(uploadDirectory);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            // 파일 저장
-            File destinationFile = new File(uploadDirectory, uuidFileName);
-            file.transferTo(destinationFile);
-
-            // 이미지 파일의 URL 및 파일명/경로 분리
-            String filePath = "/image/user_profile/"; // 경로 부분
-            String fileName = uuidFileName; // 파일 이름 부분
+            String filePath = "/image/user_profile/";
+            String fileUrl = s3Uploader.uploadFileToS3(file, filePath, uuidFileName);
 
             // 이미지 정보를 데이터베이스에 저장
             int userId = getCurrentUserId();
             MypageDto userPhoto = new MypageDto();
             userPhoto.setUserId(userId);
             userPhoto.setProfilePicturePath(filePath); // 경로만 저장
-            userPhoto.setProfilePictureName(fileName); // 파일 이름만 저장
+            userPhoto.setProfilePictureName(uuidFileName); // 파일 이름만 저장
             userPhoto.setProfilePictureOriginalName(originalFileName);
             mypageService.saveUserProfilePhoto(userPhoto);
 
-            return ResponseEntity.ok(filePath + fileName);
-        } catch (IOException e) {
+            return ResponseEntity.ok(fileUrl);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("이미지 업로드 실패");
         }

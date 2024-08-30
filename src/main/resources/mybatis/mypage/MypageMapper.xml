@@ -279,7 +279,7 @@
     <!-- 유저 프로필 사진 삽입 -->
     <insert id="insertUserProfilePhoto" parameterType="MypageDto">
         INSERT INTO BASIC_USER_PHOTO (BASIC_USER_NO, PHOTO_ORIGIN_NAME, PHOTO_NAME, PHOTO_PATH)
-        VALUES (#{userId}, #{profilePictureOriginalName}, #{profilePicturePath}, #{profilePicturePath})
+        VALUES (#{userId}, #{profilePictureOriginalName}, #{profilePictureName}, #{profilePicturePath})
     </insert>
 
     <!-- 유저 프로필 사진이 존재하는지 확인 -->
