@@ -6,6 +6,7 @@ import com.heartlink.feed.model.mapper.FeedMapper;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,16 +42,18 @@ public class FeedService {
 
             // 좋아요 수 가져오기
             int likeCount = feedMapper.getLikeCount(feedNo);
-            feed.setLikeCount(likeCount); // FeedDto 클래스에 좋아요 수를 저장할 수 있는 필드가 있어야 합니다.
+            feed.setLikeCount(likeCount); // FeedDto 클래스에 좋아요 수를 저장할 수 있는 필드가 있어야 함
         }
 
         return textList;
     }
 
+    @Transactional
     public int setFeedEnroll(FeedDto feedDto){
         return feedMapper.setFeedEnroll(feedDto);
     }
 
+    @Transactional
     public int setCommentEnroll(FeedCommentDto commentDto){
         return feedMapper.setCommentEnroll(commentDto);
     }
@@ -65,19 +68,23 @@ public class FeedService {
         return selectEdit;
     }
 
+    @Transactional
     public int setUpdateFeed(FeedDto feedDto){
 
         return feedMapper.setUpdateFeed(feedDto);
     }
 
+    @Transactional
     public int setCommentDelete(int commentNo){
         return feedMapper.setCommentDelete(commentNo);
     }
 
+    @Transactional
     public int setFeedDelete(int feedNo){
         return feedMapper.setFeedDelete(feedNo);
     }
 
+    @Transactional
     public int setFeedLike(int feedNo, int userNo){
         return feedMapper.setFeedLike(feedNo, userNo);
     }

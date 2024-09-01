@@ -17,6 +17,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    all*.exclude module : 'spring-boot-starter-logging'
 }
 
 repositories {
@@ -24,12 +26,9 @@ repositories {
 }
 
 dependencies {
-    // spring security
-//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
-//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // JPA 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // 회원가입 유효성
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -40,6 +39,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.session:spring-session-core'
 
     // 마이바티스
@@ -58,7 +58,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // JSON Simple 라이브러리 추가
@@ -87,6 +86,12 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // Jackson 필요 시
+
+    // S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
+    // 이미지 리사이징
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
 }
 
 

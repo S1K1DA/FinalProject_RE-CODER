@@ -192,6 +192,9 @@ public class ChargeController {
 
             if(cancelRequset.equals("update complete")){
                 return ResponseEntity.status(HttpStatus.OK).body(result);
+            }else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cancelRequset);
+
             }
         }
 

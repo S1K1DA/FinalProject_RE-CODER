@@ -523,7 +523,7 @@ function handleAddressSearch(data) {
 
 // MBTI 검사 열기
 function openMbtiTest() {
-    const mbtiWindow = window.open('/matching/mbti-test', '_blank', 'width=600,height=800');
+    const mbtiWindow = window.open('/matching/mbti', '_blank', 'width=600,height=800');
 
     window.receiveMbtiResult = function(result) {
         const sanitizedResult = result.replace(/\s+/g, ''); // 값에서 공백을 제거

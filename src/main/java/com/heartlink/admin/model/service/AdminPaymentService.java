@@ -3,6 +3,7 @@ package com.heartlink.admin.model.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import com.heartlink.admin.model.dto.PaymentHistoryDto;
 import com.heartlink.admin.model.mapper.AdminPaymentMapper;
@@ -39,6 +40,7 @@ public class AdminPaymentService {
     }
 
     // 결제 취소
+    @Transactional(rollbackFor = Exception.class)
     public String setPortOneRequestCancle(String paymentNo) {
         // 요청 보낼 API URL
         String url = "https://api.portone.io/payments/" + paymentNo + "/cancel";
@@ -89,13 +91,14 @@ public class AdminPaymentService {
         return null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int updateCanceledPaymentHistory(String paymentNo, String state){
 
         int cancelTable = adminPaymentMapper.updateCanceledPaymentHistory(paymentNo, state);
         int paymentTable = adminPaymentMapper.updatePaymentHistory(paymentNo, state);
 
         if(cancelTable != 1 || paymentTable != 1){
-            return 0;
+            throw new IllegalStateException("Failed to update payment history.");
         }
 
         return 1;

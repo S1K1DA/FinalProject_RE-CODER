@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<body>
-<link rel="stylesheet" th:href="@{/css/charge/charge_main.css}"/>
-<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
-<nav th:replace="~{fragments/navigation :: navigation}"></nav>
-<section class="charge-main-sec">
-    404
-</section>
-<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    function showAlertAndRedirect() {
+        const message = "Error occurred: ${errorMessage}"; // 서버에서 전달한 메시지
+        alert(message);
+        const redirectUrl = "${redirectUrl}"; // 서버에서 전달한 리디렉션 URL
+        window.location.href = redirectUrl;
+    }
+</script>
+<body onload="showAlertAndRedirect()">
 </body>
 </html>

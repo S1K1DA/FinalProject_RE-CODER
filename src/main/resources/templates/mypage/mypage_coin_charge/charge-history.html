@@ -48,6 +48,9 @@
                                 style="color:blue"
                                 onclick="requestPaymentCancel(this.getAttribute('data-no'))"></td>
                         </tr>
+                        <tr th:if="${#lists.isEmpty(userPaymentHistory)}">
+                            <td colspan="5">내역이 없습니다.</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div th:replace="~{fragments/pagination :: pagination}"></div>
@@ -55,8 +58,13 @@
         </div>
     </div>
 </section>
-
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    var weeklySales = /*[[${thisMonthSales}]]*/ [];
+    var weeklySalesCanceled = /*[[${thisMonthSalesCanceled}]]*/ [];
+    var monthlySales = /*[[${thisYaerSales}]]*/ [];
+    var monthlySalesCanceled = /*[[${thisYaerSalesCanceled}]]*/ [];
+</script>
 <script th:src="@{/js/mypage/charge/charge-cancle.js}"></script>
 </body>
 </html>

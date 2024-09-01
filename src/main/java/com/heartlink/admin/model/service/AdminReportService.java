@@ -2,7 +2,9 @@ package com.heartlink.admin.model.service;
 
 import com.heartlink.admin.model.dto.AdminReportDto;
 import com.heartlink.admin.model.mapper.AdminReportMapper;
+import com.heartlink.common.exception.CustomException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,6 +60,7 @@ public class AdminReportService {
         return adminReportMapper.setReportList(startDate, endDate);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public String setAdminResolution(AdminReportDto reportDto){
 
         if(reportDto.isPunisNone()){
@@ -78,20 +81,20 @@ public class AdminReportService {
             System.out.println("업데이트 확인 : " + updateUserState);
 
             if(updateUserState != 1){
-                return "회원 테이블 데이터 업데이트 실패";
+                throw new CustomException("회원 테이블 데이터 업데이트 실패");
             }
         }
 
         int updateResult = adminReportMapper.updateResolution(reportDto);
 
         if(updateResult != 1){
-            return "REPORT 테이블 데이터 업데이트 실패";
+            throw new CustomException("REPORT 테이블 데이터 업데이트 실패");
         }
 
         int insertResult = adminReportMapper.setAdminResolution(reportDto);
 
         if(insertResult != 1){
-            return "데이터 삽입 실패";
+            throw new CustomException("데이터 삽입 실패");
         }
 
         return "SUCCESS";

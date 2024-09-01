@@ -51,7 +51,6 @@ public class ReportController {
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
-
     }
 
 }
