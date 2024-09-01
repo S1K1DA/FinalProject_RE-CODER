@@ -111,5 +111,13 @@
         r.REVIEW_NO DESC
     </select>
 
-
+    <select id="getTopReviews" resultMap="reviewResultSet">
+        SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
+        FROM REVIEW_BOARD r
+        JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE REVIEW_TYPE = 'P'
+        AND REVIEW_DELETE = 'N'
+        ORDER BY REVIEW_VIEWS DESC
+        FETCH FIRST 5 ROWS ONLY
+    </select>
 </mapper>

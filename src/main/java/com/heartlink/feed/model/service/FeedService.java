@@ -43,6 +43,10 @@ public class FeedService {
             // 좋아요 수 가져오기
             int likeCount = feedMapper.getLikeCount(feedNo);
             feed.setLikeCount(likeCount); // FeedDto 클래스에 좋아요 수를 저장할 수 있는 필드가 있어야 함
+
+            // 좋아요 누른 유저 구분
+            List<Integer> likedUser = feedMapper.getLikedUser(feedNo);
+            feed.setLikedUser(likedUser);
         }
 
         return textList;
@@ -87,5 +91,10 @@ public class FeedService {
     @Transactional
     public int setFeedLike(int feedNo, int userNo){
         return feedMapper.setFeedLike(feedNo, userNo);
+    }
+
+    @Transactional
+    public int setFeedLikeCancel(int feedNo, int userNo){
+        return feedMapper.setFeedLikeCancel(feedNo, userNo);
     }
 }

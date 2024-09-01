@@ -32,7 +32,7 @@ public class FeedController {
         this.jwtUtil = jwtUtil;
     }
 
-    // SecurityContext에서 userId 가져오기
+    // SecurityContext에서 userNo 가져오기
     private int getCurrentUserNo() {
         String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         return jwtUtil.getUserNumberFromToken(jwt);
@@ -45,6 +45,8 @@ public class FeedController {
                            @RequestParam(value = "start", defaultValue = "0") int start,
                            Model model) {
 
+        int thisUserNo = getCurrentUserNo();
+
         int pageSize = 5; // 페이지 당 데이터 수
         int end = start + pageSize;
 
@@ -54,6 +56,8 @@ public class FeedController {
         model.addAttribute("feedArray", feedArray);
         model.addAttribute("feedList", feedList);
         model.addAttribute("start", end); // 클라이언트에게 다음 요청 시 사용할 시작 페이지 번호 전달
+
+        model.addAttribute("thisUserNo", thisUserNo);
 
         return "feed/feed-main";
     }
@@ -165,6 +169,19 @@ public class FeedController {
         int userNo = getCurrentUserNo();
 
         int userLikeFeed = feedService.setFeedLike(feedNo, userNo);
+
+        if(userLikeFeed != 1){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/like-cancel")
+    public ResponseEntity<?> setLikeCancelFeed(@RequestParam("feedNo")int feedNo){
+        int userNo = getCurrentUserNo();
+
+        int userLikeFeed = feedService.setFeedLikeCancel(feedNo, userNo);
 
         if(userLikeFeed != 1){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

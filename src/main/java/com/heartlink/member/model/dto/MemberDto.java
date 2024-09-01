@@ -55,6 +55,15 @@ public class MemberDto {
     @NotBlank
     private String address;
 
+    // HomeController 를 위한 변수
+    private int likeCnt;
+    private String userPhotoPath;
+    private String userPhotoName;
+
+    private String hobbyName;
+    private String personalLike;
+    private String personalHate;
+
     // 비밀번호와 확인 비밀번호가 일치하는지 확인하는 메서드
     public boolean isPasswordConfirmed() {
         return this.password.equals(this.confirmPassword);

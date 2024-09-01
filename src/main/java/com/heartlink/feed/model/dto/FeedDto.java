@@ -15,7 +15,6 @@ public class FeedDto {
     private int authorUserNo;
     private String basicUserNickname;
 
-
     private String feedTitle;
     private String feedContent;
     private String feedIndate;
@@ -23,6 +22,7 @@ public class FeedDto {
     private String feedState;
     private String feedTag;
 
+    private List<Integer> LikedUser;
     private List<FeedCommentDto> comments;
 
     private int likeCount;

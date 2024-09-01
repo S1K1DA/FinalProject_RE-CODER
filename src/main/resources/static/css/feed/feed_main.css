@@ -196,6 +196,17 @@ label{
     background-color: #fff;
 }
 
+.feed-heart-cancel{
+    padding: 8px;
+    border : 1.5px solid var(--secondary-color);
+    background-color: var(--secondary-color) ;
+}
+
+.feed-heart-cancel .feed-heart-icon{
+    color: #fff;
+}
+
+
 .feed-heart:hover{
     background-color: var(--secondary-color) ;
 
