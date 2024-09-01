@@ -31,7 +31,7 @@ public class ReportController {
 
     @PostMapping("/request")
     public ResponseEntity<?> setReportRequest(ReportDto reportDto){
-        // 신고 유형은 Feed, Profile, chatting, Review 네가지
+        // 신고 유형은 Feed, chatting, Review 세가지
 
         int reporterNo = getCurrentUserNo();
         reportDto.setReporterUserNo(reporterNo);
