@@ -35,10 +35,6 @@ public class ChatbotController {
         this.chatbotService = chatbotService;
     }
 
-
-
-
-
     static {
         try {
             Properties properties = new Properties();
@@ -80,13 +76,6 @@ public class ChatbotController {
             System.out.println("Error parsing received message: " + e.getMessage());
         }
 
-        // ChatbotInquiryDto 생성 및 저장
-//        ChatbotDto inquiryDto = new ChatbotDto();
-//        inquiryDto.setUserId(userId);  // userId 설정 (로그인하지 않은 경우 0)
-//        inquiryDto.setChatbotInquiryTag("someTag");  // 태그는 적절히 설정
-//
-//        chatbotService.saveChatbotInquiry(inquiryDto);
-
         String messageToSend = isPostback ? (String) messageJson.get("postback") : (String) messageJson.get("content");
 
         URL url = new URL(apiUrl);
@@ -120,6 +109,19 @@ public class ChatbotController {
             JSONParser jsonparser = new JSONParser();
             try {
                 JSONObject json = (JSONObject) jsonparser.parse(jsonString.toString());
+
+                // Extract scenarioName from the response and use it as the tag
+                String scenarioName = "";
+                if (json.containsKey("scenario")) {
+                    JSONObject scenario = (JSONObject) json.get("scenario");
+                    scenarioName = (String) scenario.get("name");
+                }
+
+                // Save inquiry with the extracted tag only if scenarioName is not null or empty
+                if (scenarioName != null && !scenarioName.isEmpty()) {
+                    saveChatbotInquiry(userId, scenarioName);
+                }
+
                 String version = (String) json.get("version");
                 JSONArray bubblesArray = (JSONArray) json.get("bubbles");
 
@@ -154,15 +156,13 @@ public class ChatbotController {
         return chatResponse;
     }
 
+    private void saveChatbotInquiry(int userId, String scenarioName) {
+        ChatbotDto inquiryDto = new ChatbotDto();
+        inquiryDto.setUserId(userId);
+        inquiryDto.setChatbotInquiryTag(scenarioName);  // Extracted tag from the response
 
-
-//    @MessageMapping("/getPersistentMenu")
-//    @SendTo("/topic/persistentMenu")
-//    public String getPersistentMenu() throws IOException {
-//        // 고정 메뉴로 사용할 폼 요청하기
-//        String persistentMenuMessage = "#{기본 문의}"; // 고정 메뉴의 폼 이름
-//        return sendMessage(persistentMenuMessage);
-//    }
+        chatbotService.saveChatbotInquiry(inquiryDto);
+    }
 
     private String handleV1Form(JSONObject bubbles) {
         JSONObject data = (JSONObject) bubbles.get("data");
@@ -213,16 +213,6 @@ public class ChatbotController {
     public String getReqMessage(String messageContent, int userId) {
         String requestBody = "";
         try {
-            // ChatbotDto 객체 생성 및 데이터 저장
-            ChatbotDto inquiryDto = new ChatbotDto();
-            inquiryDto.setUserId(userId);  // userId 설정 (로그인하지 않은 경우 0)
-            inquiryDto.setChatbotInquiryTag("someTag");  // 태그는 적절히 설정
-            System.out.println("aaa" +userId);
-            System.out.println("bbb" + inquiryDto.getChatbotInquiryTag());
-
-            // 이 부분에서 ChatbotService를 사용하여 데이터베이스에 저장할 수 있습니다.
-            chatbotService.saveChatbotInquiry(inquiryDto);
-
             // JSON 객체 생성 및 메시지 구성
             JSONObject obj = new JSONObject();
             long timestamp = new Date().getTime();
@@ -250,5 +240,4 @@ public class ChatbotController {
 
         return requestBody;
     }
-
 }
