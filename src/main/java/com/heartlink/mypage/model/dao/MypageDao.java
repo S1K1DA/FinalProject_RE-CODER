@@ -178,6 +178,10 @@ public class MypageDao {
         return sqlSession.selectOne("MypageMapper.getLikeCountByUserId", userId);
     }
 
+    public int hasUserLikedProfile(int userId, int likedUserNo) {
+        Map<String, Integer> params = Map.of("userId", userId, "likedUserNo", likedUserNo);
+        return sqlSession.selectOne("MypageMapper.hasUserLikedProfile", params);
+    }
 
 
 }

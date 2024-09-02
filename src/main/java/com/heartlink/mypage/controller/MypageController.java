@@ -152,25 +152,9 @@ public class MypageController {
         int userId = getCurrentUserId();
         int pageSize = 8;
 
-        List<MypageDto> likedProfiles = mypageService.getLikedProfiles(userId);
+        List<Map<String, Object>> likedProfilesWithUrls = mypageService.getLikedProfilesWithUrls(userId);
 
-        // 각 프로필에 대한 S3 URL 생성
-        List<Map<String, Object>> likedProfilesWithUrls = likedProfiles.stream().map(profile -> {
-            Map<String, Object> profileWithUrl = new HashMap<>();
-            profileWithUrl.put("profile", profile);
-
-            // S3 URL 생성
-            if (profile.getProfilePicturePath() != null && profile.getProfilePictureName() != null) {
-                String s3Url = profile.getProfilePicturePath() + profile.getProfilePictureName();
-                URL url = s3Client.getUrl("heart-link-bucket", s3Url);
-                profileWithUrl.put("profilePictureUrl", url.toString());
-            } else {
-                profileWithUrl.put("profilePictureUrl", "/image/user_profile/default_image.png");
-            }
-            return profileWithUrl;
-        }).collect(Collectors.toList());
-
-        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfilesWithUrls);
 
         model.addAttribute("likedProfiles", likedProfilesWithUrls);
         model.addAttribute("startPage", paginationData.get("startPage"));
@@ -182,6 +166,7 @@ public class MypageController {
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_proflike/mypage-proflike";
     }
+
 
 
     @GetMapping("/match")
@@ -478,8 +463,12 @@ public class MypageController {
     @GetMapping("/getProfileContent")
     @ResponseBody
     public Map<String, Object> getProfileContent(@RequestParam("likedUserNo") int likedUserNo) {
+        int currentUserId = getCurrentUserId();  // 현재 로그인한 사용자의 ID 가져오기
         MypageDto userInfo = mypageService.getUserInfo(likedUserNo);
         int likeCount = mypageService.getLikeCountByUserId(likedUserNo);
+
+        // 현재 사용자가 이 프로필을 좋아요 했는지 확인
+        boolean isLiked = mypageService.hasUserLikedProfile(currentUserId, likedUserNo);
 
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
@@ -503,6 +492,7 @@ public class MypageController {
             response.put("profilePictureUrl", profilePictureUrl.toString());  // S3에서 생성된 URL
             response.put("consentLocationInfo", userInfo.getConsentLocationInfo());
             response.put("userSelectedCategories", mypageService.getUserSelectedCategories(likedUserNo));
+            response.put("isLiked", isLiked);  // 현재 사용자가 좋아요를 눌렀는지 여부 추가
         } else {
             response.put("status", "error");
             response.put("message", "User not found");

@@ -77,33 +77,38 @@
 }
 
 .introlist li.intro1::before {
-    background: url("/image/team_member/team_member_eunsik.jpg") no-repeat 0 0;
+    background: url("/image/heartLinkLogo.png") no-repeat 0 0;
+    top:55%;
     background-size: contain;
 }
 
 .introlist li.intro2::before {
     background: url("/image/heartLinkLogo.png") no-repeat 0 0;
-    top:65%;
+    top:55%;
     background-size: contain;
 }
 
 .introlist li.intro3::before {
-    background: url("") no-repeat 0 0;
+    background: url("/image/heartLinkLogo.png") no-repeat 0 0;
+    top:55%;
     background-size: contain;
 }
 
 .introlist li.intro4::before {
-    background: url("") no-repeat 0 0;
+    background: url("/image/heartLinkLogo.png") no-repeat 0 0;
+    top:55%;
     background-size: contain;
 }
 
 .introlist li.intro5::before {
-    background: url("") no-repeat 0 0;
+    background: url("/image/heartLinkLogo.png") no-repeat 0 0;
+    top:55%;
     background-size: contain;
 }
 
 .introlist li.intro6::before {
-    background: url("") no-repeat 0 0;
+    background: url("/image/heartLinkLogo.png") no-repeat 0 0;
+    top:55%;
     background-size: contain;
 }
 
