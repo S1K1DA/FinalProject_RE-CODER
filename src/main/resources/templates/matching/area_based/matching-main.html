@@ -126,12 +126,17 @@
                     var position = new kakao.maps.LatLng(responseJson[i].longitude, responseJson[i].latitude);
                     addMarker(position, responseJson[i].basicUserNo);
 
+                    let photoPathResult = responseJson[i].photoPath
+                    if(responseJson[i].photoName == null){
+                        photoPathResult = '/image/user_profile/default_image.png';
+                    }
+
                     // 리스트 항목 생성
                     var listItem = document.createElement('li');
                     listItem.className = 'matching-list-item';
                     let resultInnerHtml = `
                         <div class="matching-request-box">
-                            <img src="${responseJson[i].photoPath}" class="matching-photo">
+                            <img src="`+ photoPathResult +`" class="matching-photo">
                             <a class="matching-request" name="area-mathing-btn" >매칭 신청</a>
                             <input id="matchedUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
                         </div>
