@@ -1,5 +1,3 @@
-// profilePopup.js
-
 (function() {
     // 프로필 팝업을 열기 위한 함수
     function openProfilePopup(likedUserNo, profilePopup, popupContent) {
@@ -14,13 +12,16 @@
                     let dislikeCategories = selectedDislikeCategories.map(item => item.personalName).join(', ');
                     let hobbies = data.hobbies.map(item => item.hobbyName).join(', ');
 
-                    // S3 URL이 포함된 이미지 URL 사용
                     let profileImageUrl = data.profilePictureUrl;
+                    let likeIconClass = data.isLiked ? 'prof-heart-icon liked' : 'prof-heart-icon';
 
                     popupContent.innerHTML = `
                         <div style="display: flex;">
-                            <div style="flex: 1;">
-                                <img src="${profileImageUrl}" alt="프로필 사진" style="max-width: 250px;">
+                            <div style="flex: 1; position: relative;">
+                                <img src="${profileImageUrl}" alt="프로필 사진" style="max-width: 250px; display: block;">
+                                <a href="#" class="prof-heart ${data.isLiked ? 'liked' : ''}" style="position: absolute; top: 10px; right: 10px; cursor: pointer; width:30px; height:30px; display: flex; justify-content: center; align-items: center;">
+                                    <i class="bi-heart ${likeIconClass}" style="font-size: 20px;"></i>
+                                </a>
                             </div>
                             <div style="flex: 2; padding-left: 20px;">
                                 <div style="display: flex; justify-content: flex-start;">
@@ -50,6 +51,22 @@
                             </div>
                         </div>
                     `;
+
+                    const likeIcon = popupContent.querySelector('.prof-heart-icon');
+                    const heartElement = popupContent.querySelector('.prof-heart');
+
+                    // 좋아요 아이콘 클릭 이벤트 추가
+                    likeIcon.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        ProfileLikeModule.toggleProfileLike(heartElement, likedUserNo);
+                    });
+
+                    // 좋아요 상태에 따라 스타일 적용
+                    if (data.isLiked) {
+                        heartElement.classList.add('liked');
+                    } else {
+                        heartElement.classList.remove('liked');
+                    }
                 } else {
                     popupContent.innerHTML = `<p>프로필 정보를 불러오는데 실패했습니다.</p>`;
                 }
@@ -62,6 +79,36 @@
             });
     }
 
+    // 프로필 좋아요 토글 함수
+    function toggleProfileLike(element, likedUserNo = null) {
+        if (!likedUserNo) {
+            likedUserNo = element.closest('.liked-prof-item')
+                ? element.closest('.liked-prof-item').getAttribute('data-liked-user-no')
+                : element.closest('.popup-content').getAttribute('data-liked-user-no');
+        }
+
+        const isLiked = element.classList.contains('liked');
+        const url = isLiked ? '/mypage/unlikeProfile' : '/mypage/likeProfile';
+
+        sendLikeRequest(url, { likedUserNo }, element, !isLiked).then(success => {
+            if (success) {
+                element.classList.toggle('liked', !isLiked); // 좋아요 상태를 토글
+
+                // 현재 페이지가 mypage/proflike인지 확인
+                if (window.location.pathname.includes('/mypage/proflike')) {
+                    const mainPageHeart = document.querySelector(`.liked-prof-item[data-liked-user-no="${likedUserNo}"] .prof-heart`);
+                    if (mainPageHeart) {
+                        if (!isLiked) {
+                            mainPageHeart.classList.remove('liked'); // 좋아요 해제
+                        } else {
+                            mainPageHeart.classList.add('liked'); // 좋아요 설정
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     // 프로필 아이템 클릭 시 팝업 열기 기능 초기화
     function initializeProfileItemPopup() {
         const profileItems = document.querySelectorAll('.liked-prof-item');
@@ -71,6 +118,7 @@
         profileItems.forEach(item => {
             item.addEventListener('click', function () {
                 const likedUserNo = this.getAttribute('data-liked-user-no');
+                popupContent.setAttribute('data-liked-user-no', likedUserNo); // likedUserNo를 저장
                 openProfilePopup(likedUserNo, profilePopup, popupContent);
             });
         });

@@ -214,4 +214,9 @@ public class MypageServiceImpl implements MypageService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean hasUserLikedProfile(int userId, int likedUserNo) {
+        return mypageDao.hasUserLikedProfile(userId, likedUserNo) > 0;
+    }
+
 }

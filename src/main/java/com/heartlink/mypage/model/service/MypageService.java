@@ -73,4 +73,5 @@ public interface MypageService {
 
     public List<Map<String, Object>> getLikedProfilesWithUrls(int userId);
 
+    public boolean hasUserLikedProfile(int userId, int likedUserNo);
 }

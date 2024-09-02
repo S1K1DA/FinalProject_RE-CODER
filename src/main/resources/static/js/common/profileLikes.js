@@ -1,5 +1,3 @@
-// profileLikes.js
-
 (function() {
     // 프로필 좋아요 요청 함수
     function sendLikeRequest(url, data, element, isLiking) {
@@ -11,11 +9,6 @@
             body: JSON.stringify(data)
         }).then(response => {
             if (response.ok) {
-                if (isLiking) {
-                    element.classList.add('liked');
-                } else {
-                    element.classList.remove('liked');
-                }
                 return true;
             } else {
                 Swal.fire({
@@ -25,16 +18,28 @@
                 });
                 return false;
             }
+        }).catch(error => {
+            console.error("Error in sendLikeRequest:", error);
+            return false;
         });
     }
 
     // 프로필 좋아요 토글 함수
-    function toggleProfileLike(element) {
-        const likedUserNo = element.closest('.liked-prof-item').getAttribute('data-liked-user-no');
-        const isLiked = element.classList.contains('liked');
+    function toggleProfileLike(element, likedUserNo = null) {
+        if (!likedUserNo) {
+            likedUserNo = element.closest('.liked-prof-item')
+                ? element.closest('.liked-prof-item').getAttribute('data-liked-user-no')
+                : element.closest('.popup-content').getAttribute('data-liked-user-no');
+        }
 
+        const isLiked = element.classList.contains('liked');
         const url = isLiked ? '/mypage/unlikeProfile' : '/mypage/likeProfile';
-        return sendLikeRequest(url, { likedUserNo }, element, !isLiked);
+
+        sendLikeRequest(url, { likedUserNo }, element, !isLiked).then(success => {
+            if (success) {
+                element.classList.toggle('liked', !isLiked); // 좋아요 상태를 토글
+            }
+        });
     }
 
     // 하트 아이콘 클릭 처리 함수

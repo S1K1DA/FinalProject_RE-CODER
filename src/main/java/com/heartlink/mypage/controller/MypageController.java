@@ -463,8 +463,12 @@ public class MypageController {
     @GetMapping("/getProfileContent")
     @ResponseBody
     public Map<String, Object> getProfileContent(@RequestParam("likedUserNo") int likedUserNo) {
+        int currentUserId = getCurrentUserId();  // 현재 로그인한 사용자의 ID 가져오기
         MypageDto userInfo = mypageService.getUserInfo(likedUserNo);
         int likeCount = mypageService.getLikeCountByUserId(likedUserNo);
+
+        // 현재 사용자가 이 프로필을 좋아요 했는지 확인
+        boolean isLiked = mypageService.hasUserLikedProfile(currentUserId, likedUserNo);
 
         List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
         List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
@@ -488,6 +492,7 @@ public class MypageController {
             response.put("profilePictureUrl", profilePictureUrl.toString());  // S3에서 생성된 URL
             response.put("consentLocationInfo", userInfo.getConsentLocationInfo());
             response.put("userSelectedCategories", mypageService.getUserSelectedCategories(likedUserNo));
+            response.put("isLiked", isLiked);  // 현재 사용자가 좋아요를 눌렀는지 여부 추가
         } else {
             response.put("status", "error");
             response.put("message", "User not found");
