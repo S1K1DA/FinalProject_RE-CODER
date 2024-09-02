@@ -12,6 +12,7 @@ public class EmailService {
 
     private final EmailUtil emailUtil;
     private final Map<String, String> emailVerificationMap = new HashMap<>();
+    private final Map<String, String> passwordResetMap = new HashMap<>();
 
     public EmailService(EmailUtil emailUtil) {
         this.emailUtil = emailUtil;
@@ -38,6 +39,24 @@ public class EmailService {
     // 인증 코드 유효성 검사
     public boolean verifyCode(String email, String code) {
         String storedCode = emailVerificationMap.get(email);
+        return storedCode != null && storedCode.equals(code);
+    }
+
+    // 비밀번호 재설정용 인증 코드 전송
+    public String sendResetCode(String email) throws MessagingException {
+        String resetCode = generateVerificationCode();
+        passwordResetMap.put(email, resetCode);
+
+        String subject = "HeartLink 비밀번호 재설정 코드";
+        String text = "<h3>비밀번호 재설정 코드</h3><p>인증 코드는 <strong>" + resetCode + "</strong> 입니다.</p>";
+
+        emailUtil.sendEmail(email, subject, text);
+        return resetCode;
+    }
+
+    // 비밀번호 재설정 코드 유효성 검사
+    public boolean verifyResetCode(String email, String code) {
+        String storedCode = passwordResetMap.get(email);
         return storedCode != null && storedCode.equals(code);
     }
 }

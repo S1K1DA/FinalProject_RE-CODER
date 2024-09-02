@@ -105,20 +105,11 @@
 
     <select id="findByNameAndBirthdate" parameterType="map" resultType="com.heartlink.member.model.dto.MemberDto">
         SELECT
-        BASIC_USER_NO AS userNumber,
-        BASIC_USER_EMAIL AS email,
-        BASIC_USER_PWD AS password,
-        BASIC_USER_NICKNAME AS nickname,
-        BASIC_USER_NAME AS name,
-        USER_ADDR AS address,
-        BASIC_USER_TELNUM AS phoneNumber,
-        BASIC_USER_BIRTHDATE AS residentNumber,
-        BASIC_USER_SEX AS gender
+        BASIC_USER_EMAIL AS email
         FROM BASIC_USER
         WHERE BASIC_USER_NAME = #{name}
         AND BASIC_USER_BIRTHDATE = #{residentNumber}
     </select>
-
 
     <select id="getTopUserList" resultType="com.heartlink.member.model.dto.MemberDto">
         SELECT LIKED_USER_NO as userNumber, COUNT(*) AS likeCnt
@@ -153,4 +144,10 @@
             bp.PHOTO_PATH,
             b.BASIC_USER_SEX
     </select>
+
+    <update id="updatePassword">
+        UPDATE BASIC_USER
+        SET BASIC_USER_PWD = #{password}
+        WHERE BASIC_USER_EMAIL = #{email}
+    </update>
 </mapper>

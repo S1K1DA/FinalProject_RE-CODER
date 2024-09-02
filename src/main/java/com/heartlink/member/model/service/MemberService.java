@@ -179,4 +179,11 @@ public class MemberService {
     public MemberDto findByNameAndBirthdate(String name, String residentNumber) {
         return memberMapper.findByNameAndBirthdate(name, residentNumber);
     }
+
+    // 비밀번호 변경
+    public void updatePassword(String email, String newPassword) {
+        String encryptedPassword = passwordEncoder.encode(newPassword);
+        memberMapper.updatePassword(email, encryptedPassword);
+    }
+
 }

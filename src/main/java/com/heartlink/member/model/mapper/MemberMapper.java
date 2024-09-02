@@ -38,7 +38,12 @@ public interface MemberMapper {
     // 사용자의 토큰 조회 메서드
     String findTokenByUserNumber(@Param("userNumber") int userNumber);
 
+    // 비밀번호 업데이트 메서드: 비밀번호를 암호화된 상태로 저장
+    void updatePassword(@Param("email") String email, @Param("password") String password);
 
+    // 아이디 찾기
+    MemberDto findByNameAndBirthdate(@Param("name") String name, @Param("residentNumber") String residentNumber);
+    
     // ------------------------------------------------
     // HomeController
     public List<MemberDto> getTopUserList();
@@ -46,7 +51,5 @@ public interface MemberMapper {
 
     // 로그인 시 LAST_LOGIN_DATE 업데이트 메서드
     void updateLastLoginDate(@Param("email") String email);
-
-    MemberDto findByNameAndBirthdate(@Param("name") String name, @Param("residentNumber") String residentNumber);
 
 }

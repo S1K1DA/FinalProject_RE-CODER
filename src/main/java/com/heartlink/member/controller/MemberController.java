@@ -3,6 +3,7 @@ package com.heartlink.member.controller;
 import com.heartlink.member.model.dto.AdminDto;
 import com.heartlink.member.model.dto.MemberDto;
 import com.heartlink.member.model.service.MemberService;
+import com.heartlink.member.util.EmailService;
 import com.heartlink.member.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +27,13 @@ public class MemberController {
     private static final Logger logger = LogManager.getLogger(MemberController.class);
     private final MemberService memberService;
     private final JwtUtil jwtUtil;
+    private final EmailService emailService; // EmailService 필드 추가
 
     @Autowired
-    public MemberController(MemberService memberService, JwtUtil jwtUtil) {
+    public MemberController(MemberService memberService, JwtUtil jwtUtil, EmailService emailService) {
         this.memberService = memberService;
         this.jwtUtil = jwtUtil;
+        this.emailService = emailService; // EmailService 주입
     }
 
     // 회원가입, 로그인 페이지 이동
@@ -143,21 +145,95 @@ public class MemberController {
     @PostMapping("/find-id")
     @ResponseBody
     public ResponseEntity<Map<String, String>> findIdByNameAndBirthdate(@RequestBody Map<String, String> request) {
-        String name = request.get("name");
-        String residentNumber = request.get("residentNumber");
-
         Map<String, String> response = new HashMap<>();
-        MemberDto member = memberService.findByNameAndBirthdate(name, residentNumber);
 
-        if (member != null) {
-            response.put("success", "true");
-            response.put("email", member.getEmail());
-        } else {
+        try {
+            String name = request.get("name");
+            String residentNumber = request.get("residentNumber");
+
+            MemberDto member = memberService.findByNameAndBirthdate(name, residentNumber);
+
+            if (member != null && member.getEmail() != null) {
+                // 이메일이 존재하는 경우
+                response.put("success", "true");
+                response.put("email", member.getEmail());
+            } else {
+                // member가 null이거나 이메일이 없는 경우
+                response.put("error", "false");
+            }
+        } catch (Exception e) {
             response.put("success", "false");
-            response.put("message", "해당 정보로 등록된 이메일이 없습니다.");
+            response.put("message", "서버 오류가 발생했습니다.");
         }
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/send-reset-code")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> sendResetCode(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            String email = request.get("email");
+
+            // 이메일이 존재하는지 검증
+            MemberDto member = memberService.findByEmail(email);
+
+            if (member != null) {
+                String resetCode = emailService.sendResetCode(email);  // 인증번호 전송
+                response.put("success", "true");
+            }
+        } catch (Exception e) {
+            response.put("message", "서버 오류가 발생했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/verify-reset-code")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> verifyResetCode(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            String email = request.get("email");
+            String code = request.get("code");
+
+            // 인증번호가 일치하는지 검증
+            boolean isValid = emailService.verifyResetCode(email, code);
+
+            if (isValid) {
+                response.put("success", "true");
+            } else {
+                response.put("message", "잘못된 인증번호입니다.");
+            }
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류가 발생했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/reset-password")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            String email = request.get("email");
+            String newPassword = request.get("password");
+
+            memberService.updatePassword(email, newPassword);
+            response.put("success", "true");
+ 
+        } catch (Exception e) {
+            response.put("message", "비밀번호 변경 중 오류가 발생했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 }
 
