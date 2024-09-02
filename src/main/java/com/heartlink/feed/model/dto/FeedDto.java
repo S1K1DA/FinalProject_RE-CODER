@@ -19,7 +19,7 @@ public class FeedDto {
     private String feedContent;
     private String feedIndate;
     private String feedUpdate;
-    private String feedState;
+    private String feedDelete;
     private String feedTag;
 
     private List<Integer> LikedUser;

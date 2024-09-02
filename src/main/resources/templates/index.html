@@ -107,10 +107,8 @@
                 <div class="col-lg-4 col-12 mb-4 mb-lg-0" th:each="user : ${UserTop}">
                     <div class="custom-block custom-block-full">
                         <div class="custom-block-image-wrap">
-                            <a href="detail-page.html">
                                 <img th:src="${user.userPhotoPath}" class="custom-block-image img-fluid"
                                      alt="">
-                            </a>
                         </div>
 
                         <div class="custom-block-info">
@@ -131,7 +129,7 @@
                                 <small th:text="${user.personalHate}" class="custom-main-p"></small>
                             </p>
                             <div class="custom-block-bottom d-flex justify-content-between mt-3">
-                                <p href="#" class="bi-heart me-1">
+                                <p class="bi-heart me-1">
                                     <span th:text="${user.likeCnt}">2.5k</span>
                                 </p>
                             </div>

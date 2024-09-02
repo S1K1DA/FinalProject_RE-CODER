@@ -40,6 +40,12 @@ public class HomeService {
         List<ReviewDto> reviews = reviewDao.getTopReviews();
 
         for (ReviewDto review : reviews) {
+            String titleCut = "";
+            if(review.getReviewTitle().length() > 7){
+                titleCut = review.getReviewTitle().substring(0, 7) + "...";
+            }
+            review.setReviewTitle(titleCut);
+
             String firstImageUrl = extractFirstImageUrl(review.getReviewContent());
             review.setFirstImageUrl(firstImageUrl != null ? firstImageUrl : "/image/mainThumbnail.jpg");
         }
@@ -63,12 +69,21 @@ public class HomeService {
 
         List<FeedDto> result = feedMapper.getTopFeedList();
 
+        while (result.size() < 3) {
+            result = feedMapper.getNewFeedList();
+        }
+
         for(FeedDto item : result){
 
             
             // top 3 상세정보 가져오기
             FeedDto detail = feedMapper.getTopFeedDetail(item.getFeedNo());
-            item.setFeedTitle(detail.getFeedTitle());
+
+            String titleCut = "";
+            if(detail.getFeedTitle().length() > 9){
+                titleCut = detail.getFeedTitle().substring(0, 9) + "...";
+            }
+            item.setFeedTitle(titleCut);
 
             // 태그 다시 달고 제거
             String originalContent = StringEscapeUtils.unescapeHtml4(detail.getFeedContent());
@@ -85,9 +100,7 @@ public class HomeService {
             item.setBasicUserNickname(detail.getBasicUserNickname());
         }
 
-        while (result.size() < 3) {
-            result.add(new FeedDto()); // 빈 FeedDto 객체를 추가합니다.
-        }
+
 
         return result;
     }

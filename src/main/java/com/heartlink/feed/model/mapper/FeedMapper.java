@@ -35,6 +35,8 @@ public interface FeedMapper {
 
     public List<FeedDto> getTopFeedList();
 
+    public List<FeedDto> getNewFeedList();
+
     public FeedDto getTopFeedDetail(int feedNo);
 }
 

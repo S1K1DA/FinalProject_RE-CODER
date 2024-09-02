@@ -79,7 +79,7 @@
                         <div class="feed-title-box">
                             <p class="feed-title" th:text="${feed.feedTitle}"></p>
                             <input type="hidden" id="feedNo" th:value="${feed.feedNo}">
-                            <div class="feed-icons">
+                            <div class="feed-icons" th:if="${thisUserNo != 0}">
                                 <a class="badge ms-auto feed-heart-cancel"
                                    id="like-heart"
                                    th:each="user : ${feed.LikedUser}"
@@ -133,7 +133,7 @@
                                     <input type="hidden" th:value="${comment.commentNo}">
                                     <p class="reply-nickname" th:text="${comment.commentUserNickname}"></p>
                                     <p class="reply-indate" th:text="${comment.commentIndate}"></p>
-                                    <a class="bi-x reply-delete" th:if="${comment.commentUserNo == thisUserNo}" onclick="deleteReply(this)"></a>
+                                    <a class="bi-x reply-delete" th:if="${comment.commentUserNo == thisUserNo && thisUserNo != 0}" onclick="deleteReply(this)"></a>
                                 </div>
                                 <div class="reply-content-box">
                                     <span class="reply-content"th:text="${comment.commentContent}"></span>
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="answer-reply-box">
+                    <div class="answer-reply-box" th:if="${thisUserNo != 0}">
                         <div class="answer-text-box">
                             <textarea class="answer-text" placeholder="댓글을 입력해주세요."></textarea>
                             <button class="answer-submit" id="comment-submit-btn">등록</button>

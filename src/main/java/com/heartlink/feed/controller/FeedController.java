@@ -35,6 +35,10 @@ public class FeedController {
     // SecurityContext에서 userNo 가져오기
     private int getCurrentUserNo() {
         String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        // JWT가 null이거나 빈 문자열인 경우 0을 반환
+        if (jwt == null || jwt.trim().isEmpty()) {
+            return 0; // JWT가 없을 경우 기본 값 0 반환
+        }
         return jwtUtil.getUserNumberFromToken(jwt);
     }
 
