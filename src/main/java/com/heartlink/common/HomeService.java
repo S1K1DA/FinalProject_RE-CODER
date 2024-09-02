@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,12 +70,11 @@ public class HomeService {
 
         List<FeedDto> result = feedMapper.getTopFeedList();
 
-        while (result.size() < 3) {
+        if(Objects.isNull(result)){
             result = feedMapper.getNewFeedList();
         }
 
         for(FeedDto item : result){
-
             
             // top 3 상세정보 가져오기
             FeedDto detail = feedMapper.getTopFeedDetail(item.getFeedNo());
@@ -100,7 +100,9 @@ public class HomeService {
             item.setBasicUserNickname(detail.getBasicUserNickname());
         }
 
-
+        while (result.size() < 3) {
+            result.add(new FeedDto());
+        }
 
         return result;
     }
