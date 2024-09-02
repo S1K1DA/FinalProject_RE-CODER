@@ -2,7 +2,6 @@ package com.heartlink.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -56,7 +55,7 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**", "/notices/new", "/notices/edit", "/notices/delete", "/notices/delete").hasRole("ADMIN")
                                 // 일부 페이지만 접속 권한 설정
                                 .requestMatchers("/matching/mbti").authenticated()    //은식
-                                .requestMatchers("/mypage/**").authenticated()    //아태
+                                .requestMatchers("/mypage/**", "/review/photoenroll").authenticated()    //아태
                                 .requestMatchers("/matching/**").authenticated()    //재인
 
                                 // 그 외의 모든 요청은 권한 허용

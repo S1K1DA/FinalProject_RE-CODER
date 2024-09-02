@@ -1,5 +1,8 @@
 package com.heartlink.chatbot.Controller;
 
+import com.heartlink.chatbot.model.dto.ChatbotDto;
+import com.heartlink.chatbot.model.service.ChatbotService;
+import com.heartlink.member.util.JwtUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -7,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.crypto.Mac;
@@ -23,6 +27,14 @@ public class ChatbotController {
     private static String apiUrl;
     private static String secretKey;
 
+    private final JwtUtil jwtUtil;
+    private final ChatbotService chatbotService;
+
+    public ChatbotController(JwtUtil jwtUtil, ChatbotService chatbotService) {
+        this.jwtUtil = jwtUtil;
+        this.chatbotService = chatbotService;
+    }
+
     static {
         try {
             Properties properties = new Properties();
@@ -36,24 +48,38 @@ public class ChatbotController {
         }
     }
 
+    // SecurityContext에서 userId 가져오기
+    private int getCurrentUserNo() {
+        try {
+            String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            return jwtUtil.getUserNumberFromToken(jwt);
+        } catch (Exception e) {
+            return 0;  // 로그인하지 않은 경우 0 반환
+        }
+    }
+
     @MessageMapping("/sendMessage")
     @SendTo("/topic/public")
     public String sendMessage(@Payload String chatMessage) throws IOException {
         JSONParser jsonParser = new JSONParser();
         JSONObject messageJson = null;
         boolean isPostback = false;
+        int userId = getCurrentUserNo();
 
         try {
             messageJson = (JSONObject) jsonParser.parse(chatMessage);
+            if (messageJson.containsKey("userId")) {
+                userId = ((Long) messageJson.get("userId")).intValue(); // 메시지에서 userId 가져오기
+            }
             isPostback = messageJson.containsKey("postback");
         } catch (Exception e) {
             System.out.println("Error parsing received message: " + e.getMessage());
         }
 
-        String messageToSend = isPostback ? (String) messageJson.get("postback") : chatMessage;
+        String messageToSend = isPostback ? (String) messageJson.get("postback") : (String) messageJson.get("content");
 
         URL url = new URL(apiUrl);
-        String message = getReqMessage(messageToSend);
+        String message = getReqMessage(messageToSend, userId);  // userId 포함
         String encodeBase64String = makeSignature(message, secretKey);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -83,6 +109,19 @@ public class ChatbotController {
             JSONParser jsonparser = new JSONParser();
             try {
                 JSONObject json = (JSONObject) jsonparser.parse(jsonString.toString());
+
+                // Extract scenarioName from the response and use it as the tag
+                String scenarioName = "";
+                if (json.containsKey("scenario")) {
+                    JSONObject scenario = (JSONObject) json.get("scenario");
+                    scenarioName = (String) scenario.get("name");
+                }
+
+                // Save inquiry with the extracted tag only if scenarioName is not null or empty
+                if (scenarioName != null && !scenarioName.isEmpty()) {
+                    saveChatbotInquiry(userId, scenarioName);
+                }
+
                 String version = (String) json.get("version");
                 JSONArray bubblesArray = (JSONArray) json.get("bubbles");
 
@@ -117,12 +156,12 @@ public class ChatbotController {
         return chatResponse;
     }
 
-    @MessageMapping("/getPersistentMenu")
-    @SendTo("/topic/persistentMenu")
-    public String getPersistentMenu() throws IOException {
-        // 고정 메뉴로 사용할 폼 요청하기
-        String persistentMenuMessage = "#{기본 문의}"; // 고정 메뉴의 폼 이름
-        return sendMessage(persistentMenuMessage);
+    private void saveChatbotInquiry(int userId, String scenarioName) {
+        ChatbotDto inquiryDto = new ChatbotDto();
+        inquiryDto.setUserId(userId);
+        inquiryDto.setChatbotInquiryTag(scenarioName);  // Extracted tag from the response
+
+        chatbotService.saveChatbotInquiry(inquiryDto);
     }
 
     private String handleV1Form(JSONObject bubbles) {
@@ -171,13 +210,14 @@ public class ChatbotController {
         return encodeBase64String;
     }
 
-    public static String getReqMessage(String messageContent) {
+    public String getReqMessage(String messageContent, int userId) {
         String requestBody = "";
         try {
+            // JSON 객체 생성 및 메시지 구성
             JSONObject obj = new JSONObject();
             long timestamp = new Date().getTime();
             obj.put("version", "v2");
-            obj.put("userId", "abc@gmail.com");
+            obj.put("userId", userId);
             obj.put("timestamp", timestamp);
 
             JSONObject bubbles_obj = new JSONObject();
@@ -194,9 +234,7 @@ public class ChatbotController {
             obj.put("event", "send");
 
             requestBody = obj.toString();
-//            System.out.println("Request Body: " + requestBody);
-
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("## Exception : " + e);
         }
 

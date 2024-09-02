@@ -33,11 +33,16 @@ public class GlobalController {
         this.jwtUtil = jwtUtil;
     }
 
-    // SecurityContext에서 userNo 가져오기
+    // SecurityContext에서 userId 가져오기
     private int getCurrentUserNo() {
-        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        return jwtUtil.getUserNumberFromToken(jwt);
+        try {
+            String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            return jwtUtil.getUserNumberFromToken(jwt);
+        } catch (Exception e) {
+            return 0;  // 로그인하지 않은 경우 0 반환
+        }
     }
+
 
     @ModelAttribute("member")
     public MemberDto addMemberToModel() {
@@ -63,6 +68,16 @@ public class GlobalController {
         } catch(Exception e) {
             System.out.println("Error fetching user alarms: " + e.getMessage());
             return List.of(); // 빈 리스트 반환
+        }
+    }
+
+    @ModelAttribute("userId")
+    public Integer addUserIdToModel() {
+        try {
+            return getCurrentUserNo();  // getCurrentUserNo()를 사용하여 userNo를 모델에 추가
+        } catch (Exception e) {
+            System.out.println("Error fetching user ID: " + e.getMessage());
+            return null; // 오류가 발생하면 null 반환
         }
     }
 

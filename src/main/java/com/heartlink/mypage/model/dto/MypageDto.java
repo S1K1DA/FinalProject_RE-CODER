@@ -86,6 +86,4 @@ public class MypageDto {
     private String photoPath;
 
     private Date photoIndate;
-
-    private String decisionHistory;
 }
