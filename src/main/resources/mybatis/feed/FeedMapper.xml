@@ -8,7 +8,7 @@
         <result column="feed_content" property="feedContent" />
         <result column="feed_indate" property="feedIndate" />
         <result column="feed_update" property="feedUpdate" />
-        <result column="feed_state" property="feedState" />
+        <result column="feed_DELETE" property="feedDelete" />
         <result column="feed_tag" property="feedTag" />
         <result column="basic_user_nickname" property="basicUserNickname" />
         <result column="commnet_user_no" property="commentUserNo" />
@@ -21,6 +21,7 @@
         <result column="comment_user_nickname" property="commentUserNickname"/>
         <result column="comment_content" property="commentContent"/>
         <result column="comment_indate" property="commentIndate"/>
+        <result column="comment_user_no" property="commentUserNo"/>
     </resultMap>
 
 
@@ -51,7 +52,7 @@
             ) AS row_num
             FROM FEEDS f
             JOIN BASIC_USER bu ON f.AUTHOR_USER_NO = BASIC_USER_NO
-            WHERE FEED_STATE = 'N'
+            WHERE FEED_DELETE IS NULL
             <choose>
                 <when test="feedTag.equals('전체')">
                     <!-- 모든 태그 포함 -->
@@ -72,12 +73,16 @@
 
 
     <select id="getCommentList" resultMap="commentResultMap">
-        SELECT bu.BASIC_USER_NICKNAME AS COMMENT_USER_NICKNAME, fc.COMMENT_CONTENT , fc.COMMENT_INDATE, fc.COMMENT_NO
+        SELECT bu.BASIC_USER_NICKNAME AS COMMENT_USER_NICKNAME,
+               fc.COMMENT_CONTENT ,
+               fc.COMMENT_INDATE,
+               fc.COMMENT_NO,
+               fc.COMMENT_USER_NO
         FROM FEED_COMMENTS fc
                  JOIN BASIC_USER bu
                       ON fc.COMMENT_USER_NO = bu.BASIC_USER_NO
         WHERE FEED_NO = #{feedNo}
-        AND fc.COMMENT_STATE = 'N'
+        AND fc.COMMENT_DELETE IS NULL
         ORDER BY COMMENT_INDATE ASC
     </select>
 
@@ -85,6 +90,12 @@
         SELECT COALESCE(COUNT(DISTINCT BASIC_USER_NO), 0) AS LIKE_CNT
         FROM FEED_LIKES fl
         WHERE FEED_NO = #{feedNo}
+    </select>
+
+    <select id="getLikedUser" resultType="java.lang.Integer">
+        SELECT fl.BASIC_USER_NO FROM FEEDS f
+        JOIN FEED_LIKES fl ON f.FEED_NO = fl.FEED_NO
+        WHERE f.FEED_NO = #{feedNo}
     </select>
 
     <insert id="setFeedEnroll">
@@ -95,7 +106,7 @@
             #{feedContent},
             SYSDATE,
             NULL,
-            DEFAULT,
+            NULL,
             #{feedTag}
         )
     </insert>
@@ -107,7 +118,7 @@
             #{commentUserNo},
             #{commentContent},
             SYSDATE,
-            DEFAULT
+            NULL
         )
     </insert>
 
@@ -129,13 +140,13 @@
 
     <update id="setCommentDelete">
         UPDATE FEED_COMMENTS
-        SET COMMENT_STATE = 'Y'
+        SET COMMENT_DELETE = SYSDATE
         WHERE COMMENT_NO = #{commentNo}
     </update>
 
     <update id="setFeedDelete">
         UPDATE FEEDS
-        SET FEED_STATE = 'Y'
+        SET FEED_DELETE = SYSDATE
         WHERE FEED_NO = #{feedNo}
     </update>
 
@@ -146,5 +157,43 @@
             SYSDATE
             )
     </insert>
+
+    <insert id="setFeedLikeCancel">
+        DELETE FROM FEED_LIKES fl
+        WHERE fl.FEED_NO = #{feedNo}
+        AND fl.BASIC_USER_NO = #{userNo}
+    </insert>
+
+    <select id="getTopFeedList" resultMap="resultMapFeed">
+        SELECT COALESCE(COUNT(DISTINCT BASIC_USER_NO), 0) AS like_cnt,
+               fl.FEED_NO
+        FROM FEED_LIKES fl
+                 JOIN FEEDS f
+                      ON fl.FEED_NO = f.FEED_NO
+        WHERE FEED_DELETE IS NULL
+        GROUP BY fl.FEED_NO
+        ORDER BY LIKE_CNT DESC
+            FETCH FIRST 3 ROWS ONLY
+    </select>
+
+    <select id="getNewFeedList" resultMap="resultMapFeed">
+        SELECT f.FEED_NO
+        FROM FEEDS f
+        WHERE FEED_DELETE IS NULL
+        ORDER BY f.FEED_INDATE  DESC
+            FETCH FIRST 3 ROWS ONLY
+    </select>
+    
+    <select id="getTopFeedDetail" resultMap="resultMapFeed">
+        SELECT f.FEED_TITLE ,
+        f.FEED_CONTENT ,
+        f.AUTHOR_USER_NO,
+        f.FEED_TAG,
+        bu.BASIC_USER_NICKNAME
+        FROM FEEDS f
+        JOIN BASIC_USER bu
+        ON f.AUTHOR_USER_NO = bu.BASIC_USER_NO
+        WHERE FEED_NO = #{feedNo}
+    </select>
 
 </mapper>
