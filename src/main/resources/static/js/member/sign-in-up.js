@@ -428,8 +428,21 @@ document.getElementById("forgot-id").addEventListener("click", function() {
         preConfirm: () => {
             const name = Swal.getPopup().querySelector('#findName').value;
             const residentNumber = Swal.getPopup().querySelector('#findResidentNumber').value;
+            // 한글만 입력 가능
+            const namePattern = /^[가-힣]+$/;
+            // 숫자만 입력 가능
+            const residentNumberPattern = /^\d+$/;
             if (!name || !residentNumber) {
                 Swal.showValidationMessage(`모든 정보를 입력하세요.`);
+                return false;
+            }
+            if (!namePattern.test(name)) {
+                Swal.showValidationMessage(`이름은 한글만 입력 가능합니다.`);
+                return false;
+            }
+            if (!residentNumberPattern.test(residentNumber)) {
+                Swal.showValidationMessage(`주민번호 앞자리는 숫자만 입력 가능합니다.`);
+                return false;
             }
             return { name: name, residentNumber: residentNumber };
         }
@@ -450,9 +463,9 @@ document.getElementById("forgot-id").addEventListener("click", function() {
             })
             .then(data => {
                 if (data.success) {
-                    Swal.fire('아이디(이메일) 찾기', `이메일(아이디)은 ${data.email}입니다.`, 'success');
-                } else {
-                    Swal.fire('아이디(이메일) 찾기', data.message, 'error');
+                    Swal.fire('아이디(이메일) 찾기 성공', `이메일(아이디)은 ${data.email}입니다.`, 'success');
+                } else if (data.error) {
+                    Swal.fire('아이디(이메일) 찾기 실패', '일치하는 사용자가 없습니다.', 'error');
                 }
             })
             .catch(error => {
@@ -462,4 +475,5 @@ document.getElementById("forgot-id").addEventListener("click", function() {
         }
     });
 });
+
 

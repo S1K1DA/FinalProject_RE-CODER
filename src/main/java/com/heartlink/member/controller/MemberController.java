@@ -143,18 +143,25 @@ public class MemberController {
     @PostMapping("/find-id")
     @ResponseBody
     public ResponseEntity<Map<String, String>> findIdByNameAndBirthdate(@RequestBody Map<String, String> request) {
-        String name = request.get("name");
-        String residentNumber = request.get("residentNumber");
-
         Map<String, String> response = new HashMap<>();
-        MemberDto member = memberService.findByNameAndBirthdate(name, residentNumber);
 
-        if (member != null) {
-            response.put("success", "true");
-            response.put("email", member.getEmail());
-        } else {
+        try {
+            String name = request.get("name");
+            String residentNumber = request.get("residentNumber");
+
+            MemberDto member = memberService.findByNameAndBirthdate(name, residentNumber);
+
+            if (member != null && member.getEmail() != null) {
+                // 이메일이 존재하는 경우
+                response.put("success", "true");
+                response.put("email", member.getEmail());
+            } else {
+                // member가 null이거나 이메일이 없는 경우
+                response.put("error", "false");
+            }
+        } catch (Exception e) {
             response.put("success", "false");
-            response.put("message", "해당 정보로 등록된 이메일이 없습니다.");
+            response.put("message", "서버 오류가 발생했습니다.");
         }
 
         return ResponseEntity.ok(response);
