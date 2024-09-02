@@ -69,18 +69,15 @@ function updateMatchingState(matchingNo, state) {
     .then(response => response.text())
     .then(data => {
         if (data === '매칭 상태 업데이트 성공') {
-            // SweetAlert을 사용해 성공 메시지 표시
             Swal.fire({
                 title: 'Success!',
                 text: '매칭 상태가 성공적으로 업데이트되었습니다.',
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
-                // 페이지 새로고침
                 location.reload();
             });
         } else {
-            // SweetAlert을 사용해 오류 메시지 표시
             Swal.fire({
                 title: 'Error!',
                 text: '매칭 상태 업데이트에 실패했습니다.',
@@ -91,7 +88,6 @@ function updateMatchingState(matchingNo, state) {
     })
     .catch(error => {
         console.error('Error:', error);
-        // SweetAlert을 사용해 네트워크 오류 메시지 표시
         Swal.fire({
             title: 'Error!',
             text: '매칭 상태 업데이트 중 오류가 발생했습니다.',
@@ -119,7 +115,6 @@ function setupProfileImageUpload() {
                     };
                     reader.readAsDataURL(file);
 
-                    // 업로드할 파일을 서버에 전송
                     const formData = new FormData();
                     formData.append('file', file);
 
@@ -129,7 +124,6 @@ function setupProfileImageUpload() {
                     })
                     .then(response => response.text())
                     .then(data => {
-                        // 서버에서 반환된 이미지 URL을 hidden 필드에 저장
                         document.querySelector('input[name="profilePicturePath"]').value = data;
                     })
                     .catch(error => console.error('Error:', error));
@@ -177,10 +171,8 @@ function toggleFeedLike(element) {
     const isLiked = element.classList.contains('liked');
 
     if (isLiked) {
-        // 좋아요 해제
         sendLikeRequest('/mypage/unlikeFeed', { feedNo }, element, false);
     } else {
-        // 좋아요 추가
         sendLikeRequest('/mypage/likeFeed', { feedNo }, element, true);
     }
 }
@@ -191,10 +183,8 @@ function toggleProfileLike(element) {
     const isLiked = element.classList.contains('liked');
 
     if (isLiked) {
-        // 프로필 좋아요 해제
         sendLikeRequest('/mypage/unlikeProfile', { likedUserNo }, element, false);
     } else {
-        // 프로필 좋아요 추가
         sendLikeRequest('/mypage/likeProfile', { likedUserNo }, element, true);
     }
 }
@@ -362,20 +352,16 @@ function initializeNicknameCheck() {
     const checkNicknameBtn = document.getElementById('check-nickname-btn');
     const updateBtn = document.getElementById('update-btn');
 
-    // 현재 저장된 닉네임
     const originalNickname = nicknameInput.value.trim();
 
-    // 닉네임 입력 시 유효성 초기화
     nicknameInput.addEventListener('input', function () {
-        isNicknameValid = false; // 닉네임이 변경될 때마다 중복 체크가 필요하므로 무효화
+        isNicknameValid = false;
     });
 
-    // 닉네임 중복 체크 버튼 클릭 처리
     checkNicknameBtn.addEventListener('click', function () {
         checkNicknameAvailability(nicknameInput.value.trim(), originalNickname);
     });
 
-    // 폼 제출 시 중복 체크 유효성 검사
     updateBtn.addEventListener('click', function (event) {
         validateBeforeSubmit(event, nicknameInput.value.trim(), originalNickname);
     });
@@ -392,7 +378,6 @@ function checkNicknameAvailability(nickname, originalNickname) {
         return;
     }
 
-    // 닉네임이 변경되지 않았을 경우 유효성 검사를 하지 않음
     if (nickname === originalNickname) {
         isNicknameValid = true;
         Swal.fire({
@@ -403,7 +388,6 @@ function checkNicknameAvailability(nickname, originalNickname) {
         return;
     }
 
-    // 닉네임 중복 체크 요청
     fetch(`/mypage/checkNickname`, {
         method: 'POST',
         headers: {
@@ -472,18 +456,18 @@ function searchAddress() {
             handleAddressSearch(data);
         }
     }).open({
-        popupName: 'postcodePopup', // 팝업 이름을 지정해 줄 수 있습니다.
-        left: (window.screen.width / 2) - 250, // 창을 화면 중앙에 위치시키기 위해 계산
+        popupName: 'postcodePopup',
+        left: (window.screen.width / 2) - 250,
         top: (window.screen.height / 2) - 300,
-        width: 500, // 팝업 창 너비
-        height: 600, // 팝업 창 높이
+        width: 500,
+        height: 600,
     });
 }
 
 // 주소 검색 결과 처리 함수
 function handleAddressSearch(data) {
-    let fullRoadAddress = data.roadAddress; // 도로명 주소
-    let extraAddress = ''; // 참고 항목
+    let fullRoadAddress = data.roadAddress;
+    let extraAddress = '';
 
     if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
         extraAddress += data.bname;
@@ -526,7 +510,7 @@ function openMbtiTest() {
     const mbtiWindow = window.open('/matching/mbti', '_blank', 'width=600,height=800');
 
     window.receiveMbtiResult = function(result) {
-        const sanitizedResult = result.replace(/\s+/g, ''); // 값에서 공백을 제거
+        const sanitizedResult = result.replace(/\s+/g, '');
         document.getElementById('user-mbti').value = sanitizedResult;
     };
 }
@@ -551,17 +535,14 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
-                // 서버에서 받은 날짜 문자열을 Date 객체로 변환
                 const feedIndate = new Date(data.feedIndate);
 
-                // 원하는 형식으로 날짜를 변환
                 const formattedDate = feedIndate.getFullYear() + '.' +
                     String(feedIndate.getMonth() + 1).padStart(2, '0') + '.' +
                     String(feedIndate.getDate()).padStart(2, '0') + ' ' +
                     String(feedIndate.getHours()).padStart(2, '0') + ':' +
                     String(feedIndate.getMinutes()).padStart(2, '0');
 
-                // 피드 내용을 동적으로 생성
                 popupContent.innerHTML = `
                     <div class='feed-out-box'>
                         <div class='feed-head-box'>
@@ -588,7 +569,6 @@ function openFeedPopup(feedNo, feedPopup, popupContent) {
                     </div>
                 `;
             } else {
-                // 에러 메시지를 표시
                 popupContent.innerHTML = `<p>${data.message}</p>`;
             }
             feedPopup.style.display = 'block';
@@ -607,7 +587,6 @@ function decodeHtml(html) {
     return txt.value;
 }
 
-
 // 팝업 닫기 및 외부 클릭 시 팝업 닫기 기능 설정
 function setupPopupCloseHandlers() {
     const feedPopup = document.getElementById('feed-popup');
@@ -624,7 +603,6 @@ function setupPopupCloseHandlers() {
     });
 }
 
-// 피드 팝업 닫기
 function closeFeedPopup(feedPopup) {
     feedPopup.style.display = 'none';
 }
@@ -643,13 +621,11 @@ function initializeProfileItemPopup() {
     });
 }
 
-
 function openProfilePopup(likedUserNo, profilePopup, popupContent) {
     fetch(`/mypage/getProfileContent?likedUserNo=${likedUserNo}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
-                // 좋아하는 카테고리와 싫어하는 카테고리 필터링
                 let selectedLikeCategories = data.likeCategories.filter(category => data.userSelectedCategories.includes(category.personalNo));
                 let selectedDislikeCategories = data.dislikeCategories.filter(category => data.userSelectedCategories.includes(category.personalNo));
 
@@ -657,10 +633,9 @@ function openProfilePopup(likedUserNo, profilePopup, popupContent) {
                 let dislikeCategories = selectedDislikeCategories.map(item => item.personalName).join(', ');
                 let hobbies = data.hobbies.map(item => item.hobbyName).join(', ');
 
-                // 프로필 사진 URL
-                let profileImageUrl = data.profilePicturePath;
+                // S3 URL이 포함된 이미지 URL 사용
+                let profileImageUrl = data.profilePictureUrl;
 
-                // 주소 정보 공개 여부에 따라 주소를 결정
                 let address = data.consentLocationInfo === 'Y' ? data.address : '미공개';
 
                 popupContent.innerHTML = `
@@ -712,6 +687,7 @@ function openProfilePopup(likedUserNo, profilePopup, popupContent) {
         });
 }
 
+
 // 리뷰 삭제 확인을 SweetAlert2로 변경
 function submitDeleteForm(element) {
     Swal.fire({
@@ -733,10 +709,6 @@ function submitDeleteForm(element) {
     });
 }
 
-
-
-
-
 // 프로필 팝업 닫기 및 외부 클릭 시 팝업 닫기 기능 설정
 document.addEventListener('DOMContentLoaded', function () {
     const profilePopup = document.getElementById('profile-popup');
@@ -754,4 +726,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
