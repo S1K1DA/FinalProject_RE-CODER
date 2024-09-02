@@ -152,25 +152,9 @@ public class MypageController {
         int userId = getCurrentUserId();
         int pageSize = 8;
 
-        List<MypageDto> likedProfiles = mypageService.getLikedProfiles(userId);
+        List<Map<String, Object>> likedProfilesWithUrls = mypageService.getLikedProfilesWithUrls(userId);
 
-        // 각 프로필에 대한 S3 URL 생성
-        List<Map<String, Object>> likedProfilesWithUrls = likedProfiles.stream().map(profile -> {
-            Map<String, Object> profileWithUrl = new HashMap<>();
-            profileWithUrl.put("profile", profile);
-
-            // S3 URL 생성
-            if (profile.getProfilePicturePath() != null && profile.getProfilePictureName() != null) {
-                String s3Url = profile.getProfilePicturePath() + profile.getProfilePictureName();
-                URL url = s3Client.getUrl("heart-link-bucket", s3Url);
-                profileWithUrl.put("profilePictureUrl", url.toString());
-            } else {
-                profileWithUrl.put("profilePictureUrl", "/image/user_profile/default_image.png");
-            }
-            return profileWithUrl;
-        }).collect(Collectors.toList());
-
-        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfilesWithUrls);
 
         model.addAttribute("likedProfiles", likedProfilesWithUrls);
         model.addAttribute("startPage", paginationData.get("startPage"));
@@ -182,6 +166,7 @@ public class MypageController {
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_proflike/mypage-proflike";
     }
+
 
 
     @GetMapping("/match")

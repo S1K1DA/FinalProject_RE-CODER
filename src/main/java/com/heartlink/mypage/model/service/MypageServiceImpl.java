@@ -1,19 +1,26 @@
 package com.heartlink.mypage.model.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.heartlink.mypage.model.dao.MypageDao;
 import com.heartlink.mypage.model.dto.MypageDto;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class MypageServiceImpl implements MypageService {
 
     private final MypageDao mypageDao;
+    private final AmazonS3 s3Client;
 
-    public MypageServiceImpl(MypageDao mypageDao) {
+    public MypageServiceImpl(MypageDao mypageDao, AmazonS3 s3Client) {
+        this.s3Client = s3Client;
         this.mypageDao = mypageDao;
     }
 
@@ -186,6 +193,25 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public int getLikeCountByUserId(int userId) {
         return mypageDao.getLikeCountByUserId(userId);
+    }
+
+    public List<Map<String, Object>> getLikedProfilesWithUrls(int userId) {
+        List<MypageDto> likedProfiles = getLikedProfiles(userId);
+
+        return likedProfiles.stream().map(profile -> {
+            Map<String, Object> profileWithUrl = new HashMap<>();
+            profileWithUrl.put("profile", profile);
+
+            // S3 URL 생성
+            if (profile.getProfilePicturePath() != null && profile.getProfilePictureName() != null) {
+                String s3Url = profile.getProfilePicturePath() + profile.getProfilePictureName();
+                URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+                profileWithUrl.put("profilePictureUrl", url.toString());
+            } else {
+                profileWithUrl.put("profilePictureUrl", "/image/user_profile/default_image.png");
+            }
+            return profileWithUrl;
+        }).collect(Collectors.toList());
     }
 
 }

@@ -3,6 +3,7 @@ package com.heartlink.mypage.model.service;
 import com.heartlink.mypage.model.dto.MypageDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MypageService {
 
@@ -69,5 +70,7 @@ public interface MypageService {
     boolean updateMatchingState(int matchingNo, int userId, String state);
 
     int getLikeCountByUserId(int userId);
+
+    public List<Map<String, Object>> getLikedProfilesWithUrls(int userId);
 
 }
