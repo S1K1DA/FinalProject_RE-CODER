@@ -636,8 +636,6 @@ function openProfilePopup(likedUserNo, profilePopup, popupContent) {
                 // S3 URL이 포함된 이미지 URL 사용
                 let profileImageUrl = data.profilePictureUrl;
 
-                let address = data.consentLocationInfo === 'Y' ? data.address : '미공개';
-
                 popupContent.innerHTML = `
                     <div style="display: flex;">
                         <div style="flex: 1;">
@@ -647,10 +645,6 @@ function openProfilePopup(likedUserNo, profilePopup, popupContent) {
                             <div style="display: flex; justify-content: flex-start;">
                                 <p style="width: 25%; text-align: right; font-weight: bold;">닉네임:</p>
                                 <p style="width: 75%; margin-left: 10px; text-align: left;">${data.nickname}</p>
-                            </div>
-                            <div style="display: flex; justify-content: flex-start;">
-                                <p style="width: 25%; text-align: right; font-weight: bold;">주소:</p>
-                                <p style="width: 75%; margin-left: 10px; text-align: left;">${address}</p>
                             </div>
                             <div style="display: flex; justify-content: flex-start;">
                                 <p style="width: 25%; text-align: right; font-weight: bold;">MBTI:</p>
