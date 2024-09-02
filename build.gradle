@@ -49,7 +49,7 @@ dependencies {
     // 오라클
     runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
     implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
-    implementation 'com.baomidou:mybatis-plus-boot-starter:3.4.3'  // 잠깐 추가
+//    implementation 'com.baomidou:mybatis-plus-boot-starter:3.4.3'  // 잠깐 추가
 
     // 롬복
     annotationProcessor 'org.projectlombok:lombok'

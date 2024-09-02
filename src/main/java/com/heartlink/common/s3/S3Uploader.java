@@ -17,6 +17,8 @@ import java.io.*;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.apache.logging.log4j.core.util.FileUtils.getFileExtension;
+
 @Component
 public class S3Uploader {
 
@@ -32,7 +34,9 @@ public class S3Uploader {
         File uploadFile = null;
         try {
 
-            uploadFile = resizeImage(multipartFile, 600)
+            String format = getFileExtension(multipartFile.getOriginalFilename());
+
+            uploadFile = resizeImage(multipartFile, 600, format)
                     .orElseThrow(() -> new IllegalArgumentException("[error] : MultipartFile -> 리사이징 실패"));
 
             // S3에 파일 업로드 (파일 경로와 이름 조합)
@@ -94,15 +98,22 @@ public class S3Uploader {
         return Optional.empty();
     }
 
-    // 이미지 크기 조정
-    private Optional<File> resizeImage(MultipartFile file, int maxWidth) throws IOException {
+    // 이미지 크기 조정 및 파일 포맷 지정
+    private Optional<File> resizeImage(MultipartFile file, int maxWidth, String format) throws IOException {
+        // 유효한 이미지 포맷인지 확인
+        if (!format.equalsIgnoreCase("jpg") && !format.equalsIgnoreCase("png")) {
+            throw new IllegalArgumentException("[error] : 지원되지 않는 이미지 포맷 - " + format);
+        }
+
+        // 이미지 읽기 및 리사이징
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
         BufferedImage resizedImage = Scalr.resize(originalImage, Scalr.Method.QUALITY, maxWidth);
 
         // 파일에 저장
-        File tempFile = new File(System.getProperty("java.io.tmpdir") + "/" + UUID.randomUUID().toString() + ".jpg");
+        String extension = format.equalsIgnoreCase("png") ? ".png" : ".jpg";
+        File tempFile = new File(System.getProperty("java.io.tmpdir") + "/" + UUID.randomUUID().toString() + extension);
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write(resizedImage, "jpg", baos);
+            ImageIO.write(resizedImage, format, baos);
             try (InputStream is = new ByteArrayInputStream(baos.toByteArray());
                  FileOutputStream fos = new FileOutputStream(tempFile)) {
                 byte[] buffer = new byte[1024];
@@ -113,5 +124,17 @@ public class S3Uploader {
             }
         }
         return Optional.of(tempFile);
+    }
+
+    // 파일 확장자를 추출하는 메서드
+    private String getFileExtension(String fileName) {
+        if (fileName == null || fileName.isEmpty()) {
+            return null;
+        }
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex > 0 && lastDotIndex < fileName.length() - 1) {
+            return fileName.substring(lastDotIndex + 1).toLowerCase();
+        }
+        return null;
     }
 }

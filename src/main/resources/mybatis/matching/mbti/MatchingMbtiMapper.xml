@@ -10,7 +10,7 @@
         bu.BASIC_USER_NICKNAME AS nickname,
         bu.BASIC_USER_MBTI AS mbti,
         bu.BASIC_USER_SEX AS userSex,  <!-- 성별 정보 추가 -->
-        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        bp.PHOTO_PATH || '' || bp.PHOTO_NAME AS profilePhoto
         FROM
         BASIC_USER bu
         LEFT JOIN
@@ -30,7 +30,7 @@
         bu.BASIC_USER_NICKNAME AS nickname,
         bu.BASIC_USER_MBTI AS mbti,
         bu.BASIC_USER_SEX AS userSex,
-        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        bp.PHOTO_PATH || '' || bp.PHOTO_NAME AS profilePhoto
         FROM
         BASIC_USER bu
         LEFT JOIN
@@ -50,7 +50,7 @@
         bu.BASIC_USER_NICKNAME AS nickname,
         bu.BASIC_USER_MBTI AS mbti,
         bu.BASIC_USER_SEX AS userSex,
-        bp.PHOTO_PATH || '/' || bp.PHOTO_NAME AS profilePhoto
+        bp.PHOTO_PATH || '' || bp.PHOTO_NAME AS profilePhoto
         FROM
         BASIC_USER bu
         LEFT JOIN

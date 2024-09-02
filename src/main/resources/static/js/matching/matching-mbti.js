@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             listItem.innerHTML = `
                 <div class="list-profile-photo">
-                    <img src="${user.profilePhoto || '/images/default-profile.png'}" alt="Profile Photo">
+                    <img src="${user.profilePhoto}" alt="Profile Photo">
                 </div>
                 <div class="list-profile-info">
                     <p class="list-profile-nickname">닉네임: ${user.nickname}</p>

@@ -10,11 +10,15 @@ import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -135,5 +139,25 @@ public class MemberController {
         return "failure"; // 로그인 실패 메시지 반환
     }
 
+    // 아이디 찾기
+    @PostMapping("/find-id")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> findIdByNameAndBirthdate(@RequestBody Map<String, String> request) {
+        String name = request.get("name");
+        String residentNumber = request.get("residentNumber");
+
+        Map<String, String> response = new HashMap<>();
+        MemberDto member = memberService.findByNameAndBirthdate(name, residentNumber);
+
+        if (member != null) {
+            response.put("success", "true");
+            response.put("email", member.getEmail());
+        } else {
+            response.put("success", "false");
+            response.put("message", "해당 정보로 등록된 이메일이 없습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
 }
 
