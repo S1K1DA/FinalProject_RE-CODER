@@ -148,14 +148,31 @@ public class MypageController {
     }
 
     @GetMapping("/proflike")
-    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page,HttpServletRequest request, Model model) {
+    public String profLikePage(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
         int userId = getCurrentUserId();
         int pageSize = 8;
 
         List<MypageDto> likedProfiles = mypageService.getLikedProfiles(userId);
+
+        // 각 프로필에 대한 S3 URL 생성
+        List<Map<String, Object>> likedProfilesWithUrls = likedProfiles.stream().map(profile -> {
+            Map<String, Object> profileWithUrl = new HashMap<>();
+            profileWithUrl.put("profile", profile);
+
+            // S3 URL 생성
+            if (profile.getProfilePicturePath() != null && profile.getProfilePictureName() != null) {
+                String s3Url = profile.getProfilePicturePath() + profile.getProfilePictureName();
+                URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+                profileWithUrl.put("profilePictureUrl", url.toString());
+            } else {
+                profileWithUrl.put("profilePictureUrl", "/image/user_profile/default_image.png");
+            }
+            return profileWithUrl;
+        }).collect(Collectors.toList());
+
         Map<String, Object> paginationData = pagination.getPagination(page, pageSize, likedProfiles);
 
-        model.addAttribute("likedProfiles", paginationData.get("items"));
+        model.addAttribute("likedProfiles", likedProfilesWithUrls);
         model.addAttribute("startPage", paginationData.get("startPage"));
         model.addAttribute("endPage", paginationData.get("endPage"));
         model.addAttribute("currentPage", paginationData.get("currentPage"));
@@ -165,6 +182,7 @@ public class MypageController {
         model.addAttribute("currentUrl", request.getRequestURI().split("\\?")[0]);
         return "mypage/mypage_proflike/mypage-proflike";
     }
+
 
     @GetMapping("/match")
     public String matchPage(HttpServletRequest request, Model model) {
@@ -470,6 +488,10 @@ public class MypageController {
         Map<String, Object> response = new HashMap<>();
 
         if (userInfo != null) {
+            // S3 URL 생성
+            String s3Url = userInfo.getProfilePicturePath() + userInfo.getProfilePictureName();
+            URL profilePictureUrl = s3Client.getUrl("heart-link-bucket", s3Url);
+
             response.put("status", "success");
             response.put("nickname", userInfo.getNickname());
             response.put("address", userInfo.getFullAddress());
@@ -478,9 +500,9 @@ public class MypageController {
             response.put("dislikeCategories", dislikeCategories);
             response.put("hobbies", hobbies);
             response.put("likeCount", likeCount);
-            response.put("profilePicturePath", userInfo.getFullProfilePictureUrl());
-            response.put("consentLocationInfo", userInfo.getConsentLocationInfo());  // 추가된 부분
-            response.put("userSelectedCategories", mypageService.getUserSelectedCategories(likedUserNo)); // 유저의 선택된 성향
+            response.put("profilePictureUrl", profilePictureUrl.toString());  // S3에서 생성된 URL
+            response.put("consentLocationInfo", userInfo.getConsentLocationInfo());
+            response.put("userSelectedCategories", mypageService.getUserSelectedCategories(likedUserNo));
         } else {
             response.put("status", "error");
             response.put("message", "User not found");
@@ -488,6 +510,7 @@ public class MypageController {
 
         return response;
     }
+
 
 
 
