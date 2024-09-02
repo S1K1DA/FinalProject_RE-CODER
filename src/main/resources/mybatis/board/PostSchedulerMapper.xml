@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartlink.common.scheduler.PostSchedulerMapper">
+
+    <select id="getDeleteFeedList" resultType="java.lang.Integer">
+        SELECT f.FEED_NO
+        FROM FEEDS f
+        WHERE FEED_DELETE &lt; ADD_MONTHS(TO_DATE(#{today}, 'YYYY-MM-DD'), -1)
+    </select>
+    <update id="setFeedDelete">
+        DELETE FROM FEEDS
+        WHERE FEED_NO = #{feedNo}
+    </update>
+    <update id="deleteFeedLikes">
+        DELETE FROM FEED_LIKES
+        WHERE FEED_NO = #{feedNo}
+    </update>
+    <update id="deleteFeedComments">
+        DELETE FROM FEED_COMMENTS
+        WHERE FEED_NO = #{feedNo}
+    </update>
+
+    <select id="getDeleteCommentList" resultType="java.lang.Integer">
+        SELECT COMMENT_NO
+        FROM FEED_COMMENTS fc
+        WHERE fc.COMMENT_DELETE &lt; ADD_MONTHS(TO_DATE(#{today}, 'YYYY-MM-DD'), -1)
+    </select>
+    <update id="setFeedCommentDelete">
+        DELETE FROM FEED_COMMENTS
+        WHERE COMMENT_NO = #{commentNo}
+    </update>
+
+
+    <select id="getDeleteReviewList" resultType="java.lang.Integer">
+        SELECT rb.REVIEW_NO
+        FROM REVIEW_BOARD rb
+        WHERE rb.REVIEW_DELETE &lt; ADD_MONTHS(TO_DATE(#{today}, 'YYYY-MM-DD'), -1)
+    </select>
+    <update id="deleteReviewPhoto">
+        DELETE FROM REVIEW_PHOTO_BOARD
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+    <update id="setReviewDelete" >
+        DELETE FROM REVIEW_BOARD
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
+
+    <select id="getDeleteNoticeList" resultType="java.lang.Integer">
+        SELECT nb.NOTICE_NO
+        FROM NOTICE_BOARD nb
+        WHERE nb.NOTICE_DELETE &lt; ADD_MONTHS(TO_DATE(#{today}, 'YYYY-MM-DD'), -1)
+    </select>
+    <update id="setNoticeDelete">
+        DELETE FROM NOTICE_BOARD
+        WHERE NOTICE_NO = #{noticeNo}
+    </update>
+
+</mapper>
