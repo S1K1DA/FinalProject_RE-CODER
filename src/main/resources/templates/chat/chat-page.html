@@ -17,7 +17,7 @@
                 class="chat-list-item"
                 th:data-matchingNo="${chat.matchingNo}"
                 th:onclick="'window.location.href=\'/chat/chatting?matchingNo=' + ${chat.matchingNo} + '\''">
-                <img th:src="@{|${chat.photoPath}${chat.photoName}|}" class="profile" alt="other profile">
+                <img th:src="${chat.photoPath}" class="profile" alt="other profile">
                 <div class="chat-info">
                     <span class="nik-name" th:text="${chat.nickname}">닉네임</span>
                     <span class="last-message" th:text="${#strings.length(chat.lastMessage) > 6 ? #strings.substring(chat.lastMessage, 0, 6) + '...' : chat.lastMessage}"></span>
@@ -39,14 +39,14 @@
             <li th:each="message : ${chatLogs}"
                 th:classappend="${message.basicUserNo} == ${basicUserNo} ? 'self-chat' : 'other-chat'">
                 <div class="chat-list-item2" th:if="${message.basicUserNo} != ${basicUserNo}">
-                    <img th:src="@{|${message.photoPath}${message.photoName}|}" class="profile" alt="other profile">
+                    <img th:src="${message.photoPath}" class="profile" alt="other profile">
                     <span class="nik-name" th:text="${message.nickname}">상대방</span>
                     <div class="other" th:text="${message.content}">상대방 메시지</div>
                 </div>
                 <div class="chat-list-item2" th:if="${message.basicUserNo} == ${basicUserNo}">
                     <div class="self" th:text="${message.content}">내 메시지</div>
                     <span class="nik-name" th:text="${message.nickname}">내 닉네임</span>
-                    <img th:src="@{|${message.photoPath}${message.photoName}|}" class="profile" alt="self profile">
+                    <img th:src="${message.photoPath}" class="profile" alt="self profile">
                 </div>
             </li>
         </ul>

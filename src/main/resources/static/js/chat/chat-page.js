@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const receivedMessage = JSON.parse(message.body);
                 const profile = profiles.find(profile => profile.basicUserNo === receivedMessage.basicUserNo);
-                const fullPhotoPath = profile ? (profile.photoPath + profile.photoName) : '/default-profile.png';
+                const fullPhotoPath = profile ? (profile.photoPath) : '/default-profile.png';
                 displayMessage(
                     receivedMessage.content,
                     receivedMessage.basicUserNo === parseInt(basicUserNo) ? 'self' : 'other',
