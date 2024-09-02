@@ -227,7 +227,7 @@ public class MemberController {
 
             memberService.updatePassword(email, newPassword);
             response.put("success", "true");
-
+ 
         } catch (Exception e) {
             response.put("message", "비밀번호 변경 중 오류가 발생했습니다.");
         }
