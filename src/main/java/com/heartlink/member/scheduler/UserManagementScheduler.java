@@ -37,7 +37,7 @@ public class UserManagementScheduler {
 
             deleteUsersMarkedAsDeleted(today);
         }catch (Exception e){
-            System.out.println("ERROR : " + e);
+            logger.warn("UserManagementScheduler error : " + e);
         }
 
     }
