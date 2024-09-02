@@ -19,37 +19,64 @@
     <div class="pc-content">
         <div class="page-header">
             <h5 class="m-b-10">문의 내역 확인</h5>
+            <form action="/admin/inquiries" method="GET" class="date-container">
+                <div class="start-date-box">
+                    <label for="start-date">시작 날짜:</label>
+                    <input type="date" id="start-date" name="startDate" th:value="${startDate}">
+                </div>
+                <div class="end-date-box">
+                    <label for="end-date">종료 날짜:</label>
+                    <input type="date" id="end-date" name="endDate" th:value="${endDate}">
+                </div>
+                <div class="tag-box">
+                    <label for="tag">태그:</label>
+                    <select id="tag" name="tag">
+                        <option value="">전체</option>
+                        <option value="소개 메시지" th:selected="${tag == '소개 메시지'}">소개 메시지</option>
+                        <option value="커뮤니티 가이드라인 관련" th:selected="${tag == '커뮤니티 가이드라인 관련'}">커뮤니티 가이드라인 관련</option>
+                        <option value="웹사이트 사용 관련" th:selected="${tag == '웹사이트 사용 관련'}">웹사이트 사용 관련</option>
+                        <option value="결제 관련" th:selected="${tag == '결제 관련'}">결제 관련</option>
+                        <option value="프로필 관련" th:selected="${tag == '프로필 관련'}">프로필 관련</option>
+                        <option value="공지사항" th:selected="${tag == '공지사항'}">공지사항</option>
+                    </select>
+                </div>
+                <button type="submit">적용</button>
+            </form>
         </div>
 
         <div class="row custom-admin-board">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-
+                        <table class="admin-action-table">
+                            <thead>
+                            <tr>
+                                <th class="inquiry-num">문의 번호</th>
+                                <th class="user-num">유저 번호</th>
+                                <th class="inquiry-date">문의 날짜</th>
+                                <th class="inquiry-tag">문의 태그</th>
+                                <th class="inquiry-status">상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="inquiry : ${inquiryList}">
+                                <td th:text="${inquiry.chatbotChattingNo}"></td>
+                                <td th:text="${inquiry.basicUserNo == 0 ? 'Guest' : inquiry.basicUserNo}"></td>
+                                <td th:text="${inquiry.chatbotChattingIndate}"></td>
+                                <td th:text="${inquiry.chatbotInquiryTag}"></td>
+                                <td th:text="${inquiry.chatbotChattingState == 'Y' ? '처리됨' : '미처리'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <nav class="custom-navigation" aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div th:replace="~{fragments/pagination :: pagination}"></div>
                     </nav>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- 스크립트 모듈 -->
 <script th:replace="~{admin/fragments/admin-script::admin_script}"></script>

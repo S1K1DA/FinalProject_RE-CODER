@@ -1,14 +1,10 @@
 package com.heartlink.admin.controller;
 
 import com.heartlink.admin.model.dto.*;
-import com.heartlink.admin.model.service.AdminMemberService;
-import com.heartlink.admin.model.service.AdminPaymentService;
-import com.heartlink.admin.model.service.AdminReportService;
-import com.heartlink.admin.model.service.AdminStatsService;
-import com.heartlink.member.model.dto.AdminDto;
+import com.heartlink.admin.model.service.*;
+import com.heartlink.common.pagination.Pagination;
 import com.heartlink.member.model.service.MemberService;
 import com.heartlink.member.util.JwtUtil;
-import com.heartlink.common.pagination.Pagination;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +33,7 @@ public class AdminController {
     private final JwtUtil jwtUtil;
     private final AdminReportService adminReportService;
     private final AdminStatsService adminStatsService;
+    private final AdminInquiryService adminInquiryService;
 
     @Autowired
     public AdminController(Pagination pagination,
@@ -45,7 +42,8 @@ public class AdminController {
                            JwtUtil jwtUtil,
                            AdminPaymentService adminPaymentService,
                            AdminReportService adminReportService,
-                           AdminStatsService adminStatsService) {
+                           AdminStatsService adminStatsService,
+                           AdminInquiryService adminInquiryService) {
         this.pagination = pagination;
         this.adminMemberService = adminMemberService;
         this.memberService = memberService;
@@ -53,6 +51,7 @@ public class AdminController {
         this.adminPaymentService = adminPaymentService;
         this.adminReportService = adminReportService;
         this.adminStatsService = adminStatsService;
+        this.adminInquiryService = adminInquiryService;
     }
 
     private int getCurrentAdminNo() {
@@ -148,7 +147,39 @@ public class AdminController {
     }
 
     @GetMapping("/inquiries")
-    public String moveInquiriesPage(){
+    public String moveInquiriesPage(Model model,
+                                    @RequestParam(name="page", defaultValue = "1") int page,
+                                    @RequestParam(value = "startDate", required = false) String startDate,
+                                    @RequestParam(value = "endDate", required = false) String endDate,
+                                    @RequestParam(value = "tag", required = false) String tag) {
+        int pageSize = 10;
+
+        LocalDate today = LocalDate.now();
+
+        if (startDate == null || endDate == null) {
+            if (startDate == null) {
+                startDate = today.minusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+            if (endDate == null) {
+                endDate = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+        }
+
+        List<AdminInquiryDto> inquiryList = adminInquiryService.getInquiries(startDate, endDate, tag);
+
+        Map<String, Object> paginationData = pagination.getPagination(page, pageSize, inquiryList);
+
+        model.addAttribute("inquiryList", paginationData.get("items"));
+        model.addAttribute("currentPage", paginationData.get("currentPage"));
+        model.addAttribute("totalPages", paginationData.get("totalPages"));
+        model.addAttribute("startPage", paginationData.get("startPage"));
+        model.addAttribute("endPage", paginationData.get("endPage"));
+        model.addAttribute("paginationUrl", "/admin/inquiries");
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("tag", tag);
+
         return "admin/pages/admin-inquiries";
     }
 
