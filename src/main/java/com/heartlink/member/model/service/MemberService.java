@@ -175,5 +175,8 @@ public class MemberService {
             return "삭제된 계정 없음";
         }
     }
-
+    // 아이디 찾기
+    public MemberDto findByNameAndBirthdate(String name, String residentNumber) {
+        return memberMapper.findByNameAndBirthdate(name, residentNumber);
+    }
 }

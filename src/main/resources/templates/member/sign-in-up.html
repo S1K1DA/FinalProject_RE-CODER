@@ -99,6 +99,12 @@
                 <input type="email" th:field="*{email}" name="email" placeholder="이메일" required>
                 <input type="password" th:field="*{password}" name="password" placeholder="비밀번호" required>
                 <button class="form-btn" type="submit">로그인</button>
+
+                <!-- 아이디/비밀번호 찾기 링크 추가 -->
+                <div class="forgot-container">
+                    <a href="#" id="forgot-id">아이디 찾기</a> |
+                    <a href="#" id="forgot-password">비밀번호 찾기</a>
+                </div>
             </form>
         </div>
 
