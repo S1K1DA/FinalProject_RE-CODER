@@ -144,4 +144,10 @@
             bp.PHOTO_PATH,
             b.BASIC_USER_SEX
     </select>
+
+    <update id="updatePassword">
+        UPDATE BASIC_USER
+        SET BASIC_USER_PWD = #{password}
+        WHERE BASIC_USER_EMAIL = #{email}
+    </update>
 </mapper>

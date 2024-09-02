@@ -26,7 +26,6 @@
                            data-bs-toggle="dropdown" aria-expanded="false">매칭</a>
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
                             <li><a class="dropdown-item" th:href="@{/matching/mbti}">MBTI 매칭</a></li>
-                            <li><a class="dropdown-item" th:href="@{/matching/map}">이상형 매칭</a></li>
                             <li><a class="dropdown-item" th:href="@{/matching-area/main}">위치 기반 매칭</a></li>
                         </ul>
                     </li>
@@ -42,14 +41,11 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/feed}">피드</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink2" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">성향 검사</a>
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink2">
-                            <li><a class="dropdown-item" th:href="@{/matching/mbti-test}">MBTI 테스트</a></li>
-                            </li>
-                            <li><a class="dropdown-item" href="detail-page.html">기타 테스트</a></li>
-                        </ul>
+                    <!-- 채팅방 아이콘 추가 -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/chat/chatting}" sec:authorize="isAuthenticated()">
+                            <i class="fa fa-comments"></i> <!-- Font Awesome 채팅방 아이콘 -->
+                        </a>
                     </li>
                     <div class="ms-4 nav-my-btns">
                         <div class="dropdown-bell" sec:authorize="isAuthenticated()">

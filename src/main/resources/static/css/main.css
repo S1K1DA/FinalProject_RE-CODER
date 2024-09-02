@@ -11,6 +11,8 @@ https://templatemo.com/tm-584-pod-talk
 /*---------------------------------------
   CUSTOM PROPERTIES ( VARIABLES )
 -----------------------------------------*/
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
+
 :root {
     --base-font-size: 14px; /* 기본 폰트 크기를 줄임 */
     --scale-factor: 0.85; /* 축소 비율 */

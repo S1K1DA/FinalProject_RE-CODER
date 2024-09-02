@@ -476,4 +476,124 @@ document.getElementById("forgot-id").addEventListener("click", function() {
     });
 });
 
+// 비밀번호 찾기
+document.getElementById("forgot-password").addEventListener("click", function(event) {
+    event.preventDefault(); // 기본 앵커 동작 방지
+
+    Swal.fire({
+        title: '비밀번호 찾기',
+        html: `
+            <input type="email" id="email" class="swal2-input" placeholder="아이디(이메일)">
+        `,
+        confirmButtonText: '인증 코드 전송',
+        preConfirm: () => {
+            const email = Swal.getPopup().querySelector('#email').value;
+            if (!email) {
+                Swal.showValidationMessage(`이메일을 입력하세요.`);
+                return false;
+            }
+            return { email: email };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/member/send-reset-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(result.value)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '인증 코드 확인',
+                        html: `
+                            <input type="text" id="resetCode" class="swal2-input" placeholder="인증번호">
+                        `,
+                        confirmButtonText: '확인',
+                        preConfirm: () => {
+                            const code = Swal.getPopup().querySelector('#resetCode').value;
+                            if (!code) {
+                                Swal.showValidationMessage(`인증번호를 입력하세요.`);
+                                return false;
+                            }
+                            return { email: result.value.email, code: code };
+                        }
+                    }).then((codeResult) => {
+                        if (codeResult.isConfirmed) {
+                            fetch('/member/verify-reset-code', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(codeResult.value)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: '비밀번호 재설정',
+                                        html: `
+                                            <input type="password" id="newPassword" class="swal2-input" placeholder="새 비밀번호">
+                                            <input type="password" id="confirmPassword" class="swal2-input" placeholder="비밀번호 확인">
+                                        `,
+                                        confirmButtonText: '비밀번호 변경',
+                                        preConfirm: () => {
+                                            const newPassword = Swal.getPopup().querySelector('#newPassword').value;
+                                            const confirmPassword = Swal.getPopup().querySelector('#confirmPassword').value;
+
+                                            // 비밀번호 유효성 검사
+                                            const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,16}$/;
+                                            if (!newPassword || !confirmPassword) {
+                                                Swal.showValidationMessage(`모든 필드를 입력하세요.`);
+                                                return false;
+                                            }
+                                            if (newPassword !== confirmPassword) {
+                                                Swal.showValidationMessage(`비밀번호가 일치하지 않습니다.`);
+                                                return false;
+                                            }
+                                            if (!passwordPattern.test(newPassword)) {
+                                                Swal.showValidationMessage('비밀번호는 8~16자이며, 영문, 숫자, 특수문자를 포함해야 합니다.');
+                                                return false;
+                                            }
+                                            return { email: codeResult.value.email, password: newPassword };
+                                        }
+                                    }).then((passwordResult) => {
+                                        if (passwordResult.isConfirmed) {
+                                            fetch('/member/reset-password', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify(passwordResult.value)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    Swal.fire('비밀번호 변경 완료', '비밀번호가 성공적으로 변경되었습니다.', 'success');
+                                                } else {
+                                                    Swal.fire('비밀번호 변경 실패', '비밀번호 변경 중 오류가 발생했습니다.', 'error');
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire('인증 실패','잘못된 인증번호입니다.', 'error');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire('이메일 확인 실패','해당 이메일을 찾을 수 없습니다.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('비밀번호 찾기', '요청 처리 중 오류가 발생했습니다.', 'error');
+            });
+        }
+    });
+});
+
 
