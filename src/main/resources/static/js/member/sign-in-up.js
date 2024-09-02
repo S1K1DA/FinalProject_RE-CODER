@@ -416,3 +416,50 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
     })
     .catch(error => console.error('Error:', error));
 });
+
+// 아이디 찾기
+document.getElementById("forgot-id").addEventListener("click", function() {
+    Swal.fire({
+        title: '아이디(이메일) 찾기',
+        html: `
+            <input type="text" id="findName" class="swal2-input" placeholder="이름">
+            <input type="text" id="findResidentNumber" class="swal2-input" placeholder="주민번호 앞자리">`,
+        confirmButtonText: '찾기',
+        preConfirm: () => {
+            const name = Swal.getPopup().querySelector('#findName').value;
+            const residentNumber = Swal.getPopup().querySelector('#findResidentNumber').value;
+            if (!name || !residentNumber) {
+                Swal.showValidationMessage(`모든 정보를 입력하세요.`);
+            }
+            return { name: name, residentNumber: residentNumber };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/member/find-id', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(result.value)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('아이디(이메일) 찾기', `이메일(아이디)은 ${data.email}입니다.`, 'success');
+                } else {
+                    Swal.fire('아이디(이메일) 찾기', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('아이디(이메일) 찾기', '요청 처리 중 오류가 발생했습니다.', 'error');
+            });
+        }
+    });
+});
+

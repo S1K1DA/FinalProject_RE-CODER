@@ -18,7 +18,7 @@
                 <div class="profile-section">
                     <div class="profile-photo">
                         <!-- 사용자 프로필 사진 -->
-                        <img class="matching-profile" th:src="@{/image/team_member/team_member_eunsik.jpg}" alt="Profile Photo">
+                        <img class="matching-profile" th:src="${profile.profilePhoto}" alt="Profile Photo">
                     </div>
                     <div class="profile-info">
                         <p class="profile-nickname">
@@ -54,8 +54,8 @@
                 <ul id="matching-list">
                     <li th:each="user : ${soulmateUsers}" class="matching-list-item">
                         <div class="list-profile-photo">
-<!--                            <img th:src="${user.profilePhoto}" alt="Profile Photo">-->
-                            <img th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="Profile Photo">
+                            <img th:src="${user.profilePhoto}" alt="Profile Photo">
+<!--                            <img th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="Profile Photo">-->
                         </div>
                         <div class="list-profile-info">
                             <p class="list-profile-nickname">닉네임: <span th:text="${user.nickname}"></span></p>
@@ -67,21 +67,6 @@
                         <button class="match-button" data-user-number="${user.userNumber}">매칭 신청</button>
                     </li>
                 </ul>
-                <!-- 예시 리스트 아이템 -->
-<!--                    <li class="matching-list-item">-->
-<!--                        <div class="list-profile-photo">-->
-<!--                            <img th:src="@{/image/team_member/team_member_ahtae.jpg}" alt="Profile Photo">-->
-<!--                        </div>-->
-<!--                        <div class="list-profile-info">-->
-<!--                            <p class="list-profile-nickname">닉네임: 안양카리나</p>-->
-<!--                            <p class="list-profile-mbti">-->
-<!--                                <img th:src="@{/image/icons/mbti_icon.png}" alt="MBTI Icon" class="mbti-icon">-->
-<!--                                MBTI: ESTP-->
-<!--                            </p>-->
-<!--                        </div>-->
-<!--                        <button class="match-button">매칭 신청</button>-->
-<!--                    </li>-->
-                    <!-- 추가 리스트 아이템들... -->
             </div>
         </div>
     </div>

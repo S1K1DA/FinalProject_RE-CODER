@@ -1,6 +1,7 @@
 package com.heartlink.matching.mbti.model.service;
 
 import com.heartlink.matching.mbti.model.dto.MatchingMbtiDto;
+import com.amazonaws.services.s3.AmazonS3;
 import com.heartlink.matching.mbti.model.mapper.MatchingMbtiMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.List;
+import java.net.URL;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,15 +17,33 @@ import java.util.stream.Collectors;
 public class MatchingMbtiService {
 
     private final MatchingMbtiMapper matchingMbtiMapper;
+    private final AmazonS3 s3Client;
 
     @Autowired
-    public MatchingMbtiService(MatchingMbtiMapper matchingMbtiMapper) {
+    public MatchingMbtiService(MatchingMbtiMapper matchingMbtiMapper,AmazonS3 s3Client) {
         this.matchingMbtiMapper = matchingMbtiMapper;
+        this.s3Client = s3Client;
     }
 
     // 특정 사용자의 프로필 가져오기
     public MatchingMbtiDto getUserProfile(int userNumber) {
-        return matchingMbtiMapper.getUserProfileById(userNumber);
+        MatchingMbtiDto userProfile = matchingMbtiMapper.getUserProfileById(userNumber);
+
+        if (userProfile != null) {
+            String photo = userProfile.getProfilePhoto();
+
+            // Null 체크 및 기본 이미지 설정
+            if (photo == null) {
+                userProfile.setProfilePhoto("/image/mypage/icon_users.png"); // 기본 이미지 URL 설정
+            } else {
+                String s3Url = photo;
+                URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+                String txtUrl = url.toString();
+                userProfile.setProfilePhoto(txtUrl);
+            }
+        }
+
+        return userProfile;
     }
 
     // 천생연분 MBTI 매핑 로직
@@ -86,6 +106,21 @@ public class MatchingMbtiService {
 
             System.out.println("매칭된 유저 수: " + soulmateUsers.size());
 
+            // 각 유저의 프로필 사진 경로 설정
+            for (MatchingMbtiDto soulmate : soulmateUsers) {
+                String photo = soulmate.getProfilePhoto();
+
+                // Null 체크 및 기본 이미지 설정
+                if (photo == null) {
+                    soulmate.setProfilePhoto("/image/mypage/icon_users.png"); // 기본 이미지 URL 설정
+                } else {
+                    String s3Url = photo;
+                    URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+                    String txtUrl = url.toString();
+                    soulmate.setProfilePhoto(txtUrl);
+                }
+            }
+
             // 리스트를 랜덤하게 섞고 상위 10명을 선택
             Collections.shuffle(soulmateUsers);
             return soulmateUsers.stream().limit(10).collect(Collectors.toList());
@@ -95,16 +130,37 @@ public class MatchingMbtiService {
         }
     }
 
+
     // 상위 MBTI 매칭 결과 가져오기
     public List<MatchingMbtiDto> getTopMatches(int userNumber) {
+        // 현재 사용자의 프로필 정보 가져오기
         MatchingMbtiDto userProfile = matchingMbtiMapper.getUserProfileById(userNumber);
         String userMbti = userProfile.getMbti();
         String userSex = userProfile.getUserSex();
 
+        // 기본 이미지 경로 설정
+        String defaultImagePath = "/image/mypage/icon_users.png"; // 여기에 기본 이미지의 실제 경로를 입력하세요
+
+        // 상위 매칭 MBTI 리스트 가져오기
         List<String> topMatches = topMbtiMatches.get(userMbti);
         if (topMatches != null && !topMatches.isEmpty()) {
             // 상위 매칭 MBTI에 해당하는 이성 유저 리스트 가져오기
             List<MatchingMbtiDto> topMatchUsers = matchingMbtiMapper.getUsersByTopMbtis(topMatches, userSex);
+
+            // 각 유저의 프로필 사진 경로 설정
+            for (MatchingMbtiDto topMatch : topMatchUsers) {
+                String photo = topMatch.getProfilePhoto();
+
+                // Null 체크 및 기본 이미지 설정
+                if (photo == null) {
+                    topMatch.setProfilePhoto(defaultImagePath); // 기본 이미지 경로 설정
+                } else {
+                    String s3Url = photo;
+                    URL url = s3Client.getUrl("heart-link-bucket", s3Url);
+                    String txtUrl = url.toString();
+                    topMatch.setProfilePhoto(txtUrl);
+                }
+            }
 
             // 리스트를 랜덤하게 섞고 상위 10명을 선택
             Collections.shuffle(topMatchUsers);

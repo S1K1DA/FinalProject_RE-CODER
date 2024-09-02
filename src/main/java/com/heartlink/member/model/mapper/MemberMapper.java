@@ -43,4 +43,10 @@ public interface MemberMapper {
     // HomeController
     public List<MemberDto> getTopUserList();
     public MemberDto getUserDetail(int userNo);
+
+    // 로그인 시 LAST_LOGIN_DATE 업데이트 메서드
+    void updateLastLoginDate(@Param("email") String email);
+
+    MemberDto findByNameAndBirthdate(@Param("name") String name, @Param("residentNumber") String residentNumber);
+
 }

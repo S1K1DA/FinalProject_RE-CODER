@@ -1,6 +1,5 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
 
-
 /* Reset CSS */
 * {
     box-sizing: border-box;
@@ -52,6 +51,14 @@ body {
     padding: 10px;
     border-bottom: 1px solid #ddd;
     cursor: pointer;
+}
+
+.chat-list-item2 {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    height: 50px;
 }
 
 .chat-list-item:hover {
@@ -109,28 +116,30 @@ body {
 
 .chat-thread li {
     display: block;
-    padding: 10px 20px;
     margin-bottom: 20px;
     font: 16px/20px 'Noto Sans', sans-serif;
     border-radius: 10px;
-    background-color: #fff;
-    max-width: 60%;
+    max-width: -webkit-fill-available;
     word-wrap: break-word;
 }
 
-.chat-thread li.self {
-    background-color: #fff;
+.chat-thread .self {
+    background-color: #ffe4e1;
     text-align: right;
-    border-radius: 15px 15px 0 15px;
+    border-radius: 15px 0 15px 15px;
     margin-left: auto;
+    padding: 10px;
+    margin-top: 40px;
 }
 
-.chat-thread li.other {
+.chat-thread .other {
     background-color: #ffe4e1;
     text-align: left;
-    border-radius: 15px 15px 15px 0;
+    border-radius: 0 15px 15px 15px;
     margin-right: auto;
     margin-left: 10px;
+    padding: 10px;
+    margin-top: 40px;
 }
 
 .chat-window {
@@ -197,3 +206,21 @@ body {
 .nik-name {
     font-weight: bold;
 }
+
+/* 나가기 버튼 스타일 */
+.exit-chat {
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #d9534f; /* 나가기 버튼 색상 */
+}
+
+.exit-chat:hover {
+    opacity: 0.8;
+}
+
+/* 나가기 버튼과 알림 아이콘 사이에 간격 추가 */
+.notification {
+    margin-right: 10px;
+}
+

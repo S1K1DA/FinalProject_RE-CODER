@@ -77,6 +77,7 @@ public class MemberService {
         MemberDto member = memberMapper.findByEmail(email);
 
         if (member != null && passwordEncoder.matches(password, member.getPassword())) {
+            memberMapper.updateLastLoginDate(email);
             return member;
         } else {
             return null;
@@ -174,5 +175,8 @@ public class MemberService {
             return "삭제된 계정 없음";
         }
     }
-
+    // 아이디 찾기
+    public MemberDto findByNameAndBirthdate(String name, String residentNumber) {
+        return memberMapper.findByNameAndBirthdate(name, residentNumber);
+    }
 }

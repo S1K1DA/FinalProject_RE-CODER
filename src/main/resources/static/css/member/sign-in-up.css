@@ -290,3 +290,17 @@ span {
 .social-kakao:hover {
     filter: brightness(1.2); /* 호버 시 밝기 조정 */
 }
+
+.forgot-container {
+  margin-top: 20px;
+}
+
+.forgot-container a {
+  color: #000;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.forgot-container a:hover {
+  text-decoration: underline;
+}

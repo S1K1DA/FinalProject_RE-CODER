@@ -59,6 +59,7 @@ public class SecurityConfig {
                                 .requestMatchers("/matching/**").authenticated()    //재인
 
                                 // 그 외의 모든 요청은 권한 허용
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않음 (JWT 사용)

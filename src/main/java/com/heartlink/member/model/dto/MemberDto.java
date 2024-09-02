@@ -9,10 +9,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class MemberDto {
 
+    private Date lastLoginDate;
     private int userNumber;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "###.######")
