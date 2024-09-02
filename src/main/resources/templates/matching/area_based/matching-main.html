@@ -131,7 +131,7 @@
                     listItem.className = 'matching-list-item';
                     let resultInnerHtml = `
                         <div class="matching-request-box">
-                            <img src="/image/user_profile/${responseJson[i].photoOriginName || 'default_image.png'}" class="matching-photo">
+                            <img src="${responseJson[i].photoPath}" class="matching-photo">
                             <a class="matching-request" name="area-mathing-btn" >매칭 신청</a>
                             <input id="matchedUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
                         </div>

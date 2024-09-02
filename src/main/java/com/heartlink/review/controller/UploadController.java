@@ -21,10 +21,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UploadController {
 
-    private final S3Uploader s3Uploader;
-
     @Autowired
     private final WebApplicationContext context;
+    private final S3Uploader s3Uploader;
+
 
     @PostMapping("/image-upload")
     public ResponseEntity<String> imageUpload(@RequestParam("file") MultipartFile file) {

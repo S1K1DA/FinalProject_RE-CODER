@@ -72,8 +72,9 @@ public class ReviewDao {
         return sqlSession.selectOne("mypageMapper.checkNicknameDuplicate", nickname);
     }
 
-
-
+    public List<ReviewDto> getTopReviews(){
+        return sqlSession.selectList("reviewMapper.getTopReviews");
+    }
 
 
 }

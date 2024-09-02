@@ -79,10 +79,22 @@
                         <div class="feed-title-box">
                             <p class="feed-title" th:text="${feed.feedTitle}"></p>
                             <input type="hidden" id="feedNo" th:value="${feed.feedNo}">
-                            <div class="feed-icons">
-                                <a class="badge ms-auto feed-heart" id="like-heart" onclick="feedLikeBtn(this)">
+                            <div class="feed-icons" th:if="${thisUserNo != 0}">
+                                <a class="badge ms-auto feed-heart-cancel"
+                                   id="like-heart"
+                                   th:each="user : ${feed.LikedUser}"
+                                   th:if="${user == thisUserNo}"
+                                   onclick="feedLikeCancelBtn(this)">
                                     <i class="bi-heart feed-heart-icon"></i>
                                 </a>
+
+                                <a class="badge ms-auto feed-heart"
+                                   id="like-heart"
+                                   th:if="${#lists.size(feed.LikedUser) == 0 or !feed.LikedUser.contains(thisUserNo)}"
+                                   onclick="feedLikeBtn(this)">
+                                    <i class="bi-heart feed-heart-icon"></i>
+                                </a>
+
                                 <div class="dropdown-more">
                                     <a class="more-drop-btn more-icon">
                                         <img class="more-icon-image" th:src="@{/image/icon_more.png}" alt="More"/>
@@ -90,8 +102,8 @@
                                     <div class="more-dropdown-content">
                                         <input type="hidden" th:value="${feed.feedNo}">
                                         <div class="more-ele" id="reportBtn">신고하기</div>
-                                        <div class="more-ele" onclick="deleteFeed(this)">삭제</div>
-                                        <div class="more-ele" th:attr="onclick='location.href=\'feed/modify?feedNo='+${feed.feedNo}+'\''">수정</div>
+                                        <div class="more-ele" th:if="${thisUserNo == feed.authorUserNo}" onclick="deleteFeed(this)">삭제</div>
+                                        <div class="more-ele" th:if="${thisUserNo == feed.authorUserNo}" th:attr="onclick='location.href=\'feed/modify?feedNo='+${feed.feedNo}+'\''">수정</div>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +133,7 @@
                                     <input type="hidden" th:value="${comment.commentNo}">
                                     <p class="reply-nickname" th:text="${comment.commentUserNickname}"></p>
                                     <p class="reply-indate" th:text="${comment.commentIndate}"></p>
-                                    <a class="bi-x reply-delete" onclick="deleteReply(this)"></a>
+                                    <a class="bi-x reply-delete" th:if="${comment.commentUserNo == thisUserNo && thisUserNo != 0}" onclick="deleteReply(this)"></a>
                                 </div>
                                 <div class="reply-content-box">
                                     <span class="reply-content"th:text="${comment.commentContent}"></span>
@@ -131,8 +143,8 @@
                     </div>
                     <div class="answer-reply-box">
                         <div class="answer-text-box">
-                            <textarea class="answer-text" placeholder="댓글을 입력해주세요."></textarea>
-                            <button class="answer-submit" id="comment-submit-btn">등록</button>
+                            <textarea class="answer-text"  th:if="${thisUserNo != 0}" placeholder="댓글을 입력해주세요."></textarea>
+                            <button class="answer-submit"  th:if="${thisUserNo != 0}" id="comment-submit-btn">등록</button>
                         </div>
                     </div>
                 </div>
