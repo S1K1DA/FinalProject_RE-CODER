@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const receivedMessage = JSON.parse(message.body);
                 const profile = profiles.find(profile => profile.basicUserNo === receivedMessage.basicUserNo);
-                const fullPhotoPath = profile ? (profile.photoPath) : '/default-profile.png';
+                const fullPhotoPath = profile ? (profile.photoPath) : '/image/mypage/icon_users.png';
                 displayMessage(
                     receivedMessage.content,
                     receivedMessage.basicUserNo === parseInt(basicUserNo) ? 'self' : 'other',
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nicknameSpan.classList.add('nik-name');
 
             const profileImage = document.createElement('img');
-            profileImage.src = fullPhotoPath || '/default-profile.png';
+            profileImage.src = fullPhotoPath || '/image/mypage/icon_users.png';
             profileImage.alt = "self profile";
             profileImage.classList.add('profile');
 
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nicknameSpan.classList.add('nik-name');
 
             const profileImage = document.createElement('img');
-            profileImage.src = fullPhotoPath || '/default-profile.png';
+            profileImage.src = fullPhotoPath || '/image/mypage/icon_users.png';
             profileImage.alt = "other profile";
             profileImage.classList.add('profile');
 

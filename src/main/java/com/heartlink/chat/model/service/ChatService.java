@@ -33,7 +33,7 @@ public class ChatService {
 
             // Null 체크 및 기본 이미지 설정
             if (photoPath == null || photoName == null) {
-                item.setPhotoPath("/path/to/default/image.jpg"); // 기본 이미지 URL 설정
+                item.setPhotoPath("/image/mypage/icon_users.png"); // 기본 이미지 URL 설정
             } else {
                 String s3Url = photoPath + photoName;
                 URL url = s3Client.getUrl("heart-link-bucket", s3Url);
@@ -55,7 +55,7 @@ public class ChatService {
 
             // Null 체크 및 기본 이미지 설정
             if (photoPath == null || photoName == null) {
-                item.setPhotoPath("/path/to/default/image.jpg"); // 기본 이미지 URL 설정
+                item.setPhotoPath("/image/mypage/icon_users.png"); // 기본 이미지 URL 설정
             } else {
                 String s3Url = photoPath + photoName;
                 URL url = s3Client.getUrl("heart-link-bucket", s3Url);
