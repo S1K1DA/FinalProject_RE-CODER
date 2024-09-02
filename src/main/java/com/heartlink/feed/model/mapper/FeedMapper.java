@@ -17,6 +17,8 @@ public interface FeedMapper {
 
     public int getLikeCount(int feedDto);
 
+    public List<Integer> getLikedUser(int feedNo);
+
     public int setCommentEnroll(FeedCommentDto commentDto);
 
     public FeedDto setModifyFeed(int feedNo);
@@ -28,5 +30,13 @@ public interface FeedMapper {
     public int setFeedDelete(int feedNo);
 
     public int setFeedLike(int feedNo, int userNo);
+
+    public int setFeedLikeCancel(int feedNo, int userNo);
+
+    public List<FeedDto> getTopFeedList();
+
+    public List<FeedDto> getNewFeedList();
+
+    public FeedDto getTopFeedDetail(int feedNo);
 }
 

@@ -6,6 +6,8 @@ import com.heartlink.member.model.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
 
@@ -35,6 +37,12 @@ public interface MemberMapper {
 
     // 사용자의 토큰 조회 메서드
     String findTokenByUserNumber(@Param("userNumber") int userNumber);
+
+
+    // ------------------------------------------------
+    // HomeController
+    public List<MemberDto> getTopUserList();
+    public MemberDto getUserDetail(int userNo);
 
     // 로그인 시 LAST_LOGIN_DATE 업데이트 메서드
     void updateLastLoginDate(@Param("email") String email);

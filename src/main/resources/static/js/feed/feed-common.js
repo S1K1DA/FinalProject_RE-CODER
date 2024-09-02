@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.feedLikeBtn = function (element){
         const feedElement = element.closest('.feed-ele');
-        const likeHeart = document.getElementById('like-heart');
         const feedNo = feedElement.querySelector('input[type="hidden"]').value;
 
         fetch(`/feed/like?feedNo=${feedNo}`, {
@@ -148,12 +147,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({
                     icon: 'success',
                     title: '좋아요 성공!',
+                }).then(() => {
+                    window.location.reload();
                 });
-                likeHeart.style.backgroundColor = '#d9294f';
-                likeHeart.style.color = '#fff';
 
             } else {
                 throw new Error('좋아요 실패');
+            }
+        })
+    }
+
+    window.feedLikeCancelBtn = function (element){
+        const feedElement = element.closest('.feed-ele');
+        const feedNo = feedElement.querySelector('input[type="hidden"]').value;
+
+        fetch(`/feed/like-cancel?feedNo=${feedNo}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '좋아요 취소',
+                }).then(() => {
+                    window.location.reload();
+                });
+
+            } else {
+                throw new Error('좋아요 취소 실패');
             }
         })
     }

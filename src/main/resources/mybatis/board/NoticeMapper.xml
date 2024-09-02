@@ -6,9 +6,9 @@
     <!-- 공지사항 글쓰기 -->
     <insert id="insertNotice" parameterType="com.heartlink.board.model.dto.NoticeDto">
         INSERT INTO NOTICE_BOARD (
-        NOTICE_NO, ADMIN_USER_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_PRIORITY, NOTICE_INDATE
+        NOTICE_NO, ADMIN_USER_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_PRIORITY, NOTICE_INDATE, NOTICE_DELETE
         ) VALUES (
-        NOTICE_SEQ.NEXTVAL, #{adminUserNo}, #{noticeTitle}, #{noticeContent}, #{noticePriority}, SYSDATE
+        NOTICE_SEQ.NEXTVAL, #{adminUserNo}, #{noticeTitle}, #{noticeContent}, #{noticePriority}, SYSDATE, NULL
         )
     </insert>
 
@@ -17,14 +17,14 @@
         SELECT COUNT(*)
         FROM NOTICE_BOARD
         WHERE NOTICE_PRIORITY = 'Y'
-        AND NOTICE_DELETE = 'N'
+        AND NOTICE_DELETE IS NULL
     </select>
 
     <!-- 공지사항 총 개수 조회 -->
     <select id="selectNoticeCount" resultType="int">
         SELECT COUNT(*)
         FROM NOTICE_BOARD
-        WHERE NOTICE_DELETE = 'N'
+        WHERE NOTICE_DELETE IS NULL
     </select>
 
     <!-- 고정된 공지사항 항목 조회 -->
@@ -38,7 +38,7 @@
         NOTICE_INDATE AS noticeIndate
         FROM NOTICE_BOARD
         WHERE NOTICE_PRIORITY = 'Y'
-        AND NOTICE_DELETE = 'N'
+        AND NOTICE_DELETE IS NULL
         ORDER BY NOTICE_NO DESC
     </select>
 
@@ -57,7 +57,7 @@
         ROW_NUMBER() OVER (ORDER BY NOTICE_NO DESC) AS RN
         FROM
         NOTICE_BOARD
-        WHERE NOTICE_DELETE = 'N'
+        WHERE NOTICE_DELETE IS NUL
         ORDER BY NOTICE_INDATE DESC
         )
     </select>
@@ -73,13 +73,13 @@
         NOTICE_INDATE AS noticeIndate
         FROM NOTICE_BOARD
         WHERE NOTICE_NO = #{noticeNo}
-        AND NOTICE_DELETE = 'N'
+        AND NOTICE_DELETE IS NULL
     </select>
 
     <!--  게시판 삭제  -->
     <update id="deleteNoticeById" parameterType="long">
         UPDATE NOTICE_BOARD
-        SET NOTICE_DELETE = 'Y'
+        SET NOTICE_DELETE = SYSDATE
         WHERE NOTICE_NO = #{noticeNo}
     </update>
 

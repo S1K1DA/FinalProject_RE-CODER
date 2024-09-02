@@ -23,4 +23,5 @@ public class ReviewDto {
         this.reviewRating = reviewRating;
         this.starRating = "★".repeat(reviewRating) + "☆".repeat(5 - reviewRating);
     }
+
 }

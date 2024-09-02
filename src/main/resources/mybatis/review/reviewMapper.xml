@@ -20,7 +20,7 @@
         SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
         FROM REVIEW_BOARD r
         JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
-        WHERE r.REVIEW_TYPE = 'P' AND r.REVIEW_DELETE = 'N'
+        WHERE r.REVIEW_TYPE = 'P' AND r.REVIEW_DELETE IS NULL
         ORDER BY r.REVIEW_NO DESC
     </select>
 
@@ -40,14 +40,14 @@
 
     <!-- 리뷰 저장 -->
     <insert id="savePhotoReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
-        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_TYPE )
-        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContent}, #{reviewerUserId}, 'P')
+        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_TYPE , REVIEW_DELETE)
+        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContent}, #{reviewerUserId}, 'P', NULL)
     </insert>
 
     <!-- Live Review 저장 -->
     <insert id="saveLiveReview" parameterType="com.heartlink.review.model.dto.ReviewDto">
-        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_RATING, REVIEW_TYPE)
-        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewContent}, #{reviewerUserId}, #{reviewRating}, 'L')
+        INSERT INTO REVIEW_BOARD (REVIEW_NO, REVIEW_CONTENT, REVIEWER_USER_ID, REVIEW_RATING, REVIEW_TYPE, REVIEW_DELETE)
+        VALUES (REVIEW_SEQ.NEXTVAL, #{reviewContent}, #{reviewerUserId}, #{reviewRating}, 'L', NULL)
     </insert>
 
     <!-- 마지막 리뷰 번호 가져오기 -->
@@ -87,8 +87,7 @@
     <!-- 리뷰 삭제 + 삭제한 시간 = REVIEW_UPDATE -->
     <update id="deleteReview" parameterType="int">
         UPDATE REVIEW_BOARD
-        SET REVIEW_DELETE = 'Y',
-        REVIEW_UPDATE = CURRENT_TIMESTAMP
+        SET REVIEW_DELETE = SYSDATE
         WHERE REVIEW_NO = #{reviewNo}
     </update>
 
@@ -106,10 +105,18 @@
         BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
         WHERE
         r.REVIEW_TYPE = 'L'
-        AND r.REVIEW_DELETE = 'N'
+        AND r.REVIEW_DELETE IS NULL
         ORDER BY
         r.REVIEW_NO DESC
     </select>
 
-
+    <select id="getTopReviews" resultMap="reviewResultSet">
+        SELECT r.REVIEW_NO, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.REVIEWER_USER_ID, r.REVIEW_RATING, r.REVIEW_VIEWS, u.BASIC_USER_NICKNAME
+        FROM REVIEW_BOARD r
+        JOIN BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE REVIEW_TYPE = 'P'
+        AND REVIEW_DELETE IS NULL
+        ORDER BY REVIEW_VIEWS DESC
+        FETCH FIRST 5 ROWS ONLY
+    </select>
 </mapper>
