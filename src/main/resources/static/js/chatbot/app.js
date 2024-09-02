@@ -126,12 +126,14 @@ function handlePostback(postback) {
 
     if (postback === "home_action") {
         clearMessages();
-        stompClient.send("/app/sendMessage", {}, JSON.stringify("open")); // 웰컴 메시지를 요청
+        const postbackMessage = JSON.stringify({ postback: "open" });  // JSON 형식으로 전송
+        stompClient.send("/app/sendMessage", {}, postbackMessage); // 웰컴 메시지를 요청
     } else {
         const postbackMessage = JSON.stringify({ postback: postback });
         stompClient.send("/app/sendMessage", {}, postbackMessage);
     }
 }
+
 
 function clearMessages() {
     const chatbotBody = document.querySelector('.chatbot-body');

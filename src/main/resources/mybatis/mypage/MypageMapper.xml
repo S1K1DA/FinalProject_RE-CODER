@@ -324,10 +324,11 @@
         SELECT COUNT(*) FROM USER_LIKES WHERE LIKED_USER_NO = #{userId}
     </select>
 
-
-
-
-
-
+    <select id="hasUserLikedProfile" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM USER_LIKES
+        WHERE LIKER_USER_NO = #{userId}
+        AND LIKED_USER_NO = #{likedUserNo}
+    </select>
 
 </mapper>
