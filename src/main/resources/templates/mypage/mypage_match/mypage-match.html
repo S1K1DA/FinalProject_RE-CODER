@@ -47,11 +47,13 @@
                                         <td>
                                             <span id="match-state-[[${match.matchingNo}]]"
                                                   th:text="${match.matchingState == 'Y' ? '진행중' :
-                                                           (match.decisionHistory == 'N' ? '대기중' : '거절됨/종료됨')}"
+                                                           (match.matchingState == 'N' ? '거절됨' :
+                                                           (match.matchingState == 'E' ? '종료됨' : '대기중'))}"
                                                   th:classappend="${match.matchingState == 'Y' ? 'text-success' :
-                                                                  (match.decisionHistory == 'N' ? 'text-warning' : 'text-danger')}"></span>
+                                                                  (match.matchingState == 'N' ? 'text-danger' :
+                                                                  (match.matchingState == 'E' ? 'text-muted' : 'text-warning'))}"></span>
                                             <div id="match-actions-[[${match.matchingNo}]]"
-                                                 th:if="${match.matchingUserNo != userId && match.matchingState == 'N' && match.decisionHistory == 'N'}"
+                                                 th:if="${match.matchingState == 'W'} and ${match.matchedUserNo == userId}"
                                                  style="display:inline-block;">
                                                 <button th:onclick="'acceptMatch(' + ${match.matchingNo} + ')'"
                                                         style="margin-left: 10px; background-color: blue; border: none; border-radius: 8px; color: white; padding: 2px 5px; cursor: pointer;">
@@ -62,6 +64,7 @@
                                                     거절
                                                 </button>
                                             </div>
+
 
                                         </td>
                                         <td th:text="${match.matchingChattingState == 'Y' ? 'Y' : 'N'}" th:classappend="${match.matchingChattingState == 'Y' ? 'text-success' : 'text-danger'}"></td>

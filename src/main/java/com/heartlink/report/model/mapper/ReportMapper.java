@@ -12,6 +12,9 @@ public interface ReportMapper {
     @Select("SELECT COUNT(*) FROM FEEDS WHERE FEED_NO = #{feedNo}")
     public int searchFeedNo(int feedNo);
 
+    @Select("SELECT COUNT(*) FROM REVIEW_BOARD WHERE REVIEW_NO = #{reviewNo}")
+    public int searchReviewNo(int reviewNo);  // Review 존재 여부 확인
+
     @Select("SELECT count(*) FROM REPORT_CATEGORY WHERE REPORT_CATEGORY_NO = #{categoryNo}")
     public int searchCategoryNo(int categoryNo);
 

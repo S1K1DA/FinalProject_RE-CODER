@@ -94,10 +94,22 @@
 
     <!-- Live Review 목록 가져오기 -->
     <select id="getLiveReviews" resultMap="reviewResultSet">
-        SELECT REVIEW_NO, REVIEW_CONTENT, REVIEW_RATING
-        FROM REVIEW_BOARD
-        WHERE REVIEW_TYPE = 'L' AND REVIEW_DELETE = 'N'
-        ORDER BY REVIEW_NO DESC
+        SELECT
+        r.REVIEW_NO,
+        r.REVIEW_CONTENT,
+        r.REVIEW_RATING,
+        r.REVIEWER_USER_ID,
+        u.BASIC_USER_NICKNAME
+        FROM
+        REVIEW_BOARD r
+        JOIN
+        BASIC_USER u ON r.REVIEWER_USER_ID = u.BASIC_USER_NO
+        WHERE
+        r.REVIEW_TYPE = 'L'
+        AND r.REVIEW_DELETE = 'N'
+        ORDER BY
+        r.REVIEW_NO DESC
     </select>
+
 
 </mapper>

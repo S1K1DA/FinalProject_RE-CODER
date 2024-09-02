@@ -1,11 +1,11 @@
 package com.heartlink.mypage.controller;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.heartlink.common.pagination.Pagination;
 import com.heartlink.common.s3.S3Uploader;
 import com.heartlink.member.util.JwtUtil;
 import com.heartlink.mypage.model.dto.MypageDto;
 import com.heartlink.mypage.model.service.MypageService;
-import com.heartlink.common.pagination.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -454,14 +451,43 @@ public class MypageController {
         boolean success = mypageService.updateMatchingState(matchingNo, userId, state);
 
         if (success) {
-            // DECISION_HISTORY 컬럼 업데이트
-            mypageService.updateDecisionHistory(matchingNo, userId);
             return ResponseEntity.ok("매칭 상태 업데이트 성공");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("매칭 상태 업데이트 실패");
         }
     }
 
+    @GetMapping("/getProfileContent")
+    @ResponseBody
+    public Map<String, Object> getProfileContent(@RequestParam("likedUserNo") int likedUserNo) {
+        MypageDto userInfo = mypageService.getUserInfo(likedUserNo);
+        int likeCount = mypageService.getLikeCountByUserId(likedUserNo);
+
+        List<MypageDto> likeCategories = mypageService.getPersonalCategoriesByType("L");
+        List<MypageDto> dislikeCategories = mypageService.getPersonalCategoriesByType("H");
+        List<MypageDto> hobbies = mypageService.getUserHobbies(likedUserNo);
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (userInfo != null) {
+            response.put("status", "success");
+            response.put("nickname", userInfo.getNickname());
+            response.put("address", userInfo.getFullAddress());
+            response.put("mbti", userInfo.getMbti());
+            response.put("likeCategories", likeCategories);
+            response.put("dislikeCategories", dislikeCategories);
+            response.put("hobbies", hobbies);
+            response.put("likeCount", likeCount);
+            response.put("profilePicturePath", userInfo.getFullProfilePictureUrl());
+            response.put("consentLocationInfo", userInfo.getConsentLocationInfo());  // 추가된 부분
+            response.put("userSelectedCategories", mypageService.getUserSelectedCategories(likedUserNo)); // 유저의 선택된 성향
+        } else {
+            response.put("status", "error");
+            response.put("message", "User not found");
+        }
+
+        return response;
+    }
 
 
 

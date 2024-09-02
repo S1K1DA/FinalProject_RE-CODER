@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chatbotMapper">
+
+    <insert id="insertChatbotInquiry" parameterType="ChatbotDto">
+        INSERT INTO CHATBOT_INQUIRIES (CHATBOT_CHATTING_NO, BASIC_USER_NO, CHATBOT_CHATTING_INDATE, CHATBOT_CHATTING_STATE, CHATBOT_INQUIRY_TAG)
+        VALUES (CHATBOT_CHATTING_SEQ.NEXTVAL, #{userId}, CURRENT_TIMESTAMP, 'N', #{chatbotInquiryTag})
+    </insert>
+
+</mapper>

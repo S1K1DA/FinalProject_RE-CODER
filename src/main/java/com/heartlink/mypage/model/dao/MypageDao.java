@@ -169,11 +169,15 @@ public class MypageDao {
         return sqlSession.update("MypageMapper.updateMatchingState", params);
     }
 
-    public int updateDecisionHistory(int matchingNo, int matchedUserNo) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("matchingNo", matchingNo);
-        params.put("matchedUserNo", matchedUserNo);
-        return sqlSession.update("updateDecisionHistory", params);
+
+    public List<MypageDto> getPersonalCategoriesByTypeAndUser(Map<String, Object> params) {
+        return sqlSession.selectList("MypageMapper.getPersonalCategoriesByTypeAndUser", params);
     }
+
+    public int getLikeCountByUserId(int userId) {
+        return sqlSession.selectOne("MypageMapper.getLikeCountByUserId", userId);
+    }
+
+
 
 }

@@ -25,12 +25,16 @@ function connect() {
         });
 
         // 연결 후 웰컴 메시지 요청
-        stompClient.send("/app/sendMessage", {}, JSON.stringify("open"));
+        let userId = parseInt(document.getElementById('user-id').value); // userId를 int로 변환
+        let welcomeMessage = { type: "welcome", content: "open", userId: userId };
+        stompClient.send("/app/sendMessage", {}, JSON.stringify(welcomeMessage));
 
         // 여기에서 고정 메뉴를 초기화합니다.
         displayPersistentMenu();
     });
 }
+
+
 
 function disconnect() {
     if (stompClient !== null) {
@@ -42,9 +46,11 @@ function disconnect() {
 }
 
 function sendMessage() {
+    let userId = parseInt(document.getElementById('user-id').value); // userId를 int로 변환
     let message = $("#chatbot-input").val();
+    let messagePayload = { content: message, userId: userId };
     showUserMessage(message); // 사용자 메시지 표시
-    stompClient.send("/app/sendMessage", {}, JSON.stringify(message));
+    stompClient.send("/app/sendMessage", {}, JSON.stringify(messagePayload));
     $("#chatbot-input").val(''); // 입력 창 비우기
 }
 
