@@ -24,14 +24,15 @@
 
                         <div class="custom-block-info w-100">
                             <div class="liked-prof-list">
-                                <div th:each="like : ${likedProfiles}" class="liked-prof-item" th:data-liked-user-no="${like.likedUserNo}">
+                                <div th:each="likedProfileData : ${likedProfiles}" class="liked-prof-item" th:data-liked-user-no="${likedProfileData.profile.likedUserNo}">
                                     <a href="#" class="badge ms-auto prof-heart liked" onclick="event.stopPropagation();">
                                         <i class="bi-heart prof-heart-icon"></i>
                                     </a>
-                                    <img class="prof-img" th:src="@{${like.fullProfilePictureUrl}}" alt="프로필 이미지" onerror="this.onerror=null; this.src='/image/user_profile/default_image.png';">
-                                    <p class="prof-author" th:text="${like.likedUserNickname}">사용자 이름</p>
-                                    <p class="prof-liked-time" th:text="${#dates.format(like.likeIndate, 'yyyy.MM.dd HH:mm')}">좋아요 시간</p>
+                                    <img class="prof-img" th:src="${likedProfileData.profilePictureUrl}" alt="프로필 이미지" onerror="this.onerror=null; this.src='/image/user_profile/default_image.png';">
+                                    <p class="prof-author" th:text="${likedProfileData.profile.likedUserNickname}">사용자 이름</p>
+                                    <p class="prof-liked-time" th:text="${#dates.format(likedProfileData.profile.likeIndate, 'yyyy.MM.dd HH:mm')}">좋아요 시간</p>
                                 </div>
+
                             </div>
 
                             <div th:replace="fragments/pagination :: pagination"></div>
