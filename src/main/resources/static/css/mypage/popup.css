@@ -26,3 +26,23 @@
 
     .popup-content p{
     color:white;
+    }
+
+
+
+    .prof-heart {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        padding: 6px;
+        border: 1.5px solid var(--secondary-color);
+        background-color: #fff;
+        border-radius: 50%;
+        color: var(--primary-color);
+    }
+
+    .prof-heart.liked {
+        background-color: var(--secondary-color) !important;
+        color: #fff !important;
+    }
+
