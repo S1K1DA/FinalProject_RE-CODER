@@ -151,6 +151,8 @@ public class FeedController {
         int pageSize = 5; // 페이지당 데이터 수
         List<FeedDto> feedList;
 
+        int thisUserNo = getCurrentUserNo();
+
         // 페이지 번호와 페이지 크기를 사용하여 데이터 범위를 계산합니다.
         int start = (page - 1) * pageSize + 1;
         int end = page * pageSize;
@@ -164,6 +166,7 @@ public class FeedController {
         Map<String, Object> response = new HashMap<>();
         response.put("data", feedList);
         response.put("hasMoreData", hasMoreData);
+        response.put("thisUserNo", thisUserNo);
 
         return ResponseEntity.ok(response);
     }

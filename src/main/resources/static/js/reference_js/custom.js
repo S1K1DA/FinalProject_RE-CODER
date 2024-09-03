@@ -81,20 +81,6 @@
         }
     });
 
-    
-    // feed page 더보기 드롭다운
-    $(".more-drop-btn").on("click", function(e) {
-        e.preventDefault();
-
-        var $dropdown = $(this).closest('.dropdown-more').find('.more-dropdown-content');
-
-        if ($dropdown.is(":visible")) {
-            $dropdown.slideUp(300);
-        } else {
-            $dropdown.slideDown(300);
-        }
-    });
-
     $(document).on("click", function(e) {
         if (!$(e.target).closest('.dropdown-more').length) {
             $(".more-dropdown-content").slideUp(300);

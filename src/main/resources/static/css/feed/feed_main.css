@@ -543,9 +543,10 @@ textarea:focus {
     margin-top: 20px;
 }
 
+/* 전체 화면을 덮는 오버레이 */
 .report-overlay {
-    display: none;
-    position: absolute; /* pc-container를 기준으로 위치 설정 */
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 화면 전체를 기준으로 위치 설정 */
     top: 0;
     left: 0;
     width: 100%;
@@ -556,6 +557,7 @@ textarea:focus {
     z-index: 999; /* 팝업을 다른 콘텐츠 위로 올리기 위해 */
 }
 
+/* 팝업 컨테이너 */
 .report-popup {
     width: 450px;
     background: white;
@@ -566,20 +568,22 @@ textarea:focus {
     position: relative; /* 팝업 내의 콘텐츠를 정렬 */
 }
 
-.report-popup h2{
+/* 팝업 제목 스타일 */
+.report-popup h2 {
     margin: 12px;
     font-size: 30px;
     text-align: left;
 }
 
-.report-action-box{
+/* 폼 내 스타일 */
+.report-action-box {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
 }
 
-.report-action-box ul{
+.report-action-box ul {
     padding: 0;
     margin: 10px 0;
 }
@@ -592,14 +596,14 @@ textarea:focus {
     margin-bottom: 2px;
 }
 
-.report-action-box textarea{
+.report-action-box textarea {
     width: 100%;
     height: 180px;
     margin: 20px 0;
     resize: none;
 }
 
-.report-action-box button{
+.report-action-box button {
     padding: 7px 10px;
     border-radius: 15px;
     border: none;
@@ -607,3 +611,13 @@ textarea:focus {
     color: #fff;
     margin-right: 5px;
 }
+
+/* 추가 버튼 스타일 (닫기 버튼과 완료 버튼) */
+.action-close {
+    background-color: #f44336; /* 닫기 버튼 색상 */
+}
+
+.action-complate {
+    background-color: #4CAF50; /* 완료 버튼 색상 */
+}
+
