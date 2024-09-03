@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // 초기화: 페이지 로드 시 프로필 팝업 초기화
+    ProfilePopupModule.initializeProfileItemPopup();
+
     // 사용자 MBTI 가져오기
     const userMbti = document.getElementById("user-mbti").textContent.trim().toUpperCase();
 
@@ -52,22 +55,22 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // 상위 랜덤 매칭 버튼 클릭 이벤트 핸들러
-        document.getElementById("top-matching").addEventListener("click", function() {
-            console.log("상위 랜덤 매칭 버튼 클릭됨");
+    document.getElementById("top-matching").addEventListener("click", function() {
+        console.log("상위 랜덤 매칭 버튼 클릭됨");
 
-            fetch("/matching/top-matches")
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("네트워크 응답이 올바르지 않습니다: " + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("상위 매칭 데이터 수신됨:", data);
-                    updateMatchingList(data);
-                })
-                .catch(error => console.error("상위 매칭 데이터 가져오기 오류:", error));
-        });
+        fetch("/matching/top-matches")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("네트워크 응답이 올바르지 않습니다: " + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("상위 매칭 데이터 수신됨:", data);
+                updateMatchingList(data);
+            })
+            .catch(error => console.error("상위 매칭 데이터 가져오기 오류:", error));
+    });
 
     // 리스트를 업데이트하는 함수
     function updateMatchingList(data) {
@@ -79,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
             listItem.classList.add("matching-list-item");
 
             listItem.innerHTML = `
-                <div class="list-profile-photo">
+                <div class="list-profile-photo liked-prof-item" data-liked-user-no="${user.userNumber}">
                     <img src="${user.profilePhoto}" alt="Profile Photo">
                 </div>
                 <div class="list-profile-info">
@@ -121,6 +124,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
         });
+
+        // 새로 추가된 프로필 항목에 대해 팝업 이벤트 리스너를 다시 설정
+        // 프로필 좋아요 기능 초기화
+        ProfileLikeModule.initializeProfileLikeFeature();
+        // 프로필 팝업 기능 초기화
+        ProfilePopupModule.initializeProfileItemPopup();
+        //프로필 팝업 닫기
+        ProfilePopupModule.initializeProfilePopupClose();
     }
 });
-
