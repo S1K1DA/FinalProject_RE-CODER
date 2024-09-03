@@ -1,6 +1,5 @@
 package com.heartlink.chat.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.heartlink.chat.model.dto.ChatDto;
 import com.heartlink.chat.model.dto.ChatMessageDto;
 import com.heartlink.chat.model.service.ChatService;
@@ -8,15 +7,11 @@ import com.heartlink.member.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

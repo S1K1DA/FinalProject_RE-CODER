@@ -215,8 +215,7 @@
 
     <update id="updateMatchingState" parameterType="map">
         UPDATE MATCHING_STATE
-        SET MATCHING_STATE = #{state},
-        MATCHING_CHATTING_STATE = CASE WHEN #{state} = 'Y' THEN 'Y' ELSE MATCHING_CHATTING_STATE END
+        SET MATCHING_STATE = #{state}
         WHERE MATCHING_NO = #{matchingNo}
         AND MATCHED_USER_NO = #{userId}
         AND MATCHING_STATE = 'W'
