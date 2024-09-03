@@ -20,7 +20,7 @@
                 <img th:src="${chat.photoPath}" class="profile" alt="other profile">
                 <div class="chat-info">
                     <span class="nik-name" th:text="${chat.nickname}">닉네임</span>
-                    <span class="last-message" th:text="${#strings.length(chat.lastMessage) > 6 ? #strings.substring(chat.lastMessage, 0, 6) + '...' : chat.lastMessage}"></span>
+                    <span class="last-message" th:text="${chat.lastMessage}"></span>
                 </div>
                 <span class="notification">
                     <i class="fa fa-envelope"></i>
