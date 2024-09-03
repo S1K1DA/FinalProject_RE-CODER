@@ -8,7 +8,6 @@
         <div class="container matching-out-box">
             <div class="matching-my-tabs">
                 <a class="matching-tab-ico not-choice" th:href="@{/matching/mbti}" >MBTI 매칭</a>
-                <a class="matching-tab-ico not-choice" href="#">이상형 매칭</a>
                 <a class="matching-tab-ico" th:href="@{/matching-area/main}">위치 기반 매칭</a>
             </div>
             <div class="matching-main-box">
@@ -121,7 +120,7 @@
                 var matchingList = document.getElementById('matching-list');
                 matchingList.innerHTML = '';
 
-                // 사용자 데이터 배열을 반복하여 마커를 생성합니다
+                // 사용자 데이터 배열을 반복하여 마커를 생성
                 for (var i = 0; i < responseJson.length; i++) {
                     var position = new kakao.maps.LatLng(responseJson[i].longitude, responseJson[i].latitude);
                     addMarker(position, responseJson[i].basicUserNo);
@@ -194,6 +193,7 @@
 
                                 const result = await Swal.fire({
                                     title: "매칭신청 하시겠습니까?",
+                                    text: "코인 10개가 차감됩니다.",
                                     icon: "question",
                                     showCancelButton: true,
                                     confirmButtonColor: "rgb(255 128 135)",
@@ -296,7 +296,7 @@
 
             // userId와 일치하는지 확인
             matchingItems.forEach(function(item) {
-                var matchingUserNo = item.querySelector('#matchingUserNo').value;
+                var matchingUserNo = item.querySelector('#matchedUserNo').value;
 
                 if (matchingUserNo === userId) {
                     // 일치하는 경우 배경색 변경
@@ -315,7 +315,6 @@
             });
         }
 
-
     });
 
 
@@ -323,3 +322,4 @@
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
+

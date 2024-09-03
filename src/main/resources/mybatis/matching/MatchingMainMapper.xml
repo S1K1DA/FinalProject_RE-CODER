@@ -49,6 +49,12 @@
         )
     </insert>
 
+    <update id="setUserCoinUpdate">
+        UPDATE BASIC_USER
+            SET BASIC_USER_COIN = BASIC_USER_COIN - 10
+        WHERE BASIC_USER_NO = #{matchingUserNo}
+    </update>
+
     <insert id="setMatchingAlarm">
         INSERT INTO MATCHING_ALARM
         VALUES (
