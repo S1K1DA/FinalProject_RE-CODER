@@ -111,13 +111,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
 
                     if (response.ok) {
-                        alert("매칭 요청이 성공적으로 전송되었습니다.");
+                    Swal.fire('매칭 성공','매칭 요청을 보냈습니다.', 'success');
                     } else {
                         const errorMessage = await response.text();
-                        alert("매칭 요청 중 오류가 발생했습니다: " + errorMessage);
+                        Swal.fire('매칭 오류','매칭 요청 중 오류가 발생했습니다:' + errorMessage, 'error');
                     }
                 } catch (error) {
-                    console.error("매칭 요청 중 오류 발생:", error);
+                    Swal.fire('매칭 오류','매칭 요청 중 오류 발생:' + error, 'error');
                 }
             });
         });

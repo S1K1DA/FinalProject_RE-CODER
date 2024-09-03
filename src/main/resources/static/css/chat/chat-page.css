@@ -55,6 +55,7 @@ body {
 
 .chat-list-item2 {
     display: flex;
+    align-items: flex-start;
     align-items: center;
     padding: 10px;
     cursor: pointer;
@@ -128,8 +129,9 @@ body {
     text-align: right;
     border-radius: 15px 0 15px 15px;
     margin-left: auto;
-    padding: 10px;
-    margin-top: 40px;
+    padding: 5px;
+    margin-top: 5px;
+    max-width: 410px;
 }
 
 .chat-thread .other {
@@ -138,8 +140,9 @@ body {
     border-radius: 0 15px 15px 15px;
     margin-right: auto;
     margin-left: 10px;
-    padding: 10px;
-    margin-top: 40px;
+    padding: 5px;
+    margin-top: 5px;
+    max-width: 410px;
 }
 
 .chat-window {

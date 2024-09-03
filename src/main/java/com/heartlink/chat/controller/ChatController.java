@@ -76,13 +76,13 @@ public class ChatController {
     public void sendMessage(ChatMessageDto message) {
         chatService.saveChatMessage(message);
         // 메시지 전송
-        messagingTemplate.convertAndSend("/Chat-topic/messages/" + message.getMatchingNo(), message);
+        messagingTemplate.convertAndSend("/topic/messages/" + message.getMatchingNo(), message);
 
         // 해당 유저의 채팅 목록을 새로 가져옴
         List<ChatDto> updatedChats = chatService.getActiveChatList(message.getBasicUserNo().intValue());
 
         // lastMessage 업데이트를 전송
-        messagingTemplate.convertAndSend("/Chat-topic/lastMessage", updatedChats);
+        messagingTemplate.convertAndSend("/topic/lastMessage", updatedChats);
     }
 
     // 채팅방 나가기 요청 처리

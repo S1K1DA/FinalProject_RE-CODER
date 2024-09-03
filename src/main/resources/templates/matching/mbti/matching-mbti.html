@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/matching/matching-mbti.css}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 <nav th:replace="~{fragments/navigation :: navigation}"></nav>
 <section class="matching-main-sec">
@@ -72,6 +73,7 @@
     </div>
 </section>
 <script th:src="@{/js/matching/matching-mbti.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
