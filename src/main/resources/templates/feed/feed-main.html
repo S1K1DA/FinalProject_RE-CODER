@@ -87,7 +87,6 @@
                                    onclick="feedLikeCancelBtn(this)">
                                     <i class="bi-heart feed-heart-icon"></i>
                                 </a>
-
                                 <a class="badge ms-auto feed-heart"
                                    id="like-heart"
                                    th:if="${#lists.size(feed.LikedUser) == 0 or !feed.LikedUser.contains(thisUserNo)}"
@@ -149,14 +148,10 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 전체 태그 -->
-
         </div>
     </div>
 </section>
 <script th:src="@{/js/feed/feed-common.js}"></script>
-<script th:src="@{/js/feed/category-scroll.js}"></script>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

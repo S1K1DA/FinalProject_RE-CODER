@@ -20,6 +20,8 @@ public interface MatchingMapper {
 
     public int setMatchingRequest(int setMatchingNo, int matchingUserNo, int matchedUserNo);
 
+    public int setUserCoinUpdate(int matchingUserNo);
+
     public int setMatchingAlarm(int setMatchingNo, int matchingUserNo, int matchedUserNo, String alarmMsg);
 
     public List<MatchingAlarmDto> getUserAlarm(int userNo);

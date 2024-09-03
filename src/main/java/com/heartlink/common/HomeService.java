@@ -70,7 +70,7 @@ public class HomeService {
 
         List<FeedDto> result = feedMapper.getTopFeedList();
 
-        if(Objects.isNull(result)){
+        if(result.isEmpty()){
             result = feedMapper.getNewFeedList();
         }
 

@@ -52,16 +52,18 @@ public class MatchingService {
         // 시퀀스 번호 조회해옴
         int setMatchingNo = matchingMapper.getNextMatchingNo();
 
+        // 매칭 테이블에 insert
         int setMatchingRequest = matchingMapper.setMatchingRequest(setMatchingNo, matchingUserNo, matchedUserNo);
+
+        // 매칭 신청한 유저의 코인 감소 10개
+        int userCoin = matchingMapper.setUserCoinUpdate(matchingUserNo);
+
         // 알람 메세지 세팅
         String alarmMsg = matchingUserInfo.getNickname() + "님께서 " + matchedUserInfo.getNickname()+ "님께 매칭을 요청하셨습니다.";
+        int setMatchingAlarm = matchingMapper.setMatchingAlarm(setMatchingNo, matchingUserNo, matchedUserNo, alarmMsg);
 
-        if(setMatchingRequest == 1){
-            int setMatchingAlarm = matchingMapper.setMatchingAlarm(setMatchingNo, matchingUserNo, matchedUserNo, alarmMsg);
-
-            if(setMatchingAlarm == 1){
+        if(setMatchingRequest == 1 && setMatchingAlarm == 1){
                 return "success";
-            }
         }
 
         return "error";

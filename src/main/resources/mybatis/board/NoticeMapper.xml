@@ -38,7 +38,7 @@
         NOTICE_INDATE AS noticeIndate
         FROM NOTICE_BOARD
         WHERE NOTICE_PRIORITY = 'Y'
-        AND NOTICE_DELETE IS NULL
+            AND NOTICE_DELETE IS NULL
         ORDER BY NOTICE_NO DESC
     </select>
 

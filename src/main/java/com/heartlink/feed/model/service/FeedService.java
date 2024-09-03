@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,7 +47,8 @@ public class FeedService {
 
             // 좋아요 누른 유저 구분
             List<Integer> likedUser = feedMapper.getLikedUser(feedNo);
-            feed.setLikedUser(likedUser);
+            feed.setLikedUser(likedUser != null ? likedUser : new ArrayList<>());
+
         }
 
         return textList;
