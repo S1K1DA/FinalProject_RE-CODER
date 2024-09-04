@@ -404,17 +404,28 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
     .then(response => response.text()) // 서버에서 텍스트로 응답을 받음
     .then(result => {
         if (result === 'success') {
-            Swal.fire('알림', '로그인 완료!', 'success');
-            window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
-        } else if(result === 'adminSuccess') {
-            Swal.fire('알림', '관리자 로그인!', 'success');
-            window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
+            Swal.fire('알림', '로그인 완료!', 'success').then(() => {
+                window.location.href = '/';
+            });
+        } else if (result === 'dormantToActive') {
+            Swal.fire('알림', '휴면 계정이 풀렸습니다. 다시 로그인 해주세요', 'success').then(() => {
+                window.location.href = '/';
+            });
+        } else if (result === 'adminSuccess') {
+            Swal.fire('알림', '관리자 로그인!', 'success').then(() => {
+                window.location.href = '/';
+            });
+        } else if (result === 'failure') {
+            Swal.fire('알림', '이메일 또는 비밀번호가 틀렸습니다.', 'error');
         } else {
-            Swal.fire('알림', '이메일 또는 비밀번호 틀렸습니다.', 'error');
-            window.location.href = '/member/sign'
+            // 계정 상태에 따른 메시지 표시 (휴면계정, 탈퇴계정, 정지계정 등)
+            Swal.fire('알림', result, 'error');
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire('알림', '서버와 통신 중 오류가 발생했습니다.', 'error');
+    });
 });
 
 // 아이디 찾기

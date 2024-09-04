@@ -95,51 +95,60 @@ public class MemberController {
     @PostMapping("/login")
     @ResponseBody
     public String loginMember(@RequestParam String email, @RequestParam String password, HttpServletResponse response, Model model) {
-        // 1. 일반 사용자 로그인 처리
-        MemberDto member = memberService.verifyLogin(email, password);
+        try {
+            // 1. 일반 사용자 로그인 처리
+            String loginResult = memberService.verifyLogin(email, password);
 
-        if (member != null) {
-            // 로그인 성공 시 JWT 토큰 생성 (일반 사용자)
-            String accessToken = jwtUtil.generateToken(member.getEmail(), member.getUserNumber());
-            String refreshToken = jwtUtil.generateRefreshToken(member.getEmail(), member.getUserNumber());
-
-            // JWT를 쿠키에 저장
-            Cookie jwtCookie = new Cookie("token", accessToken);
-            jwtCookie.setHttpOnly(true);
-            jwtCookie.setPath("/");
-            jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (예: 1일)
-            response.addCookie(jwtCookie);
-
-            // DB에 토큰 저장
-            memberService.saveToken(member.getUserNumber(), accessToken, refreshToken);
-
-            logger.info("로그인한 사용자 : " + member.getUserNumber());
-
-            return "success"; // 로그인 성공 메시지 반환
-        } else {
-            // 2. 어드민 로그인 처리
-            AdminDto admin = memberService.verifyAdminLogin(email, password);
-
-            if (admin != null) {
-                // 로그인 성공 시 JWT 토큰 생성 (어드민)
-                String accessToken = jwtUtil.generateAdminToken(admin.getEmail(), admin.getAdminUserNo());
-                String refreshToken = jwtUtil.generateRefreshToken(admin.getEmail(), admin.getAdminUserNo());
+            if ("success".equals(loginResult)) {
+                // 로그인 성공 시 JWT 토큰 생성
+                MemberDto member = memberService.findByEmail(email); // 로그인 성공 후 사용자 정보 조회
+                String accessToken = jwtUtil.generateToken(member.getEmail(), member.getUserNumber());
+                String refreshToken = jwtUtil.generateRefreshToken(member.getEmail(), member.getUserNumber());
 
                 // JWT를 쿠키에 저장
-                Cookie jwtCookie = new Cookie("adminToken", accessToken);
+                Cookie jwtCookie = new Cookie("token", accessToken);
                 jwtCookie.setHttpOnly(true);
                 jwtCookie.setPath("/");
-                jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (예: 1일)
+                jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (1일)
                 response.addCookie(jwtCookie);
 
-                logger.info("로그인한 관리자 : " + admin.getAdminUserNo());
+                // DB에 토큰 저장
+                memberService.saveToken(member.getUserNumber(), accessToken, refreshToken);
 
-                return "adminSuccess"; // 어드민 로그인 성공 메시지 반환
+                return "success"; // 로그인 성공 메시지 반환
+            } else if ("dormantToActive".equals(loginResult)) {
+                // 휴면 계정이 풀렸을 때의 메시지 처리
+                return "dormantToActive";
             }
+
+            } catch (IllegalStateException e) {
+            // 상태에 따른 메시지를 반환
+            return e.getMessage();
+        }
+
+        // 2. 어드민 로그인 처리
+        AdminDto admin = memberService.verifyAdminLogin(email, password);
+
+        if (admin != null) {
+            // 로그인 성공 시 JWT 토큰 생성 (어드민)
+            String accessToken = jwtUtil.generateAdminToken(admin.getEmail(), admin.getAdminUserNo());
+            String refreshToken = jwtUtil.generateRefreshToken(admin.getEmail(), admin.getAdminUserNo());
+
+            // JWT를 쿠키에 저장
+            Cookie jwtCookie = new Cookie("adminToken", accessToken);
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(86400);  // 쿠키 만료 시간 (1일)
+            response.addCookie(jwtCookie);
+
+            logger.info("로그인한 관리자 : " + admin.getAdminUserNo());
+
+            return "adminSuccess"; // 어드민 로그인 성공 메시지 반환
         }
 
         return "failure"; // 로그인 실패 메시지 반환
     }
+
 
     // 아이디 찾기
     @PostMapping("/find-id")
