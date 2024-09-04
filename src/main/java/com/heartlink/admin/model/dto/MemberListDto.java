@@ -11,6 +11,7 @@ public class MemberListDto {
 
     private int basicUserNo;
     private String basicUserEmail;
+    private String basicUserNickname;
     private String basicUserTelnum;
     private String basicUserBirthdate;
     private String basicUserSex;
