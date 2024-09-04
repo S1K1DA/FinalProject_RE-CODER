@@ -56,13 +56,19 @@ public class SecurityConfig {
                                 // 일부 페이지만 접속 권한 설정
                                 .requestMatchers("/matching/mbti").authenticated()    //은식
                                 .requestMatchers("/mypage/**", "/review/photoenroll").authenticated()    //아태
-                                .requestMatchers("/matching/**").authenticated()    //재인
+                                .requestMatchers("/matching-area/**", "/matching/**").authenticated()    //재인
 
                                 // 그 외의 모든 요청은 권한 허용
                                 .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않음 (JWT 사용)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // 로그인되지 않은 사용자가 접근 시 리다이렉션 URL 설정
+                            response.sendRedirect("/member/sign?error=unauthorized");
+                        })
+                )
                 .logout(logout ->
                         logout
                                 .logoutUrl("/member/logout")  // 로그아웃 URL 설정

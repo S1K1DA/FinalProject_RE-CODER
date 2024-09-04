@@ -64,7 +64,9 @@ $(document).ready(function () {
                         </div>
                         <div class="feed-icon-box">
                             <p class="feed-nickname">${feed.basicUserNickname}</p>
-                            <p class="feed-like-cnt">${feed.likeCount}</p>
+                            <p class="feed-like-cnt bi-heart">
+                                <span>${feed.likeCount}</span>
+                            </p>
                             <input type="hidden" id="userNo" value="${feed.authorUserNo}">
                         </div>
                         <div class="feed-remark">

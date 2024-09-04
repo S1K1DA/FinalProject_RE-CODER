@@ -31,10 +31,6 @@ public class HomeController {
         List<FeedDto> topLikefeedList = homeService.getTopFeedList();
         List<MemberDto> topUserList = homeService.getTopUserList();
 
-        System.out.println(topViewReview.stream().toList());
-        System.out.println(topLikefeedList.stream().toList());
-        System.out.println(topUserList.stream().toList());
-
         model.addAttribute("ReviewTop5", topViewReview);
         model.addAttribute("FeedTop", topLikefeedList);
         model.addAttribute("UserTop", topUserList);

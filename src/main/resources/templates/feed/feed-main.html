@@ -109,7 +109,9 @@
                         </div>
                         <div class="feed-icon-box">
                             <p class="feed-nickname" th:text="${feed.basicUserNickname}"></p>
-                            <p class="feed-like-cnt" th:text="${feed.likeCount}"></p>
+                            <p class="feed-like-cnt bi-heart">
+                                <span th:text="${feed.likeCount}"></span>
+                            </p>
                             <input type="hidden" id="userNo" th:value="${feed.authorUserNo}">
                         </div>
                         <div class="feed-remark">
