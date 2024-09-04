@@ -55,7 +55,7 @@
                                 <th class="user-num">유저 번호</th>
                                 <th class="inquiry-date">문의 날짜</th>
                                 <th class="inquiry-tag">문의 태그</th>
-                                <th class="inquiry-status">상태</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -64,7 +64,7 @@
                                 <td th:text="${inquiry.basicUserNo == 0 ? 'Guest' : inquiry.basicUserNo}"></td>
                                 <td th:text="${inquiry.chatbotChattingIndate}"></td>
                                 <td th:text="${inquiry.chatbotInquiryTag}"></td>
-                                <td th:text="${inquiry.chatbotChattingState == 'Y' ? '처리됨' : '미처리'}"></td>
+
                             </tr>
                             </tbody>
                         </table>
