@@ -144,3 +144,76 @@ document.addEventListener('DOMContentLoaded', () => {
         messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 });
+
+// 신고하기 팝업 열기
+function openChatReportPopup(button) {
+    const chatItem = button.closest('.chat-list-item');
+    const matchingNo = chatItem.getAttribute('data-matchingNo');  // 해당 채팅의 매칭 넘버
+    const reportedUserNo = chatItem.getAttribute('data-basicUserNo'); // 신고 대상 사용자 번호
+    const reportedUserNickname = chatItem.querySelector('.nik-name').textContent;  // 신고 대상 사용자 닉네임
+
+    console.log("Matching No:", matchingNo);
+    console.log("Reported User No:", reportedUserNo);
+    console.log("Reported User Nickname:", reportedUserNickname);
+
+    // 팝업에 신고 대상 정보 설정
+    document.getElementById('matchingNo1').value = matchingNo;
+    document.getElementById('reportedUserNo').value = reportedUserNo;
+    document.getElementById('reportTypeNo').value = matchingNo;
+    document.getElementById('reportedUser').textContent = reportedUserNickname;
+
+    // 신고 팝업 열기
+    document.getElementById('reportOverlay').style.display = 'flex';
+}
+
+// 신고 팝업 닫기
+document.getElementById('actionCloses').addEventListener('click', function() {
+    document.getElementById('reportOverlay').style.display = 'none';
+});
+
+// 신고하기 폼 제출
+document.getElementById('reportForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+
+
+    try {
+        const result = await Swal.fire({
+            title: "신고하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "rgb(255 128 135)",
+            cancelButtonColor: "rgb(150 150 150)",
+            confirmButtonText: "예",
+            cancelButtonText: "아니요"
+        });
+
+        if (result.isConfirmed) {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                await Swal.fire({
+                    title: "신고 완료",
+                    icon: "success"
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                console.error("서버 오류: " + response.status);
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        await Swal.fire({
+            title: "오류 발생",
+            text: "신고 처리 중 오류가 발생했습니다.",
+            icon: "error"
+        });
+    }
+});
+

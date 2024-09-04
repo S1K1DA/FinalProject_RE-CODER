@@ -19,6 +19,7 @@ public class ChatDto {
     private String timestamp;  // 채팅 입력 시간
     private String lastMessage;
     private Long basicUserNo;
+    private Long targetUserNo;  // 상대방의 사용자 번호 (추가)
     private String status;
 
     public void setLastMessage(String lastMessage) {
