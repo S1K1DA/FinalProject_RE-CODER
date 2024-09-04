@@ -59,6 +59,7 @@ ul, li{
 
 .matching-main-box{
     width: 100%;
+    min-width: 950px;
     height: 700px;
     flex-direction: row;
     border-radius: 0 15px 15px 15px;
@@ -80,7 +81,8 @@ ul, li{
     width: 40%;
     height: 650px;
     overflow: hidden;
-    color: #ffF
+    color: #fff;
+    min-width: 400px;
 }
 
 .matching-list-box > p{
@@ -211,6 +213,7 @@ ul, li{
 
 .matching-age{
     padding-right: 5px;
+    min-width: 42px;
 }
 
 .matching-job,

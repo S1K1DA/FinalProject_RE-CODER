@@ -4,6 +4,7 @@
     <resultMap id="adminMemeberResultMap" type="MemberListDto">
         <result property="basicUserNo" column="basic_user_no"/>
         <result property="basicUserEmail" column="basic_user_email"/>
+        <result property="basicUserNickname" column="basic_user_nickname"/>
         <result property="basicUserTelnum" column="basic_user_telnum"/>
         <result property="basicUserBirthdate" column="basic_user_birthdate"/>
         <result property="basicUserSex" column="basic_user_sex"/>

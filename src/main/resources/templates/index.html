@@ -4,7 +4,7 @@
 <head th:replace="fragments/head :: head"></head>
 
 <body>
-
+<link rel="stylesheet" th:href="@{/css/mypage/popup.css}">
 <main>
     <nav th:replace="fragments/navigation :: navigation"></nav>
 
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-lg-4 col-12 mb-4 mb-lg-0" th:each="feed : ${FeedTop}">
-                    <div class="custom-block d-flex">
+                    <div class="custom-block d-flex" th:onclick="'location.href=\'/feed\''">
                         <div class="custom-block-info">
                             <div class="mt-2">
                                 #&nbsp;
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="col-lg-4 col-12 mb-4 mb-lg-0" th:each="user : ${UserTop}">
-                    <div class="custom-block custom-block-full">
+                    <div class="custom-block custom-block-full liked-prof-item" th:data-liked-user-no="${user.userNumber}">
                         <div class="custom-block-image-wrap">
                                 <img th:src="${user.userPhotoPath}" class="custom-block-image img-fluid"
                                      alt="">
@@ -139,8 +139,26 @@
 
             </div>
         </div>
+        <!-- 프로필 팝업 구조 -->
+        <div id="profile-popup" class="popup">
+            <div class="popup-content">
+                <span class="close-popup">&times;</span>
+                <!-- 여기서 프로필 데이터를 동적으로 로드합니다 -->
+            </div>
+        </div>
     </section>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 새로 추가된 프로필 항목에 대해 팝업 이벤트 리스너를 다시 설정
+        // 프로필 좋아요 기능 초기화
+        ProfileLikeModule.initializeProfileLikeFeature();
+        // 프로필 팝업 기능 초기화
+        ProfilePopupModule.initializeProfileItemPopup();
+        //프로필 팝업 닫기
+        ProfilePopupModule.initializeProfilePopupClose();
+    });
+</script>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

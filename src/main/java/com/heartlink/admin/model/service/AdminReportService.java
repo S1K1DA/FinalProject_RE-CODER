@@ -25,20 +25,34 @@ public class AdminReportService {
         return  adminReportMapper.getReportCategory();
     }
 
-    public List<AdminReportDto> setResolutionReportList(String startDate, String endDate){
+    public List<AdminReportDto> setResolutionReportList(String startDate, String endDate) {
         List<AdminReportDto> resolutionList = adminReportMapper.setResolutionReportList(startDate, endDate);
 
-        for(AdminReportDto item : resolutionList){
+        for (AdminReportDto item : resolutionList) {
 
             String punishResult = item.getReportRsolutionPunish();
 
-            if(punishResult.equals("정지")){
+            // null 체크를 먼저 수행합니다.
+            if ("정지".equals(punishResult)) {
 
                 // 총 며칠 정지인지 계산
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                LocalDateTime reportIndate = LocalDateTime.parse(item.getReportIndate(), formatter);
-                LocalDateTime punishDate = LocalDateTime.parse(item.getPunishmentResult(), formatter);
+                // reportIndate와 punishmentResult의 null 체크 및 예외 처리
+                LocalDateTime reportIndate = null;
+                LocalDateTime punishDate = null;
+
+                try {
+                    reportIndate = item.getReportIndate() != null ?
+                            LocalDateTime.parse(item.getReportIndate(), formatter) : LocalDateTime.now();
+                    punishDate = item.getPunishmentResult() != null ?
+                            LocalDateTime.parse(item.getPunishmentResult(), formatter) : LocalDateTime.now();
+                } catch (Exception e) {
+                    // 파싱 오류 발생 시 기본값을 설정하거나 에러 로그를 남깁니다.
+                    System.err.println("날짜 파싱 오류: " + e.getMessage());
+                    reportIndate = LocalDateTime.now();  // 기본값을 설정
+                    punishDate = LocalDateTime.now();
+                }
 
                 // 끝일도 포함하기 위해 +1
                 Long totalDays = ChronoUnit.DAYS.between(reportIndate, punishDate) + 1;
@@ -47,13 +61,13 @@ public class AdminReportService {
             }
 
             // 누적 신고 처분수
-            int accruePunishment = adminReportMapper.getAccruePunishment();
+            int accruePunishment = adminReportMapper.getAccruePunishment(item.getReportedUserNo());
             item.setAccruePunishment(accruePunishment);
-
         }
 
         return resolutionList;
     }
+
 
 
     public List<AdminReportDto> setReportList(String startDate,String endDate){
