@@ -15,8 +15,10 @@
                     <hr class="review-line">
                 </div>
 
-                <div class="w-100 d-flex justify-content-end mb-2">
-                    <button class="btn-action" onclick="location.href='/review/photoenroll'">글 쓰러가기</button>
+                <div th:if="${userId != 0}">
+                    <div class="w-100 d-flex justify-content-end mb-2">
+                        <button class="btn-action" onclick="location.href='/review/photoenroll'">글 쓰러가기</button>
+                    </div>
                 </div>
 
                 <ul class="ptlist">
