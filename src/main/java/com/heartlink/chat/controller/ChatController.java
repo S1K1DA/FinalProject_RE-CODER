@@ -49,8 +49,6 @@ public class ChatController {
         // 채팅 로그 가져오기
         List<ChatDto> chatLogs = chatService.getChatLogs(matchingNo);
 
-
-
         model.addAttribute("chatLogs", chatLogs);
 
         System.out.println(activeChats + " : activeChats");
@@ -60,7 +58,6 @@ public class ChatController {
         System.out.println(userNumber + ": userNumber");
         model.addAttribute("basicUserNo", userNumber);
         model.addAttribute("matchingNo", matchingNo);
-
         model.addAttribute("profiles", chatLogs);
 
 

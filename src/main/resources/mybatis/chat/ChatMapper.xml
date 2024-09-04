@@ -19,6 +19,10 @@
         WHEN s.MATCHING_USER_NO = #{userNo} THEN p2.PHOTO_NAME
         ELSE p1.PHOTO_NAME
         END AS photoName,
+        CASE
+        WHEN s.MATCHING_USER_NO = #{userNo} THEN u2.BASIC_USER_NO
+        ELSE u1.BASIC_USER_NO
+        END AS targetUserNo,  <!-- 상대방 유저 번호 -->
         l.CONTENT AS lastMessage
         FROM
         MATCHING_STATE s

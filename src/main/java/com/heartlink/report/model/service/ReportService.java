@@ -90,7 +90,23 @@ public class ReportService {
     // 채팅 검증 메서드
     private String setTypeChatting(ReportDto reportDto){
 
-        return "";
+        // 존재하는 chat 인가?
+        int chatNoCheck = reportMapper.searchChattingNo(reportDto.getReportTypeNo());
+
+        // 존재하는 카테고리인가?
+        int categoryNoCheck = reportMapper.searchCategoryNo(reportDto.getReportCategoryNo());
+
+        // 신고대상자가 유효한가?
+        int reportedUserCheck = reportMapper.searchReportedUserNo(reportDto.getReportedUserNo());
+
+        // 신고자가 유효한가?
+        int reporterUserCheck = reportMapper.searchReporterUserNo(reportDto.getReporterUserNo());
+
+        if(chatNoCheck != 1 || categoryNoCheck != 1 ||
+                reportedUserCheck != 1 || reporterUserCheck != 1){
+            return "failed";
+        }
+        return "verified";
     }
 
     // 프로필 검증 메서드
