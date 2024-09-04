@@ -60,7 +60,6 @@ public class ChatController {
         System.out.println(userNumber + ": userNumber");
         model.addAttribute("basicUserNo", userNumber);
         model.addAttribute("matchingNo", matchingNo);
-
         model.addAttribute("profiles", chatLogs);
 
 

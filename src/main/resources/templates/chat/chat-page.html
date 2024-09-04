@@ -60,38 +60,60 @@
     const profiles = /*[[${profiles}]]*/ [];
 
     // 채팅 나가기
-function exitChat(matchingNo) {
-    if (confirm("채팅방에서 나가시겠습니까?")) {
-        fetch('/chat/exit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ matchingNo: matchingNo }),
-        })
-        .then(response => {
-            if (response.ok) {
-                alert("채팅방에서 나갔습니다.");
-
-                // 웹소켓 연결 종료
-                if (stompClient && stompClient.connected) {
-                    stompClient.disconnect(() => {
-                        console.log("WebSocket connection closed.");
-                        window.location.href = '/chat/chatting';
-                    });
-                } else {
-                    window.location.href = '/chat/chatting';
-                }
-            } else {
-                alert("나가기에 실패했습니다. 다시 시도해주세요.");
+    function exitChat(matchingNo) {
+        Swal.fire({
+            title: '채팅방에서 나가시겠습니까?',
+            text: "이 작업은 되돌릴 수 없습니다!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '네, 나가겠습니다!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/chat/exit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ matchingNo: matchingNo }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        Swal.fire(
+                            '나가기 성공!',
+                            '채팅방에서 나갔습니다.',
+                            'success'
+                        ).then(() => {
+                            // 웹소켓 연결 종료
+                            if (stompClient && stompClient.connected) {
+                                stompClient.disconnect(() => {
+                                    console.log("WebSocket connection closed.");
+                                    window.location.href = '/chat/chatting';
+                                });
+                            } else {
+                                window.location.href = '/chat/chatting';
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            '실패!',
+                            '나가기에 실패했습니다. 다시 시도해주세요.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    Swal.fire(
+                        '오류!',
+                        '오류가 발생했습니다. 다시 시도해주세요.',
+                        'error'
+                    );
+                });
             }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("오류가 발생했습니다. 다시 시도해주세요.");
         });
     }
-}
 
 </script>
 
