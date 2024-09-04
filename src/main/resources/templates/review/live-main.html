@@ -18,27 +18,29 @@
                     <p>모든 실시간 리뷰는 익명으로 작성됩니다.</p>
                 </div>
 
-                <div th:if="${message}" class="alert" th:text="${message}" style="display:none;"></div>
+                <div class="alert" style="display:none;" th:if="${message}" th:text="${message}"></div>
 
-                <form action="/review/submitLiveReview" id="liveReviewForm" method="POST">
-                    <input name="userId" th:value="${userId}" type="hidden"/>
-                    <div class="review-input-row">
-                        <label for="review-content">리뷰 입력:</label>
-                        <div class="right-side-elements">
-                            <select name="rating">
-                                <option value="1">★☆☆☆☆</option>
-                                <option value="2">★★☆☆☆</option>
-                                <option value="3">★★★☆☆</option>
-                                <option value="4">★★★★☆</option>
-                                <option selected value="5">★★★★★</option>
-                            </select>
-                            <button class="review-button" type="submit">리뷰 작성</button>
+                <div th:if="${userId != 0}">
+                    <form action="/review/submitLiveReview" id="liveReviewForm" method="POST">
+                        <input name="userId" th:value="${userId}" type="hidden"/>
+                        <div class="review-input-row">
+                            <label for="review-content">리뷰 입력:</label>
+                            <div class="right-side-elements">
+                                <select name="rating">
+                                    <option value="1">★☆☆☆☆</option>
+                                    <option value="2">★★☆☆☆</option>
+                                    <option value="3">★★★☆☆</option>
+                                    <option value="4">★★★★☆</option>
+                                    <option selected value="5">★★★★★</option>
+                                </select>
+                                <button class="review-button" type="submit">리뷰 작성</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="review-textarea">
-                        <textarea cols="40" id="review-content" name="review_content" rows="3"></textarea>
-                    </div>
-                </form>
+                        <div class="review-textarea">
+                            <textarea cols="40" id="review-content" name="review_content" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
 
                 <hr class="review-divider">
 
@@ -63,9 +65,9 @@
                                             </div>
 
                                             <div class="more-ele" onclick="submitDeleteForm(this)">
-                                                <form action="/review/deleteLiveReview" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                                <form action="/review/deleteLiveReview" method="POST" onsubmit="return confirmDelete();" style="display:inline;">
                                                     <input name="reviewNo" th:value="${review.reviewNo}" type="hidden"/>
-                                                    <button class="live-review-delete-button" type="submit" style="display:none;">삭제</button>
+                                                    <button class="live-review-delete-button" style="display:none;" type="submit">삭제</button>
                                                 </form>
                                                 삭제
                                             </div>
@@ -85,10 +87,10 @@
 </main>
 
 <!-- 신고하기 팝업 -->
-<div id="reportOverlay" class="report-overlay">
+<div class="report-overlay" id="reportOverlay">
     <div class="report-popup">
         <h2>신고하기</h2>
-        <form id="reportForm" action="/report/request" method="POST" class="report-action-box">
+        <form action="/report/request" class="report-action-box" id="reportForm" method="POST">
             <div>
                 <ul>
                     <li>
@@ -96,23 +98,23 @@
                     </li>
                     <li>
                         <p>신고 대상 : <span id="reportedUser"></span></p>
-                        <input type="hidden" name="reviewNo" id="reviewNo">
-                        <input type="hidden" name="reportedUserNo" id="reportedUserNo">
-                        <input type="hidden" name="reportType" value="Review">
-                        <input type="hidden" name="reportTypeNo" id="reportTypeNo">
+                        <input id="reviewNo" name="reviewNo" type="hidden">
+                        <input id="reportedUserNo" name="reportedUserNo" type="hidden">
+                        <input name="reportType" type="hidden" value="Review">
+                        <input id="reportTypeNo" name="reportTypeNo" type="hidden">
                     </li>
                 </ul>
             </div>
             <select class="select-category" name="reportCategoryNo">
                 <option disabled selected>==신고 카테고리 선택==</option>
                 <option th:each="category : ${reportCategory}"
-                        th:value="${category.reportCategoryNo}"
-                        th:text="${category.reportCategoryName}"></option>
+                        th:text="${category.reportCategoryName}"
+                        th:value="${category.reportCategoryNo}"></option>
             </select>
-            <textarea placeholder="상세 사유를 작성해 주세요." name="reportContent" id="reportContent"></textarea>
+            <textarea id="reportContent" name="reportContent" placeholder="상세 사유를 작성해 주세요."></textarea>
             <div class="action-btns">
-                <button type="submit" id="actionComplate" class="action-complate">완료</button>
-                <button type="button" id="actionCloses" class="action-close">닫기</button>
+                <button class="action-complate" id="actionComplate" type="submit">완료</button>
+                <button class="action-close" id="actionCloses" type="button">닫기</button>
             </div>
         </form>
     </div>
