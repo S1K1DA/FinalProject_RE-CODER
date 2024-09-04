@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     // 스크롤 이벤트 처리
     $(window).on('scroll', function () {
-        if (!isLoading && hasMoreData && $(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+        if (!isLoading && hasMoreData && $(window).scrollTop() + $(window).height() >= $(document).height() - 350) {
             loadMoreData();
         }
     });
@@ -81,28 +81,28 @@ $(document).ready(function () {
                 <div class="reply-list-submit-box">
                     <div class="feed-reply-box">
                         <input type="hidden" value="${feed.feedNo}">
-                        <div class="feed-reply-main">
             `;
 
                 feed.comments.forEach(comment => {
                     innerResultHtml += `
-                    <div class="feed-reply-ele">
-                        <div class="reply-profile-box">
-                            <input type="hidden" value="${comment.commentNo}">
-                            <p class="reply-nickname">${comment.commentUserNickname}</p>
-                            <p class="reply-indate">${comment.commentIndate}</p>
-                            ${comment.commentUserNo === thisUserNo && thisUserNo !== 0 ? `
-                                <a class="bi-x reply-delete"></a>` : ''}
-                        </div>
-                        <div class="reply-content-box">
-                            <span class="reply-content">${comment.commentContent}</span>
+                    <div class="feed-reply-main">
+                        <div class="feed-reply-ele">
+                            <div class="reply-profile-box">
+                                <input type="hidden" value="${comment.commentNo}">
+                                <p class="reply-nickname">${comment.commentUserNickname}</p>
+                                <p class="reply-indate">${comment.commentIndate}</p>
+                                ${comment.commentUserNo === thisUserNo && thisUserNo !== 0 ? `
+                                    <a class="bi-x reply-delete" onclick="deleteReply(this)"></a>` : ''}
+                            </div>
+                            <div class="reply-content-box">
+                                <span class="reply-content">${comment.commentContent}</span>
+                            </div>
                         </div>
                     </div>
                 `;
                 });
 
                 innerResultHtml += `
-                        </div>
                     </div>
                     <div class="answer-reply-box">
                         <div class="answer-text-box">
@@ -140,12 +140,23 @@ $(document).ready(function () {
         }
     });
 
+    // 댓글 엔터키 이벤트
+    $(document).on('keydown', '.answer-text', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // 새 줄로 넘어가는 기본 동작 방지
+
+            // 현재 textarea와 가장 가까운 등록 버튼을 찾아 클릭
+            const $submitButton = $(this).closest('.feed-ele').find('.answer-submit');
+            $submitButton.click(); // 등록 버튼 클릭
+        }
+    });
+
     // 댓글 등록 버튼 클릭 이벤트
     $(document).on('click', '.answer-submit', function () {
         const $feedBox = $(this).closest('.feed-ele');
         const feedNo = $feedBox.find('input[type="hidden"]').val();
         const commentContent = $feedBox.find('.answer-text').val().trim();
-        const userNo = 2;
+        const userNo = $feedBox.find('.this-user-no').val().trim();
 
         if (commentContent === '') {
             alert('댓글 내용을 입력해주세요.');
@@ -392,15 +403,4 @@ $(document).ready(function () {
         window.location.href = url.toString();
     });
 
-    // 댓글 엔터키 이벤트
-    const $textarea = $('#comment-textarea');
-    const $submitButton = $('#comment-submit-btn');
-
-    $textarea.on('keydown', function (event) {
-        // 엔터 키를 감지하고 Shift 키가 아닌 경우 등록 버튼을 클릭
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // 새 줄로 넘어가는 기본 동작 방지
-            $submitButton.click(); // 등록 버튼 클릭
-        }
-    });
 });

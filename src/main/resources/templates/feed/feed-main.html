@@ -100,7 +100,7 @@
                                     </a>
                                     <div class="more-dropdown-content">
                                         <input type="hidden" th:value="${feed.feedNo}">
-                                        <div class="more-ele" id="reportBtn">신고하기</div>
+                                        <div class="more-ele" id="reportBtn" th:if="${thisUserNo != feed.authorUserNo}">신고하기</div>
                                         <div class="more-ele" th:if="${thisUserNo == feed.authorUserNo}" onclick="deleteFeed(this)">삭제</div>
                                         <div class="more-ele" th:if="${thisUserNo == feed.authorUserNo}" th:attr="onclick='location.href=\'feed/modify?feedNo='+${feed.feedNo}+'\''">수정</div>
                                     </div>
@@ -144,6 +144,7 @@
                     </div>
                     <div class="answer-reply-box">
                         <div class="answer-text-box">
+                            <input type="hidden" th:value="${thisUserNo}" class="this-user-no">
                             <textarea class="answer-text"  th:if="${thisUserNo != 0}" id="comment-textarea" placeholder="댓글을 입력해주세요."></textarea>
                             <button class="answer-submit"  th:if="${thisUserNo != 0}" id="comment-submit-btn">등록</button>
                         </div>

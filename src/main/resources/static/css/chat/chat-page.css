@@ -56,7 +56,6 @@ body {
 .chat-list-item2 {
     display: flex;
     align-items: flex-start;
-    align-items: center;
     padding: 10px;
     cursor: pointer;
     height: 50px;
