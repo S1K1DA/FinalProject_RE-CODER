@@ -391,4 +391,16 @@ $(document).ready(function () {
         url.searchParams.set('feedarray', selectedValue);
         window.location.href = url.toString();
     });
+
+    // 댓글 엔터키 이벤트
+    const $textarea = $('#comment-textarea');
+    const $submitButton = $('#comment-submit-btn');
+
+    $textarea.on('keydown', function (event) {
+        // 엔터 키를 감지하고 Shift 키가 아닌 경우 등록 버튼을 클릭
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // 새 줄로 넘어가는 기본 동작 방지
+            $submitButton.click(); // 등록 버튼 클릭
+        }
+    });
 });

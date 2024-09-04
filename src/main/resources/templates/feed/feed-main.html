@@ -144,7 +144,7 @@
                     </div>
                     <div class="answer-reply-box">
                         <div class="answer-text-box">
-                            <textarea class="answer-text"  th:if="${thisUserNo != 0}" placeholder="댓글을 입력해주세요."></textarea>
+                            <textarea class="answer-text"  th:if="${thisUserNo != 0}" id="comment-textarea" placeholder="댓글을 입력해주세요."></textarea>
                             <button class="answer-submit"  th:if="${thisUserNo != 0}" id="comment-submit-btn">등록</button>
                         </div>
                     </div>
