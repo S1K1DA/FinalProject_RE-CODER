@@ -17,6 +17,7 @@ public class MemberDto {
 
     private Date lastLoginDate;
     private int userNumber;
+    private String status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "###.######")
     private double latitude; //위도

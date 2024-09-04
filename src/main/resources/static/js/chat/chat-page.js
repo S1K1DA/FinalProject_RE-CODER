@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = new SockJS('/Chat-ws');
+    const socket = new SockJS('/ws');
     const stompClient = Stomp.over(socket);
 
     const chatForm = document.getElementById('chatForm');
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Connected to WebSocket");
 
         // 채팅 메시지 수신 처리
-        stompClient.subscribe(`/Chat-topic/messages/${matchingNo}`, (message) => {
+        stompClient.subscribe(`/topic/messages/${matchingNo}`, (message) => {
             console.log("Received message: ", message.body);
             try {
                 const receivedMessage = JSON.parse(message.body);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // lastMessage 업데이트 수신 처리
-        stompClient.subscribe("/Chat-topic/lastMessage", (updatedChatsMessage) => {
+        stompClient.subscribe("/topic/lastMessage", (updatedChatsMessage) => {
             console.log("Received updated chats: ", updatedChatsMessage.body);
             const updatedChats = JSON.parse(updatedChatsMessage.body);
             updateChatListUI(updatedChats);
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 content: messageContent,
                 messageType: 'CHAT'
             };
-            stompClient.send(`/Chat-app/message`, {}, JSON.stringify(chatMessage));
+            stompClient.send(`/app/message`, {}, JSON.stringify(chatMessage));
             messageInput.value = '';
         }
     });

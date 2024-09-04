@@ -52,4 +52,8 @@ public interface MemberMapper {
     // 로그인 시 LAST_LOGIN_DATE 업데이트 메서드
     void updateLastLoginDate(@Param("email") String email);
 
+    // 휴먼계정 로그인시 정상계정 전환 메서드
+    void updateUserStatusToActive(@Param("email") String email);
+
+
 }

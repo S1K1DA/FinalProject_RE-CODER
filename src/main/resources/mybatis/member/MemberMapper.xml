@@ -70,7 +70,8 @@
         USER_ADDR AS address,
         BASIC_USER_TELNUM AS phoneNumber,
         BASIC_USER_BIRTHDATE AS residentNumber,
-        BASIC_USER_SEX AS gender
+        BASIC_USER_SEX AS gender,
+        BASIC_USER_STATUS AS status
         FROM BASIC_USER
         WHERE BASIC_USER_EMAIL = #{email}
     </select>
@@ -144,10 +145,17 @@
             bp.PHOTO_PATH,
             b.BASIC_USER_SEX
     </select>
-
+    <!--  비밀번호 변경  -->
     <update id="updatePassword">
         UPDATE BASIC_USER
         SET BASIC_USER_PWD = #{password}
+        WHERE BASIC_USER_EMAIL = #{email}
+    </update>
+
+    <!-- 휴면 계정을 ACTIVE로 업데이트하는 쿼리 -->
+    <update id="updateUserStatusToActive" parameterType="String">
+        UPDATE BASIC_USER
+        SET BASIC_USER_STATUS = 'ACTIVE'
         WHERE BASIC_USER_EMAIL = #{email}
     </update>
 </mapper>

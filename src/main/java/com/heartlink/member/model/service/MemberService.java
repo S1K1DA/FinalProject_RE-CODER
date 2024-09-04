@@ -72,16 +72,32 @@ public class MemberService {
     }
 
 
-    // 로그인 인증 메서드
-    public MemberDto verifyLogin(String email, String password) {
+    // 로그인 인증 메서드 수정
+    // 로그인 인증 메서드 수정
+    // 로그인 인증 메서드 수정
+    public String verifyLogin(String email, String password) {
         MemberDto member = memberMapper.findByEmail(email);
 
         if (member != null && passwordEncoder.matches(password, member.getPassword())) {
-            memberMapper.updateLastLoginDate(email);
-            return member;
-        } else {
-            return null;
+            // 사용자 상태에 따라 로그인 처리
+            switch (member.getStatus()) {
+                case "ACTIVE":
+                    memberMapper.updateLastLoginDate(email);  // 마지막 로그인 시간 업데이트
+                    return "success"; // 로그인 성공
+                case "DORMANT":
+                    // 휴면 상태일 경우 로그인 후 상태를 ACTIVE로 변경
+                    memberMapper.updateUserStatusToActive(email);
+                    memberMapper.updateLastLoginDate(email);  // 마지막 로그인 시간 업데이트
+                    return "dormantToActive"; // 휴면 계정이 활성화됨
+                case "DELETED":
+                    throw new IllegalStateException("탈퇴한 계정입니다.");
+                case "BAN":
+                    throw new IllegalStateException("정지된 계정입니다. 관리자에게 문의하세요.");
+                default:
+                    throw new IllegalStateException("알 수 없는 계정 상태입니다.");
+            }
         }
+        return "failure"; // 로그인 실패 시 null 반환
     }
 
     // 어드민 로그인 메서드
