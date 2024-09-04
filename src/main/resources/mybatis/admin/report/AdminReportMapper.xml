@@ -104,5 +104,6 @@
                  JOIN REPORT_RESOLUTION rr
                       ON rb.REPORT_NO = rr.REPORT_NO
         WHERE rr.PUNISHMENT_RESULT IS NOT NULL
+            AND REPORTED_USER_NO = #{userNo}
     </select>
 </mapper>

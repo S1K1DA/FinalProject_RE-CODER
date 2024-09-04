@@ -340,6 +340,7 @@ label{
 .reply-indate{
     margin-bottom: 0;
     font-size: 12px;
+    margin-right: 10px;
 }
 
 .reply-delete{
@@ -446,6 +447,10 @@ textarea:focus {
 
     .feed-out-box{
         width: 100%;
+    }
+
+    .reply-list-submit-box{
+        display: none;
     }
 }
 

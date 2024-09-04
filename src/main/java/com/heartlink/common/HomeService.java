@@ -70,8 +70,25 @@ public class HomeService {
 
         List<FeedDto> result = feedMapper.getTopFeedList();
 
-        if(result.isEmpty()){
-            result = feedMapper.getNewFeedList();
+        switch (result.size()) {
+            case 0:
+                // result가 비어있을 때는 getNewFeedList에서 3개의 요소를 추가
+                result = feedMapper.getNewFeedList().subList(0, Math.min(3, feedMapper.getNewFeedList().size()));
+                break;
+            case 1:
+                // result의 size가 1일 때는 getNewFeedList에서 2개의 요소를 추가
+                result.addAll(feedMapper.getNewFeedList().subList(0, Math.min(2, feedMapper.getNewFeedList().size())));
+                break;
+            case 2:
+                // result의 size가 2일 때는 getNewFeedList에서 1개의 요소를 추가
+                result.addAll(feedMapper.getNewFeedList().subList(0, Math.min(1, feedMapper.getNewFeedList().size())));
+                break;
+            case 3:
+                // result의 size가 3일 때는 추가하지 않음
+                break;
+            default:
+                // size가 3을 초과하는 경우는 고려하지 않음
+                break;
         }
 
         for(FeedDto item : result){

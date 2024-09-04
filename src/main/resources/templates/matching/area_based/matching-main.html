@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
 <link rel="stylesheet" th:href="@{/css/matching/matching_area.css}">
+<link rel="stylesheet" th:href="@{/css/mypage/popup.css}">
     <nav th:replace="~{fragments/navigation :: navigation}"></nav>
     <section class="matching-main-sec">
         <div class="container matching-out-box">
@@ -21,302 +22,319 @@
                 </div>
             </div>
         </div>
+        <!-- 프로필 팝업 구조 -->
+        <div id="profile-popup" class="popup">
+            <div class="popup-content">
+                <span class="close-popup">&times;</span>
+                <!-- 여기서 프로필 데이터를 동적으로 로드합니다 -->
+            </div>
+        </div>
     </section>
 <script>
-    kakao.maps.load(function() {
-        var addr = `[[${addr}]]`;
-        var userSex = `[[${userSex}]]`;
-        var map;
-        var markers = []; // 전역 마커 배열
+    document.addEventListener('DOMContentLoaded', function () {
+        kakao.maps.load(function() {
+            var addr = `[[${addr}]]`;
+            var userSex = `[[${userSex}]]`;
+            var map;
+            var markers = []; // 전역 마커 배열
 
-        if (typeof kakao.maps === 'undefined') {
-            console.error('Kakao Maps API is not loaded.');
-            return;
-        }
+            if (typeof kakao.maps === 'undefined') {
+                console.error('Kakao Maps API is not loaded.');
+                return;
+            }
 
-        var mapContainer = document.getElementById('matching-map');
-        var mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3
-        };
+            var mapContainer = document.getElementById('matching-map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
 
-        map = new kakao.maps.Map(mapContainer, mapOption);
+            map = new kakao.maps.Map(mapContainer, mapOption);
 
-        var geocoder = new kakao.maps.services.Geocoder();
+            var geocoder = new kakao.maps.services.Geocoder();
 
-        geocoder.addressSearch(addr, function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            geocoder.addressSearch(addr, function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">내 위치</div>'
+                    });
+                    infowindow.open(map, marker);
+
+                    map.setCenter(coords);
+                }
+            });
+
+            // 마커 이미지
+            var imageSrc = '/image/area_map/location-pin1.png';
+
+            // 마커를 지도에 추가하는 함수
+            function addMarker(position, userId) {
+
+                var imageSize = new kakao.maps.Size(40, 40);
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
                 var marker = new kakao.maps.Marker({
                     map: map,
-                    position: coords
+                    position: position,
+                    title: userId,
+                    image: markerImage
                 });
 
-                var infowindow = new kakao.maps.InfoWindow({
-                    content: '<div style="width:150px;text-align:center;padding:6px 0;">내 위치</div>'
-                });
-                infowindow.open(map, marker);
+                // 생성된 마커를 배열에 추가합니다
+                markers.push(marker);
 
-                map.setCenter(coords);
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    highlightMatchingUser(marker.getTitle());
+                });
             }
-        });
 
-        // 마커 이미지
-        var imageSrc = '/image/area_map/location-pin1.png';
-
-        // 마커를 지도에 추가하는 함수
-        function addMarker(position, userId) {
-
-            var imageSize = new kakao.maps.Size(40, 40);
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: position,
-                title: userId,
-                image: markerImage
-            });
-
-            // 생성된 마커를 배열에 추가합니다
-            markers.push(marker);
-
-            kakao.maps.event.addListener(marker, 'click', function() {
-                highlightMatchingUser(marker.getTitle());
-            });
-        }
-
-        // 배열에 추가된 마커들을 지도에서 삭제하는 함수
-        function clearMarkers() {
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-            }
-            markers = []; // 마커 배열을 비움
-        }
-
-        async function fetchUsersInBounds(map) {
-            var bounds = map.getBounds();
-
-            try {
-                // 기존 마커를 삭제합니다
-                clearMarkers();
-
-                const response = await fetch('/matching-area/bounds', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        southLng: bounds.getSouthWest().getLng(), // 서쪽 경도
-                        northLng: bounds.getNorthEast().getLng(), // 동쪽 경도
-                        southLat: bounds.getSouthWest().getLat(), // 남쪽 위도
-                        northLat: bounds.getNorthEast().getLat(), // 북쪽 위도
-                        requesterSex: userSex
-                    })
-                });
-
-                const responseJson = await response.json();
-
-                var matchingList = document.getElementById('matching-list');
-                matchingList.innerHTML = '';
-
-                // 사용자 데이터 배열을 반복하여 마커를 생성
-                for (var i = 0; i < responseJson.length; i++) {
-                    var position = new kakao.maps.LatLng(responseJson[i].longitude, responseJson[i].latitude);
-                    addMarker(position, responseJson[i].basicUserNo);
-
-                    let photoPathResult = responseJson[i].photoPath
-                    if(responseJson[i].photoName == null){
-                        photoPathResult = '/image/user_profile/default_image.png';
-                    }
-
-                    // 리스트 항목 생성
-                    var listItem = document.createElement('li');
-                    listItem.className = 'matching-list-item';
-                    let resultInnerHtml = `
-                        <div class="matching-request-box">
-                            <img src="`+ photoPathResult +`" class="matching-photo">
-                            <a class="matching-request" name="area-mathing-btn" >매칭 신청</a>
-                            <input id="matchedUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
-                        </div>
-                        <table class="matching-info">
-                        `;
-                    if(responseJson[i].latitude == 0.0){
-                        resultInnerHtml += `
-                            <tr>
-                                <td colspan="2" style="font-size: 12px;">
-                                    <p>상제 위치 정보 미동의</p>
-                                </td>
-                            </tr>
-                            `;
-                    }
-                    resultInnerHtml += `
-                            <tr>
-                                <td><p class="matching-name">${responseJson[i].basicUserNickname}</p></td>
-                                <td><p class="matching-age">${calculateAge(responseJson[i].basicUserBirthdate)}세</p></td>
-                            </tr>
-                            <tr>
-                                <td><p class="matching-hobby">${responseJson[i].hobbyName}</p></td>
-                                <td class="info-menu"><p>취미</p></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="matching-type">${responseJson[i].personalLike}</p>
-                                </td>
-                                <td class="info-menu">
-                                    <p>LIKE</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="matching-type">${responseJson[i].personalHate}</p>
-                                </td>
-                                <td class="info-menu">
-                                    <p>HATE</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><p class="matching-mbti">${responseJson[i].basicUserMbti}</p></td>
-                                <td class="info-menu"><p>MBTI</p></td>
-                            </tr>
-                        </table>
-                    `;
-                    listItem.innerHTML = resultInnerHtml;
-                    matchingList.appendChild(listItem);
-
-                    let areaMatchingBtn = document.getElementsByName('area-mathing-btn');
-
-                    for (const ele of Array.from(areaMatchingBtn)) {
-                        ele.addEventListener("click", async function(){
-
-                            try {
-
-                                const result = await Swal.fire({
-                                    title: "매칭신청 하시겠습니까?",
-                                    text: "코인 10개가 차감됩니다.",
-                                    icon: "question",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "rgb(255 128 135)",
-                                    cancelButtonColor: "rgb(150 150 150)",
-                                    confirmButtonText: "예",
-                                    cancelButtonText: "아니요"
-                                })
-
-                                if (result.isConfirmed) {
-
-                                    const matchedUserNo = document.getElementById('matchedUserNo').value;
-
-                                    const response = await fetch("/matching/request", {
-                                        method: "POST",
-                                        headers: {"Content-Type": "application/json"},
-                                        body: JSON.stringify({
-                                            matchedUserNo: matchedUserNo
-                                        }),
-                                    });
-
-                                    if (response.ok) {
-                                        await Swal.fire({
-                                            title: "매칭 완료!",
-                                            icon: "success"
-                                        }).then(() => {
-                                            window.location.reload();
-                                        });
-
-                                    }else {
-                                        const errorText = await response.text(); // 오류 메시지 추출
-                                        await Swal.fire({
-                                            title: "매칭 실패!",
-                                            icon: "error",
-                                            text: errorText
-                                        });
-                                    }
-                                }else{
-                                    return Promise.reject();
-                                }
-
-                            } catch (error) {
-                                    console.error(error);
-                                    await Swal.fire({
-                                        title: "오류 발생",
-                                        text: "매칭 신청 중 오류가 발생했습니다.",
-                                        icon: "error"
-                                    });
-                                }
-
-                        });
-                    }
-
+            // 배열에 추가된 마커들을 지도에서 삭제하는 함수
+            function clearMarkers() {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
                 }
-
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-
-        // '이곳에서 찾기' 버튼 이벤트
-        document.getElementById('find-location').addEventListener('click', function() {
-            fetchUsersInBounds(map);
-        });
-
-        // 나이 구하는 함수
-        function calculateAge(birthdateString) {
-            // 주어진 생일 문자열을 Date 객체로 변환
-            const birthdate = new Date(birthdateString);
-
-            // 현재 날짜
-            const today = new Date();
-
-            // 생일의 연도, 월, 일
-            const birthYear = birthdate.getFullYear();
-            const birthMonth = birthdate.getMonth();
-            const birthDay = birthdate.getDate();
-
-            // 현재 연도, 월, 일
-            const currentYear = today.getFullYear();
-            const currentMonth = today.getMonth();
-            const currentDay = today.getDate();
-
-            // 기본 나이 계산
-            let age = currentYear - birthYear;
-
-            // 생일이 아직 오지 않은 경우 나이 -1
-            if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
-                age--;
+                markers = []; // 마커 배열을 비움
             }
 
-            return age;
-        }
+            async function fetchUsersInBounds(map) {
+                var bounds = map.getBounds();
 
-        // 선택된 매칭회원 하이라이팅
-        function highlightMatchingUser(userId) {
-            // matching-list 내 모든 li 요소를 가져옴
-            var matchingItems = document.querySelectorAll('.matching-list-item');
-            var matchingList = document.getElementById('matching-list');
+                try {
+                    // 기존 마커를 삭제합니다
+                    clearMarkers();
 
-            // userId와 일치하는지 확인
-            matchingItems.forEach(function(item) {
-                var matchingUserNo = item.querySelector('#matchedUserNo').value;
-
-                if (matchingUserNo === userId) {
-                    // 일치하는 경우 배경색 변경
-                    item.style.backgroundColor = 'rgb(218 151 200 / 27%)';
-
-                    matchingList.scroll({
-                        top: item.offsetTop - matchingList.clientHeight / 2 + item.clientHeight / 2,
-                        behavior: 'smooth'
+                    const response = await fetch('/matching-area/bounds', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            southLng: bounds.getSouthWest().getLng(), // 서쪽 경도
+                            northLng: bounds.getNorthEast().getLng(), // 동쪽 경도
+                            southLat: bounds.getSouthWest().getLat(), // 남쪽 위도
+                            northLat: bounds.getNorthEast().getLat(), // 북쪽 위도
+                            requesterSex: userSex
+                        })
                     });
 
+                    const responseJson = await response.json();
 
-                } else {
-                    // 일치하지 않는 경우 배경색 초기화
-                    item.style.backgroundColor = ''; // 기본 배경색으로 초기화
+                    var matchingList = document.getElementById('matching-list');
+                    matchingList.innerHTML = '';
+
+                    // 사용자 데이터 배열을 반복하여 마커를 생성
+                    for (var i = 0; i < responseJson.length; i++) {
+                        var position = new kakao.maps.LatLng(responseJson[i].longitude, responseJson[i].latitude);
+                        addMarker(position, responseJson[i].basicUserNo);
+
+                        let photoPathResult = responseJson[i].photoPath
+                        if(responseJson[i].photoName == null){
+                            photoPathResult = '/image/user_profile/default_image.png';
+                        }
+
+                        // 리스트 항목 생성
+                        var listItem = document.createElement('li');
+                        listItem.className = 'matching-list-item';
+                        let resultInnerHtml = `
+                            <div class="matching-request-box">
+                                <div class="liked-prof-item" data-liked-user-no="${responseJson[i].basicUserNo}">
+                                    <img src="`+ photoPathResult +`" class="matching-photo">
+                                </div>
+                                <a class="matching-request" name="area-mathing-btn" >매칭 신청</a>
+                                <input id="matchedUserNo" type="hidden" value="${responseJson[i].basicUserNo}"></input>
+                            </div>
+                            <table class="matching-info">
+                            `;
+                        if(responseJson[i].latitude == 0.0){
+                            resultInnerHtml += `
+                                <tr>
+                                    <td colspan="2" style="font-size: 12px;">
+                                        <p>상제 위치 정보 미동의</p>
+                                    </td>
+                                </tr>
+                                `;
+                        }
+                        resultInnerHtml += `
+                                <tr>
+                                    <td><p class="matching-name">${responseJson[i].basicUserNickname}</p></td>
+                                    <td><p class="matching-age">${calculateAge(responseJson[i].basicUserBirthdate)}세</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p class="matching-hobby">${responseJson[i].hobbyName}</p></td>
+                                    <td class="info-menu"><p>취미</p></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="matching-type">${responseJson[i].personalLike}</p>
+                                    </td>
+                                    <td class="info-menu">
+                                        <p>LIKE</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="matching-type">${responseJson[i].personalHate}</p>
+                                    </td>
+                                    <td class="info-menu">
+                                        <p>HATE</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><p class="matching-mbti">${responseJson[i].basicUserMbti}</p></td>
+                                    <td class="info-menu"><p>MBTI</p></td>
+                                </tr>
+                            </table>
+                        `;
+                        listItem.innerHTML = resultInnerHtml;
+                        matchingList.appendChild(listItem);
+
+                        let areaMatchingBtn = document.getElementsByName('area-mathing-btn');
+
+                        for (const ele of Array.from(areaMatchingBtn)) {
+                            ele.addEventListener("click", async function(){
+
+                                try {
+
+                                    const result = await Swal.fire({
+                                        title: "매칭신청 하시겠습니까?",
+                                        text: "코인 10개가 차감됩니다.",
+                                        icon: "question",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "rgb(255 128 135)",
+                                        cancelButtonColor: "rgb(150 150 150)",
+                                        confirmButtonText: "예",
+                                        cancelButtonText: "아니요"
+                                    })
+
+                                    if (result.isConfirmed) {
+
+                                        const matchedUserNo = document.getElementById('matchedUserNo').value;
+
+                                        const response = await fetch("/matching/request", {
+                                            method: "POST",
+                                            headers: {"Content-Type": "application/json"},
+                                            body: JSON.stringify({
+                                                matchedUserNo: matchedUserNo
+                                            }),
+                                        });
+
+                                        if (response.ok) {
+                                            await Swal.fire({
+                                                title: "매칭 완료!",
+                                                icon: "success"
+                                            }).then(() => {
+                                                window.location.reload();
+                                            });
+
+                                        }else {
+                                            const errorText = await response.text(); // 오류 메시지 추출
+                                            await Swal.fire({
+                                                title: "매칭 실패!",
+                                                icon: "error",
+                                                text: errorText
+                                            });
+                                        }
+                                    }else{
+                                        return Promise.reject();
+                                    }
+
+                                } catch (error) {
+                                        console.error(error);
+                                        await Swal.fire({
+                                            title: "오류 발생",
+                                            text: "매칭 신청 중 오류가 발생했습니다.",
+                                            icon: "error"
+                                        });
+                                    }
+
+                            });
+                        }
+
+                    }
+                    // 새로 추가된 프로필 항목에 대해 팝업 이벤트 리스너를 다시 설정
+                    // 프로필 좋아요 기능 초기화
+                    ProfileLikeModule.initializeProfileLikeFeature();
+                    // 프로필 팝업 기능 초기화
+                    ProfilePopupModule.initializeProfileItemPopup();
+                    //프로필 팝업 닫기
+                    ProfilePopupModule.initializeProfilePopupClose();
+
+                } catch (error) {
+                    console.error('Error:', error);
                 }
+            }
+
+
+            // '이곳에서 찾기' 버튼 이벤트
+            document.getElementById('find-location').addEventListener('click', function() {
+                fetchUsersInBounds(map);
             });
-        }
+
+            // 나이 구하는 함수
+            function calculateAge(birthdateString) {
+                // 주어진 생일 문자열을 Date 객체로 변환
+                const birthdate = new Date(birthdateString);
+
+                // 현재 날짜
+                const today = new Date();
+
+                // 생일의 연도, 월, 일
+                const birthYear = birthdate.getFullYear();
+                const birthMonth = birthdate.getMonth();
+                const birthDay = birthdate.getDate();
+
+                // 현재 연도, 월, 일
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth();
+                const currentDay = today.getDate();
+
+                // 기본 나이 계산
+                let age = currentYear - birthYear;
+
+                // 생일이 아직 오지 않은 경우 나이 -1
+                if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+                    age--;
+                }
+
+                return age;
+            }
+
+            // 선택된 매칭회원 하이라이팅
+            function highlightMatchingUser(userId) {
+                // matching-list 내 모든 li 요소를 가져옴
+                var matchingItems = document.querySelectorAll('.matching-list-item');
+                var matchingList = document.getElementById('matching-list');
+
+                // userId와 일치하는지 확인
+                matchingItems.forEach(function(item) {
+                    var matchingUserNo = item.querySelector('#matchedUserNo').value;
+
+                    if (matchingUserNo === userId) {
+                        // 일치하는 경우 배경색 변경
+                        item.style.backgroundColor = 'rgb(218 151 200 / 27%)';
+
+                        matchingList.scroll({
+                            top: item.offsetTop - matchingList.clientHeight / 2 + item.clientHeight / 2,
+                            behavior: 'smooth'
+                        });
+
+
+                    } else {
+                        // 일치하지 않는 경우 배경색 초기화
+                        item.style.backgroundColor = ''; // 기본 배경색으로 초기화
+                    }
+                });
+            }
+        });
 
     });
-
 
 </script>
 <footer th:replace="~{fragments/footer :: footer}"></footer>

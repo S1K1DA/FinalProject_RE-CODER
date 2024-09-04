@@ -14,7 +14,7 @@ public interface AdminReportMapper {
 
     public List<AdminReportDto> setResolutionReportList(String startDate, String endDate);
 
-    public int getAccruePunishment();
+    public int getAccruePunishment(int userNo);
 
     public List<AdminReportDto> setReportList(String startDate, String endDate);
 

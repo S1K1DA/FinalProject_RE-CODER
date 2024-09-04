@@ -1,4 +1,13 @@
-
+// URL에 ?error=unauthorized가 있는지 확인하고, 해당하면 알림 표시
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('error') === 'unauthorized') {
+    Swal.fire({
+        title: "로그인이 필요합니다!",
+        icon: "error",
+        text: "로그인 후 다시 시도해주세요."
+    });
+    history.replaceState(null, '', window.location.pathname);
+}
 
 const signUpBtn = document.getElementById("signUp");
 const signInBtn = document.getElementById("signIn");
