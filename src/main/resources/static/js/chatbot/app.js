@@ -124,15 +124,18 @@ function displayPersistentMenu() {
 function handlePostback(postback) {
     console.log("Postback received: " + postback);
 
+    let userId = parseInt(document.getElementById('user-id').value); // userId를 int로 변환
+
     if (postback === "home_action") {
         clearMessages();
-        const postbackMessage = JSON.stringify({ postback: "open" });  // JSON 형식으로 전송
+        const postbackMessage = JSON.stringify({ postback: "open", userId: userId });
         stompClient.send("/app/sendMessage", {}, postbackMessage); // 웰컴 메시지를 요청
     } else {
-        const postbackMessage = JSON.stringify({ postback: postback });
+        const postbackMessage = JSON.stringify({ postback: postback, userId: userId });
         stompClient.send("/app/sendMessage", {}, postbackMessage);
     }
 }
+
 
 
 function clearMessages() {
